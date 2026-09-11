@@ -7,6 +7,11 @@ import { PrismaModule } from './prisma/prisma.module.js';
 import { ConfigModule } from './config/config.module.js';
 import { HealthModule } from './health/health.module.js';
 import { AuthModule } from './auth/auth.module.js';
+import { MediaModule } from './media/media.module.js';
+import { SellersModule } from './sellers/sellers.module.js';
+import { InventoryModule } from './inventory/inventory.module.js';
+import { CategoriesModule } from './categories/categories.module.js';
+import { ProductsModule } from './products/products.module.js';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard.js';
 import { RolesGuard } from './common/guards/roles.guard.js';
 
@@ -16,6 +21,11 @@ import { RolesGuard } from './common/guards/roles.guard.js';
     PrismaModule,
     HealthModule,
     AuthModule,
+    MediaModule,
+    SellersModule,
+    InventoryModule,
+    CategoriesModule,
+    ProductsModule,
     ThrottlerModule.forRoot([
       {
         ttl: 60000,

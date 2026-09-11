@@ -14,4 +14,9 @@ export default registerAs('app', () => ({
     secret: process.env.JWT_SECRET,
     expiration: process.env.JWT_EXPIRATION || '7d',
   },
+  cloudinary: {
+    cloudName: process.env.CLOUDINARY_CLOUD_NAME,
+    apiKey: process.env.CLOUDINARY_API_KEY,
+    apiSecret: process.env.CLOUDINARY_API_SECRET,
+  },
 }));
