@@ -1,5 +1,4 @@
 // SIH26033 — Prisma Schema
-// This is the foundation schema. Models will be added in Milestone 2.
 
 generator client {
   provider = "prisma-client-js"
@@ -10,10 +9,308 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ─── Placeholder ────────────────────────────────────────────
-// Database models will be added in Milestone 2:
-// - User, Role, Profile
-// - Product, Category
-// - Order, OrderItem
-// - FPO, Warehouse
-// - etc.
+// -----------------------------------------------------------------------------
+// ENUMS
+// -----------------------------------------------------------------------------
+
+enum Role {
+  FARMER
+  BUYER
+  ADMIN
+}
+
+enum AccountStatus {
+  ACTIVE
+  SUSPENDED
+  DEACTIVATED
+}
+
+enum BuyerType {
+  INDIVIDUAL
+  BUSINESS
+}
+
+enum AddressType {
+  HOME
+  BUSINESS
+  FARM
+  WAREHOUSE
+  OTHER
+}
+
+enum ProductUnit {
+  KG
+  GRAM
+  QUINTAL
+  TONNE
+  LITER
+  MILLILITER
+  PIECE
+  DOZEN
+  BOX
+}
+
+enum ProductStatus {
+  ACTIVE
+  OUT_OF_STOCK
+  ARCHIVED
+  REJECTED
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PROCESSING
+  READY_FOR_SHIPMENT
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  RETURNED
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+enum NotificationType {
+  ORDER_PLACED
+  ORDER_STATUS_UPDATED
+  PAYMENT_RECEIVED
+  SYSTEM_ALERT
+}
+
+// -----------------------------------------------------------------------------
+// IDENTITY DOMAIN
+// -----------------------------------------------------------------------------
+
+model User {
+  id           String        @id @default(uuid())
+  email        String        @unique
+  mobile       String?       @unique
+  passwordHash String
+  role         Role
+  status       AccountStatus @default(ACTIVE)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  farmerProfile FarmerProfile?
+  buyerProfile  BuyerProfile?
+  addresses     Address[]
+  notifications Notification[]
+
+  @@index([email])
+  @@index([mobile])
+  @@index([role])
+}
+
+model FarmerProfile {
+  id                 String   @id @default(uuid())
+  userId             String   @unique
+  user               User     @relation(fields: [userId], references: [id])
+  businessName       String?
+  farmLocation       String?
+  verificationStatus String   @default("PENDING") // Could be an enum later
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  products       Product[]
+  ordersReceived Order[] // Orders placed by buyers for this farmer's products
+}
+
+model BuyerProfile {
+  id                 String    @id @default(uuid())
+  userId             String    @unique
+  user               User      @relation(fields: [userId], references: [id])
+  buyerType          BuyerType @default(INDIVIDUAL)
+  businessName       String?
+  verificationStatus String    @default("PENDING")
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  ordersPlaced Order[]
+  reviews      Review[]
+}
+
+model Address {
+  id          String      @id @default(uuid())
+  userId      String
+  user        User        @relation(fields: [userId], references: [id])
+  type        AddressType @default(HOME)
+  name        String
+  phone       String
+  addressLine String
+  city        String
+  state       String
+  pincode     String
+  country     String      @default("India")
+  latitude    Float?
+  longitude   Float?
+  isDefault   Boolean     @default(false)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@index([userId])
+}
+
+// -----------------------------------------------------------------------------
+// PRODUCT DOMAIN
+// -----------------------------------------------------------------------------
+
+model Category {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  products Product[]
+}
+
+model Product {
+  id         String        @id @default(uuid())
+  farmerId   String
+  farmer     FarmerProfile @relation(fields: [farmerId], references: [id])
+  categoryId String
+  category   Category      @relation(fields: [categoryId], references: [id])
+
+  name        String
+  description String
+  price       Decimal       @db.Decimal(10, 2)
+  unit        ProductUnit
+  status      ProductStatus @default(ACTIVE)
+  location    String? // General location descriptor
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  images     ProductImage[]
+  inventory  Inventory?
+  orderItems OrderItem[]
+  reviews    Review[]
+
+  @@index([farmerId])
+  @@index([categoryId])
+  @@index([status])
+}
+
+model ProductImage {
+  id           String   @id @default(uuid())
+  productId    String
+  product      Product  @relation(fields: [productId], references: [id])
+  cloudinaryId String
+  url          String
+  isPrimary    Boolean  @default(false)
+  createdAt    DateTime @default(now())
+
+  @@index([productId])
+}
+
+model Inventory {
+  id                String   @id @default(uuid())
+  productId         String   @unique
+  product           Product  @relation(fields: [productId], references: [id])
+  availableQuantity Decimal  @default(0) @db.Decimal(10, 2)
+  reservedQuantity  Decimal  @default(0) @db.Decimal(10, 2)
+  updatedAt         DateTime @updatedAt
+}
+
+// -----------------------------------------------------------------------------
+// ORDER DOMAIN
+// -----------------------------------------------------------------------------
+
+model Order {
+  id          String        @id @default(uuid())
+  orderNumber String        @unique
+  buyerId     String
+  buyer       BuyerProfile  @relation(fields: [buyerId], references: [id])
+  farmerId    String
+  farmer      FarmerProfile @relation(fields: [farmerId], references: [id])
+  status      OrderStatus   @default(PENDING)
+  totalAmount Decimal       @db.Decimal(10, 2)
+
+  // Historical snapshot of the address
+  shippingAddressSnapshot Json
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  items   OrderItem[]
+  payment Payment?
+
+  @@index([buyerId])
+  @@index([farmerId])
+  @@index([status])
+}
+
+model OrderItem {
+  id        String  @id @default(uuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id])
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+
+  quantity   Decimal @db.Decimal(10, 2)
+  // Historical price at the time of purchase
+  unitPrice  Decimal @db.Decimal(10, 2)
+  totalPrice Decimal @db.Decimal(10, 2)
+
+  createdAt DateTime @default(now())
+
+  review Review?
+
+  @@index([orderId])
+  @@index([productId])
+}
+
+model Payment {
+  id                String        @id @default(uuid())
+  orderId           String        @unique
+  order             Order         @relation(fields: [orderId], references: [id])
+  amount            Decimal       @db.Decimal(10, 2)
+  status            PaymentStatus @default(PENDING)
+  providerReference String? // e.g. Razorpay/Stripe transaction ID
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  @@index([orderId])
+}
+
+// -----------------------------------------------------------------------------
+// SOCIAL & ENGAGEMENT DOMAIN
+// -----------------------------------------------------------------------------
+
+model Review {
+  id          String       @id @default(uuid())
+  buyerId     String
+  buyer       BuyerProfile @relation(fields: [buyerId], references: [id])
+  productId   String
+  product     Product      @relation(fields: [productId], references: [id])
+  orderItemId String       @unique // 1 Review per 1 OrderItem to ensure verified purchase
+  orderItem   OrderItem    @relation(fields: [orderItemId], references: [id])
+
+  rating    Int // e.g., 1 to 5
+  comment   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([productId])
+  @@index([buyerId])
+}
+
+model Notification {
+  id        String           @id @default(uuid())
+  userId    String
+  user      User             @relation(fields: [userId], references: [id])
+  type      NotificationType
+  title     String
+  message   String
+  isRead    Boolean          @default(false)
+  createdAt DateTime         @default(now())
+
+  @@index([userId])
+  @@index([isRead])
+}
