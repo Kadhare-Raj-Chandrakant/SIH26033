@@ -1,0 +1,19 @@
+// SIH26033 — Prisma Schema
+// This is the foundation schema. Models will be added in Milestone 2.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Placeholder ────────────────────────────────────────────
+// Database models will be added in Milestone 2:
+// - User, Role, Profile
+// - Product, Category
+// - Order, OrderItem
+// - FPO, Warehouse
+// - etc.

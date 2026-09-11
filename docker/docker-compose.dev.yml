@@ -1,0 +1,39 @@
+# SIH26033 — Local Development Services
+# Usage: npm run docker:up (from repo root)
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: sih26033-postgres
+    restart: unless-stopped
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: sih26033
+      POSTGRES_PASSWORD: sih26033_dev
+      POSTGRES_DB: sih26033
+    volumes:
+      - sih26033_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sih26033"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: sih26033-redis
+    restart: unless-stopped
+    ports:
+      - "6380:6379"
+    volumes:
+      - sih26033_redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  sih26033_pgdata:
+  sih26033_redisdata:
