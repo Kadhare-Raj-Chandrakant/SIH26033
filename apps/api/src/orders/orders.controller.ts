@@ -71,4 +71,16 @@ export class OrdersController {
   ) {
     return this.ordersService.cancelOrder(user.sub, id);
   }
+
+  @Get(':id/tracking')
+  @ApiOperation({ summary: 'Get live shipment tracking and timeline for authenticated buyer' })
+  @ApiResponse({ status: 200, description: 'Tracking timeline retrieved successfully.' })
+  @ApiResponse({ status: 404, description: 'Order not found.' })
+  async getOrderTracking(
+    @CurrentUser() user: AuthUser,
+    @Param('id', ParseUUIDPipe) id: string,
+  ) {
+    return this.ordersService.getOrderTracking(user.sub, id);
+  }
 }
+

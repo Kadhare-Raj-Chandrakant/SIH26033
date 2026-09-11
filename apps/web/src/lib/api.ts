@@ -134,7 +134,45 @@ export interface OrderDetail {
   updatedAt: string;
   itemCount?: number;
   seller: SellerInfo;
+  shipment?: ShipmentInfo | null;
   items: OrderItemSnapshot[];
+}
+
+export type ShipmentStatus =
+  | 'CREATED'
+  | 'PICKUP_PENDING'
+  | 'PICKED_UP'
+  | 'IN_TRANSIT'
+  | 'OUT_FOR_DELIVERY'
+  | 'DELIVERED'
+  | 'FAILED'
+  | 'CANCELLED';
+
+export interface ShipmentTrackingEvent {
+  id: string;
+  status: ShipmentStatus;
+  location?: string;
+  message: string;
+  occurredAt: string;
+}
+
+export interface ShipmentInfo {
+  id: string;
+  provider: string;
+  providerShipmentId?: string;
+  trackingNumber: string;
+  status: ShipmentStatus;
+  estimatedDeliveryAt?: string;
+  shippedAt?: string;
+  deliveredAt?: string;
+  events?: ShipmentTrackingEvent[];
+}
+
+export interface OrderTrackingData {
+  orderId: string;
+  orderNumber: string;
+  orderStatus: string;
+  shipment: ShipmentInfo | null;
 }
 
 export interface OrdersResponse {
@@ -515,3 +553,194 @@ export async function demoLoginBuyer(): Promise<{
   setStoredToken(token);
   return { token, user };
 }
+
+// ---------------------------------------------------------------------------
+// Logistics, Fulfillment & Tracking API Functions
+// ---------------------------------------------------------------------------
+
+export async function fetchOrderTracking(
+  orderId: string,
+  token?: string,
+): Promise<{ success: boolean; data: OrderTrackingData }> {
+  const res = await fetch(`${API_BASE_URL}/orders/${orderId}/tracking`, {
+    headers: getAuthHeaders(token),
+  });
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData?.message || 'Failed to fetch tracking details');
+  }
+  return res.json();
+}
+
+export async function fetchSellerOrders(
+  params: { page?: number; limit?: number } = {},
+  token?: string,
+): Promise<OrdersResponse> {
+  const url = new URL(`${API_BASE_URL}/seller/orders`);
+  if (params.page) url.searchParams.set('page', params.page.toString());
+  if (params.limit) url.searchParams.set('limit', params.limit.toString());
+
+  const res = await fetch(url.toString(), {
+    headers: getAuthHeaders(token),
+  });
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData?.message || 'Failed to fetch seller orders');
+  }
+  return res.json();
+}
+
+export async function fetchSellerOrderById(
+  orderId: string,
+  token?: string,
+): Promise<{ success: boolean; data: OrderDetail }> {
+  const res = await fetch(`${API_BASE_URL}/seller/orders/${orderId}`, {
+    headers: getAuthHeaders(token),
+  });
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData?.message || 'Failed to fetch seller order details');
+  }
+  return res.json();
+}
+
+export async function confirmSellerOrder(
+  orderId: string,
+  token?: string,
+): Promise<{ success: boolean; data: { message: string; orderId: string; status: string } }> {
+  const res = await fetch(`${API_BASE_URL}/seller/orders/${orderId}/confirm`, {
+    method: 'POST',
+    headers: getAuthHeaders(token),
+  });
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData?.message || 'Failed to confirm order');
+  }
+  return res.json();
+}
+
+export async function processSellerOrder(
+  orderId: string,
+  token?: string,
+): Promise<{ success: boolean; data: { message: string; orderId: string; status: string } }> {
+  const res = await fetch(`${API_BASE_URL}/seller/orders/${orderId}/processing`, {
+    method: 'POST',
+    headers: getAuthHeaders(token),
+  });
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData?.message || 'Failed to start processing order');
+  }
+  return res.json();
+}
+
+export async function readySellerOrder(
+  orderId: string,
+  token?: string,
+): Promise<{ success: boolean; data: { message: string; orderId: string; status: string } }> {
+  const res = await fetch(`${API_BASE_URL}/seller/orders/${orderId}/ready-for-shipment`, {
+    method: 'POST',
+    headers: getAuthHeaders(token),
+  });
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData?.message || 'Failed to mark order ready for shipment');
+  }
+  return res.json();
+}
+
+export async function shipSellerOrder(
+  orderId: string,
+  payload?: { simulateFailure?: boolean; carrierNotes?: string },
+  token?: string,
+): Promise<{
+  success: boolean;
+  data: {
+    message: string;
+    orderId: string;
+    status: string;
+    shipment: ShipmentInfo;
+  };
+}> {
+  const res = await fetch(`${API_BASE_URL}/seller/orders/${orderId}/ship`, {
+    method: 'POST',
+    headers: getAuthHeaders(token),
+    body: JSON.stringify(payload || {}),
+  });
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData?.message || 'Failed to dispatch shipment');
+  }
+  return res.json();
+}
+
+export async function syncSellerOrderShipment(
+  orderId: string,
+  token?: string,
+): Promise<{
+  success: boolean;
+  data: {
+    message: string;
+    orderId: string;
+    orderStatus: string;
+    shipment: ShipmentInfo;
+  };
+}> {
+  const res = await fetch(`${API_BASE_URL}/seller/orders/${orderId}/sync-shipment`, {
+    method: 'POST',
+    headers: getAuthHeaders(token),
+  });
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData?.message || 'Failed to sync shipment status');
+  }
+  return res.json();
+}
+
+export async function demoLoginSeller(sellerType: 'FARMER' | 'FPO' = 'FARMER'): Promise<{
+  token: string;
+  user: { id: string; email: string; role: string };
+}> {
+  const email = sellerType === 'FARMER' ? 'farmer1_demo@sih26033.org' : 'fpo_demo@sih26033.org';
+  const password = 'Password@123';
+
+  let loginRes = await fetch(`${API_BASE_URL}/auth/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password }),
+  });
+
+  if (!loginRes.ok) {
+    // Register demo seller
+    await fetch(`${API_BASE_URL}/auth/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email,
+        password,
+        name: sellerType === 'FARMER' ? 'Ramesh Farmer (Demo)' : 'Maharashtra Agro FPO (Demo)',
+        mobile: sellerType === 'FARMER' ? '9898000002' : '9898000003',
+        role: sellerType,
+      }),
+    });
+
+    loginRes = await fetch(`${API_BASE_URL}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
+  }
+
+  const json = await loginRes.json();
+  const token = json.data?.accessToken || json.accessToken;
+  const user = json.data?.user || json.user;
+
+  if (!token) {
+    throw new Error('Failed to retrieve seller authentication token');
+  }
+
+  setStoredToken(token);
+  return { token, user };
+}
+
+

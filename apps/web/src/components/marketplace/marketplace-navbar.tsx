@@ -51,6 +51,12 @@ export function MarketplaceNavbar() {
             >
               My Orders
             </Link>
+            <Link
+              href="/seller/orders"
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-emerald-600"
+            >
+              Producer Fulfillment
+            </Link>
           </nav>
         </div>
 

@@ -7,11 +7,16 @@ import {
 import { PrismaService } from '../prisma/prisma.service.js';
 import { CreateOrderDto } from './dto/create-order.dto.js';
 import { OrderQueryDto } from './dto/order-query.dto.js';
-import { Prisma, OrderStatus, ProductStatus } from '@prisma/client';
+import { ShipOrderDto } from './dto/ship-order.dto.js';
+import { Prisma, OrderStatus, ProductStatus, NotificationType, ShipmentStatus } from '@prisma/client';
+import { LogisticsService } from '../logistics/logistics.service.js';
 
 @Injectable()
 export class OrdersService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly logisticsService: LogisticsService,
+  ) {}
 
   /**
    * Internal helper to resolve the BuyerProfile for the authenticated user
@@ -345,6 +350,13 @@ export class OrdersService {
             verificationStatus: true,
           },
         },
+        shipment: {
+          include: {
+            events: {
+              orderBy: { occurredAt: 'asc' },
+            },
+          },
+        },
       },
     });
 
@@ -361,6 +373,24 @@ export class OrdersService {
       createdAt: order.createdAt,
       updatedAt: order.updatedAt,
       seller: order.seller,
+      shipment: order.shipment
+        ? {
+            id: order.shipment.id,
+            provider: order.shipment.provider,
+            trackingNumber: order.shipment.trackingNumber,
+            status: order.shipment.status,
+            estimatedDeliveryAt: order.shipment.estimatedDeliveryAt,
+            shippedAt: order.shipment.shippedAt,
+            deliveredAt: order.shipment.deliveredAt,
+            events: order.shipment.events.map((event) => ({
+              id: event.id,
+              status: event.status,
+              location: event.location,
+              message: event.message,
+              occurredAt: event.occurredAt,
+            })),
+          }
+        : null,
       items: order.items.map((item) => ({
         id: item.id,
         productId: item.productId,
@@ -466,6 +496,7 @@ export class OrdersService {
               businessName: true,
             },
           },
+          shipment: true,
         },
       }),
       this.prisma.order.count({
@@ -486,6 +517,17 @@ export class OrdersService {
         buyerType: order.buyer.buyerType,
         businessName: order.buyer.businessName,
       },
+      shipment: order.shipment
+        ? {
+            id: order.shipment.id,
+            provider: order.shipment.provider,
+            trackingNumber: order.shipment.trackingNumber,
+            status: order.shipment.status,
+            estimatedDeliveryAt: order.shipment.estimatedDeliveryAt,
+            shippedAt: order.shipment.shippedAt,
+            deliveredAt: order.shipment.deliveredAt,
+          }
+        : null,
       items: order.items.map((item) => ({
         id: item.id,
         productId: item.productId,
@@ -507,5 +549,551 @@ export class OrdersService {
         totalPages: Math.ceil(total / limit),
       },
     };
+  }
+
+  /**
+   * Seller: get single order detail with shipment tracking
+   */
+  async getSellerOrderById(userId: string, orderId: string) {
+    const seller = await this.resolveSellerProfile(userId);
+    const order = await this.prisma.order.findFirst({
+      where: {
+        id: orderId,
+        sellerId: seller.id,
+      },
+      include: {
+        items: {
+          include: {
+            product: {
+              select: {
+                id: true,
+                name: true,
+                unit: true,
+                images: { where: { isPrimary: true }, take: 1 },
+              },
+            },
+          },
+        },
+        buyer: {
+          select: {
+            id: true,
+            buyerType: true,
+            businessName: true,
+          },
+        },
+        shipment: {
+          include: {
+            events: {
+              orderBy: { occurredAt: 'asc' },
+            },
+          },
+        },
+      },
+    });
+
+    if (!order) {
+      throw new NotFoundException('Order not found or does not belong to your seller profile');
+    }
+
+    return {
+      id: order.id,
+      orderNumber: order.orderNumber,
+      status: order.status,
+      totalAmount: order.totalAmount.toNumber(),
+      shippingAddressSnapshot: order.shippingAddressSnapshot,
+      createdAt: order.createdAt,
+      updatedAt: order.updatedAt,
+      buyer: order.buyer,
+      shipment: order.shipment
+        ? {
+            id: order.shipment.id,
+            provider: order.shipment.provider,
+            trackingNumber: order.shipment.trackingNumber,
+            status: order.shipment.status,
+            estimatedDeliveryAt: order.shipment.estimatedDeliveryAt,
+            shippedAt: order.shipment.shippedAt,
+            deliveredAt: order.shipment.deliveredAt,
+            events: order.shipment.events.map((e) => ({
+              id: e.id,
+              status: e.status,
+              location: e.location,
+              message: e.message,
+              occurredAt: e.occurredAt,
+            })),
+          }
+        : null,
+      items: order.items.map((item) => ({
+        id: item.id,
+        productId: item.productId,
+        productName: item.product.name,
+        unit: item.product.unit,
+        quantity: item.quantity.toNumber(),
+        unitPrice: item.unitPrice.toNumber(),
+        totalPrice: item.totalPrice.toNumber(),
+        image: item.product.images[0]?.url || null,
+      })),
+    };
+  }
+
+  /**
+   * Seller fulfillment: Confirm order (PENDING -> CONFIRMED)
+   */
+  async confirmOrder(userId: string, orderId: string) {
+    const seller = await this.resolveSellerProfile(userId);
+    const order = await this.prisma.order.findFirst({
+      where: { id: orderId, sellerId: seller.id },
+      include: { buyer: true },
+    });
+
+    if (!order) {
+      throw new NotFoundException('Order not found or does not belong to your seller profile');
+    }
+
+    if (order.status !== OrderStatus.PENDING) {
+      throw new BadRequestException(
+        `Order cannot be confirmed in status ${order.status}. Only PENDING orders can be confirmed.`,
+      );
+    }
+
+    const updated = await this.prisma.order.update({
+      where: { id: order.id },
+      data: { status: OrderStatus.CONFIRMED },
+    });
+
+    await this.createNotificationSafe(
+      order.buyer.userId,
+      NotificationType.ORDER_STATUS_UPDATED,
+      'Order Confirmed',
+      `Your order ${order.orderNumber} has been confirmed by the producer and will enter processing soon.`,
+    );
+
+    return {
+      message: 'Order confirmed successfully',
+      orderId: updated.id,
+      status: updated.status,
+    };
+  }
+
+  /**
+   * Seller fulfillment: Start processing order (CONFIRMED -> PROCESSING)
+   */
+  async processOrder(userId: string, orderId: string) {
+    const seller = await this.resolveSellerProfile(userId);
+    const order = await this.prisma.order.findFirst({
+      where: { id: orderId, sellerId: seller.id },
+      include: { buyer: true },
+    });
+
+    if (!order) {
+      throw new NotFoundException('Order not found or does not belong to your seller profile');
+    }
+
+    if (order.status !== OrderStatus.CONFIRMED) {
+      throw new BadRequestException(
+        `Order cannot be marked as processing in status ${order.status}. Only CONFIRMED orders can move to PROCESSING.`,
+      );
+    }
+
+    const updated = await this.prisma.order.update({
+      where: { id: order.id },
+      data: { status: OrderStatus.PROCESSING },
+    });
+
+    await this.createNotificationSafe(
+      order.buyer.userId,
+      NotificationType.ORDER_STATUS_UPDATED,
+      'Order In Preparation',
+      `Your order ${order.orderNumber} is now being harvested, cleaned, and packed for shipment.`,
+    );
+
+    return {
+      message: 'Order processing started',
+      orderId: updated.id,
+      status: updated.status,
+    };
+  }
+
+  /**
+   * Seller fulfillment: Mark order ready for carrier pickup (PROCESSING -> READY_FOR_SHIPMENT)
+   */
+  async markReadyForShipment(userId: string, orderId: string) {
+    const seller = await this.resolveSellerProfile(userId);
+    const order = await this.prisma.order.findFirst({
+      where: { id: orderId, sellerId: seller.id },
+      include: { buyer: true },
+    });
+
+    if (!order) {
+      throw new NotFoundException('Order not found or does not belong to your seller profile');
+    }
+
+    if (order.status !== OrderStatus.PROCESSING) {
+      throw new BadRequestException(
+        `Order cannot be marked ready for shipment in status ${order.status}. Only PROCESSING orders can move to READY_FOR_SHIPMENT.`,
+      );
+    }
+
+    const updated = await this.prisma.order.update({
+      where: { id: order.id },
+      data: { status: OrderStatus.READY_FOR_SHIPMENT },
+    });
+
+    await this.createNotificationSafe(
+      order.buyer.userId,
+      NotificationType.ORDER_STATUS_UPDATED,
+      'Order Ready for Dispatch',
+      `Your order ${order.orderNumber} is packaged and waiting for logistics carrier pickup.`,
+    );
+
+    return {
+      message: 'Order marked ready for shipment',
+      orderId: updated.id,
+      status: updated.status,
+    };
+  }
+
+  /**
+   * Seller fulfillment: Dispatch order via logistics provider adapter (READY_FOR_SHIPMENT -> SHIPPED)
+   */
+  async shipOrder(userId: string, orderId: string, dto?: ShipOrderDto) {
+    const seller = await this.resolveSellerProfile(userId);
+    const order = await this.prisma.order.findFirst({
+      where: { id: orderId, sellerId: seller.id },
+      include: {
+        items: { include: { product: true } },
+        seller: { include: { user: true } },
+        buyer: true,
+        shipment: true,
+      },
+    });
+
+    if (!order) {
+      throw new NotFoundException('Order not found or does not belong to your seller profile');
+    }
+
+    if (order.status !== OrderStatus.READY_FOR_SHIPMENT) {
+      throw new BadRequestException(
+        `Order cannot be shipped in status ${order.status}. Only READY_FOR_SHIPMENT orders can be dispatched.`,
+      );
+    }
+
+    if (order.shipment) {
+      throw new BadRequestException('Shipment has already been created for this order.');
+    }
+
+    // 1. Prepare logistics payload
+    const shippingAddress = order.shippingAddressSnapshot as Record<string, any>;
+    const payload = {
+      orderId: order.id,
+      orderNumber: order.orderNumber,
+      pickupAddress: {
+        name: order.seller.businessName || 'Farmer Producer Origin',
+        phone: order.seller.user?.mobile || '9999999999',
+        addressLine: order.seller.farmLocation || 'Farm Origin Warehouse',
+        city: 'Hubballi',
+        state: 'Karnataka',
+        pincode: '580020',
+        country: 'India',
+      },
+      deliveryAddress: {
+        name: shippingAddress.name || 'Buyer',
+        phone: shippingAddress.phone || '0000000000',
+        addressLine: shippingAddress.addressLine || 'Delivery Address',
+        city: shippingAddress.city || 'Destination City',
+        state: shippingAddress.state || 'Destination State',
+        pincode: shippingAddress.pincode || '000000',
+        country: shippingAddress.country || 'India',
+      },
+      items: order.items.map((i) => ({
+        name: i.product.name,
+        quantity: i.quantity.toNumber(),
+        unit: i.product.unit,
+      })),
+      simulateFailure: dto?.simulateFailure,
+    };
+
+    // 2. Dispatch to Logistics Carrier via Provider Adapter
+    // If this throws (e.g. BadGatewayException), DB state remains untouched and order stays READY_FOR_SHIPMENT
+    const shipmentResult = await this.logisticsService.createShipment(payload);
+
+    // 3. Atomically persist shipment, initial tracking event, order status, and notification
+    return await this.prisma.$transaction(async (tx) => {
+      // Re-verify order state inside transaction to prevent concurrency / race condition duplicates
+      const freshOrder = await tx.order.findUnique({
+        where: { id: order.id },
+        include: { shipment: true },
+      });
+
+      if (!freshOrder || freshOrder.status !== OrderStatus.READY_FOR_SHIPMENT || freshOrder.shipment) {
+        throw new BadRequestException(
+          'Order status has changed or a shipment was already created in parallel.',
+        );
+      }
+
+      const shipment = await tx.shipment.create({
+        data: {
+          orderId: order.id,
+          provider: shipmentResult.provider,
+          providerShipmentId: shipmentResult.providerShipmentId,
+          trackingNumber: shipmentResult.trackingNumber,
+          status: shipmentResult.status,
+          estimatedDeliveryAt: shipmentResult.estimatedDeliveryAt,
+          shippedAt: new Date(),
+          events: {
+            create: {
+              status: shipmentResult.status,
+              location: `${payload.pickupAddress.city}, ${payload.pickupAddress.state}`,
+              message: `Shipment dispatched via ${shipmentResult.provider}. Consignment tracking number: ${shipmentResult.trackingNumber}`,
+              providerEventId: `INIT-${shipmentResult.providerShipmentId}`,
+            },
+          },
+        },
+        include: { events: true },
+      });
+
+      const updatedOrder = await tx.order.update({
+        where: { id: order.id },
+        data: { status: OrderStatus.SHIPPED },
+      });
+
+      await tx.notification.create({
+        data: {
+          userId: order.buyer.userId,
+          type: NotificationType.ORDER_STATUS_UPDATED,
+          title: 'Order Dispatched',
+          message: `Your order ${order.orderNumber} has been dispatched! Tracking number: ${shipment.trackingNumber}`,
+        },
+      });
+
+      return {
+        message: 'Order dispatched and shipment created successfully',
+        orderId: updatedOrder.id,
+        status: updatedOrder.status,
+        shipment: {
+          id: shipment.id,
+          provider: shipment.provider,
+          providerShipmentId: shipment.providerShipmentId,
+          trackingNumber: shipment.trackingNumber,
+          status: shipment.status,
+          estimatedDeliveryAt: shipment.estimatedDeliveryAt,
+          shippedAt: shipment.shippedAt,
+        },
+      };
+    });
+  }
+
+  /**
+   * Sync shipment tracking status from logistics carrier (Idempotent & non-regressive)
+   */
+  async syncShipmentStatus(userId: string, orderId: string) {
+    // Allows seller or buyer of this order to trigger status synchronization
+    const order = await this.prisma.order.findFirst({
+      where: {
+        id: orderId,
+        OR: [
+          { seller: { userId } },
+          { buyer: { userId } },
+        ],
+      },
+      include: {
+        shipment: {
+          include: { events: true },
+        },
+        buyer: true,
+      },
+    });
+
+    if (!order) {
+      throw new NotFoundException('Order not found or you do not have permission to sync its shipment');
+    }
+
+    if (!order.shipment) {
+      throw new BadRequestException('Order has no active shipment to synchronize.');
+    }
+
+    // Query carrier for status
+    const statusResult = await this.logisticsService.getShipmentStatus(
+      order.shipment.providerShipmentId,
+      order.shipment.status,
+    );
+
+    const rank: Record<ShipmentStatus, number> = {
+      CREATED: 1,
+      PICKUP_PENDING: 2,
+      PICKED_UP: 3,
+      IN_TRANSIT: 4,
+      OUT_FOR_DELIVERY: 5,
+      DELIVERED: 6,
+      FAILED: 99,
+      CANCELLED: 100,
+    };
+
+    const currentRank = rank[order.shipment.status] || 0;
+    const newRank = rank[statusResult.status] || 0;
+    const isForwardProgression = newRank >= currentRank;
+
+    // Filter out already recorded tracking events by providerEventId
+    const existingEventIds = new Set(
+      order.shipment.events.map((e) => e.providerEventId).filter(Boolean),
+    );
+    const newEvents = statusResult.events.filter(
+      (e) => !e.providerEventId || !existingEventIds.has(e.providerEventId),
+    );
+
+    const mappedOrderStatus = isForwardProgression
+      ? this.logisticsService.mapShipmentStatusToOrderStatus(statusResult.status)
+      : null;
+
+    return await this.prisma.$transaction(async (tx) => {
+      // 1. Insert new tracking events idempotently
+      for (const event of newEvents) {
+        await tx.shipmentTrackingEvent.create({
+          data: {
+            shipmentId: order.shipment!.id,
+            status: event.status,
+            location: event.location,
+            message: event.message,
+            providerEventId: event.providerEventId,
+            occurredAt: event.occurredAt,
+          },
+        });
+      }
+
+      // 2. Update shipment status if moving forward
+      const updatedShipment = await tx.shipment.update({
+        where: { id: order.shipment!.id },
+        data: {
+          status: isForwardProgression ? statusResult.status : order.shipment!.status,
+          deliveredAt:
+            statusResult.status === ShipmentStatus.DELIVERED
+              ? order.shipment!.deliveredAt || new Date()
+              : order.shipment!.deliveredAt,
+        },
+        include: {
+          events: { orderBy: { occurredAt: 'asc' } },
+        },
+      });
+
+      // 3. Update order status if forward and not terminal/cancelled
+      let updatedOrder = order;
+      if (
+        mappedOrderStatus &&
+        mappedOrderStatus !== order.status &&
+        order.status !== OrderStatus.CANCELLED
+      ) {
+        updatedOrder = (await tx.order.update({
+          where: { id: order.id },
+          data: { status: mappedOrderStatus },
+          include: { buyer: true },
+        })) as any;
+
+        // In-app notification on terminal delivery
+        if (mappedOrderStatus === OrderStatus.DELIVERED && order.status !== OrderStatus.DELIVERED) {
+          await tx.notification.create({
+            data: {
+              userId: order.buyer.userId,
+              type: NotificationType.ORDER_STATUS_UPDATED,
+              title: 'Order Delivered',
+              message: `Your order ${order.orderNumber} has been delivered successfully!`,
+            },
+          });
+        }
+      }
+
+      return {
+        message: 'Shipment synchronized successfully',
+        orderId: updatedOrder.id,
+        orderStatus: updatedOrder.status,
+        shipment: {
+          id: updatedShipment.id,
+          provider: updatedShipment.provider,
+          trackingNumber: updatedShipment.trackingNumber,
+          status: updatedShipment.status,
+          estimatedDeliveryAt: updatedShipment.estimatedDeliveryAt,
+          shippedAt: updatedShipment.shippedAt,
+          deliveredAt: updatedShipment.deliveredAt,
+          events: updatedShipment.events.map((e) => ({
+            id: e.id,
+            status: e.status,
+            location: e.location,
+            message: e.message,
+            occurredAt: e.occurredAt,
+          })),
+        },
+      };
+    });
+  }
+
+  /**
+   * Buyer: Get complete order tracking information and timeline (IDOR protected)
+   */
+  async getOrderTracking(userId: string, orderId: string) {
+    const buyer = await this.resolveBuyerProfile(userId);
+    const order = await this.prisma.order.findFirst({
+      where: {
+        id: orderId,
+        buyerId: buyer.id,
+      },
+      include: {
+        shipment: {
+          include: {
+            events: {
+              orderBy: { occurredAt: 'asc' },
+            },
+          },
+        },
+      },
+    });
+
+    if (!order) {
+      throw new NotFoundException('Order not found or does not belong to your buyer profile');
+    }
+
+    return {
+      orderId: order.id,
+      orderNumber: order.orderNumber,
+      orderStatus: order.status,
+      shipment: order.shipment
+        ? {
+            id: order.shipment.id,
+            provider: order.shipment.provider,
+            trackingNumber: order.shipment.trackingNumber,
+            status: order.shipment.status,
+            estimatedDeliveryAt: order.shipment.estimatedDeliveryAt,
+            shippedAt: order.shipment.shippedAt,
+            deliveredAt: order.shipment.deliveredAt,
+            events: order.shipment.events.map((e) => ({
+              id: e.id,
+              status: e.status,
+              location: e.location,
+              message: e.message,
+              occurredAt: e.occurredAt,
+            })),
+          }
+        : null,
+    };
+  }
+
+  /**
+   * Helper for safe, non-blocking notification creation
+   */
+  private async createNotificationSafe(
+    userId: string,
+    type: NotificationType,
+    title: string,
+    message: string,
+  ) {
+    try {
+      await this.prisma.notification.create({
+        data: {
+          userId,
+          type,
+          title,
+          message,
+        },
+      });
+    } catch {
+      // Non-fatal if notification record fails
+    }
   }
 }

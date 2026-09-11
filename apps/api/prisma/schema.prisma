@@ -91,6 +91,17 @@ enum NotificationType {
   SYSTEM_ALERT
 }
 
+enum ShipmentStatus {
+  CREATED
+  PICKUP_PENDING
+  PICKED_UP
+  IN_TRANSIT
+  OUT_FOR_DELIVERY
+  DELIVERED
+  FAILED
+  CANCELLED
+}
+
 // -----------------------------------------------------------------------------
 // IDENTITY DOMAIN
 // -----------------------------------------------------------------------------
@@ -252,8 +263,9 @@ model Order {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  items   OrderItem[]
-  payment Payment?
+  items    OrderItem[]
+  payment  Payment?
+  shipment Shipment?
 
   @@index([buyerId])
   @@index([sellerId])
@@ -346,4 +358,46 @@ model CartItem {
   @@unique([buyerId, productId])
   @@index([buyerId])
   @@index([productId])
+}
+
+// -----------------------------------------------------------------------------
+// LOGISTICS DOMAIN
+// -----------------------------------------------------------------------------
+
+model Shipment {
+  id                  String                 @id @default(uuid())
+  orderId             String                 @unique
+  order               Order                  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  provider            String                 // e.g. "MOCK_LOGISTICS"
+  providerShipmentId  String
+  trackingNumber      String                 @unique
+  status              ShipmentStatus         @default(CREATED)
+  estimatedDeliveryAt DateTime?
+  shippedAt           DateTime?
+  deliveredAt         DateTime?
+  createdAt           DateTime               @default(now())
+  updatedAt           DateTime               @updatedAt
+
+  events              ShipmentTrackingEvent[]
+
+  @@index([orderId])
+  @@index([trackingNumber])
+  @@index([status])
+  @@index([providerShipmentId])
+}
+
+model ShipmentTrackingEvent {
+  id              String         @id @default(uuid())
+  shipmentId      String
+  shipment        Shipment       @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
+  status          ShipmentStatus
+  location        String?
+  message         String
+  providerEventId String?
+  occurredAt      DateTime       @default(now())
+  createdAt       DateTime       @default(now())
+
+  @@index([shipmentId])
+  @@index([occurredAt])
+  @@unique([shipmentId, providerEventId])
 }

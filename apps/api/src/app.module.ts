@@ -16,6 +16,7 @@ import { MarketplaceModule } from './marketplace/marketplace.module.js';
 import { AddressesModule } from './addresses/addresses.module.js';
 import { CartModule } from './cart/cart.module.js';
 import { OrdersModule } from './orders/orders.module.js';
+import { LogisticsModule } from './logistics/logistics.module.js';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard.js';
 import { RolesGuard } from './common/guards/roles.guard.js';
 
@@ -34,6 +35,7 @@ import { RolesGuard } from './common/guards/roles.guard.js';
     AddressesModule,
     CartModule,
     OrdersModule,
+    LogisticsModule,
     ThrottlerModule.forRoot([
       {
         ttl: 60000,

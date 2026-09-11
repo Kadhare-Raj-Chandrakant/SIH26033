@@ -29,4 +29,5 @@ export const envValidationSchema = Joi.object({
   CLOUDINARY_CLOUD_NAME: Joi.string().optional(),
   CLOUDINARY_API_KEY: Joi.string().optional(),
   CLOUDINARY_API_SECRET: Joi.string().optional(),
+  LOGISTICS_PROVIDER: Joi.string().default('mock'),
 });
