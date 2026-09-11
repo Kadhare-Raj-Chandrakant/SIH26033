@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import request from 'supertest';
-import { AppModule } from './../src/app.module.js';
-import { PrismaService } from './../src/prisma/prisma.service.js';
+import { AppModule } from '../src/app.module.js';
+import { PrismaService } from '../src/prisma/prisma.service.js';
 import { Role } from '@prisma/client';
 import { TransformInterceptor } from '../src/common/interceptors/transform.interceptor.js';
 import { AllExceptionsFilter } from '../src/common/filters/all-exceptions.filter.js';
