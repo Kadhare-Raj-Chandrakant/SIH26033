@@ -40,10 +40,16 @@ describe('ProductsController (e2e)', () => {
     jwtService = app.get(JwtService);
 
     // Clean up test data
+    await prisma.cartItem.deleteMany();
+    await prisma.orderItem.deleteMany();
+    await prisma.review.deleteMany();
+    await prisma.payment.deleteMany();
+    await prisma.order.deleteMany();
     await prisma.productImage.deleteMany();
     await prisma.inventory.deleteMany();
     await prisma.product.deleteMany();
     await prisma.category.deleteMany();
+    await prisma.address.deleteMany();
     await prisma.sellerProfile.deleteMany();
     await prisma.buyerProfile.deleteMany();
     await prisma.user.deleteMany();

@@ -144,6 +144,7 @@ model BuyerProfile {
 
   ordersPlaced Order[]
   reviews      Review[]
+  cartItems    CartItem[]
 }
 
 model Address {
@@ -203,6 +204,7 @@ model Product {
   inventory  Inventory?
   orderItems OrderItem[]
   reviews    Review[]
+  cartItems  CartItem[]
 
   @@index([sellerId])
   @@index([categoryId])
@@ -325,4 +327,23 @@ model Notification {
 
   @@index([userId])
   @@index([isRead])
+}
+
+// -----------------------------------------------------------------------------
+// CART DOMAIN
+// -----------------------------------------------------------------------------
+
+model CartItem {
+  id        String       @id @default(uuid())
+  buyerId   String
+  buyer     BuyerProfile @relation(fields: [buyerId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product      @relation(fields: [productId], references: [id], onDelete: Cascade)
+  quantity  Decimal      @db.Decimal(10, 2)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  @@unique([buyerId, productId])
+  @@index([buyerId])
+  @@index([productId])
 }

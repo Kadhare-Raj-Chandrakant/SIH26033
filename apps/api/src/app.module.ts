@@ -12,6 +12,10 @@ import { SellersModule } from './sellers/sellers.module.js';
 import { InventoryModule } from './inventory/inventory.module.js';
 import { CategoriesModule } from './categories/categories.module.js';
 import { ProductsModule } from './products/products.module.js';
+import { MarketplaceModule } from './marketplace/marketplace.module.js';
+import { AddressesModule } from './addresses/addresses.module.js';
+import { CartModule } from './cart/cart.module.js';
+import { OrdersModule } from './orders/orders.module.js';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard.js';
 import { RolesGuard } from './common/guards/roles.guard.js';
 
@@ -26,10 +30,14 @@ import { RolesGuard } from './common/guards/roles.guard.js';
     InventoryModule,
     CategoriesModule,
     ProductsModule,
+    MarketplaceModule,
+    AddressesModule,
+    CartModule,
+    OrdersModule,
     ThrottlerModule.forRoot([
       {
         ttl: 60000,
-        limit: 10, // 10 requests per minute by default for abuse protection
+        limit: process.env.NODE_ENV === 'test' ? 1000 : 10, // Relaxed limit in test environment; 10 req/min in dev/prod
       },
     ]),
   ],
