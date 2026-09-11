@@ -77,6 +77,14 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
+    if (user.status === 'SUSPENDED') {
+      throw new UnauthorizedException('Account is suspended. Please contact platform administration.');
+    }
+
+    if (user.status === 'DEACTIVATED') {
+      throw new UnauthorizedException('Account has been deactivated. Please contact platform administration.');
+    }
+
     const payload = { sub: user.id, role: user.role };
     
     return {

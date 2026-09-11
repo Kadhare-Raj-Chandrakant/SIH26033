@@ -235,7 +235,7 @@ export default function AdminSellersPage() {
                         className="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] rounded transition-colors inline-flex items-center gap-1.5"
                       >
                         <ShieldCheck className="w-3 h-3 text-emerald-400" />
-                        Review KYC
+                        Verify Seller
                       </button>
                     </td>
                   </tr>
@@ -277,7 +277,7 @@ export default function AdminSellersPage() {
       {selectedSeller && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50">
           <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 max-w-md w-full shadow-2xl">
-            <h2 className="text-base font-bold text-slate-100 mb-1">Seller Verification & KYC Review</h2>
+            <h2 className="text-base font-bold text-slate-100 mb-1">Seller Verification Review</h2>
             <p className="text-xs text-slate-400 mb-4">
               Entity: <span className="text-slate-200 font-medium">{selectedSeller.businessName || selectedSeller.user.email}</span>
             </p>
@@ -298,7 +298,7 @@ export default function AdminSellersPage() {
                 >
                   <option value="VERIFIED">VERIFIED (Approved for direct trade)</option>
                   <option value="PENDING">PENDING (Requires additional documentation)</option>
-                  <option value="REJECTED">REJECTED (Failed KYC / Land record verification)</option>
+                  <option value="REJECTED">REJECTED (Verification Rejected)</option>
                 </select>
               </div>
 

@@ -79,9 +79,9 @@ export default function AdminShipmentsPage() {
         <div>
           <h1 className="text-xl font-bold text-slate-100 flex items-center gap-2">
             <Truck className="w-5 h-5 text-emerald-400" />
-            Logistics & Carrier Monitoring
+            Logistics & Shipment Monitoring
           </h1>
-          <p className="text-xs text-slate-400">Track shipments, carriers, delivery stages, and transit event logs</p>
+          <p className="text-xs text-slate-400">Current shipment status, provider tracking, and latest tracking events (Mock Logistics Provider)</p>
         </div>
       </div>
 
@@ -92,7 +92,7 @@ export default function AdminShipmentsPage() {
             <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
-              placeholder="Search by tracking number, carrier, or order..."
+              placeholder="Search by tracking number, provider, or order..."
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
               className="w-full pl-9 pr-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
@@ -141,11 +141,11 @@ export default function AdminShipmentsPage() {
             <table className="w-full text-left text-xs text-slate-300">
               <thead className="bg-slate-950/70 border-b border-slate-800 text-[11px] text-slate-400 uppercase tracking-wider font-semibold">
                 <tr>
-                  <th className="py-3.5 px-4">Tracking Number</th>
-                  <th className="py-3.5 px-4">Carrier / Provider</th>
+                  <th className="py-3.5 px-4">Shipment Tracking Number</th>
+                  <th className="py-3.5 px-4">Logistics Provider</th>
                   <th className="py-3.5 px-4">Order Reference</th>
-                  <th className="py-3.5 px-4">Current Status</th>
-                  <th className="py-3.5 px-4">Latest Event</th>
+                  <th className="py-3.5 px-4">Current Shipment Status</th>
+                  <th className="py-3.5 px-4">Latest Tracking Event</th>
                   <th className="py-3.5 px-4 text-right">Actions</th>
                 </tr>
               </thead>
@@ -249,7 +249,7 @@ export default function AdminShipmentsPage() {
                   Shipment Tracking #{selectedShipment.trackingNumber || selectedShipment.id}
                 </h2>
                 <p className="text-xs text-slate-400 mt-0.5">
-                  Carrier: <span className="text-slate-200 font-semibold">{selectedShipment.provider}</span> • Order:{' '}
+                  Logistics Provider: <span className="text-slate-200 font-semibold">{selectedShipment.provider} (Mock Logistics Provider)</span> • Order:{' '}
                   <span className="text-emerald-400 font-mono">{selectedShipment.order?.orderNumber}</span>
                 </p>
               </div>
@@ -263,7 +263,7 @@ export default function AdminShipmentsPage() {
 
             <div className="space-y-4">
               <h3 className="text-xs font-bold text-slate-200 uppercase tracking-wider">
-                Event History Timeline
+                Latest Tracking Events (Mock Logistics Provider)
               </h3>
               {selectedShipment.events && selectedShipment.events.length > 0 ? (
                 <div className="relative pl-6 space-y-4 before:absolute before:left-2 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-800">

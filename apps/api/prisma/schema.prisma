@@ -474,8 +474,8 @@ model BuyerRequirement {
 
 model AuditLog {
   id            String   @id @default(uuid())
-  actorUserId   String
-  actor         User     @relation("UserAuditLogs", fields: [actorUserId], references: [id], onDelete: Cascade)
+  actorUserId   String?
+  actor         User?    @relation("UserAuditLogs", fields: [actorUserId], references: [id], onDelete: SetNull)
   action        String   // e.g. "USER_STATUS_UPDATE", "SELLER_VERIFICATION", "PRODUCT_MODERATION", "REPORT_RESOLUTION"
   entityType    String   // e.g. "USER", "SELLER", "PRODUCT", "ORDER", "REPORT"
   entityId      String

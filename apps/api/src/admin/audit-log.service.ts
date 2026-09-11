@@ -4,7 +4,7 @@ import { AdminAuditLogQueryDto } from './dto/admin-query.dto.js';
 import { Prisma } from '@prisma/client';
 
 export interface LogAuditParams {
-  actorUserId: string;
+  actorUserId?: string | null;
   action: string;
   entityType: string;
   entityId: string;

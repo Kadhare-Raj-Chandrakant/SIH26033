@@ -2,6 +2,7 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
+  ConflictException,
   Logger,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
@@ -949,13 +950,92 @@ export class AdminService {
   // ---------------------------------------------------------------------------
 
   async createReport(dto: CreateReportDto, reporterUserId: string) {
+    // 1. Validate target existence based on targetType
+    switch (dto.targetType) {
+      case 'USER': {
+        const user = await this.prisma.user.findUnique({
+          where: { id: dto.targetId },
+          select: { id: true },
+        });
+        if (!user) {
+          throw new NotFoundException('Report target user does not exist');
+        }
+        break;
+      }
+      case 'PRODUCT': {
+        const product = await this.prisma.product.findUnique({
+          where: { id: dto.targetId },
+          select: { id: true },
+        });
+        if (!product) {
+          throw new NotFoundException('Report target product does not exist');
+        }
+        break;
+      }
+      case 'SELLER': {
+        const seller = await this.prisma.sellerProfile.findUnique({
+          where: { id: dto.targetId },
+          select: { id: true },
+        });
+        if (!seller) {
+          throw new NotFoundException('Report target seller does not exist');
+        }
+        break;
+      }
+      case 'ORDER': {
+        // Enforce appropriate reporter access/ownership semantics without leaking
+        // whether an arbitrary private order exists to unauthorized probers
+        const order = await this.prisma.order.findUnique({
+          where: { id: dto.targetId },
+          select: {
+            id: true,
+            buyer: { select: { userId: true } },
+            seller: { select: { userId: true } },
+          },
+        });
+        if (
+          !order ||
+          (order.buyer.userId !== reporterUserId && order.seller.userId !== reporterUserId)
+        ) {
+          throw new NotFoundException('Report target order not found or access denied');
+        }
+        break;
+      }
+      default:
+        throw new BadRequestException('Invalid report target type');
+    }
+
+    // 2. Prevent duplicate open reports for the same target by the same reporter
+    const existing = await this.prisma.moderationReport.findFirst({
+      where: {
+        reporterUserId,
+        targetType: dto.targetType,
+        targetId: dto.targetId,
+        status: { in: ['OPEN', 'UNDER_REVIEW'] },
+      },
+      select: { id: true },
+    });
+    if (existing) {
+      throw new ConflictException('A pending moderation report for this target is already under review');
+    }
+
+    // 3. Create report with safe projection
     return this.prisma.moderationReport.create({
       data: {
         reporterUserId,
         targetType: dto.targetType,
         targetId: dto.targetId,
-        reason: dto.reason,
-        description: dto.description,
+        reason: dto.reason.trim(),
+        description: dto.description?.trim(),
+      },
+      select: {
+        id: true,
+        targetType: true,
+        targetId: true,
+        reason: true,
+        description: true,
+        status: true,
+        createdAt: true,
       },
     });
   }

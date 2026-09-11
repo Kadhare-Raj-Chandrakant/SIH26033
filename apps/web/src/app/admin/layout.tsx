@@ -39,8 +39,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const mounted = useIsMounted();
 
   // Admin login form state for unauthenticated / non-admin users
-  const [email, setEmail] = useState('admin@market.gov.in');
-  const [password, setPassword] = useState('SecurePassword123!');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [authError, setAuthError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 

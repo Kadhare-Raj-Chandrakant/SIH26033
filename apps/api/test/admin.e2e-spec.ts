@@ -274,33 +274,72 @@ describe('AdminController & Moderation (e2e)', () => {
       expect(res.body.data[0].role).toBe('FARMER');
     });
 
-    it('7. should update user status, guard against admin self-deactivation, and log audit trail', async () => {
-      // Test self-deactivation prevention
+    it('7. should enforce that account status has actual effect: ACTIVE succeeds, SUSPENDED/DEACTIVATED rejected', async () => {
+      // 1. Create a dedicated user
+      const tempUser = await prisma.user.create({
+        data: {
+          email: 'temp-status-test@farmer.com',
+          passwordHash: await argon2.hash('TempPassword123!'),
+          role: 'FARMER',
+          status: 'ACTIVE',
+        },
+      });
+      const tempToken = jwtService.sign({ sub: tempUser.id, role: tempUser.role });
+
+      // ACTIVE works on protected endpoint
+      const activeRes = await request(app.getHttpServer())
+        .get('/api/v1/auth/me')
+        .set('Authorization', `Bearer ${tempToken}`);
+      expect(activeRes.status).toBe(200);
+
+      // Admin suspends temp user
+      const suspendRes = await request(app.getHttpServer())
+        .patch(`/api/v1/admin/users/${tempUser.id}/status`)
+        .set('Authorization', `Bearer ${adminToken}`)
+        .send({ status: 'SUSPENDED', reason: 'Audit investigation' });
+      expect(suspendRes.status).toBe(200);
+
+      // SUSPENDED user's JWT request is rejected with 401
+      const suspendedReqRes = await request(app.getHttpServer())
+        .get('/api/v1/auth/me')
+        .set('Authorization', `Bearer ${tempToken}`);
+      expect(suspendedReqRes.status).toBe(401);
+
+      // SUSPENDED user's login attempt is rejected with 401
+      const suspendedLoginRes = await request(app.getHttpServer())
+        .post('/api/v1/auth/login')
+        .send({ email: 'temp-status-test@farmer.com', password: 'TempPassword123!' });
+      expect(suspendedLoginRes.status).toBe(401);
+
+      // Admin deactivates temp user
+      const deactivateRes = await request(app.getHttpServer())
+        .patch(`/api/v1/admin/users/${tempUser.id}/status`)
+        .set('Authorization', `Bearer ${adminToken}`)
+        .send({ status: 'DEACTIVATED', reason: 'Account deactivated' });
+      expect(deactivateRes.status).toBe(200);
+
+      // DEACTIVATED user's JWT request is rejected with 401
+      const deactivatedReqRes = await request(app.getHttpServer())
+        .get('/api/v1/auth/me')
+        .set('Authorization', `Bearer ${tempToken}`);
+      expect(deactivatedReqRes.status).toBe(401);
+
+      // Admin self-deactivation remains blocked
       const selfRes = await request(app.getHttpServer())
         .patch(`/api/v1/admin/users/${adminUser.id}/status`)
         .set('Authorization', `Bearer ${adminToken}`)
-        .send({ status: 'SUSPENDED' });
+        .send({ status: 'DEACTIVATED' });
       expect(selfRes.status).toBe(400);
-
-      // Update buyer status to SUSPENDED
-      const res = await request(app.getHttpServer())
-        .patch(`/api/v1/admin/users/${buyerUser.id}/status`)
-        .set('Authorization', `Bearer ${adminToken}`)
-        .send({ status: 'SUSPENDED', reason: 'Suspected payment dispute abuse' });
-
-      expect(res.status).toBe(200);
-      expect(res.body.status).toBe('SUSPENDED');
 
       // Verify audit log was created with admin identity
       const auditLog = await prisma.auditLog.findFirst({
         where: {
           action: 'USER_STATUS_UPDATE',
-          entityId: buyerUser.id,
+          entityId: tempUser.id,
         },
       });
       expect(auditLog).toBeDefined();
       expect(auditLog?.actorUserId).toBe(adminUser.id);
-      expect((auditLog?.newState as any)?.status).toBe('SUSPENDED');
     });
   });
 
@@ -518,6 +557,130 @@ describe('AdminController & Moderation (e2e)', () => {
       expect(auditRes.body.data.length).toBe(1);
       expect(auditRes.body.data[0].actorUserId).toBe(adminUser.id);
       expect(auditRes.body.data[0].action).toBe('REPORT_RESOLUTION');
+    });
+
+    it('17. should reject reports against nonexistent targets, private order probing, and duplicate spam', async () => {
+      // 1. Nonexistent USER
+      const fakeUserRes = await request(app.getHttpServer())
+        .post('/api/v1/reports')
+        .set('Authorization', `Bearer ${buyerToken}`)
+        .send({
+          targetType: 'USER',
+          targetId: '00000000-0000-0000-0000-000000000000',
+          reason: 'Fake user profile',
+        });
+      expect(fakeUserRes.status).toBe(404);
+
+      // 2. Nonexistent PRODUCT
+      const fakeProductRes = await request(app.getHttpServer())
+        .post('/api/v1/reports')
+        .set('Authorization', `Bearer ${buyerToken}`)
+        .send({
+          targetType: 'PRODUCT',
+          targetId: '00000000-0000-0000-0000-000000000000',
+          reason: 'Fake product listing',
+        });
+      expect(fakeProductRes.status).toBe(404);
+
+      // 3. Nonexistent SELLER
+      const fakeSellerRes = await request(app.getHttpServer())
+        .post('/api/v1/reports')
+        .set('Authorization', `Bearer ${buyerToken}`)
+        .send({
+          targetType: 'SELLER',
+          targetId: '00000000-0000-0000-0000-000000000000',
+          reason: 'Fake seller profile',
+        });
+      expect(fakeSellerRes.status).toBe(404);
+
+      // 4. Nonexistent ORDER
+      const fakeOrderRes = await request(app.getHttpServer())
+        .post('/api/v1/reports')
+        .set('Authorization', `Bearer ${buyerToken}`)
+        .send({
+          targetType: 'ORDER',
+          targetId: '00000000-0000-0000-0000-000000000000',
+          reason: 'Fake order report',
+        });
+      expect(fakeOrderRes.status).toBe(404);
+
+      // 5. Private ORDER probing: A third-party farmer attempting to probe or report an order they are not party to
+      const thirdParty = await prisma.user.create({
+        data: {
+          email: 'thirdparty-prober@farmer.com',
+          passwordHash: await argon2.hash('TempPassword123!'),
+          role: 'FARMER',
+          status: 'ACTIVE',
+        },
+      });
+      const thirdPartyToken = jwtService.sign({ sub: thirdParty.id, role: thirdParty.role });
+
+      const probeRes = await request(app.getHttpServer())
+        .post('/api/v1/reports')
+        .set('Authorization', `Bearer ${thirdPartyToken}`)
+        .send({
+          targetType: 'ORDER',
+          targetId: testOrder.id,
+          reason: 'Probing private order',
+        });
+      expect(probeRes.status).toBe(404);
+
+      // 6. Duplicate open report prevention
+      const firstRes = await request(app.getHttpServer())
+        .post('/api/v1/reports')
+        .set('Authorization', `Bearer ${buyerToken}`)
+        .send({
+          targetType: 'PRODUCT',
+          targetId: testProduct.id,
+          reason: 'Initial report for duplicate test',
+        });
+      expect(firstRes.status).toBe(201);
+
+      const dupRes = await request(app.getHttpServer())
+        .post('/api/v1/reports')
+        .set('Authorization', `Bearer ${buyerToken}`)
+        .send({
+          targetType: 'PRODUCT',
+          targetId: testProduct.id,
+          reason: 'Duplicate filing attempt',
+        });
+      expect(dupRes.status).toBe(409);
+    });
+
+    it('18. should preserve historical audit log records when an actor user is deleted (SET NULL)', async () => {
+      // 1. Create a temporary admin user
+      const tempAdmin = await prisma.user.create({
+        data: {
+          email: 'deletable-admin@test.com',
+          passwordHash: await argon2.hash('TempPassword123!'),
+          role: 'ADMIN',
+          status: 'ACTIVE',
+        },
+      });
+
+      // 2. Create an audit log record with this admin as actor
+      const log = await prisma.auditLog.create({
+        data: {
+          actorUserId: tempAdmin.id,
+          action: 'HISTORICAL_ACTION_TEST',
+          entityType: 'PLATFORM_POLICY',
+          entityId: 'POL-001',
+          reason: 'Testing audit survival on user deletion',
+        },
+      });
+      expect(log.actorUserId).toBe(tempAdmin.id);
+
+      // 3. Delete the admin user
+      await prisma.user.delete({ where: { id: tempAdmin.id } });
+
+      // 4. Verify the audit log record STILL EXISTS and was NOT cascade-deleted
+      const survivingLog = await prisma.auditLog.findUnique({
+        where: { id: log.id },
+      });
+      expect(survivingLog).toBeDefined();
+      expect(survivingLog?.actorUserId).toBeNull();
+      expect(survivingLog?.action).toBe('HISTORICAL_ACTION_TEST');
+      expect(survivingLog?.reason).toBe('Testing audit survival on user deletion');
     });
   });
 

@@ -76,7 +76,7 @@ export default function AdminDashboardPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-xl font-bold text-slate-100">Operational Dashboard</h1>
-          <p className="text-xs text-slate-400">Real-time marketplace aggregations & moderation queues</p>
+          <p className="text-xs text-slate-400">Live database aggregations & moderation queues</p>
         </div>
         <button
           onClick={() => refetch()}
@@ -213,7 +213,7 @@ export default function AdminDashboardPage() {
         {/* Logistics KPI */}
         <div className="p-5 bg-slate-900 border border-slate-800 rounded-xl hover:border-slate-700 transition-colors">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-medium text-slate-400 uppercase tracking-wider">Shipments In Transit</span>
+            <span className="text-xs font-medium text-slate-400 uppercase tracking-wider">Current Logistics Status</span>
             <div className="p-2 bg-teal-500/10 text-teal-400 rounded-lg border border-teal-500/20">
               <Truck className="w-4 h-4" />
             </div>
