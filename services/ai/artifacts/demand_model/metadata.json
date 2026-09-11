@@ -1,8 +1,10 @@
 {
   "model_name": "demand_forecaster_baseline",
-  "model_version": "1.0.0",
-  "created_at": "2026-09-11T10:27:23.041480+00:00",
+  "model_version": "1.1.0",
+  "created_at": "2026-09-11T10:54:21.925474+00:00",
   "algorithm": "RandomForestRegressor",
+  "dataset_source": "SYNTHETIC_DEMO (Modeled on APMC wholesale arrival clearing dynamics)",
+  "dataset_provenance_status": "DEMO_FIXTURE_NO_FABRICATED_REAL_CLAIMS",
   "hyperparameters": {
     "n_estimators": 120,
     "max_depth": 14,
@@ -10,12 +12,13 @@
     "min_samples_leaf": 3,
     "random_state": 42
   },
-  "training_dataset_version": "market_train_v1",
+  "training_dataset_version": "market_train_v2_zero_leakage",
   "data_split_strategy": "chronological_time_split (70% train / 15% val / 15% test)",
-  "train_rows": 8048,
-  "test_rows": 1734,
+  "train_rows": 7797,
+  "test_rows": 1683,
   "target_variable": "arrivals",
-  "target_description": "APMC mandi arrival quantity in Metric Tonnes (empirical proxy for market absorption / physical trading demand)",
+  "target_concept": "Market Absorption Proxy / Wholesale Market Activity Forecast (Tonnes)",
+  "proxy_disclosure": "This model forecasts physical wholesale arrival absorption volume. It does NOT represent actual platform buyer demand because platform historical data is emerging.",
   "features": [
     "commodity_cat",
     "market_cat",
@@ -37,62 +40,285 @@
     "rainfall_sum_7d"
   ],
   "feature_importances": {
-    "arrivals_rolling_mean_7": 0.8817,
-    "sin_day_of_year": 0.0158,
-    "arrivals_rolling_mean_30": 0.0151,
-    "arrivals_lag_1": 0.0131,
-    "arrivals_lag_14": 0.0131,
-    "price_lag_1": 0.0119,
+    "arrivals_rolling_mean_7": 0.8207,
+    "arrivals_rolling_mean_30": 0.0814,
+    "sin_day_of_year": 0.0142,
+    "arrivals_lag_1": 0.0127,
+    "arrivals_lag_14": 0.0125,
+    "price_lag_1": 0.0118,
     "arrivals_lag_7": 0.0108,
     "price_rolling_mean_7": 0.0105,
-    "cos_day_of_year": 0.008,
-    "day_of_week": 0.0047,
-    "rainfall_sum_7d": 0.0044,
-    "market_cat": 0.0036,
-    "commodity_cat": 0.0023,
-    "month": 0.0021,
-    "sin_month": 0.0014,
+    "cos_day_of_year": 0.0079,
+    "day_of_week": 0.0049,
+    "rainfall_sum_7d": 0.0038,
+    "month": 0.0023,
+    "market_cat": 0.0019,
+    "sin_month": 0.0016,
+    "commodity_cat": 0.0011,
+    "quarter": 0.0008,
     "cos_month": 0.0007,
-    "quarter": 0.0005,
-    "is_weekend": 0.0004
+    "is_weekend": 0.0005
+  },
+  "naive_baseline_strategy": "Lag-1 Arrival Persistence (predict yesterday's arrival)",
+  "naive_metrics": {
+    "train": {
+      "mae": 659.1,
+      "rmse": 937.56,
+      "wape_percent": 20.73,
+      "mape_percent": 21.89
+    },
+    "validation": {
+      "mae": 623.16,
+      "rmse": 884.89,
+      "wape_percent": 19.39,
+      "mape_percent": 20.89
+    },
+    "test": {
+      "mae": 628.69,
+      "rmse": 856.1,
+      "wape_percent": 19.8,
+      "mape_percent": 20.76
+    }
   },
   "metrics": {
     "train": {
-      "mae": 299.0125419493499,
-      "rmse": 423.81584302153675,
-      "mape_percent": 10.391726563699386
+      "mae": 294.98,
+      "rmse": 418.79,
+      "wape_percent": 9.28,
+      "mape_percent": 10.18
     },
     "validation": {
-      "mae": 477.46324914167985,
-      "rmse": 692.6484514916062,
-      "mape_percent": 16.001120915543883
+      "mae": 474.03,
+      "rmse": 688.6,
+      "wape_percent": 14.75,
+      "mape_percent": 15.95
     },
     "test": {
-      "mae": 471.0033356355725,
-      "rmse": 642.01675941806,
-      "mape_percent": 15.924440454350094
+      "mae": 469.17,
+      "rmse": 641.17,
+      "wape_percent": 14.77,
+      "mape_percent": 15.85
+    }
+  },
+  "per_commodity_evaluation": {
+    "Potato": {
+      "test_samples": 280,
+      "naive_baseline": {
+        "mae": 559.56,
+        "rmse": 745.83,
+        "wape_percent": 18.18,
+        "mape_percent": 19.66
+      },
+      "ml_model": {
+        "mae": 428.01,
+        "rmse": 559.79,
+        "wape_percent": 13.9,
+        "mape_percent": 15.32
+      }
+    },
+    "Tomato": {
+      "test_samples": 422,
+      "naive_baseline": {
+        "mae": 355.86,
+        "rmse": 456.21,
+        "wape_percent": 19.51,
+        "mape_percent": 20.87
+      },
+      "ml_model": {
+        "mae": 272.5,
+        "rmse": 352.43,
+        "wape_percent": 14.94,
+        "mape_percent": 16.4
+      }
+    },
+    "Rice": {
+      "test_samples": 284,
+      "naive_baseline": {
+        "mae": 611.05,
+        "rmse": 781.15,
+        "wape_percent": 20.82,
+        "mape_percent": 21.74
+      },
+      "ml_model": {
+        "mae": 459.0,
+        "rmse": 584.3,
+        "wape_percent": 15.64,
+        "mape_percent": 16.44
+      }
+    },
+    "Wheat": {
+      "test_samples": 277,
+      "naive_baseline": {
+        "mae": 950.81,
+        "rmse": 1206.44,
+        "wape_percent": 19.35,
+        "mape_percent": 20.13
+      },
+      "ml_model": {
+        "mae": 665.97,
+        "rmse": 863.29,
+        "wape_percent": 13.55,
+        "mape_percent": 14.18
+      }
+    },
+    "Onion": {
+      "test_samples": 420,
+      "naive_baseline": {
+        "mae": 748.4,
+        "rmse": 992.15,
+        "wape_percent": 20.71,
+        "mape_percent": 21.12
+      },
+      "ml_model": {
+        "mae": 571.28,
+        "rmse": 768.92,
+        "wape_percent": 15.81,
+        "mape_percent": 16.37
+      }
+    }
+  },
+  "per_market_evaluation": {
+    "Pune": {
+      "test_samples": 279,
+      "naive_baseline": {
+        "mae": 479.37,
+        "rmse": 610.08,
+        "wape_percent": 20.42,
+        "mape_percent": 21.23
+      },
+      "ml_model": {
+        "mae": 356.99,
+        "rmse": 463.56,
+        "wape_percent": 15.21,
+        "mape_percent": 16.53
+      }
+    },
+    "Kolar": {
+      "test_samples": 140,
+      "naive_baseline": {
+        "mae": 365.91,
+        "rmse": 476.63,
+        "wape_percent": 18.83,
+        "mape_percent": 20.13
+      },
+      "ml_model": {
+        "mae": 269.54,
+        "rmse": 362.8,
+        "wape_percent": 13.87,
+        "mape_percent": 15.46
+      }
+    },
+    "Hubballi": {
+      "test_samples": 283,
+      "naive_baseline": {
+        "mae": 400.86,
+        "rmse": 513.44,
+        "wape_percent": 19.78,
+        "mape_percent": 20.71
+      },
+      "ml_model": {
+        "mae": 322.53,
+        "rmse": 416.38,
+        "wape_percent": 15.92,
+        "mape_percent": 16.84
+      }
+    },
+    "Agra": {
+      "test_samples": 140,
+      "naive_baseline": {
+        "mae": 673.95,
+        "rmse": 900.72,
+        "wape_percent": 16.7,
+        "mape_percent": 17.44
+      },
+      "ml_model": {
+        "mae": 511.51,
+        "rmse": 665.51,
+        "wape_percent": 12.67,
+        "mape_percent": 13.32
+      }
+    },
+    "Nashik": {
+      "test_samples": 281,
+      "naive_baseline": {
+        "mae": 542.93,
+        "rmse": 720.31,
+        "wape_percent": 19.8,
+        "mape_percent": 21.22
+      },
+      "ml_model": {
+        "mae": 419.72,
+        "rmse": 560.55,
+        "wape_percent": 15.3,
+        "mape_percent": 16.35
+      }
+    },
+    "Ludhiana": {
+      "test_samples": 278,
+      "naive_baseline": {
+        "mae": 774.61,
+        "rmse": 958.09,
+        "wape_percent": 19.28,
+        "mape_percent": 20.25
+      },
+      "ml_model": {
+        "mae": 546.29,
+        "rmse": 697.79,
+        "wape_percent": 13.6,
+        "mape_percent": 14.26
+      }
+    },
+    "Khanna": {
+      "test_samples": 139,
+      "naive_baseline": {
+        "mae": 1078.17,
+        "rmse": 1384.63,
+        "wape_percent": 20.56,
+        "mape_percent": 21.41
+      },
+      "ml_model": {
+        "mae": 757.23,
+        "rmse": 973.91,
+        "wape_percent": 14.44,
+        "mape_percent": 15.12
+      }
+    },
+    "Lasalgaon": {
+      "test_samples": 143,
+      "naive_baseline": {
+        "mae": 1031.84,
+        "rmse": 1301.38,
+        "wape_percent": 22.29,
+        "mape_percent": 23.23
+      },
+      "ml_model": {
+        "mae": 799.4,
+        "rmse": 1013.64,
+        "wape_percent": 17.27,
+        "mape_percent": 18.25
+      }
     }
   },
   "commodity_mapping": {
     "Potato": 1,
-    "Tomato": 3,
     "Onion": 0,
     "Wheat": 4,
+    "Tomato": 3,
     "Rice": 2
   },
   "market_mapping": {
     "Agra": 0,
-    "Nashik": 6,
     "Lasalgaon": 4,
-    "Kolar": 3,
-    "Hubballi": 1,
     "Ludhiana": 5,
+    "Pune": 7,
     "Khanna": 2,
-    "Pune": 7
+    "Hubballi": 1,
+    "Nashik": 6,
+    "Kolar": 3
   },
   "known_limitations": [
-    "Mandi arrivals proxy physical wholesale absorption and supply liquidity rather than unmet end-consumer demand",
-    "Relies on at least 14 days of historical arrival lags for optimal accuracy",
-    "Severe unseasonal meteorological anomalies may cause localized deviations"
+    "Mandi arrivals proxy physical wholesale absorption and supply liquidity rather than unmet end-consumer platform demand",
+    "Severe meteorological anomalies or roadblocks may cause unmodeled distribution bottlenecks",
+    "Synthetic baseline fixture; requires live platform order history to transition to consumer demand modeling"
   ]
 }

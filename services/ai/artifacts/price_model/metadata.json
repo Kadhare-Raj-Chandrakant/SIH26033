@@ -1,8 +1,10 @@
 {
   "model_name": "price_predictor_baseline",
-  "model_version": "1.0.0",
-  "created_at": "2026-09-11T10:27:24.697329+00:00",
+  "model_version": "1.1.0",
+  "created_at": "2026-09-11T10:54:25.967505+00:00",
   "algorithm": "RandomForestRegressor",
+  "dataset_source": "SYNTHETIC_DEMO (Modeled on wholesale APMC price dynamics)",
+  "dataset_provenance_status": "DEMO_FIXTURE_NO_FABRICATED_REAL_CLAIMS",
   "hyperparameters": {
     "n_estimators": 150,
     "max_depth": 16,
@@ -10,10 +12,10 @@
     "min_samples_leaf": 2,
     "random_state": 42
   },
-  "training_dataset_version": "market_train_v1",
+  "training_dataset_version": "market_train_v2_zero_leakage",
   "data_split_strategy": "chronological_time_split (70% train / 15% val / 15% test)",
-  "train_rows": 8048,
-  "test_rows": 1734,
+  "train_rows": 7797,
+  "test_rows": 1683,
   "target_variable": "modal_price",
   "target_unit": "INR / Quintal (100 kg)",
   "features": [
@@ -48,87 +50,278 @@
     "rainfall_sum_7d"
   ],
   "feature_importances": {
-    "price_rolling_mean_7": 0.965,
-    "price_lag_1": 0.0037,
-    "price_rolling_mean_30": 0.0034,
-    "price_rolling_std_30": 0.0023,
-    "price_lag_14": 0.0021,
-    "spread_lag_1": 0.0021,
-    "price_lag_7": 0.002,
-    "price_lag_30": 0.0019,
-    "price_rolling_std_7": 0.0019,
-    "sin_day_of_year": 0.0018,
-    "arrivals_rolling_mean_7": 0.0018,
-    "humidity": 0.0018,
+    "price_rolling_mean_7": 0.9671,
+    "price_rolling_mean_30": 0.0039,
+    "price_lag_1": 0.0027,
+    "price_rolling_std_30": 0.0021,
+    "sin_day_of_year": 0.0019,
+    "spread_lag_1": 0.0019,
+    "price_lag_7": 0.0018,
+    "price_lag_14": 0.0018,
+    "price_rolling_std_7": 0.0018,
+    "price_lag_30": 0.0017,
     "arrivals_lag_1": 0.0017,
+    "temp_mean": 0.0017,
     "arrivals_lag_7": 0.0016,
-    "temp_mean": 0.0016,
+    "arrivals_rolling_mean_7": 0.0016,
     "cos_day_of_year": 0.0015,
-    "rainfall_sum_7d": 0.0008,
+    "humidity": 0.0015,
     "day_of_week": 0.0007,
     "month": 0.0006,
-    "rainfall": 0.0005,
+    "rainfall_sum_7d": 0.0006,
     "sin_month": 0.0004,
-    "cos_month": 0.0003,
+    "cos_month": 0.0004,
+    "rainfall": 0.0004,
     "quarter": 0.0002,
-    "commodity_cat": 0.0001,
     "market_cat": 0.0001,
     "district_cat": 0.0001,
     "is_weekend": 0.0001,
     "season_cat": 0.0001,
+    "commodity_cat": 0.0,
     "state_cat": 0.0
+  },
+  "naive_baseline_strategy": "Lag-1 Price Persistence (predict yesterday's modal price)",
+  "naive_metrics": {
+    "train": {
+      "mae": 160.79,
+      "rmse": 215.12,
+      "r2": 0.9425
+    },
+    "validation": {
+      "mae": 173.44,
+      "rmse": 236.03,
+      "r2": 0.9516
+    },
+    "test": {
+      "mae": 166.8,
+      "rmse": 221.25,
+      "r2": 0.933
+    }
   },
   "metrics": {
     "train": {
-      "mae": 63.52804753171424,
-      "rmse": 85.85040269930285,
-      "r2": 0.9906731349067528
+      "mae": 61.01,
+      "rmse": 80.19,
+      "r2": 0.992
     },
     "validation": {
-      "mae": 143.12519472761548,
-      "rmse": 191.9501190746605,
-      "r2": 0.9672617142151085
+      "mae": 144.53,
+      "rmse": 199.72,
+      "r2": 0.9653
     },
     "test": {
-      "mae": 138.31793250196827,
-      "rmse": 185.46975914181812,
-      "r2": 0.9537179375269289
+      "mae": 137.53,
+      "rmse": 185.18,
+      "r2": 0.9531
+    }
+  },
+  "per_commodity_evaluation": {
+    "Potato": {
+      "test_samples": 280,
+      "naive_baseline": {
+        "mae": 135.3,
+        "rmse": 168.79,
+        "r2": 0.4911
+      },
+      "ml_model": {
+        "mae": 102.02,
+        "rmse": 130.44,
+        "r2": 0.6961
+      }
+    },
+    "Tomato": {
+      "test_samples": 422,
+      "naive_baseline": {
+        "mae": 120.4,
+        "rmse": 151.24,
+        "r2": 0.7826
+      },
+      "ml_model": {
+        "mae": 98.65,
+        "rmse": 124.04,
+        "r2": 0.8537
+      }
+    },
+    "Rice": {
+      "test_samples": 284,
+      "naive_baseline": {
+        "mae": 263.19,
+        "rmse": 344.04,
+        "r2": 0.7114
+      },
+      "ml_model": {
+        "mae": 220.6,
+        "rmse": 286.03,
+        "r2": 0.8005
+      }
+    },
+    "Wheat": {
+      "test_samples": 277,
+      "naive_baseline": {
+        "mae": 203.65,
+        "rmse": 249.45,
+        "r2": -0.5654
+      },
+      "ml_model": {
+        "mae": 180.82,
+        "rmse": 226.9,
+        "r2": -0.2951
+      }
+    },
+    "Onion": {
+      "test_samples": 420,
+      "naive_baseline": {
+        "mae": 144.94,
+        "rmse": 181.96,
+        "r2": 0.6728
+      },
+      "ml_model": {
+        "mae": 115.57,
+        "rmse": 146.05,
+        "r2": 0.7892
+      }
+    }
+  },
+  "per_market_evaluation": {
+    "Pune": {
+      "test_samples": 279,
+      "naive_baseline": {
+        "mae": 136.22,
+        "rmse": 171.08,
+        "r2": 0.5606
+      },
+      "ml_model": {
+        "mae": 106.85,
+        "rmse": 138.72,
+        "r2": 0.7111
+      }
+    },
+    "Kolar": {
+      "test_samples": 140,
+      "naive_baseline": {
+        "mae": 128.2,
+        "rmse": 157.49,
+        "r2": 0.7192
+      },
+      "ml_model": {
+        "mae": 106.93,
+        "rmse": 136.44,
+        "r2": 0.7892
+      }
+    },
+    "Hubballi": {
+      "test_samples": 283,
+      "naive_baseline": {
+        "mae": 181.44,
+        "rmse": 252.92,
+        "r2": 0.9485
+      },
+      "ml_model": {
+        "mae": 151.69,
+        "rmse": 206.38,
+        "r2": 0.9657
+      }
+    },
+    "Agra": {
+      "test_samples": 140,
+      "naive_baseline": {
+        "mae": 145.45,
+        "rmse": 181.05,
+        "r2": -0.269
+      },
+      "ml_model": {
+        "mae": 109.64,
+        "rmse": 138.66,
+        "r2": 0.2557
+      }
+    },
+    "Nashik": {
+      "test_samples": 281,
+      "naive_baseline": {
+        "mae": 132.91,
+        "rmse": 168.02,
+        "r2": 0.6882
+      },
+      "ml_model": {
+        "mae": 102.63,
+        "rmse": 126.79,
+        "r2": 0.8225
+      }
+    },
+    "Ludhiana": {
+      "test_samples": 278,
+      "naive_baseline": {
+        "mae": 242.34,
+        "rmse": 313.23,
+        "r2": 0.8297
+      },
+      "ml_model": {
+        "mae": 196.47,
+        "rmse": 259.74,
+        "r2": 0.8829
+      }
+    },
+    "Khanna": {
+      "test_samples": 139,
+      "naive_baseline": {
+        "mae": 202.12,
+        "rmse": 246.01,
+        "r2": -0.6499
+      },
+      "ml_model": {
+        "mae": 203.05,
+        "rmse": 249.33,
+        "r2": -0.6947
+      }
+    },
+    "Lasalgaon": {
+      "test_samples": 143,
+      "naive_baseline": {
+        "mae": 141.58,
+        "rmse": 176.11,
+        "r2": 0.6623
+      },
+      "ml_model": {
+        "mae": 116.98,
+        "rmse": 146.72,
+        "r2": 0.7657
+      }
     }
   },
   "commodity_mapping": {
     "Potato": 1,
-    "Tomato": 3,
     "Onion": 0,
     "Wheat": 4,
+    "Tomato": 3,
     "Rice": 2
   },
   "market_mapping": {
     "Agra": 0,
-    "Nashik": 6,
     "Lasalgaon": 4,
-    "Kolar": 3,
-    "Hubballi": 1,
     "Ludhiana": 5,
+    "Pune": 7,
     "Khanna": 2,
-    "Pune": 7
+    "Hubballi": 1,
+    "Nashik": 6,
+    "Kolar": 3
   },
   "district_mapping": {
     "Agra": 0,
     "Nashik": 4,
-    "Kolar": 2,
-    "Hubballi": 1,
     "Ludhiana": 3,
-    "Pune": 5
+    "Pune": 5,
+    "Hubballi": 1,
+    "Kolar": 2
   },
   "state_mapping": {
     "Uttar Pradesh": 3,
     "Maharashtra": 1,
-    "Karnataka": 0,
-    "Punjab": 2
+    "Punjab": 2,
+    "Karnataka": 0
   },
   "known_limitations": [
-    "Prices reflect physical APMC mandi auction settlements; transport logistics and packaging margins must be applied separately",
-    "Rapid policy changes (e.g. export bans or duty revisions) cannot be predicted purely from historical price/weather lag patterns",
-    "Cold storage stock data is not yet integrated"
+    "Trained on synthetic demonstration data modeled after APMC seasonal dynamics; requires real Agmarknet export for production deployment",
+    "Reflects APMC wholesale clearing; farm-gate packaging, sorting, and haulage margins must be applied separately",
+    "Does not account for unseasonal macroeconomic policy shocks (e.g. export bans)"
   ]
 }

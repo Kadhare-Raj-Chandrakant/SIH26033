@@ -1,118 +1,149 @@
-# Baseline ML Models & Artifact Management
+# Baseline ML Models & Artifact Evaluation
 
-**Milestone 9: AI/ML Foundation, Dataset Engineering & Baseline Models**  
+**Milestone 9: AI/ML Foundation, Dataset Engineering & Baseline Models (Corrected)**  
 **Project:** SIH26033 — Direct Farmer/FPO to Buyer Agricultural Marketplace
 
 ---
 
-## 1. Machine Learning Philosophy for Milestone 9
+## 1. Machine Learning Philosophy & Correction Principles
 
-In accordance with Milestone 9 requirements:
-- Baseline models establish a reliable, reproducible, explainable foundation for Milestone 10.
-- Models are trained using deterministic pipelines without look-ahead bias or data leakage.
-- Clear distinction is maintained between real observations (APMC Mandi, IMD Weather, ICAR Soil-Crop data) and platform transaction fixtures.
-- Every artifact is tracked with a companion `metadata.json` documenting algorithm, version, features, metrics, and known operational limitations.
-
----
-
-## 2. Models Specification
-
-### 2.1 Demand Forecasting Baseline (`demand_forecaster_baseline`)
-
-* **Objective**: Forecast expected market absorption and arrival liquidity for agricultural commodities to assist farmers and FPOs in harvest and dispatch planning.
-* **Target Variable**: Mandi daily arrivals (`arrivals`, Metric Tonnes).
-  > **Methodological Disclosure**: As actual platform historical order demand is emerging and does not yet span multi-year seasonal cycles, APMC mandi arrival volume is utilized as an empirical proxy for physical wholesale absorption demand. This is documented explicitly and is not represented as direct platform buyer volume.
-* **Algorithm**: `RandomForestRegressor` (`n_estimators=120`, `max_depth=14`, `min_samples_split=5`, `min_samples_leaf=3`, `random_state=42`).
-* **Feature Set**:
-  - Encoded categoricals: `commodity_cat`, `market_cat`
-  - Calendar & cyclical: `month`, `day_of_week`, `quarter`, `is_weekend`, `sin_month`, `cos_month`, `sin_day_of_year`, `cos_day_of_year`
-  - Historical arrival momentum (strictly backward shifted): `arrivals_lag_1`, `arrivals_lag_7`, `arrivals_lag_14`, `arrivals_rolling_mean_7`, `arrivals_rolling_mean_30`
-  - Inter-market price signals: `price_lag_1`, `price_rolling_mean_7`
-  - Meteorological: `rainfall_sum_7d`
-* **Partitioning Strategy**: Chronological time-series split (70% Train / 15% Validation / 15% Test).
-* **Test Performance**:
-  - **MAE**: 471.00 Metric Tonnes
-  - **RMSE**: 642.02 Metric Tonnes
-  - **MAPE**: 15.92%
-* **Known Limitations**:
-  - Wholesale arrival volumes reflect physical liquidity and supply shocks; unmet consumer retail demand is not captured.
-  - Accuracy improves when at least 14 days of prior arrivals are observed in a given mandi.
+Following the Milestone 9 Correction Pass:
+- **Zero Future Leakage**: No backward filling (`bfill()`) or bidirectional interpolation exists anywhere in the feature generation pipeline. Initial 30-day warm-up periods are dropped.
+- **Strict Benchmarking**: Every forecasting model is explicitly benchmarked against a defensible naive persistence baseline ($\hat{y}_t = y_{t-1}$).
+- **Granular Evaluation**: Performance is reported not merely in aggregate, but broken down by individual commodity and market.
+- **Demand Terminology Disclosure**: Mandi arrival models are designated as **Market Demand Proxy / Market Absorption Proxy** and explicitly disclosed as wholesale market activity rather than platform consumer demand.
+- **Verified Provenance**: Crop recommendation is documented as the Atharva Inamdar / Harvestify precision agriculture benchmark (MIT License). Synthetic fixtures in `services/ai/data/demo/` are explicitly identified.
 
 ---
 
-### 2.2 Price Intelligence Baseline (`price_predictor_baseline`)
+## 2. Model Evaluations & Naive Baselines
+
+### 2.1 Price Intelligence Baseline (`price_predictor_baseline`)
 
 * **Objective**: Predict fair modal market clearing prices (INR / Quintal) to protect farmers from distress sales and provide buyers with market-indexed pricing transparency.
-* **Target Variable**: APMC daily modal price (`modal_price`, INR / Quintal).
+* **Target Variable**: Mandi daily modal price (`modal_price`, INR / Quintal).
+* **Dataset**: APMC Mandi Prices Demo Fixture (`synthetic_mandi_prices.csv`, 11,548 raw rows, 11,188 post-warmup feature rows).
+* **Split Strategy**: Chronological time-series split (70% Train / 15% Validation / 15% Test).
+  - Train: 7,797 rows (2023-01-31 to 2025-02-09)
+  - Validation: 1,708 rows (2025-02-10 to 2025-07-21)
+  - Test: 1,683 rows (2025-07-22 to 2025-12-31)
 * **Algorithm**: `RandomForestRegressor` (`n_estimators=150`, `max_depth=16`, `min_samples_split=4`, `min_samples_leaf=2`, `random_state=42`).
-* **Feature Set (Zero Data Leakage)**:
-  - Categoricals: `commodity_cat`, `market_cat`, `district_cat`, `state_cat`, `season_cat`
-  - Calendar & cyclical: `month`, `day_of_week`, `quarter`, `is_weekend`, `sin_month`, `cos_month`, `sin_day_of_year`, `cos_day_of_year`
-  - Backward shifted price lags: `price_lag_1`, `price_lag_7`, `price_lag_14`, `price_lag_30`
-  - Backward rolling statistics: `price_rolling_mean_7`, `price_rolling_std_7`, `price_rolling_mean_30`, `price_rolling_std_30`
-  - Lagged price spread: `spread_lag_1` (`max_price - min_price` shifted by 1 day)
-  - Backward arrival liquidity: `arrivals_lag_1`, `arrivals_lag_7`, `arrivals_rolling_mean_7`
-  - Weather context: `temp_mean`, `rainfall`, `humidity`, `rainfall_sum_7d`
-* **Partitioning Strategy**: Chronological time-series split (70% Train / 15% Validation / 15% Test).
-* **Test Performance**:
-  - **MAE**: INR 138.32 / Quintal
-  - **RMSE**: INR 185.47 / Quintal
-  - **R² Score**: 0.9537
-* **Explainability Factors**:
-  - `price_rolling_mean_7`: 96.5% feature weight (strong short-term price momentum)
-  - `price_lag_1`: 0.37% feature weight
-  - `price_rolling_mean_30`: 0.34% feature weight
-* **Known Limitations**:
-  - Reflects APMC wholesale yard settlement; logistics, farm-gate packaging, and sorting grades are factored in downstream application logic.
-  - Abrupt regulatory changes (export bans, essential commodity acts) cannot be anticipated purely by backward historical signals.
+
+#### Overall Model vs. Naive Baseline Comparison
+
+| Metric | Naive Persistence Baseline ($\hat{y}_t = y_{t-1}$) | ML RandomForest Model | Relative Improvement |
+| :--- | :--- | :--- | :--- |
+| **Test MAE** | ₹166.80 / Quintal | **₹137.53 / Quintal** | **17.5% reduction in error** |
+| **Test RMSE** | ₹221.25 / Quintal | **₹185.18 / Quintal** | **16.3% reduction in error** |
+| **Test R²** | 0.9330 | **0.9531** | **+0.0201 ($R^2$ increase)** |
+
+#### Per-Commodity Test Performance
+
+| Commodity | Sample Count | Naive MAE (₹/Q) | ML Model MAE (₹/Q) | ML Model RMSE (₹/Q) | ML Model R² | Error Reduction |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **Onion** | 326 | ₹187.97 | **₹145.42** | ₹192.51 | 0.8143 | 22.6% |
+| **Potato** | 326 | ₹148.60 | **₹119.29** | ₹156.40 | 0.8351 | 19.7% |
+| **Rice** | 326 | ₹170.83 | **₹143.68** | ₹197.88 | 0.9398 | 15.9% |
+| **Tomato** | 326 | ₹188.08 | **₹152.02** | ₹204.09 | 0.8654 | 19.2% |
+| **Wheat** | 379 | ₹142.14 | **₹129.56** | ₹173.80 | 0.9234 | 8.9% |
+
+#### Per-Market Test Performance
+
+| Market | Sample Count | Naive MAE (₹/Q) | ML Model MAE (₹/Q) | ML Model RMSE (₹/Q) | ML Model R² | Error Reduction |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **Agra** | 326 | ₹180.12 | **₹144.20** | ₹192.68 | 0.9419 | 19.9% |
+| **Azadpur** | 326 | ₹174.45 | **₹143.46** | ₹192.05 | 0.9634 | 17.8% |
+| **Ghazipur** | 163 | ₹189.56 | **₹153.84** | ₹207.24 | 0.8573 | 18.8% |
+| **Khanna** | 216 | ₹138.83 | **₹128.05** | ₹170.67 | 0.9126 | 7.8% |
+| **Kolar** | 326 | ₹168.04 | **₹137.91** | ₹188.84 | 0.9576 | 17.9% |
+| **Ludhiana** | 326 | ₹148.97 | **₹121.72** | ₹165.73 | 0.9592 | 18.3% |
+
+#### Top Contributing Predictive Factors
+1. `price_rolling_mean_7` (96.5%): Short-term price momentum.
+2. `price_lag_1` (0.37%): Most recent trading clearing price.
+3. `price_rolling_mean_30` (0.34%): Monthly trend inertia.
+4. `spread_lag_1` (0.28%): Market volatility indicator.
+5. `commodity_cat` (0.22%): Base price regime distinction.
+
+---
+
+### 2.2 Market Demand Proxy Baseline (`demand_forecaster_baseline`)
+
+* **Objective**: Forecast physical wholesale mandi absorption and arrival liquidity (Metric Tonnes) to inform logistics dispatch and harvest staging.
+* **Target Variable**: Mandi daily arrivals (`arrivals`, Metric Tonnes).
+* **Disclosure**: Represents wholesale physical market volume; does NOT represent platform consumer demand.
+* **Dataset**: APMC Mandi Prices Demo Fixture (`synthetic_mandi_prices.csv`).
+* **Split Strategy**: Chronological time-series split (70% Train / 15% Validation / 15% Test).
+  - Train: 7,797 rows | Val: 1,708 rows | Test: 1,683 rows
+* **Algorithm**: `RandomForestRegressor` (`n_estimators=120`, `max_depth=14`, `min_samples_split=5`, `min_samples_leaf=3`, `random_state=42`).
+
+#### Overall Model vs. Naive Baseline Comparison
+
+| Metric | Naive Persistence Baseline ($\hat{y}_t = y_{t-1}$) | ML RandomForest Model | Relative Improvement |
+| :--- | :--- | :--- | :--- |
+| **Test MAE** | 628.69 Metric Tonnes | **469.17 Metric Tonnes** | **25.4% reduction in error** |
+| **Test RMSE** | 856.10 Metric Tonnes | **641.17 Metric Tonnes** | **25.1% reduction in error** |
+| **Test WAPE** | 19.80% | **14.77%** | **5.03 percentage point reduction** |
+
+*Note on WAPE vs MAPE*: Due to occasional zero arrival days during mandi off-cycles, standard MAPE encounters zero-division singularities. Weighted Absolute Percentage Error (WAPE = $\sum |y - \hat{y}| / \sum y$) is reported as the statistically sound metric.
+
+#### Per-Commodity Test Performance
+
+| Commodity | Sample Count | Naive MAE (MT) | ML Model MAE (MT) | ML Model RMSE (MT) | Error Reduction |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Onion** | 326 | 599.30 MT | **439.14 MT** | 596.22 MT | 26.7% |
+| **Potato** | 326 | 632.72 MT | **470.52 MT** | 647.78 MT | 25.6% |
+| **Rice** | 326 | 659.83 MT | **489.19 MT** | 664.21 MT | 25.9% |
+| **Tomato** | 326 | 592.51 MT | **439.38 MT** | 606.74 MT | 25.8% |
+| **Wheat** | 379 | 651.10 MT | **499.79 MT** | 681.76 MT | 23.2% |
+
+#### Top Contributing Predictive Factors
+1. `arrivals_rolling_mean_7` (73.7%): 7-day average arrival momentum.
+2. `arrivals_rolling_mean_30` (17.5%): 30-day baseline capacity of the mandi yard.
+3. `arrivals_lag_7` (3.7%): Weekly market day cycle correspondence.
+4. `arrivals_lag_1` (1.8%): Prior trading day volume.
+5. `day_of_week` (1.2%): Intra-week APMC trading cycles.
 
 ---
 
 ### 2.3 Crop Recommendation Baseline (`crop_recommender_baseline`)
 
-* **Objective**: Recommend agronomic crop varieties best suited to a farmer's specific soil chemical composition and local climatic conditions.
-* **Target Variable**: 22 multi-class crop labels (`crop`).
+* **Objective**: Multi-class agronomic crop suitability classification based on Soil Health Card macronutrients and climatic conditions.
+* **Target Variable**: 22 crop classes (`crop`).
+* **Dataset**: Harvestify Precision Agriculture Benchmark (Atharva Inamdar, MIT License, 2,200 rows).
+* **Split Strategy**: Stratified random split (70% Train / 15% Validation / 15% Test).
+  - Train: 1,540 samples (70 samples/crop)
+  - Val: 330 samples (15 samples/crop)
+  - Test: 330 samples (15 samples/crop)
 * **Algorithm**: `RandomForestClassifier` (`n_estimators=100`, `max_depth=12`, `min_samples_split=2`, `random_state=42`).
-* **Feature Set**:
-  - Soil macronutrients: `N` (Nitrogen), `P` (Phosphorus), `K` (Potassium) in kg/ha
-  - Soil acidity/alkalinity: `ph` (0 - 14 scale)
-  - Agro-climatic parameters: `temperature` (°C), `humidity` (%), `rainfall` (mm)
-* **Partitioning Strategy**: Stratified sampling (70% Train / 15% Validation / 15% Test) preserving exact class proportions.
-* **Test Performance**:
-  - **Accuracy**: 97.58%
-  - **Macro Precision**: 0.9781
-  - **Macro Recall**: 0.9758
-  - **Macro F1 Score**: 0.9757
-* **Known Limitations**:
-  - Assumes laboratory or Soil Health Card chemical readings.
-  - Does not evaluate irrigation access, capital availability, or local market demand (addressed in M10 decision engine).
+
+#### Test Set Performance
+* **Test Accuracy**: 99.39%
+* **Macro Precision**: 0.9944
+* **Macro Recall**: 0.9939
+* **Macro F1 Score**: 0.9939
+* **Confusion Matrix Summary**: 328 of 330 test samples classified correctly across 22 classes. Only 2 minor boundary misclassifications occurred between climatically adjacent pulse crops (`rice`, `maize`, `chickpea`, `kidneybeans`, etc. achieved 100% precision/recall).
+
+#### Top Contributing Predictive Factors
+1. `rainfall` (22.5%): Primary hydrological determinant.
+2. `humidity` (21.4%): Transpiration and micro-climate index.
+3. `K` (Potassium) (18.6%): Root crop and fruit tree differentiator.
+4. `P` (Phosphorus) (14.7%): Legume vs. cereal nutrient threshold.
+5. `N` (Nitrogen) (13.1%): Vegetative growth demand.
+6. `temperature` (5.2%): Thermal tolerance band.
+7. `ph` (4.5%): Soil acidity/alkalinity tolerance.
 
 ---
 
-## 3. Artifact Directory Layout
+## 3. Artifact Metadata Conformity
 
-Each trained model is stored in `services/ai/artifacts/<model_name>/` as:
-1. `model.joblib`: Binary serialized estimator pipeline.
-2. `metadata.json`: Machine-readable metadata conforming to the versioning specification:
-   ```json
-   {
-     "model_name": "price_predictor_baseline",
-     "model_version": "1.0.0",
-     "created_at": "2026-09-11T10:27:25.123456+00:00",
-     "algorithm": "RandomForestRegressor",
-     "hyperparameters": { ... },
-     "training_dataset_version": "market_train_v1",
-     "data_split_strategy": "chronological_time_split (70% train / 15% val / 15% test)",
-     "train_rows": 8048,
-     "test_rows": 1734,
-     "target_variable": "modal_price",
-     "features": [ ... ],
-     "feature_importances": { ... },
-     "metrics": {
-       "train": { ... },
-       "validation": { ... },
-       "test": { ... }
-     },
-     "known_limitations": [ ... ]
-   }
-   ```
+All model artifacts are persisted in `services/ai/artifacts/<model_name>/` with an accompanying `metadata.json` documenting:
+- `model_name`, `model_version`, `created_at`
+- `algorithm`, `hyperparameters`
+- `dataset_name`, `dataset_source`, `dataset_provenance`
+- `split_strategy`, `split_sizes`, `date_ranges`
+- `naive_baseline_comparison`
+- `metrics` (Train, Validation, Test)
+- `per_commodity_metrics`, `per_market_metrics`
+- `top_features` with weights and human interpretations
+- `known_limitations`

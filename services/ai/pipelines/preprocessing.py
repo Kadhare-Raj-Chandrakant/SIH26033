@@ -1,8 +1,13 @@
 """
 SIH26033 Data Preprocessing & Cleaning Module
 ---------------------------------------------
-Cleans, normalizes, handles outliers and missing values, and saves
-processed datasets ready for feature engineering and ML training.
+Cleans, normalizes, and handles missing values with ZERO FUTURE LEAKAGE.
+
+STRICT ZERO LEAKAGE POLICY:
+1. NO backward-filling (`bfill()`) anywhere in time series.
+2. NO bidirectional interpolation across time points.
+3. NO global parameter estimation (medians, quantiles) across the combined train/val/test span.
+4. Only forward-filling (`ffill()`) along chronological time within commodity-market tracks.
 """
 
 import os
@@ -16,35 +21,33 @@ from .ingestion import (
 
 def clean_mandi_prices(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Cleans and normalizes mandi prices dataset:
+    Cleans and normalizes mandi prices dataset strictly forward-in-time:
     - Sorts chronologically by commodity, market, date
     - Deduplicates by keeping last valid observation
-    - Imputes occasional APMC off-day missing prices via forward-fill per commodity-market track
-    - Normalizes strings
+    - Imputes occasional APMC off-day missing prices via FORWARD-FILL ONLY per track
+    - Drops leading unobserved dates before trading began (NO bfill)
     """
     df = df.copy()
     df["date"] = pd.to_datetime(df["date"])
     df = df.sort_values(by=["commodity", "market", "date"]).reset_index(drop=True)
     df = df.drop_duplicates(subset=["date", "commodity", "market"], keep="last")
 
-    # Grouped forward fill for price continuity across trading tracks
-    df["modal_price"] = df.groupby(["commodity", "market"])["modal_price"].ffill().bfill()
-    df["min_price"] = df.groupby(["commodity", "market"])["min_price"].ffill().bfill()
-    df["max_price"] = df.groupby(["commodity", "market"])["max_price"].ffill().bfill()
-    df["arrivals"] = df.groupby(["commodity", "market"])["arrivals"].ffill().bfill()
+    # Grouped FORWARD FILL ONLY for market closures / off-days
+    df["modal_price"] = df.groupby(["commodity", "market"])["modal_price"].ffill()
+    df["min_price"] = df.groupby(["commodity", "market"])["min_price"].ffill()
+    df["max_price"] = df.groupby(["commodity", "market"])["max_price"].ffill()
+    df["arrivals"] = df.groupby(["commodity", "market"])["arrivals"].ffill()
 
-    # Outlier clipping at 99.9th percentile to remove erroneous extreme spikes
-    for col in ["modal_price", "min_price", "max_price"]:
-        q999 = df[col].quantile(0.999)
-        df[col] = df[col].clip(upper=q999)
+    # Drop any leading rows where forward-fill could not populate initial values (NO bfill allowed)
+    df = df.dropna(subset=["modal_price", "arrivals"]).reset_index(drop=True)
 
     return df
 
 def clean_weather_data(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Cleans agro-weather dataset:
+    Cleans agro-weather dataset strictly forward-in-time:
     - Sorts by district and date
-    - Fills minor missing sensor values via interpolation
+    - Fills minor missing sensor values via FORWARD-FILL ONLY (NO bfill, NO future interpolation)
     """
     df = df.copy()
     df["date"] = pd.to_datetime(df["date"])
@@ -52,14 +55,15 @@ def clean_weather_data(df: pd.DataFrame) -> pd.DataFrame:
     df = df.drop_duplicates(subset=["date", "district"], keep="last")
 
     for col in ["temp_mean", "temp_min", "temp_max", "rainfall", "humidity"]:
-        df[col] = df.groupby("district")[col].transform(lambda group: group.interpolate().ffill().bfill())
+        df[col] = df.groupby("district")[col].ffill()
 
+    df = df.dropna(subset=["temp_mean", "rainfall", "humidity"]).reset_index(drop=True)
     return df
 
 def clean_crop_recommendation(df: pd.DataFrame) -> pd.DataFrame:
     """
     Cleans crop recommendation dataset:
-    - Removes exact duplicate rows if any
+    - Removes exact duplicate rows
     - Standardizes target label casing
     """
     df = df.copy()
@@ -83,10 +87,6 @@ def merge_mandi_and_weather(mandi_df: pd.DataFrame, weather_df: pd.DataFrame) ->
         how="left"
     )
 
-    # Impute any missing district weather via cross-district state median
-    for col in ["temp_mean", "temp_min", "temp_max", "rainfall", "humidity"]:
-        merged[col] = merged[col].fillna(merged[col].median())
-
     return merged
 
 def process_all_and_save():
@@ -97,9 +97,13 @@ def process_all_and_save():
     processed_dir = os.path.join(data_dir, "processed")
     os.makedirs(processed_dir, exist_ok=True)
 
-    mandi_raw = load_mandi_prices()
-    weather_raw = load_weather_data()
-    crop_raw = load_crop_recommendation_data()
+    mandi_raw, mandi_prov = load_mandi_prices()
+    weather_raw, weather_prov = load_weather_data()
+    crop_raw, crop_prov = load_crop_recommendation_data()
+
+    print(f"[Preprocessing] Mandi data provenance: {mandi_prov}")
+    print(f"[Preprocessing] Weather data provenance: {weather_prov}")
+    print(f"[Preprocessing] Crop benchmark provenance: {crop_prov}")
 
     mandi_cleaned = clean_mandi_prices(mandi_raw)
     weather_cleaned = clean_weather_data(weather_raw)
@@ -111,7 +115,7 @@ def process_all_and_save():
     crop_cleaned.to_csv(os.path.join(processed_dir, "crop_recommendation_cleaned.csv"), index=False)
     merged_mandi.to_csv(os.path.join(processed_dir, "mandi_weather_merged.csv"), index=False)
 
-    print(f"[Preprocessing] Processed datasets saved to {processed_dir}")
+    print(f"[Preprocessing] Cleaned datasets saved to {processed_dir} with ZERO backward-filling.")
 
 if __name__ == "__main__":
     process_all_and_save()

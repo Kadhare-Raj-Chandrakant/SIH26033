@@ -5,6 +5,8 @@ import {
   GatewayTimeoutException,
   InternalServerErrorException,
   BadRequestException,
+  NotFoundException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../prisma/prisma.service.js';
@@ -18,6 +20,7 @@ export class AiService {
   private readonly logger = new Logger(AiService.name);
   private readonly aiServiceUrl: string;
   private readonly timeoutMs: number;
+  private readonly internalKey: string;
 
   constructor(
     private readonly configService: ConfigService,
@@ -28,6 +31,10 @@ export class AiService {
       'http://localhost:8080',
     );
     this.timeoutMs = this.configService.get<number>('AI_TIMEOUT_MS', 5000);
+    this.internalKey = this.configService.get<string>(
+      'AI_INTERNAL_KEY',
+      'sih26033_internal_ai_token_secret',
+    );
   }
 
   /**
@@ -169,6 +176,21 @@ export class AiService {
       user_decision: dto.userDecision,
     };
 
+    // If predictionId matches an existing database log, validate ownership first
+    if (dto.predictionId) {
+      const existing = await this.prisma.aiPredictionLog.findUnique({
+        where: { id: dto.predictionId },
+      });
+      if (!existing) {
+        throw new NotFoundException('Prediction record not found');
+      }
+      if (existing.userId && existing.userId !== userId) {
+        throw new ForbiddenException(
+          'You are not authorized to update another user prediction record',
+        );
+      }
+    }
+
     // Forward to FastAPI feedback store
     const aiResponse = await this.callAiEndpoint(
       '/api/v1/feedback/record',
@@ -176,20 +198,14 @@ export class AiService {
       payload,
     );
 
-    // If predictionId matches an existing database log, update it
     if (dto.predictionId) {
-      const existing = await this.prisma.aiPredictionLog.findUnique({
+      await this.prisma.aiPredictionLog.update({
         where: { id: dto.predictionId },
+        data: {
+          actualOutcome: dto.actualOutcome ?? undefined,
+          userDecision: dto.userDecision ?? undefined,
+        },
       });
-      if (existing) {
-        await this.prisma.aiPredictionLog.update({
-          where: { id: dto.predictionId },
-          data: {
-            actualOutcome: dto.actualOutcome ?? undefined,
-            userDecision: dto.userDecision ?? undefined,
-          },
-        });
-      }
     } else {
       // Create new observation record
       await this.prisma.aiPredictionLog.create({
@@ -236,6 +252,7 @@ export class AiService {
       const headers: Record<string, string> = {
         'Content-Type': 'application/json',
         Accept: 'application/json',
+        'x-internal-api-key': this.internalKey,
       };
 
       const fetchOptions: RequestInit = {

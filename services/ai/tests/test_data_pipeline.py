@@ -14,25 +14,28 @@ from pipelines.feature_engineering import build_full_market_feature_matrix
 from pipelines.splitters import chronological_time_split, stratified_classification_split
 
 def test_raw_data_ingestion():
-    mandi = load_mandi_prices()
+    mandi, mandi_prov = load_mandi_prices()
     assert not mandi.empty
+    assert mandi_prov in ["REAL_AGMARKNET", "SYNTHETIC_DEMO"]
     assert "modal_price" in mandi.columns
     assert "arrivals" in mandi.columns
     assert len(mandi) > 5000
 
-    weather = load_weather_data()
+    weather, weather_prov = load_weather_data()
     assert not weather.empty
+    assert weather_prov in ["REAL_WEATHER", "SYNTHETIC_DEMO"]
     assert "temp_mean" in weather.columns
     assert "rainfall" in weather.columns
 
-    crop = load_crop_recommendation_data()
+    crop, crop_prov = load_crop_recommendation_data()
     assert not crop.empty
+    assert crop_prov == "ATHARVA_INAMDAR_BENCHMARK"
     assert "N" in crop.columns
     assert "crop" in crop.columns
 
 def test_validation_rules():
     # Valid dataframe passes
-    crop = load_crop_recommendation_data()
+    crop, _ = load_crop_recommendation_data()
     valid, report = validate_crop_recommendation(crop)
     assert valid is True
     assert report["status"] == "PASSED"
@@ -45,7 +48,7 @@ def test_validation_rules():
     assert any("pH" in issue for issue in bad_report["issues"])
 
 def test_preprocessing_and_cleaning():
-    mandi = load_mandi_prices()
+    mandi, _ = load_mandi_prices()
     cleaned = clean_mandi_prices(mandi)
     assert cleaned["modal_price"].isnull().sum() == 0
     assert (cleaned["modal_price"] > 0).all()
@@ -53,9 +56,10 @@ def test_preprocessing_and_cleaning():
 from pipelines.preprocessing import clean_mandi_prices, clean_weather_data, clean_crop_recommendation, merge_mandi_and_weather
 
 def test_feature_engineering_zero_leakage():
-    mandi = load_mandi_prices().head(100).copy()
-    weather = load_weather_data().copy()
-    merged = merge_mandi_and_weather(mandi, weather)
+    mandi, _ = load_mandi_prices()
+    mandi_subset = mandi.head(100).copy()
+    weather, _ = load_weather_data()
+    merged = merge_mandi_and_weather(mandi_subset, weather.copy())
     
     features = build_full_market_feature_matrix(merged)
     # Lags must exist and be strictly computed
@@ -64,8 +68,8 @@ def test_feature_engineering_zero_leakage():
     assert "price_rolling_mean_7" in features.columns
 
 def test_chronological_split_zero_leakage():
-    mandi = load_mandi_prices().copy()
-    train_df, val_df, test_df, meta = chronological_time_split(mandi, date_col="date")
+    mandi, _ = load_mandi_prices()
+    train_df, val_df, test_df, meta = chronological_time_split(mandi.copy(), date_col="date")
     
     train_max = pd.to_datetime(train_df["date"]).max()
     val_min = pd.to_datetime(val_df["date"]).min()

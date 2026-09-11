@@ -4,11 +4,17 @@ import request from 'supertest';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { AppModule } from '../src/app.module.js';
 import { PrismaService } from '../src/prisma/prisma.service.js';
+import { JwtService } from '@nestjs/jwt';
 
 describe('AiController (e2e)', () => {
   let app: INestApplication<any>;
   let prisma: PrismaService;
+  let jwtService: JwtService;
   let originalFetch: typeof global.fetch;
+  let testUser1Token: string;
+  let testUser2Token: string;
+  const user1Id = '11111111-1111-1111-1111-111111111111';
+  const user2Id = '22222222-2222-2222-2222-222222222222';
 
   beforeEach(async () => {
     originalFetch = global.fetch;
@@ -27,6 +33,10 @@ describe('AiController (e2e)', () => {
     );
     await app.init();
     prisma = app.get(PrismaService);
+    jwtService = app.get(JwtService);
+
+    testUser1Token = jwtService.sign({ sub: user1Id, role: 'FARMER' });
+    testUser2Token = jwtService.sign({ sub: user2Id, role: 'BUYER' });
   });
 
   afterEach(async () => {
@@ -182,7 +192,20 @@ describe('AiController (e2e)', () => {
     expect(res.body.message).toBeDefined();
   });
 
-  it('POST /ai/feedback should record platform feedback observation', async () => {
+  it('POST /ai/feedback should reject unauthenticated requests with 401 Unauthorized', async () => {
+    await request(app.getHttpServer())
+      .post('/ai/feedback')
+      .send({
+        modelName: 'price_predictor_baseline',
+        modelVersion: '1.0.0',
+        featuresLogged: { commodity: 'Tomato' },
+        predictionOutput: { price: 2650.0 },
+        userDecision: 'ACCEPTED',
+      })
+      .expect(401);
+  });
+
+  it('POST /ai/feedback should record platform feedback observation with authenticated userId', async () => {
     global.fetch = vi.fn().mockResolvedValue({
       ok: true,
       status: 201,
@@ -195,6 +218,7 @@ describe('AiController (e2e)', () => {
 
     const res = await request(app.getHttpServer())
       .post('/ai/feedback')
+      .set('Authorization', `Bearer ${testUser1Token}`)
       .send({
         modelName: 'price_predictor_baseline',
         modelVersion: '1.0.0',
@@ -212,6 +236,36 @@ describe('AiController (e2e)', () => {
     });
     expect(feedbackInDb).toBeDefined();
     expect(feedbackInDb?.userDecision).toBe('ACCEPTED');
+    expect(feedbackInDb?.userId).toBe(user1Id);
+  });
+
+  it('POST /ai/feedback should reject attempts to submit feedback for another user prediction with 403 Forbidden', async () => {
+    // Seed an initial prediction record owned by user1
+    const initialLog = await prisma.aiPredictionLog.create({
+      data: {
+        modelName: 'price_predictor_baseline',
+        modelVersion: '1.0.0',
+        inputFeatures: { commodity: 'Wheat' },
+        predictionOutput: { modal_price: 2150 },
+        userId: user1Id,
+      },
+    });
+
+    // User2 tries to update User1's prediction
+    const res = await request(app.getHttpServer())
+      .post('/ai/feedback')
+      .set('Authorization', `Bearer ${testUser2Token}`)
+      .send({
+        predictionId: initialLog.id,
+        modelName: 'price_predictor_baseline',
+        modelVersion: '1.0.0',
+        featuresLogged: { commodity: 'Wheat' },
+        predictionOutput: { modal_price: 2150 },
+        userDecision: 'REJECTED',
+      })
+      .expect(403);
+
+    expect(res.body.message).toContain('another user');
   });
 
   it('should gracefully return 503 if AI service is offline', async () => {

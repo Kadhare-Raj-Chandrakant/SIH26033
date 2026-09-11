@@ -5,10 +5,12 @@ Tests for FastAPI AI Service Endpoints, Lifespan, and Validation Handlers
 import pytest
 from fastapi.testclient import TestClient
 from app.main import app
+from app.core.config import settings
 
 @pytest.fixture(scope="module")
 def client():
     with TestClient(app) as c:
+        c.headers.update({"x-internal-api-key": settings.AI_SERVICE_INTERNAL_KEY})
         yield c
 
 def test_health_endpoint(client):
@@ -24,6 +26,14 @@ def test_readiness_endpoint(client):
     data = response.json()
     assert data["status"] == "ready"
     assert data["models"]["all_loaded"] is True
+
+def test_internal_key_unauthorized_rejection():
+    with TestClient(app) as unauth_client:
+        # Omits x-internal-api-key
+        response = unauth_client.post("/api/v1/predict/price", json={"commodity": "Tomato"})
+        assert response.status_code == 401
+        data = response.json()
+        assert "UNAUTHORIZED" in str(data)
 
 def test_predict_price_success(client):
     payload = {
@@ -72,7 +82,6 @@ def test_predict_crop_success(client):
     assert data["top_recommendations"][0]["confidence_score"] > 0
 
 def test_validation_error_handling(client):
-    # Invalid negative N and pH > 14
     bad_payload = {
         "N": -10.0,
         "P": 40.0,
@@ -92,7 +101,7 @@ def test_validation_error_handling(client):
 def test_feedback_record_success(client):
     payload = {
         "model_name": "price_predictor_baseline",
-        "model_version": "1.0.0",
+        "model_version": "1.1.0",
         "features_logged": {"commodity": "Tomato", "market": "Azadpur"},
         "prediction_output": {"price": 2600.0},
         "user_decision": "ACCEPTED"

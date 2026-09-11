@@ -86,16 +86,18 @@ export class AiController {
     return this.aiService.recommendCrop(dto, user?.sub);
   }
 
-  @Public()
+  @ApiBearerAuth()
   @Post('feedback')
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Record prediction observation, user decision, or transaction outcome' })
   @ApiResponse({ status: 201, description: 'Feedback recorded successfully' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 403, description: 'Forbidden — cannot modify another user prediction record' })
   async recordFeedback(
     @Body() dto: RecordFeedbackDto,
-    @CurrentUser() user?: AuthUser,
+    @CurrentUser() user: AuthUser,
   ) {
-    return this.aiService.recordFeedback(dto, user?.sub);
+    return this.aiService.recordFeedback(dto, user.sub);
   }
 
   @Get('predictions/recent')
