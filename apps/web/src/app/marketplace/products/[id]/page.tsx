@@ -3,7 +3,7 @@
 import { use } from 'react';
 import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
-import { fetchMarketplaceProductById } from '@/lib/api';
+import { fetchMarketplaceProductById, getMarketIntelligence } from '@/lib/api';
 import { MarketplaceNavbar } from '@/components/marketplace/marketplace-navbar';
 import { ProductGallery } from '@/components/marketplace/product-gallery';
 import { AddToCartSection } from '@/components/marketplace/add-to-cart-section';
@@ -19,6 +19,10 @@ import {
   Building2,
   PackageCheck,
   AlertCircle,
+  TrendingUp,
+  TrendingDown,
+  Sparkles,
+  Info,
 } from 'lucide-react';
 
 interface PageProps {
@@ -230,6 +234,13 @@ export default function ProductDetailPage({ params }: PageProps) {
                   </CardContent>
                 </Card>
 
+                {/* Market Intelligence & Price Benchmark */}
+                <ProductMarketIntelligence
+                  commodityName={product.name.split(' ')[0] || product.category?.name || 'Tomato'}
+                  productPrice={product.price}
+                  productUnit={product.unit}
+                />
+
                 {/* Interactive Add To Cart Section */}
                 <AddToCartSection product={product} />
               </div>
@@ -240,3 +251,107 @@ export default function ProductDetailPage({ params }: PageProps) {
     </div>
   );
 }
+
+function ProductMarketIntelligence({
+  commodityName,
+  productPrice,
+  productUnit,
+}: {
+  commodityName: string;
+  productPrice: number;
+  productUnit: string;
+}) {
+  const { data: marketData, isLoading } = useQuery({
+    queryKey: ['market-intelligence', commodityName],
+    queryFn: () => getMarketIntelligence(commodityName),
+    staleTime: 60000,
+    retry: false,
+  });
+
+  if (isLoading) {
+    return (
+      <div className="rounded-xl border border-border/60 bg-card p-4 text-xs space-y-2">
+        <Skeleton className="h-4 w-1/2" />
+        <Skeleton className="h-8 w-full" />
+      </div>
+    );
+  }
+
+  if (!marketData || !marketData.overallStats) {
+    return null;
+  }
+
+  const isKg = productUnit.toLowerCase().includes('kg');
+  const mandiModalPerKg = marketData.overallStats.avgModalPrice / 100;
+  const comparisonPrice = isKg ? mandiModalPerKg : marketData.overallStats.avgModalPrice;
+  const isCompetitive = productPrice <= comparisonPrice * 1.1;
+
+  return (
+    <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-4 space-y-3">
+      <div className="flex items-center justify-between">
+        <span className="text-xs font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-300 flex items-center gap-1.5">
+          <Sparkles className="h-3.5 w-3.5 text-emerald-600" />
+          APMC Mandi Intelligence Benchmark
+        </span>
+        <Badge
+          variant={isCompetitive ? 'success' : 'secondary'}
+          className="text-[10px] py-0.5"
+        >
+          {isCompetitive ? 'Direct Farm Advantage' : 'Premium Graded Produce'}
+        </Badge>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3 text-xs">
+        <div>
+          <span className="text-muted-foreground block text-[11px]">Regional APMC Modal Rate:</span>
+          <span className="font-bold text-foreground text-sm">
+            ₹{marketData.overallStats.avgModalPrice}/q
+            {isKg && (
+              <span className="text-[11px] font-normal text-muted-foreground block">
+                (~₹{mandiModalPerKg.toFixed(2)}/kg)
+              </span>
+            )}
+          </span>
+        </div>
+        <div>
+          <span className="text-muted-foreground block text-[11px]">Wholesale Absorption Proxy:</span>
+          <span className="font-bold text-foreground text-sm">
+            {marketData.overallStats.totalArrivalsTonnes.toLocaleString()} Tonnes
+          </span>
+          <span className="text-[10px] text-muted-foreground block">
+            Across {marketData.totalMarketsReporting} reporting mandis
+          </span>
+        </div>
+      </div>
+
+      {marketData.forwardOutlook && (
+        <div className="flex items-center gap-2 text-xs pt-1 border-t border-emerald-500/10">
+          <span className="text-muted-foreground">7-Day Price Direction:</span>
+          <Badge variant="outline" className="text-[10px] gap-1 font-semibold">
+            {marketData.forwardOutlook.price_trend_direction === 'RISING' ? (
+              <>
+                <TrendingUp className="h-3 w-3 text-emerald-600" />
+                <span>RISING TREND</span>
+              </>
+            ) : marketData.forwardOutlook.price_trend_direction === 'FALLING' ? (
+              <>
+                <TrendingDown className="h-3 w-3 text-rose-500" />
+                <span>FALLING TREND</span>
+              </>
+            ) : (
+              <span>STABLE</span>
+            )}
+          </Badge>
+        </div>
+      )}
+
+      <div className="text-[10px] text-muted-foreground/90 flex items-start gap-1 pt-1 border-t border-emerald-500/10">
+        <Info className="h-3 w-3 shrink-0 mt-0.5 text-muted-foreground" />
+        <span>
+          Mandi benchmark is calculated from regional APMC wholesale arrivals as of {marketData.reportingDate}. Platform orders feature verified direct producer traceability.
+        </span>
+      </div>
+    </div>
+  );
+}
+

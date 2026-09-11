@@ -311,4 +311,270 @@ describe('AiController (e2e)', () => {
 
     expect(res.body.message).toContain('timed out');
   });
+
+  // ---------------------------------------------------------------------------
+  // MILESTONE 10 — DECISION ENGINE & MARKET INTELLIGENCE E2E TESTS
+  // ---------------------------------------------------------------------------
+
+  it('GET /ai/market-intelligence/:commodity should return APMC benchmark and platform listings', async () => {
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: async () => ({
+        commodity: 'Tomato',
+        reporting_date: '2025-12-31',
+        total_markets_reporting: 2,
+        overall_stats: {
+          min_modal_price: 2400,
+          max_modal_price: 2700,
+          avg_modal_price: 2550,
+          total_arrivals_tonnes: 3200,
+          top_paying_market: 'Pune',
+          lowest_paying_market: 'Nashik',
+        },
+        markets: [
+          {
+            market: 'Pune',
+            district: 'Pune',
+            state: 'Maharashtra',
+            min_price: 2300,
+            max_price: 2800,
+            modal_price: 2700,
+            arrivals: 1800,
+          },
+          {
+            market: 'Nashik',
+            district: 'Nashik',
+            state: 'Maharashtra',
+            min_price: 2200,
+            max_price: 2600,
+            modal_price: 2400,
+            arrivals: 1400,
+          },
+        ],
+        historical_trend: [{ date: '2025-12-30', modal_price: 2540, arrivals: 3100 }],
+        forward_outlook: {
+          current_modal_price: 2550,
+          projected_7d_price: 2620,
+          projected_14d_price: 2680,
+          projected_change_percent: 5.1,
+          price_trend_direction: 'RISING',
+          demand_absorption_band: 'HIGH',
+          supporting_factors: ['Steady wholesale demand'],
+        },
+      }),
+    } as any);
+
+    const res = await request(app.getHttpServer())
+      .get('/ai/market-intelligence/Tomato?city=Nashik&state=Maharashtra')
+      .expect(200);
+
+    expect(res.body.commodity).toBe('Tomato');
+    expect(res.body.totalMarketsReporting).toBe(2);
+    expect(res.body.overallStats.avgModalPrice).toBe(2550);
+    expect(res.body.markets.length).toBe(2);
+    expect(res.body.dataSourceDisclosures).toBeDefined();
+    expect(res.body.dataSourceDisclosures.apmcMandi).toContain('Benchmark');
+  });
+
+  it('POST /ai/price-intelligence should provide predictions, confidence bounds, and contributing factors', async () => {
+    global.fetch = vi.fn().mockImplementation((url: string) => {
+      if (url.includes('/market/intelligence')) {
+        return Promise.resolve({
+          ok: true,
+          status: 200,
+          json: async () => ({
+            commodity: 'Tomato',
+            overall_stats: { avg_modal_price: 2500 },
+            markets: [],
+          }),
+        });
+      }
+      return Promise.resolve({
+        ok: true,
+        status: 200,
+        json: async () => ({
+          commodity: 'Tomato',
+          market: 'Azadpur',
+          predicted_modal_price: 2650.0,
+          lower_bound: 2350.0,
+          upper_bound: 2950.0,
+          model_version: '1.1.0',
+          explainability_factors: [
+            {
+              feature: 'price_rolling_mean_7',
+              weight: 0.95,
+              interpretation: 'Primary price momentum driver',
+            },
+          ],
+        }),
+      });
+    });
+
+    const res = await request(app.getHttpServer())
+      .post('/ai/price-intelligence')
+      .send({
+        commodity: 'Tomato',
+        market: 'Azadpur',
+        recentPrice: 2500,
+      })
+      .expect(200);
+
+    expect(res.body.commodity).toBe('Tomato');
+    expect(res.body.predictedPrice).toBe(2650.0);
+    expect(res.body.lowerBound).toBe(2350.0);
+    expect(res.body.upperBound).toBe(2950.0);
+    expect(res.body.trend).toBe('RISING');
+    expect(res.body.factors.length).toBeGreaterThan(0);
+    expect(res.body.factors[0].feature).toBe('price_rolling_mean_7');
+  });
+
+  it('POST /ai/net-realization should calculate gross-to-net realization waterfall with mandatory settlement notice', async () => {
+    const res = await request(app.getHttpServer())
+      .post('/ai/net-realization')
+      .send({
+        quantity: 50,
+        unit: 'QUINTAL',
+        grossPricePerUnit: 2400,
+        destinationName: 'Pune APMC',
+        distanceKm: 120,
+        packagingCostPerUnit: 15,
+        handlingCostPerUnit: 12,
+        mandiCessPercent: 1.0,
+        platformFeeRatePercent: 0,
+      })
+      .expect(200);
+
+    expect(res.body.grossSellingValue).toBe(120000);
+    expect(res.body.deductions.length).toBeGreaterThanOrEqual(4);
+    expect(res.body.totalDeductions).toBeGreaterThan(0);
+    expect(res.body.estimatedNetRealization).toBeLessThan(120000);
+    expect(res.body.calculationType).toBe('ESTIMATED_PRE_SALE');
+    expect(res.body.settlementDistinctionNotice).toContain('CRITICAL DISTINCTION');
+  });
+
+  it('POST /ai/best-time-to-sell should provide relative timing recommendation and risk factors', async () => {
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: async () => ({
+        commodity: 'Onion',
+        forward_outlook: {
+          current_modal_price: 2100,
+          projected_7d_price: 2200,
+          projected_14d_price: 2280,
+          projected_change_percent: 8.5,
+          demand_absorption_band: 'HIGH',
+          supporting_factors: ['Favorable seasonal demand'],
+        },
+      }),
+    } as any);
+
+    const res = await request(app.getHttpServer())
+      .post('/ai/best-time-to-sell')
+      .send({
+        commodity: 'Onion',
+        market: 'Lasalgaon',
+        currentPrice: 2100,
+        isHighlyPerishable: false,
+      })
+      .expect(200);
+
+    expect(res.body.commodity).toBe('Onion');
+    expect(res.body.recommendation).toBe('Consider waiting');
+    expect(res.body.forwardProjections.horizon14DaysPrice).toBe(2280);
+    expect(res.body.supportingFactors.length).toBeGreaterThan(0);
+  });
+
+  it('POST /ai/smart-allocation should reject unauthenticated requests with 401', async () => {
+    await request(app.getHttpServer())
+      .post('/ai/smart-allocation')
+      .send({
+        commodity: 'Onion',
+        quantity: 50,
+        sellerLocation: { city: 'Nashik' },
+      })
+      .expect(401);
+  });
+
+  it('POST /ai/smart-allocation should reject BUYER role with 403 Forbidden', async () => {
+    await request(app.getHttpServer())
+      .post('/ai/smart-allocation')
+      .set('Authorization', `Bearer ${testUser2Token}`) // Buyer token
+      .send({
+        commodity: 'Onion',
+        quantity: 50,
+        sellerLocation: { city: 'Nashik' },
+      })
+      .expect(403);
+  });
+
+  it('POST /ai/smart-allocation should return ranked channel options and explainable rationale for FARMER', async () => {
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: async () => ({
+        commodity: 'Onion',
+        overall_stats: { avg_modal_price: 2250 },
+        markets: [
+          {
+            market: 'Lasalgaon',
+            state: 'Maharashtra',
+            modal_price: 2150,
+            arrivals: 4500,
+          },
+        ],
+      }),
+    } as any);
+
+    const res = await request(app.getHttpServer())
+      .post('/ai/smart-allocation')
+      .set('Authorization', `Bearer ${testUser1Token}`) // Farmer token
+      .send({
+        commodity: 'Onion',
+        quantity: 50,
+        sellerLocation: { city: 'Nashik', state: 'Maharashtra' },
+        maxTransitDistanceKm: 300,
+        includeMandis: true,
+        includeDirectBuyers: true,
+        includePlatformListing: true,
+      })
+      .expect(200);
+
+    expect(res.body.commodity).toBe('Onion');
+    expect(res.body.quantity).toBe(50);
+    expect(res.body.rankedOptions.length).toBeGreaterThan(0);
+    expect(res.body.recommendedOption).toBeDefined();
+    expect(res.body.recommendationRationale).toBeDefined();
+    expect(res.body.settlementDistinctionNotice).toContain('CRITICAL NOTICE');
+  });
+
+  it('POST /ai/matching/buyers should find compatible buyer requirements for FARMER', async () => {
+    const res = await request(app.getHttpServer())
+      .post('/ai/matching/buyers')
+      .set('Authorization', `Bearer ${testUser1Token}`)
+      .send({
+        commodity: 'Onion',
+        quantity: 50,
+        location: { city: 'Nashik' },
+      })
+      .expect(200);
+
+    expect(Array.isArray(res.body)).toBe(true);
+  });
+
+  it('POST /ai/matching/sellers should find in-stock seller products for BUYER', async () => {
+    const res = await request(app.getHttpServer())
+      .post('/ai/matching/sellers')
+      .set('Authorization', `Bearer ${testUser2Token}`)
+      .send({
+        commodity: 'Tomato',
+        requiredQuantity: 30,
+        deliveryLocation: { city: 'Pune' },
+      })
+      .expect(200);
+
+    expect(Array.isArray(res.body)).toBe(true);
+  });
 });
+

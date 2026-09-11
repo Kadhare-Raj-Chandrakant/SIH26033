@@ -743,4 +743,408 @@ export async function demoLoginSeller(sellerType: 'FARMER' | 'FPO' = 'FARMER'): 
   return { token, user };
 }
 
+// -----------------------------------------------------------------------------
+// MILESTONE 10 — AI RECOMMENDATIONS, PRICING & MARKET INTELLIGENCE
+// -----------------------------------------------------------------------------
 
+export interface MarketObservation {
+  market: string;
+  district: string;
+  state: string;
+  minPrice: number;
+  maxPrice: number;
+  modalPrice: number;
+  arrivals: number;
+  tempMean: number | null;
+  rainfall: number | null;
+  humidity: number | null;
+  predictedPrice: number | null;
+  distanceKm?: number;
+  estimatedLogisticsCostPerUnit?: number;
+  estimatedNetAfterLogistics?: number;
+}
+
+export interface CommodityMarketIntelligence {
+  commodity: string;
+  reportingDate: string;
+  totalMarketsReporting: number;
+  overallStats: {
+    minModalPrice: number;
+    maxModalPrice: number;
+    avgModalPrice: number;
+    totalArrivalsTonnes: number;
+    topPayingMarket: string;
+    lowestPayingMarket: string;
+  };
+  markets: MarketObservation[];
+  platformMarket: {
+    activeListingsCount: number;
+    minListingPrice: number | null;
+    maxListingPrice: number | null;
+    avgListingPrice: number | null;
+    totalAvailableStock: number;
+    unit: string;
+  };
+  historicalTrend: Array<{ date: string; modal_price: number; arrivals: number }>;
+  forwardOutlook: {
+    current_modal_price: number;
+    projected_7d_price: number | null;
+    projected_14d_price: number | null;
+    projected_change_percent: number | null;
+    price_trend_direction: 'RISING' | 'FALLING' | 'STABLE';
+    demand_absorption_band: 'LOW' | 'MODERATE' | 'HIGH';
+    supporting_factors: string[];
+  } | null;
+  dataSourceDisclosures: {
+    apmcMandi: string;
+    platformMarketplace: string;
+    wholesaleAbsorptionNotice: string;
+  };
+  limitations: string[];
+  generatedAt: string;
+}
+
+export interface PriceIntelligence {
+  commodity: string;
+  market: string;
+  currentPrice: number;
+  predictedPrice: number;
+  lowerBound: number;
+  upperBound: number;
+  trend: 'RISING' | 'FALLING' | 'STABLE';
+  factors: Array<{ feature: string; weight: number; interpretation: string }>;
+  modelVersion: string;
+  modelAvailable: boolean;
+  marketComparison: MarketObservation[];
+  dataFreshnessNotice: string;
+  limitations: string[];
+  generatedAt: string;
+}
+
+export interface DeductionItem {
+  name: string;
+  category: 'LOGISTICS' | 'HANDLING' | 'STORAGE' | 'FEES' | 'TAX';
+  amount: number;
+  perUnit: number;
+  status: 'CALCULATED' | 'ESTIMATED' | 'UNAVAILABLE' | 'NOT_APPLICABLE';
+  notes: string;
+}
+
+export interface NetRealizationResult {
+  grossSellingValue: number;
+  grossPricePerUnit: number;
+  quantity: number;
+  unit: string;
+  deductions: DeductionItem[];
+  totalDeductions: number;
+  estimatedNetRealization: number;
+  perUnitNetRealization: number;
+  assumptions: string[];
+  calculationType: 'ESTIMATED_PRE_SALE';
+  settlementDistinctionNotice: string;
+  generatedAt: string;
+}
+
+export interface BestTimeToSellResult {
+  commodity: string;
+  market: string;
+  currentPrice: number;
+  recommendation: 'Sell now' | 'Consider selling soon' | 'Consider waiting' | 'Insufficient evidence';
+  recommendationSummary: string;
+  supportingFactors: string[];
+  forwardProjections: {
+    horizon7DaysPrice: number | null;
+    horizon14DaysPrice: number | null;
+    expectedChangePercent: number | null;
+  };
+  marketActivityProxy: string;
+  perishabilityRiskAssessment: string;
+  limitations: string[];
+  generatedAt: string;
+}
+
+export interface AllocationOption {
+  rank: number;
+  channelType: 'MANDI' | 'DIRECT_BUYER' | 'PLATFORM_LISTING';
+  channelName: string;
+  destinationLocation: string;
+  distanceKm: number;
+  expectedGrossPricePerUnit: number;
+  grossSellingValue: number;
+  logisticsCost: number;
+  handlingCost: number;
+  platformOrMandiFee: number;
+  totalDeductions: number;
+  estimatedNetRealization: number;
+  perUnitNetRealization: number;
+  marketActivityProxy: string;
+  settlementTimeline: string;
+  advantages: string[];
+  disadvantages: string[];
+}
+
+export interface SmartAllocationResult {
+  commodity: string;
+  quantity: number;
+  unit: string;
+  sellerOrigin: string;
+  rankedOptions: AllocationOption[];
+  recommendedOption: AllocationOption;
+  recommendationRationale: string;
+  eliminatedCandidates: Array<{ candidateName: string; channelType: string; reason: string }>;
+  settlementDistinctionNotice: string;
+  generatedAt: string;
+}
+
+export interface BuyerMatchItem {
+  requirementId: string;
+  buyerId: string;
+  buyerName: string;
+  businessName: string | null;
+  buyerType: string;
+  commodity: string;
+  requiredQuantity: number;
+  unit: string;
+  targetPrice: number | null;
+  deliveryLocation: string | null;
+  distanceKm: number;
+  matchScore: number;
+  scoreBreakdown: {
+    commodityCompatibility: number;
+    quantityCompatibility: number;
+    locationDistance: number;
+    priceCompatibility: number;
+    fulfillmentFeasibility: number;
+  };
+  reasons: string[];
+}
+
+export interface SellerMatchItem {
+  productId: string;
+  productName: string;
+  sellerId: string;
+  sellerName: string;
+  businessName: string | null;
+  sellerType: string;
+  verificationStatus: string;
+  availableQuantity: number;
+  unit: string;
+  unitPrice: number;
+  location: string | null;
+  distanceKm: number;
+  matchScore: number;
+  scoreBreakdown: {
+    quantityFulfillment: number;
+    priceCompetitiveness: number;
+    distanceLogistics: number;
+    sellerReliability: number;
+  };
+  reasons: string[];
+  imageUrl: string | null;
+}
+
+export interface BuyerRequirement {
+  id: string;
+  buyerId: string;
+  commodity: string;
+  variety?: string | null;
+  requiredQuantity: number;
+  unit: string;
+  targetPrice?: number | null;
+  deliveryLocation?: string | null;
+  maxDistanceKm?: number | null;
+  status: string;
+  notes?: string | null;
+  createdAt: string;
+  buyer?: {
+    id: string;
+    businessName: string | null;
+    buyerType: string;
+    verificationStatus: string;
+  };
+}
+
+export async function getMarketIntelligence(
+  commodity: string,
+  location?: { city?: string; state?: string; latitude?: number; longitude?: number },
+): Promise<CommodityMarketIntelligence> {
+  const params = new URLSearchParams();
+  if (location?.city) params.set('city', location.city);
+  if (location?.state) params.set('state', location.state);
+  if (location?.latitude) params.set('latitude', String(location.latitude));
+  if (location?.longitude) params.set('longitude', String(location.longitude));
+
+  const queryStr = params.toString() ? `?${params.toString()}` : '';
+  const res = await fetch(`${API_BASE_URL}/ai/market-intelligence/${encodeURIComponent(commodity)}${queryStr}`);
+  if (!res.ok) {
+    throw new Error('Failed to retrieve commodity market intelligence');
+  }
+  return res.json();
+}
+
+export async function getPriceIntelligence(payload: {
+  commodity: string;
+  market?: string;
+  recentPrice?: number;
+  targetDate?: string;
+}): Promise<PriceIntelligence> {
+  const res = await fetch(`${API_BASE_URL}/ai/price-intelligence`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    throw new Error('Failed to infer price intelligence');
+  }
+  return res.json();
+}
+
+export async function calculateNetRealization(payload: {
+  quantity: number;
+  unit?: string;
+  grossPricePerUnit: number;
+  destinationName?: string;
+  distanceKm?: number;
+  logisticsCost?: number;
+  storageDays?: number;
+  storageRatePerUnitDay?: number;
+  packagingCostPerUnit?: number;
+  handlingCostPerUnit?: number;
+  platformFeeRatePercent?: number;
+  mandiCessPercent?: number;
+}): Promise<NetRealizationResult> {
+  const res = await fetch(`${API_BASE_URL}/ai/net-realization`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    throw new Error('Failed to calculate net realization breakdown');
+  }
+  return res.json();
+}
+
+export async function getBestTimeToSell(payload: {
+  commodity: string;
+  market?: string;
+  currentPrice?: number;
+  isHighlyPerishable?: boolean;
+}): Promise<BestTimeToSellResult> {
+  const res = await fetch(`${API_BASE_URL}/ai/best-time-to-sell`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    throw new Error('Failed to evaluate best time to sell');
+  }
+  return res.json();
+}
+
+export async function getSmartAllocation(
+  payload: {
+    commodity: string;
+    quantity: number;
+    unit?: string;
+    sellerLocation: { city?: string; state?: string; pincode?: string; latitude?: number; longitude?: number };
+    minAcceptablePrice?: number;
+    maxTransitDistanceKm?: number;
+    includeMandis?: boolean;
+    includeDirectBuyers?: boolean;
+    includePlatformListing?: boolean;
+  },
+  token?: string,
+): Promise<SmartAllocationResult> {
+  const res = await fetch(`${API_BASE_URL}/ai/smart-allocation`, {
+    method: 'POST',
+    headers: getAuthHeaders(token),
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err?.message || 'Failed to calculate smart allocation');
+  }
+  return res.json();
+}
+
+export async function matchBuyersForFarmer(
+  payload: {
+    commodity: string;
+    quantity: number;
+    askingPrice?: number;
+    location: { city?: string; state?: string; latitude?: number; longitude?: number };
+    maxDistanceKm?: number;
+    limit?: number;
+  },
+  token?: string,
+): Promise<BuyerMatchItem[]> {
+  const res = await fetch(`${API_BASE_URL}/ai/matching/buyers`, {
+    method: 'POST',
+    headers: getAuthHeaders(token),
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err?.message || 'Failed to find matched buyers');
+  }
+  return res.json();
+}
+
+export async function matchSellersForBuyer(
+  payload: {
+    commodity: string;
+    requiredQuantity: number;
+    maxBudgetPerUnit?: number;
+    deliveryLocation: { city?: string; state?: string; latitude?: number; longitude?: number };
+    maxDistanceKm?: number;
+    limit?: number;
+  },
+  token?: string,
+): Promise<SellerMatchItem[]> {
+  const res = await fetch(`${API_BASE_URL}/ai/matching/sellers`, {
+    method: 'POST',
+    headers: getAuthHeaders(token),
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err?.message || 'Failed to find matched seller products');
+  }
+  return res.json();
+}
+
+export async function createBuyerRequirement(
+  payload: {
+    commodity: string;
+    variety?: string;
+    requiredQuantity: number;
+    unit?: string;
+    targetPrice?: number;
+    deliveryLocation?: string;
+    deliveryLatitude?: number;
+    deliveryLongitude?: number;
+    maxDistanceKm?: number;
+    notes?: string;
+  },
+  token?: string,
+): Promise<BuyerRequirement> {
+  const res = await fetch(`${API_BASE_URL}/buyer/requirements`, {
+    method: 'POST',
+    headers: getAuthHeaders(token),
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err?.message || 'Failed to post sourcing requirement');
+  }
+  return res.json();
+}
+
+export async function getOpenBuyerRequirements(commodity?: string): Promise<BuyerRequirement[]> {
+  const query = commodity ? `?commodity=${encodeURIComponent(commodity)}` : '';
+  const res = await fetch(`${API_BASE_URL}/marketplace/buyer-requirements${query}`);
+  if (!res.ok) {
+    return [];
+  }
+  return res.json();
+}

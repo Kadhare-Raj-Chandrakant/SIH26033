@@ -56,9 +56,41 @@ export class LogisticsProviderException extends Error {
   }
 }
 
+export interface EstimateLocation {
+  city?: string;
+  state?: string;
+  pincode?: string;
+  latitude?: number;
+  longitude?: number;
+}
+
+export interface EstimateLogisticsPayload {
+  origin: EstimateLocation;
+  destination: EstimateLocation;
+  weightKg: number;
+  commodity?: string;
+}
+
+export interface LogisticsEstimateResult {
+  distanceKm: number;
+  estimatedCost: number;
+  perUnitCost: number;
+  estimatedDays: number;
+  provider: string;
+  isEstimated: boolean;
+  costBreakdown: {
+    baseFare: number;
+    distanceFare: number;
+    fuelSurcharge: number;
+    handling: number;
+  };
+  limitations?: string[];
+}
+
 export interface LogisticsProviderAdapter {
   readonly providerName: string;
   createShipment(payload: CreateShipmentPayload): Promise<ShipmentResult>;
   getShipmentStatus(providerShipmentId: string, currentStatus?: ShipmentStatus): Promise<ShipmentStatusResult>;
   cancelShipment(providerShipmentId: string): Promise<{ success: boolean; message?: string }>;
+  estimateLogistics(payload: EstimateLogisticsPayload): Promise<LogisticsEstimateResult>;
 }

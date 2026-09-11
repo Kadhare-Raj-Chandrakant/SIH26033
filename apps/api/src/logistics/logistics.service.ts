@@ -7,6 +7,8 @@ import {
   ShipmentResult,
   ShipmentStatusResult,
   LogisticsProviderException,
+  EstimateLogisticsPayload,
+  LogisticsEstimateResult,
 } from './interfaces/logistics-provider.interface.js';
 import { MockLogisticsProvider } from './providers/mock-logistics.provider.js';
 
@@ -79,6 +81,18 @@ export class LogisticsService {
     } catch (error) {
       this.logger.error(`Failed to cancel shipment ${providerShipmentId}`, error);
       throw new BadGatewayException('Failed to cancel shipment with logistics carrier.');
+    }
+  }
+
+  /**
+   * Calculate distance, transit time, and freight cost estimate
+   */
+  async estimateLogistics(payload: EstimateLogisticsPayload): Promise<LogisticsEstimateResult> {
+    try {
+      return await this.adapter.estimateLogistics(payload);
+    } catch (error) {
+      this.logger.error('Failed to calculate logistics estimate', error);
+      throw new BadGatewayException('Failed to calculate logistics estimate with carrier adapter.');
     }
   }
 

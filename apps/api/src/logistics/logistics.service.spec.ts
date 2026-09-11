@@ -105,4 +105,28 @@ describe('LogisticsService & MockLogisticsProvider', () => {
     const cancelResult = await logisticsService.cancelShipment('MOCK-SHP-123');
     expect(cancelResult.success).toBe(true);
   });
+
+  it('should accurately calculate logistics estimate with transparent cost breakdown', async () => {
+    const estimate = await logisticsService.estimateLogistics({
+      origin: { city: 'Nashik', state: 'Maharashtra' },
+      destination: { city: 'Pune', state: 'Maharashtra' },
+      weightKg: 2500, // 25 Quintals / 2.5 Tonnes
+      commodity: 'Tomato',
+    });
+
+    expect(estimate).toBeDefined();
+    expect(estimate.distanceKm).toBeGreaterThan(0);
+    expect(estimate.estimatedCost).toBeGreaterThan(0);
+    expect(estimate.perUnitCost).toBeGreaterThan(0);
+    expect(estimate.estimatedDays).toBeGreaterThanOrEqual(1);
+    expect(estimate.isEstimated).toBe(true);
+    expect(estimate.provider).toBe('MOCK_LOGISTICS');
+    expect(estimate.costBreakdown).toBeDefined();
+    expect(estimate.costBreakdown.baseFare).toBe(400);
+    expect(estimate.costBreakdown.distanceFare).toBeGreaterThan(0);
+    expect(estimate.costBreakdown.fuelSurcharge).toBeGreaterThan(0);
+    expect(estimate.costBreakdown.handling).toBe(375); // 25 quintals * 15
+    expect(estimate.limitations?.length).toBeGreaterThan(0);
+  });
 });
+

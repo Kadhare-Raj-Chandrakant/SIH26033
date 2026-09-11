@@ -14,6 +14,17 @@ import { PredictPriceDto } from './dto/predict-price.dto.js';
 import { ForecastDemandDto } from './dto/forecast-demand.dto.js';
 import { RecommendCropDto } from './dto/recommend-crop.dto.js';
 import { RecordFeedbackDto } from './dto/record-feedback.dto.js';
+import { PriceIntelligenceDto } from './dto/price-intelligence.dto.js';
+import { CalculateNetRealizationDto } from './dto/net-realization.dto.js';
+import { BestTimeToSellDto } from './dto/best-time-to-sell.dto.js';
+import { SmartAllocationDto, LocationDto } from './dto/smart-allocation.dto.js';
+import { MatchBuyersDto } from './dto/match-buyers.dto.js';
+import { MatchSellersDto } from './dto/match-sellers.dto.js';
+import { NetRealizationService } from './decision-engine/net-realization.service.js';
+import { MatchingService } from './decision-engine/matching.service.js';
+import { SellTimingService } from './decision-engine/sell-timing.service.js';
+import { SmartAllocationService } from './decision-engine/smart-allocation.service.js';
+import { MarketIntelligenceService } from './decision-engine/market-intelligence.service.js';
 
 @Injectable()
 export class AiService {
@@ -25,6 +36,11 @@ export class AiService {
   constructor(
     private readonly configService: ConfigService,
     private readonly prisma: PrismaService,
+    private readonly netRealizationService: NetRealizationService,
+    private readonly matchingService: MatchingService,
+    private readonly sellTimingService: SellTimingService,
+    private readonly smartAllocationService: SmartAllocationService,
+    private readonly marketIntelligenceService: MarketIntelligenceService,
   ) {
     this.aiServiceUrl = this.configService.get<string>(
       'AI_SERVICE_URL',
@@ -235,6 +251,171 @@ export class AiService {
       orderBy: { createdAt: 'desc' },
     });
   }
+
+  /**
+   * Commodity Market Intelligence: APMC mandi comparisons, arrival volumes, weather & trends
+   */
+  async getMarketIntelligence(commodity: string, sellerLocation?: LocationDto) {
+    let aiData: any = null;
+    try {
+      aiData = await this.callAiEndpoint(
+        `/api/v1/market/intelligence/${encodeURIComponent(commodity)}`,
+        'GET',
+      );
+    } catch (err: any) {
+      this.logger.warn(
+        `FastAPI market intelligence unavailable for ${commodity}: ${err.message}`,
+      );
+      aiData = {
+        commodity,
+        reporting_date: new Date().toISOString().split('T')[0],
+        total_markets_reporting: 0,
+        overall_stats: {
+          min_modal_price: 0,
+          max_modal_price: 0,
+          avg_modal_price: 0,
+          total_arrivals_tonnes: 0,
+          top_paying_market: 'Unavailable',
+          lowest_paying_market: 'Unavailable',
+        },
+        markets: [],
+        historical_trend: [],
+        forward_outlook: null,
+      };
+    }
+    return this.marketIntelligenceService.getEnhancedMarketIntelligence(
+      commodity,
+      aiData,
+      sellerLocation,
+    );
+  }
+
+  /**
+   * Product-facing Price Intelligence: Prediction, confidence bounds, historical context,
+   * trend, contributing factors, and market comparisons.
+   */
+  async getPriceIntelligence(dto: PriceIntelligenceDto, userId?: string) {
+    let pricePrediction: any = null;
+    let modelAvailable = true;
+
+    try {
+      pricePrediction = await this.predictPrice(
+        {
+          commodity: dto.commodity,
+          market: dto.market,
+          district: dto.district,
+          state: dto.state,
+          targetDate: dto.targetDate,
+          historicalPriceLag1: dto.recentPrice,
+          historicalPriceRolling7: dto.recentPrice,
+        },
+        userId,
+      );
+    } catch (err: any) {
+      this.logger.warn(`Price prediction model offline: ${err.message}`);
+      modelAvailable = false;
+    }
+
+    const marketData = await this.getMarketIntelligence(dto.commodity);
+    const currentPrice =
+      dto.recentPrice || marketData.overallStats.avgModalPrice || 2400;
+    const predictedPrice = modelAvailable
+      ? pricePrediction?.predicted_modal_price
+      : currentPrice;
+    const lowerBound = modelAvailable
+      ? pricePrediction?.lower_bound
+      : Math.round(currentPrice * 0.92 * 100) / 100;
+    const upperBound = modelAvailable
+      ? pricePrediction?.upper_bound
+      : Math.round(currentPrice * 1.08 * 100) / 100;
+
+    let trend = 'STABLE';
+    if (predictedPrice > currentPrice * 1.02) trend = 'RISING';
+    else if (predictedPrice < currentPrice * 0.98) trend = 'FALLING';
+
+    const factors = modelAvailable
+      ? pricePrediction?.explainability_factors?.map((f: any) => ({
+          feature: f.feature,
+          weight: f.weight,
+          interpretation: f.interpretation,
+        })) || []
+      : [
+          {
+            feature: 'recent_market_anchor',
+            weight: 1.0,
+            interpretation:
+              'Heuristic pricing anchor derived from recent APMC market baseline.',
+          },
+        ];
+
+    return {
+      commodity: dto.commodity,
+      market: dto.market || 'Azadpur',
+      currentPrice,
+      predictedPrice,
+      lowerBound,
+      upperBound,
+      trend,
+      factors,
+      modelVersion: modelAvailable
+        ? pricePrediction?.model_version || '1.1.0'
+        : 'offline_fallback',
+      modelAvailable,
+      marketComparison: marketData.markets.slice(0, 5),
+      dataFreshnessNotice:
+        'Market observations based on APMC benchmark demonstration dataset.',
+      limitations: [
+        'Factors indicate historical model correlation weights; they do not imply deterministic price causation.',
+        'Actual sale values depend on physical grading and buyer quality evaluation.',
+      ],
+      generatedAt: new Date().toISOString(),
+    };
+  }
+
+  /**
+   * Transparent Net Realization calculation waterfall
+   */
+  calculateNetRealization(dto: CalculateNetRealizationDto) {
+    return this.netRealizationService.calculate(dto);
+  }
+
+  /**
+   * Best Time to Sell advisory
+   */
+  async getBestTimeToSell(dto: BestTimeToSellDto) {
+    const marketIntel = await this.getMarketIntelligence(dto.commodity);
+    return this.sellTimingService.evaluate(dto, marketIntel);
+  }
+
+  /**
+   * Smart Allocation Channel Optimization: Mandi vs Matched Buyer vs Platform
+   */
+  async optimizeSmartAllocation(dto: SmartAllocationDto, userId?: string) {
+    const marketIntel = await this.getMarketIntelligence(
+      dto.commodity,
+      dto.sellerLocation,
+    );
+    return this.smartAllocationService.optimizeAllocation(
+      dto,
+      marketIntel,
+      userId,
+    );
+  }
+
+  /**
+   * Two-Way Matching: Farmer -> Buyer
+   */
+  async matchBuyers(dto: MatchBuyersDto) {
+    return this.matchingService.matchBuyersForFarmer(dto);
+  }
+
+  /**
+   * Two-Way Matching: Buyer -> Sellers
+   */
+  async matchSellers(dto: MatchSellersDto) {
+    return this.matchingService.matchSellersForBuyer(dto);
+  }
+
 
   /**
    * Internal resilient HTTP dispatcher to FastAPI AI service

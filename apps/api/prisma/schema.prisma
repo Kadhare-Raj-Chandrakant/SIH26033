@@ -153,9 +153,10 @@ model BuyerProfile {
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @updatedAt
 
-  ordersPlaced Order[]
-  reviews      Review[]
-  cartItems    CartItem[]
+  ordersPlaced      Order[]
+  reviews           Review[]
+  cartItems         CartItem[]
+  buyerRequirements BuyerRequirement[]
 }
 
 model Address {
@@ -421,5 +422,32 @@ model AiPredictionLog {
   @@index([modelName, modelVersion])
   @@index([userId])
   @@index([createdAt])
+}
+
+// -----------------------------------------------------------------------------
+// BUYER SOURCING & MATCHING DOMAIN (M10)
+// -----------------------------------------------------------------------------
+
+model BuyerRequirement {
+  id                String       @id @default(uuid())
+  buyerId           String
+  buyer             BuyerProfile @relation(fields: [buyerId], references: [id], onDelete: Cascade)
+  commodity         String       // e.g. "Onion", "Tomato", "Potato", "Wheat", "Rice"
+  variety           String?
+  requiredQuantity  Decimal      @db.Decimal(10, 2)
+  unit              ProductUnit  @default(QUINTAL)
+  targetPrice       Decimal?     @db.Decimal(10, 2) // Ceiling price willing to pay per unit
+  deliveryLocation  String?      // e.g. "Nashik", "Pune", "Hubballi"
+  deliveryLatitude  Float?
+  deliveryLongitude Float?
+  maxDistanceKm     Float?       // optional fulfillment radius constraint
+  status            String       @default("OPEN") // "OPEN", "FULFILLED", "CANCELLED"
+  notes             String?
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+
+  @@index([buyerId])
+  @@index([commodity])
+  @@index([status])
 }
 

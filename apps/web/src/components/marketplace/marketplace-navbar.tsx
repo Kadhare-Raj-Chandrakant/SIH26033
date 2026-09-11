@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Sprout, Search, ShieldCheck, ShoppingCart, Package } from 'lucide-react';
+import { Sprout, Search, ShieldCheck, ShoppingCart, Package, Sparkles } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useQuery } from '@tanstack/react-query';
@@ -44,6 +44,19 @@ export function MarketplaceNavbar() {
               className="text-sm font-medium text-foreground transition-colors hover:text-emerald-600"
             >
               Browse Catalog
+            </Link>
+            <Link
+              href="/seller/intelligence"
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-emerald-600 flex items-center gap-1.5"
+            >
+              <Sparkles className="h-3.5 w-3.5 text-emerald-600" />
+              <span>Market Intelligence</span>
+            </Link>
+            <Link
+              href="/marketplace/sourcing"
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-emerald-600"
+            >
+              Buyer Sourcing
             </Link>
             <Link
               href="/orders"
