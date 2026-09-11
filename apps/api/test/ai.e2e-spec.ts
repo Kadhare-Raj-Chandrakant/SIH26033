@@ -1,7 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import request from 'supertest';
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import {
+  describe,
+  it,
+  expect,
+  beforeAll,
+  afterAll,
+  beforeEach,
+  afterEach,
+  vi,
+} from 'vitest';
 import { AppModule } from '../src/app.module.js';
 import { PrismaService } from '../src/prisma/prisma.service.js';
 import { JwtService } from '@nestjs/jwt';
@@ -16,9 +25,7 @@ describe('AiController (e2e)', () => {
   const user1Id = '11111111-1111-1111-1111-111111111111';
   const user2Id = '22222222-2222-2222-2222-222222222222';
 
-  beforeEach(async () => {
-    originalFetch = global.fetch;
-
+  beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
@@ -39,9 +46,17 @@ describe('AiController (e2e)', () => {
     testUser2Token = jwtService.sign({ sub: user2Id, role: 'BUYER' });
   });
 
+  afterAll(async () => {
+    await app.close();
+  });
+
+  beforeEach(async () => {
+    originalFetch = global.fetch;
+    await prisma.aiPredictionLog.deleteMany();
+  });
+
   afterEach(async () => {
     global.fetch = originalFetch;
-    await app.close();
   });
 
   it('GET /ai/health should proxy FastAPI health status', async () => {
@@ -99,12 +114,17 @@ describe('AiController (e2e)', () => {
     expect(res.body.predicted_modal_price).toBe(2650.0);
     expect(res.body.explainability_factors).toHaveLength(1);
 
-    // Verify prediction log created in database
-    const recentLogs = await prisma.aiPredictionLog.findMany({
-      where: { modelName: 'price_predictor_baseline' },
-      orderBy: { createdAt: 'desc' },
-      take: 1,
-    });
+    // Verify prediction log created in database (retry loop for async fire-and-forget logging)
+    let recentLogs: any[] = [];
+    for (let i = 0; i < 20; i++) {
+      recentLogs = await prisma.aiPredictionLog.findMany({
+        where: { modelName: 'price_predictor_baseline' },
+        orderBy: { createdAt: 'desc' },
+        take: 1,
+      });
+      if (recentLogs.length > 0) break;
+      await new Promise((resolve) => setTimeout(resolve, 50));
+    }
     expect(recentLogs.length).toBeGreaterThan(0);
     expect((recentLogs[0].inputFeatures as any).commodity).toBe('Tomato');
   });
