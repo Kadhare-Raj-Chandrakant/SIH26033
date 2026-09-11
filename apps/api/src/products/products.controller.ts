@@ -1,18 +1,32 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors, UploadedFile, BadRequestException } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  UseInterceptors,
+  UploadedFile,
+  BadRequestException,
+} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiConsumes, ApiBody } from '@nestjs/swagger';
 import { ProductsService } from './products.service.js';
 import { CreateProductDto } from './dto/create-product.dto.js';
 import { UpdateProductDto } from './dto/update-product.dto.js';
+import { UpdateInventoryDto } from './dto/update-inventory.dto.js';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard.js';
 import { RolesGuard } from '../common/guards/roles.guard.js';
 import { Roles } from '../common/decorators/roles.decorator.js';
+import { Public } from '../common/decorators/public.decorator.js';
 import { CurrentUser } from '../common/decorators/current-user.decorator.js';
 import type { AuthUser } from '../common/decorators/current-user.decorator.js';
 import 'multer';
 
 @ApiTags('products')
-@Controller('api/v1')
+@Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
@@ -20,7 +34,7 @@ export class ProductsController {
   // SELLER PRODUCT MANAGEMENT
   // ==========================================
 
-  @Post('products')
+  @Post()
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('FARMER', 'FPO')
@@ -33,17 +47,7 @@ export class ProductsController {
     return this.productsService.create(user.sub, createProductDto);
   }
 
-  @Get('seller/products')
-  @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('FARMER', 'FPO')
-  @ApiOperation({ summary: 'Get all products belonging to the authenticated seller' })
-  @ApiResponse({ status: 200, description: 'Seller products retrieved successfully.' })
-  async findAllBySeller(@CurrentUser() user: AuthUser) {
-    return this.productsService.findAllBySeller(user.sub);
-  }
-
-  @Patch('products/:id')
+  @Patch(':id')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('FARMER', 'FPO')
@@ -57,7 +61,7 @@ export class ProductsController {
     return this.productsService.update(user.sub, id, updateProductDto);
   }
 
-  @Delete('products/:id')
+  @Delete(':id')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('FARMER', 'FPO')
@@ -70,7 +74,29 @@ export class ProductsController {
     return this.productsService.remove(user.sub, id);
   }
 
-  @Post('products/:id/images')
+  // ==========================================
+  // INVENTORY MANAGEMENT
+  // ==========================================
+
+  @Patch(':id/inventory')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('FARMER', 'FPO')
+  @ApiOperation({ summary: 'Update product inventory (Seller only, must own product)' })
+  @ApiResponse({ status: 200, description: 'Product inventory updated successfully.' })
+  async updateInventory(
+    @CurrentUser() user: AuthUser,
+    @Param('id') id: string,
+    @Body() updateInventoryDto: UpdateInventoryDto,
+  ) {
+    return this.productsService.updateInventory(user.sub, id, updateInventoryDto);
+  }
+
+  // ==========================================
+  // PRODUCT IMAGES
+  // ==========================================
+
+  @Post(':id/images')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('FARMER', 'FPO')
@@ -87,7 +113,13 @@ export class ProductsController {
       },
     },
   })
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(
+    FileInterceptor('file', {
+      limits: {
+        fileSize: 5 * 1024 * 1024, // 5 MB
+      },
+    }),
+  )
   async uploadImage(
     @CurrentUser() user: AuthUser,
     @Param('id') id: string,
@@ -99,11 +131,26 @@ export class ProductsController {
     return this.productsService.uploadImage(user.sub, id, file);
   }
 
+  @Delete(':id/images/:imageId')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('FARMER', 'FPO')
+  @ApiOperation({ summary: 'Delete an individual product image (Seller only, must own product)' })
+  @ApiResponse({ status: 200, description: 'Product image deleted successfully.' })
+  async removeImage(
+    @CurrentUser() user: AuthUser,
+    @Param('id') id: string,
+    @Param('imageId') imageId: string,
+  ) {
+    return this.productsService.removeImage(user.sub, id, imageId);
+  }
+
   // ==========================================
   // PUBLIC PRODUCT READ
   // ==========================================
 
-  @Get('products/:id')
+  @Public()
+  @Get(':id')
   @ApiOperation({ summary: 'Get a product by ID (Public read)' })
   @ApiResponse({ status: 200, description: 'Product retrieved successfully.' })
   @ApiResponse({ status: 404, description: 'Product not found.' })

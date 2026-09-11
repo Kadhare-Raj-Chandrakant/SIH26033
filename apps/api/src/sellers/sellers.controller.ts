@@ -12,7 +12,7 @@ import type { AuthUser } from '../common/decorators/current-user.decorator.js';
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles('FARMER', 'FPO') // Only Sellers can access these endpoints
-@Controller('api/v1/sellers')
+@Controller(['sellers', 'seller'])
 export class SellersController {
   constructor(private readonly sellersService: SellersService) {}
 

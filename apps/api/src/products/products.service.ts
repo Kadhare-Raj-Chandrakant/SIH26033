@@ -2,6 +2,7 @@ import { Injectable, NotFoundException, ForbiddenException, BadRequestException 
 import { PrismaService } from '../prisma/prisma.service.js';
 import { CreateProductDto } from './dto/create-product.dto.js';
 import { UpdateProductDto } from './dto/update-product.dto.js';
+import { UpdateInventoryDto } from './dto/update-inventory.dto.js';
 import { InventoryService } from '../inventory/inventory.service.js';
 import { CloudinaryService } from '../media/cloudinary.service.js';
 import { Prisma } from '@prisma/client';
@@ -120,11 +121,86 @@ export class ProductsService {
       if (!category) throw new BadRequestException('Invalid category ID');
     }
 
+    // Restrict seller-controlled status transitions
+    if (updateProductDto.status && updateProductDto.status !== product.status) {
+      const newStatus = updateProductDto.status;
+      if (newStatus === ('REJECTED' as any)) {
+        throw new BadRequestException('Sellers are not permitted to set status to REJECTED');
+      }
+      if (product.status === 'REJECTED') {
+        throw new BadRequestException('Cannot modify status of a REJECTED product');
+      }
+      if (product.status === 'ARCHIVED') {
+        throw new BadRequestException('Cannot modify status of an ARCHIVED product');
+      }
+
+      // Allowed seller transitions:
+      // ACTIVE <-> OUT_OF_STOCK
+      // ACTIVE -> ARCHIVED
+      // OUT_OF_STOCK -> ARCHIVED
+      const validFromActive = ['OUT_OF_STOCK', 'ARCHIVED'];
+      const validFromOutOfStock = ['ACTIVE', 'ARCHIVED'];
+
+      if (product.status === 'ACTIVE' && !validFromActive.includes(newStatus)) {
+        throw new BadRequestException(`Invalid status transition from ACTIVE to ${newStatus}`);
+      }
+      if (product.status === 'OUT_OF_STOCK' && !validFromOutOfStock.includes(newStatus)) {
+        throw new BadRequestException(`Invalid status transition from OUT_OF_STOCK to ${newStatus}`);
+      }
+    }
+
     return this.prisma.product.update({
       where: { id },
       data: {
         ...updateProductDto,
         price: updateProductDto.price ? new Prisma.Decimal(updateProductDto.price) : undefined,
+      },
+    });
+  }
+
+  async updateInventory(userId: string, productId: string, updateInventoryDto: UpdateInventoryDto) {
+    const sellerId = await this.getSellerProfileId(userId);
+
+    const product = await this.prisma.product.findUnique({
+      where: { id: productId },
+      include: { inventory: true },
+    });
+
+    if (!product) {
+      throw new NotFoundException('Product not found');
+    }
+
+    if (product.sellerId !== sellerId) {
+      throw new ForbiddenException('You do not have permission to modify inventory for this product');
+    }
+
+    if (!product.inventory) {
+      throw new NotFoundException('Inventory record not found for this product');
+    }
+
+    const currentAvailable = Number(product.inventory.availableQuantity);
+    const currentReserved = Number(product.inventory.reservedQuantity);
+
+    const newAvailable = updateInventoryDto.availableQuantity !== undefined ? updateInventoryDto.availableQuantity : currentAvailable;
+    const newReserved = updateInventoryDto.reservedQuantity !== undefined ? updateInventoryDto.reservedQuantity : currentReserved;
+
+    if (newAvailable < 0) {
+      throw new BadRequestException('Available quantity cannot be negative');
+    }
+
+    if (newReserved < 0) {
+      throw new BadRequestException('Reserved quantity cannot be negative');
+    }
+
+    if (newReserved > newAvailable) {
+      throw new BadRequestException('Reserved quantity cannot exceed available quantity');
+    }
+
+    return this.prisma.inventory.update({
+      where: { productId },
+      data: {
+        availableQuantity: new Prisma.Decimal(newAvailable),
+        reservedQuantity: new Prisma.Decimal(newReserved),
       },
     });
   }
@@ -144,15 +220,6 @@ export class ProductsService {
     if (product.sellerId !== sellerId) {
       throw new ForbiddenException('You do not have permission to delete this product');
     }
-
-    // We only archive instead of hard delete if there might be orders. 
-    // In MVP, we can delete or set to ARCHIVED. Let's do a hard delete inside transaction, 
-    // cascading takes care of inventory, but we should handle images.
-    
-    // If it has order items, it might throw a foreign key error due to restricted referential actions.
-    // It's safer to just set status = ARCHIVED if we don't want to break order history.
-    // But as requested, we implement DELETE. Prisma schema doesn't specify cascade for orders, 
-    // so Prisma will throw if orders exist. This is correct behavior.
 
     return this.prisma.$transaction(async (tx) => {
       // 1. Delete Inventory
@@ -174,6 +241,22 @@ export class ProductsService {
   }
 
   async uploadImage(userId: string, productId: string, file: Express.Multer.File) {
+    if (!file) {
+      throw new BadRequestException('Image file is required');
+    }
+
+    const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    if (!allowedMimeTypes.includes(file.mimetype)) {
+      throw new BadRequestException(
+        `Unsupported file type '${file.mimetype}'. Allowed types: image/jpeg, image/png, image/webp`,
+      );
+    }
+
+    const maxFileSize = 5 * 1024 * 1024; // 5 MB
+    if (file.size > maxFileSize) {
+      throw new BadRequestException('File size exceeds 5MB limit');
+    }
+
     const sellerId = await this.getSellerProfileId(userId);
 
     const product = await this.prisma.product.findUnique({
@@ -197,5 +280,43 @@ export class ProductsService {
         url: uploadResult.secure_url,
       },
     });
+  }
+
+  async removeImage(userId: string, productId: string, imageId: string) {
+    const sellerId = await this.getSellerProfileId(userId);
+
+    const product = await this.prisma.product.findUnique({
+      where: { id: productId },
+    });
+
+    if (!product) {
+      throw new NotFoundException('Product not found');
+    }
+
+    if (product.sellerId !== sellerId) {
+      throw new ForbiddenException('You do not have permission to modify this product');
+    }
+
+    const image = await this.prisma.productImage.findUnique({
+      where: { id: imageId },
+    });
+
+    if (!image) {
+      throw new NotFoundException('Product image not found');
+    }
+
+    if (image.productId !== productId) {
+      throw new BadRequestException('Image does not belong to the specified product');
+    }
+
+    await this.prisma.productImage.delete({
+      where: { id: imageId },
+    });
+
+    if (image.cloudinaryId) {
+      this.cloudinaryService.deleteImage(image.cloudinaryId).catch(() => {});
+    }
+
+    return { success: true, message: 'Product image deleted successfully' };
   }
 }

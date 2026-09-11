@@ -21,6 +21,7 @@ describe('SellersController (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
+    app.setGlobalPrefix('api/v1');
     app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
     await app.init();
 
@@ -101,6 +102,16 @@ describe('SellersController (e2e)', () => {
       expect(res.body).toBeDefined();
       expect(res.body.sellerType).toBe('FARMER');
       expect(res.body.businessName).toBe('Green Farm');
+    });
+
+    it('should return seller profile via singular /api/v1/seller/profile', async () => {
+      const res = await request(app.getHttpServer())
+        .get('/api/v1/seller/profile')
+        .set('Authorization', `Bearer ${farmerToken}`)
+        .expect(200);
+
+      expect(res.body).toBeDefined();
+      expect(res.body.sellerType).toBe('FARMER');
     });
 
     it('should return seller profile for FPO', async () => {
