@@ -27,8 +27,10 @@ out/
 # ==============================
 # IDE / Editor
 # ==============================
-.vscode/
+.vscode/*
+!.vscode/settings.json
 .idea/
+.serena/
 *.swp
 *.swo
 *~
