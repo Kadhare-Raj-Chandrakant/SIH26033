@@ -1,0 +1,98 @@
+{
+  "model_name": "demand_forecaster_baseline",
+  "model_version": "1.0.0",
+  "created_at": "2026-09-11T10:27:23.041480+00:00",
+  "algorithm": "RandomForestRegressor",
+  "hyperparameters": {
+    "n_estimators": 120,
+    "max_depth": 14,
+    "min_samples_split": 5,
+    "min_samples_leaf": 3,
+    "random_state": 42
+  },
+  "training_dataset_version": "market_train_v1",
+  "data_split_strategy": "chronological_time_split (70% train / 15% val / 15% test)",
+  "train_rows": 8048,
+  "test_rows": 1734,
+  "target_variable": "arrivals",
+  "target_description": "APMC mandi arrival quantity in Metric Tonnes (empirical proxy for market absorption / physical trading demand)",
+  "features": [
+    "commodity_cat",
+    "market_cat",
+    "month",
+    "day_of_week",
+    "quarter",
+    "is_weekend",
+    "sin_month",
+    "cos_month",
+    "sin_day_of_year",
+    "cos_day_of_year",
+    "arrivals_lag_1",
+    "arrivals_lag_7",
+    "arrivals_lag_14",
+    "arrivals_rolling_mean_7",
+    "arrivals_rolling_mean_30",
+    "price_lag_1",
+    "price_rolling_mean_7",
+    "rainfall_sum_7d"
+  ],
+  "feature_importances": {
+    "arrivals_rolling_mean_7": 0.8817,
+    "sin_day_of_year": 0.0158,
+    "arrivals_rolling_mean_30": 0.0151,
+    "arrivals_lag_1": 0.0131,
+    "arrivals_lag_14": 0.0131,
+    "price_lag_1": 0.0119,
+    "arrivals_lag_7": 0.0108,
+    "price_rolling_mean_7": 0.0105,
+    "cos_day_of_year": 0.008,
+    "day_of_week": 0.0047,
+    "rainfall_sum_7d": 0.0044,
+    "market_cat": 0.0036,
+    "commodity_cat": 0.0023,
+    "month": 0.0021,
+    "sin_month": 0.0014,
+    "cos_month": 0.0007,
+    "quarter": 0.0005,
+    "is_weekend": 0.0004
+  },
+  "metrics": {
+    "train": {
+      "mae": 299.0125419493499,
+      "rmse": 423.81584302153675,
+      "mape_percent": 10.391726563699386
+    },
+    "validation": {
+      "mae": 477.46324914167985,
+      "rmse": 692.6484514916062,
+      "mape_percent": 16.001120915543883
+    },
+    "test": {
+      "mae": 471.0033356355725,
+      "rmse": 642.01675941806,
+      "mape_percent": 15.924440454350094
+    }
+  },
+  "commodity_mapping": {
+    "Potato": 1,
+    "Tomato": 3,
+    "Onion": 0,
+    "Wheat": 4,
+    "Rice": 2
+  },
+  "market_mapping": {
+    "Agra": 0,
+    "Nashik": 6,
+    "Lasalgaon": 4,
+    "Kolar": 3,
+    "Hubballi": 1,
+    "Ludhiana": 5,
+    "Khanna": 2,
+    "Pune": 7
+  },
+  "known_limitations": [
+    "Mandi arrivals proxy physical wholesale absorption and supply liquidity rather than unmet end-consumer demand",
+    "Relies on at least 14 days of historical arrival lags for optimal accuracy",
+    "Severe unseasonal meteorological anomalies may cause localized deviations"
+  ]
+}

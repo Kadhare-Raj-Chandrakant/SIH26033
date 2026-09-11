@@ -70,6 +70,12 @@ venv/
 *.egg-info/
 .eggs/
 *.egg
+.pytest_cache/
+*.joblib
+services/ai/data/processed/
+services/ai/data/splits/
+services/ai/data/feedback_logs.jsonl
+!services/ai/artifacts/**/metadata.json
 
 # ==============================
 # Prisma

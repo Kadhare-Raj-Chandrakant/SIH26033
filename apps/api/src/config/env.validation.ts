@@ -30,4 +30,7 @@ export const envValidationSchema = Joi.object({
   CLOUDINARY_API_KEY: Joi.string().optional(),
   CLOUDINARY_API_SECRET: Joi.string().optional(),
   LOGISTICS_PROVIDER: Joi.string().default('mock'),
+  AI_SERVICE_URL: Joi.string().default('http://localhost:8080'),
+  AI_TIMEOUT_MS: Joi.number().default(5000),
+  AI_INTERNAL_KEY: Joi.string().optional(),
 });

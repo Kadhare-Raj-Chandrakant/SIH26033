@@ -401,3 +401,25 @@ model ShipmentTrackingEvent {
   @@index([occurredAt])
   @@unique([shipmentId, providerEventId])
 }
+
+// -----------------------------------------------------------------------------
+// AI / ML FOUNDATION DOMAIN
+// -----------------------------------------------------------------------------
+
+model AiPredictionLog {
+  id               String   @id @default(uuid())
+  modelName        String   // e.g. "price_predictor_baseline", "demand_forecaster_baseline", "crop_recommender_baseline"
+  modelVersion     String   // e.g. "1.0.0"
+  userId           String?  // Optional user/actor who invoked or received prediction
+  inputFeatures    Json     // Key-value map of features used
+  predictionOutput Json     // Model response (price, bounds, demand, recommendations)
+  actualOutcome    Json?    // Ground-truth transaction outcome recorded after fulfillment
+  userDecision     String?  // Action taken by user: "ACCEPTED", "OVERRIDDEN", "REJECTED"
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([modelName, modelVersion])
+  @@index([userId])
+  @@index([createdAt])
+}
+
