@@ -1,8 +1,16 @@
 import { NestFactory } from '@nestjs/core';
+import { ValidationPipe } from '@nestjs/common';
+import helmet from 'helmet';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module.js';
+import { AllExceptionsFilter } from './common/filters/all-exceptions.filter.js';
+import { TransformInterceptor } from './common/interceptors/transform.interceptor.js';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  // Security: HTTP headers
+  app.use(helmet());
 
   // Global API prefix
   app.setGlobalPrefix('api/v1');
@@ -13,9 +21,33 @@ async function bootstrap() {
     credentials: true,
   });
 
+  // Global Validation
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true, // Strip unknown properties
+      transform: true, // Automatically transform payloads to DTO instances
+      forbidNonWhitelisted: true, // Throw errors if unknown properties are present
+    }),
+  );
+
+  // Global Interceptors & Filters
+  app.useGlobalInterceptors(new TransformInterceptor());
+  app.useGlobalFilters(new AllExceptionsFilter());
+
+  // Swagger API Documentation
+  const config = new DocumentBuilder()
+    .setTitle('SIH26033 API')
+    .setDescription('The core backend API for the SIH26033 platform')
+    .setVersion('1.0')
+    .addBearerAuth() // Prepare for JWT
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api/docs', app, document);
+
   const port = process.env.API_PORT ?? 4000;
   await app.listen(port);
   console.log(`🚀 API running on http://localhost:${port}/api/v1`);
+  console.log(`📚 API Docs running on http://localhost:${port}/api/docs`);
 }
 await bootstrap();
 
