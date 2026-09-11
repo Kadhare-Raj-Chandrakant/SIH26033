@@ -13,6 +13,7 @@ import {
 export class MockLogisticsProvider implements LogisticsProviderAdapter {
   readonly providerName = 'MOCK_LOGISTICS';
   private readonly logger = new Logger(MockLogisticsProvider.name);
+  private readonly shipmentsByOrder = new Map<string, ShipmentResult>();
 
   async createShipment(payload: CreateShipmentPayload): Promise<ShipmentResult> {
     this.logger.log(`[MockLogisticsProvider] createShipment called for order ${payload.orderNumber}`);
@@ -27,6 +28,15 @@ export class MockLogisticsProvider implements LogisticsProviderAdapter {
       );
     }
 
+    // Check idempotency: if shipment was already created for this key/order, return existing record
+    const idempotencyKey = payload.idempotencyKey || payload.orderNumber;
+    if (this.shipmentsByOrder.has(idempotencyKey)) {
+      this.logger.log(
+        `[MockLogisticsProvider] Idempotent retry detected for key ${idempotencyKey}, returning existing consignment`,
+      );
+      return this.shipmentsByOrder.get(idempotencyKey)!;
+    }
+
     const cleanOrderNumber = payload.orderNumber.replace(/[^A-Za-z0-9]/g, '');
     const providerShipmentId = `MOCK-SHP-${cleanOrderNumber}`;
     const trackingNumber = `TRK-AGRI-${cleanOrderNumber}`;
@@ -34,13 +44,16 @@ export class MockLogisticsProvider implements LogisticsProviderAdapter {
     // Estimated delivery in 3 business days
     const estimatedDeliveryAt = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000);
 
-    return {
+    const result: ShipmentResult = {
       provider: this.providerName,
       providerShipmentId,
       trackingNumber,
       status: ShipmentStatus.PICKED_UP,
       estimatedDeliveryAt,
     };
+
+    this.shipmentsByOrder.set(idempotencyKey, result);
+    return result;
   }
 
   async getShipmentStatus(
@@ -95,5 +108,9 @@ export class MockLogisticsProvider implements LogisticsProviderAdapter {
       success: true,
       message: `Shipment ${providerShipmentId} successfully cancelled with mock carrier.`,
     };
+  }
+
+  clearMockShipments(): void {
+    this.shipmentsByOrder.clear();
   }
 }

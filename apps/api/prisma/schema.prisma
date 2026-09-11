@@ -369,8 +369,8 @@ model Shipment {
   orderId             String                 @unique
   order               Order                  @relation(fields: [orderId], references: [id], onDelete: Cascade)
   provider            String                 // e.g. "MOCK_LOGISTICS"
-  providerShipmentId  String
-  trackingNumber      String                 @unique
+  providerShipmentId  String?
+  trackingNumber      String?                @unique
   status              ShipmentStatus         @default(CREATED)
   estimatedDeliveryAt DateTime?
   shippedAt           DateTime?

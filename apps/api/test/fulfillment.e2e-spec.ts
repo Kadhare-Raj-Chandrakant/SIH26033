@@ -489,7 +489,11 @@ describe('Logistics, Order Fulfillment & Tracking (e2e)', () => {
         include: { shipment: true },
       });
       expect(dbOrder!.status).toBe(OrderStatus.READY_FOR_SHIPMENT);
-      expect(dbOrder!.shipment).toBeNull();
+      // Local shipment is marked FAILED with zero fake tracking data
+      expect(dbOrder!.shipment).toBeDefined();
+      expect(dbOrder!.shipment!.status).toBe('FAILED');
+      expect(dbOrder!.shipment!.trackingNumber).toBeNull();
+      expect(dbOrder!.shipment!.providerShipmentId).toBeNull();
     });
 
     it('should allow subsequent successful ship request after failure resolved', async () => {
@@ -507,6 +511,8 @@ describe('Logistics, Order Fulfillment & Tracking (e2e)', () => {
       });
       expect(dbOrder!.status).toBe(OrderStatus.SHIPPED);
       expect(dbOrder!.shipment).toBeDefined();
+      expect(dbOrder!.shipment!.status).toBe('PICKED_UP');
+      expect(dbOrder!.shipment!.trackingNumber).toMatch(/^TRK-AGRI-/);
     });
   });
 
@@ -554,6 +560,78 @@ describe('Logistics, Order Fulfillment & Tracking (e2e)', () => {
         where: { id: orderId },
       });
       expect(dbOrder!.status).toBe(OrderStatus.SHIPPED);
+    });
+  });
+
+  describe('7. Local Persistence Failure after Provider Success & Safe Reconciliation', () => {
+    let orderId: string;
+    let capturedProviderShipmentId: string;
+    let capturedTrackingNumber: string;
+
+    beforeAll(async () => {
+      orderId = await createTestOrder();
+      await request(app.getHttpServer())
+        .post(`/api/v1/seller/orders/${orderId}/confirm`)
+        .set('Authorization', `Bearer ${farmer1Token}`);
+      await request(app.getHttpServer())
+        .post(`/api/v1/seller/orders/${orderId}/processing`)
+        .set('Authorization', `Bearer ${farmer1Token}`);
+      await request(app.getHttpServer())
+        .post(`/api/v1/seller/orders/${orderId}/ready-for-shipment`)
+        .set('Authorization', `Bearer ${farmer1Token}`);
+    });
+
+    it('should fail with 500 when persistence fails, retain carrier reference, and keep order READY_FOR_SHIPMENT', async () => {
+      const res = await request(app.getHttpServer())
+        .post(`/api/v1/seller/orders/${orderId}/ship`)
+        .set('Authorization', `Bearer ${farmer1Token}`)
+        .send({ simulatePersistenceFailure: true });
+
+      expect(res.status).toBe(500);
+      expect(res.body.message).toMatch(/Logistics carrier dispatch succeeded with reference/);
+      expect(res.body.message).toMatch(/Please retry the request to reconcile/);
+
+      // Verify order has NOT been marked SHIPPED
+      const dbOrder = await prisma.order.findUnique({
+        where: { id: orderId },
+        include: { shipment: true },
+      });
+      expect(dbOrder!.status).toBe(OrderStatus.READY_FOR_SHIPMENT);
+
+      // Verify carrier reference was preserved on the staged shipment record
+      expect(dbOrder!.shipment).toBeDefined();
+      expect(dbOrder!.shipment!.providerShipmentId).toMatch(/^MOCK-SHP-/);
+      expect(dbOrder!.shipment!.trackingNumber).toMatch(/^TRK-AGRI-/);
+      expect(dbOrder!.shipment!.status).toBe('CREATED');
+
+      capturedProviderShipmentId = dbOrder!.shipment!.providerShipmentId!;
+      capturedTrackingNumber = dbOrder!.shipment!.trackingNumber!;
+    });
+
+    it('should safely reconcile without re-calling carrier on retry, advancing order to SHIPPED', async () => {
+      const res = await request(app.getHttpServer())
+        .post(`/api/v1/seller/orders/${orderId}/ship`)
+        .set('Authorization', `Bearer ${farmer1Token}`)
+        .send({});
+
+      expect(res.status).toBe(201);
+      expect(res.body.data.status).toBe('SHIPPED');
+      expect(res.body.data.shipment.providerShipmentId).toBe(capturedProviderShipmentId);
+      expect(res.body.data.shipment.trackingNumber).toBe(capturedTrackingNumber);
+      expect(res.body.data.shipment.status).toBe('PICKED_UP');
+
+      // Database verification
+      const dbOrder = await prisma.order.findUnique({
+        where: { id: orderId },
+        include: { shipment: true },
+      });
+      expect(dbOrder!.status).toBe(OrderStatus.SHIPPED);
+      expect(dbOrder!.shipment!.status).toBe('PICKED_UP');
+
+      const shipments = await prisma.shipment.findMany({
+        where: { orderId },
+      });
+      expect(shipments.length).toBe(1);
     });
   });
 });

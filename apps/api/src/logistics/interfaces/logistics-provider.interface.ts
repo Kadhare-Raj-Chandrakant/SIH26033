@@ -22,6 +22,7 @@ export interface CreateShipmentPayload {
   pickupAddress: ShipmentAddress;
   deliveryAddress: ShipmentAddress;
   items: ShipmentItem[];
+  idempotencyKey?: string;
   simulateFailure?: boolean;
 }
 

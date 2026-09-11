@@ -32,6 +32,10 @@ export class LogisticsService {
     return this.adapter.providerName;
   }
 
+  getProviderName(): string {
+    return this.adapter.providerName;
+  }
+
   /**
    * Dispatch a shipment creation request to the active logistics provider adapter
    */

@@ -11,6 +11,14 @@ export class ShipOrderDto {
   simulateFailure?: boolean;
 
   @ApiPropertyOptional({
+    description: 'Simulate database persistence failure after successful carrier dispatch for reconciliation testing',
+    example: false,
+  })
+  @IsOptional()
+  @IsBoolean()
+  simulatePersistenceFailure?: boolean;
+
+  @ApiPropertyOptional({
     description: 'Optional carrier pickup instructions or packaging notes',
     example: 'Handle with care - fresh produce crates',
   })

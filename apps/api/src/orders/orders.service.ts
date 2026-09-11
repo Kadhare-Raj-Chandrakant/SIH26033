@@ -3,6 +3,8 @@ import {
   NotFoundException,
   BadRequestException,
   ForbiddenException,
+  InternalServerErrorException,
+  Logger,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { CreateOrderDto } from './dto/create-order.dto.js';
@@ -13,6 +15,8 @@ import { LogisticsService } from '../logistics/logistics.service.js';
 
 @Injectable()
 export class OrdersService {
+  private readonly logger = new Logger(OrdersService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly logisticsService: LogisticsService,
@@ -755,7 +759,17 @@ export class OrdersService {
   /**
    * Seller fulfillment: Dispatch order via logistics provider adapter (READY_FOR_SHIPMENT -> SHIPPED)
    */
+  /**
+   * Seller fulfillment: Dispatch order via logistics provider adapter (READY_FOR_SHIPMENT -> SHIPPED)
+   *
+   * Decoupled transaction boundary architecture:
+   * Phase 1: Concurrency check & staging in short DB transaction (commits before external network call).
+   * Phase 2: External provider network call completely OUTSIDE any PostgreSQL transaction.
+   * Phase 3: Short DB transaction to persist provider response, advance order to SHIPPED, and notify buyer.
+   * Reconciliation: Idempotently retries if provider created consignment but local persistence failed.
+   */
   async shipOrder(userId: string, orderId: string, dto?: ShipOrderDto) {
+    // 1. Ownership & order state validation
     const seller = await this.resolveSellerProfile(userId);
     const order = await this.prisma.order.findFirst({
       where: { id: orderId, sellerId: seller.id },
@@ -777,15 +791,37 @@ export class OrdersService {
       );
     }
 
-    if (order.shipment) {
-      throw new BadRequestException('Shipment has already been created for this order.');
+    // Check if shipment already exists
+    let existingShipment = order.shipment;
+    let providerShipmentIdAlreadyCreated: string | null = null;
+    let trackingNumberAlreadyCreated: string | null = null;
+
+    if (existingShipment) {
+      if (
+        existingShipment.status === ShipmentStatus.DELIVERED ||
+        existingShipment.status === ShipmentStatus.IN_TRANSIT ||
+        existingShipment.status === ShipmentStatus.OUT_FOR_DELIVERY ||
+        existingShipment.status === ShipmentStatus.PICKED_UP
+      ) {
+        throw new BadRequestException('Shipment has already been created for this order.');
+      }
+
+      // Check if a previous attempt successfully received carrier details but failed Phase 3 persistence
+      if (existingShipment.providerShipmentId && existingShipment.trackingNumber) {
+        this.logger.log(
+          `Reconciliation mode activated for order ${order.id}: found pre-existing carrier reference ${existingShipment.providerShipmentId}`,
+        );
+        providerShipmentIdAlreadyCreated = existingShipment.providerShipmentId;
+        trackingNumberAlreadyCreated = existingShipment.trackingNumber;
+      }
     }
 
-    // 1. Prepare logistics payload
+    // 2. Prepare logistics payload
     const shippingAddress = order.shippingAddressSnapshot as Record<string, any>;
     const payload = {
       orderId: order.id,
       orderNumber: order.orderNumber,
+      idempotencyKey: `SHIP-${order.id}`,
       pickupAddress: {
         name: order.seller.businessName || 'Farmer Producer Origin',
         phone: order.seller.user?.mobile || '9999999999',
@@ -812,74 +848,183 @@ export class OrdersService {
       simulateFailure: dto?.simulateFailure,
     };
 
-    // 2. Dispatch to Logistics Carrier via Provider Adapter
-    // If this throws (e.g. BadGatewayException), DB state remains untouched and order stays READY_FOR_SHIPMENT
-    const shipmentResult = await this.logisticsService.createShipment(payload);
+    // =========================================================================
+    // PHASE 1: Staging & Concurrency Lock via Short PostgreSQL Transaction
+    // (Commits immediately to release DB locks before external network call)
+    // =========================================================================
+    if (!existingShipment) {
+      try {
+        existingShipment = await this.prisma.$transaction(async (tx) => {
+          const freshOrder = await tx.order.findUnique({
+            where: { id: order.id },
+            include: { shipment: true },
+          });
 
-    // 3. Atomically persist shipment, initial tracking event, order status, and notification
-    return await this.prisma.$transaction(async (tx) => {
-      // Re-verify order state inside transaction to prevent concurrency / race condition duplicates
-      const freshOrder = await tx.order.findUnique({
-        where: { id: order.id },
-        include: { shipment: true },
+          if (!freshOrder || freshOrder.status !== OrderStatus.READY_FOR_SHIPMENT) {
+            throw new BadRequestException('Order status is no longer READY_FOR_SHIPMENT.');
+          }
+
+          if (freshOrder.shipment) {
+            throw new BadRequestException('Shipment has already been initiated for this order.');
+          }
+
+          return await tx.shipment.create({
+            data: {
+              orderId: order.id,
+              provider: this.logisticsService.getProviderName(),
+              status: ShipmentStatus.CREATED,
+            },
+          });
+        });
+      } catch (err: any) {
+        if (err instanceof BadRequestException) {
+          throw err;
+        }
+        // Unique constraint violation on Shipment.orderId or parallel collision
+        if (err?.code === 'P2002') {
+          throw new BadRequestException(
+            'Concurrent dispatch detected: A shipment is already being processed for this order.',
+          );
+        }
+        throw err;
+      }
+    } else if (existingShipment.status === ShipmentStatus.FAILED && !providerShipmentIdAlreadyCreated) {
+      // Reset failed attempt to CREATED in a short update
+      existingShipment = await this.prisma.shipment.update({
+        where: { id: existingShipment.id },
+        data: { status: ShipmentStatus.CREATED, updatedAt: new Date() },
       });
+    }
 
-      if (!freshOrder || freshOrder.status !== OrderStatus.READY_FOR_SHIPMENT || freshOrder.shipment) {
-        throw new BadRequestException(
-          'Order status has changed or a shipment was already created in parallel.',
+    // =========================================================================
+    // PHASE 2: External Carrier Call (OUTSIDE PostgreSQL Transaction)
+    // =========================================================================
+    let shipmentResult: {
+      provider: string;
+      providerShipmentId: string;
+      trackingNumber: string;
+      status: ShipmentStatus;
+      estimatedDeliveryAt: Date;
+    };
+
+    if (providerShipmentIdAlreadyCreated && trackingNumberAlreadyCreated) {
+      // Consignment was already created on the carrier in prior attempt; reuse it
+      shipmentResult = {
+        provider: existingShipment.provider || this.logisticsService.getProviderName(),
+        providerShipmentId: providerShipmentIdAlreadyCreated,
+        trackingNumber: trackingNumberAlreadyCreated,
+        status: ShipmentStatus.PICKED_UP,
+        estimatedDeliveryAt:
+          existingShipment.estimatedDeliveryAt || new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+      };
+    } else {
+      try {
+        shipmentResult = await this.logisticsService.createShipment(payload);
+      } catch (providerError: any) {
+        // Provider creation failed!
+        // Mark local shipment as FAILED so seller can safely retry; keep Order in READY_FOR_SHIPMENT.
+        this.logger.warn(
+          `External logistics carrier dispatch failed for order ${order.id}: ${providerError.message}`,
         );
+
+        try {
+          await this.prisma.shipment.update({
+            where: { id: existingShipment.id },
+            data: { status: ShipmentStatus.FAILED },
+          });
+        } catch (updateErr: any) {
+          this.logger.error(`Failed to record FAILED status on shipment: ${updateErr.message}`);
+        }
+
+        throw providerError;
+      }
+    }
+
+    // =========================================================================
+    // PHASE 3: Persist Provider Response & Advance Order (Short DB Transaction)
+    // =========================================================================
+    try {
+      if (dto?.simulatePersistenceFailure) {
+        throw new Error('Simulated database persistence failure after carrier success');
       }
 
-      const shipment = await tx.shipment.create({
-        data: {
-          orderId: order.id,
-          provider: shipmentResult.provider,
-          providerShipmentId: shipmentResult.providerShipmentId,
-          trackingNumber: shipmentResult.trackingNumber,
-          status: shipmentResult.status,
-          estimatedDeliveryAt: shipmentResult.estimatedDeliveryAt,
-          shippedAt: new Date(),
-          events: {
-            create: {
-              status: shipmentResult.status,
-              location: `${payload.pickupAddress.city}, ${payload.pickupAddress.state}`,
-              message: `Shipment dispatched via ${shipmentResult.provider}. Consignment tracking number: ${shipmentResult.trackingNumber}`,
-              providerEventId: `INIT-${shipmentResult.providerShipmentId}`,
+      return await this.prisma.$transaction(async (tx) => {
+        const updatedShipment = await tx.shipment.update({
+          where: { id: existingShipment!.id },
+          data: {
+            provider: shipmentResult.provider,
+            providerShipmentId: shipmentResult.providerShipmentId,
+            trackingNumber: shipmentResult.trackingNumber,
+            status: shipmentResult.status,
+            estimatedDeliveryAt: shipmentResult.estimatedDeliveryAt,
+            shippedAt: new Date(),
+            events: {
+              create: {
+                status: shipmentResult.status,
+                location: `${payload.pickupAddress.city}, ${payload.pickupAddress.state}`,
+                message: `Shipment dispatched via ${shipmentResult.provider}. Consignment tracking number: ${shipmentResult.trackingNumber}`,
+                providerEventId: `INIT-${shipmentResult.providerShipmentId}`,
+              },
             },
           },
-        },
-        include: { events: true },
-      });
+          include: { events: true },
+        });
 
-      const updatedOrder = await tx.order.update({
-        where: { id: order.id },
-        data: { status: OrderStatus.SHIPPED },
-      });
+        const updatedOrder = await tx.order.update({
+          where: { id: order.id },
+          data: { status: OrderStatus.SHIPPED },
+        });
 
-      await tx.notification.create({
-        data: {
-          userId: order.buyer.userId,
-          type: NotificationType.ORDER_STATUS_UPDATED,
-          title: 'Order Dispatched',
-          message: `Your order ${order.orderNumber} has been dispatched! Tracking number: ${shipment.trackingNumber}`,
-        },
-      });
+        await tx.notification.create({
+          data: {
+            userId: order.buyer.userId,
+            type: NotificationType.ORDER_STATUS_UPDATED,
+            title: 'Order Dispatched',
+            message: `Your order ${order.orderNumber} has been dispatched! Tracking number: ${updatedShipment.trackingNumber}`,
+          },
+        });
 
-      return {
-        message: 'Order dispatched and shipment created successfully',
-        orderId: updatedOrder.id,
-        status: updatedOrder.status,
-        shipment: {
-          id: shipment.id,
-          provider: shipment.provider,
-          providerShipmentId: shipment.providerShipmentId,
-          trackingNumber: shipment.trackingNumber,
-          status: shipment.status,
-          estimatedDeliveryAt: shipment.estimatedDeliveryAt,
-          shippedAt: shipment.shippedAt,
-        },
-      };
-    });
+        return {
+          message: 'Order dispatched and shipment created successfully',
+          orderId: updatedOrder.id,
+          status: updatedOrder.status,
+          shipment: {
+            id: updatedShipment.id,
+            provider: updatedShipment.provider,
+            providerShipmentId: updatedShipment.providerShipmentId,
+            trackingNumber: updatedShipment.trackingNumber,
+            status: updatedShipment.status,
+            estimatedDeliveryAt: updatedShipment.estimatedDeliveryAt,
+            shippedAt: updatedShipment.shippedAt,
+          },
+        };
+      });
+    } catch (persistenceError: any) {
+      // CRITICAL RECONCILIATION CASE:
+      // Carrier created external consignment, but local database transaction failed!
+      this.logger.error(
+        `CRITICAL RECONCILIATION REQUIRED: Provider shipment created (${shipmentResult.providerShipmentId}, tracking: ${shipmentResult.trackingNumber}) but local persistence failed for order ${order.id}: ${persistenceError.message}`,
+      );
+
+      // Emergency preserve provider references on local shipment so they are NEVER lost
+      try {
+        await this.prisma.shipment.update({
+          where: { id: existingShipment.id },
+          data: {
+            providerShipmentId: shipmentResult.providerShipmentId,
+            trackingNumber: shipmentResult.trackingNumber,
+            status: ShipmentStatus.CREATED,
+          },
+        });
+      } catch (err: any) {
+        this.logger.error(`Failed to emergency-record provider references: ${err.message}`);
+      }
+
+      // DO NOT pretend operation succeeded! Order remains READY_FOR_SHIPMENT.
+      throw new InternalServerErrorException(
+        `Logistics carrier dispatch succeeded with reference ${shipmentResult.providerShipmentId}, but local order state could not be updated. Please retry the request to reconcile.`,
+      );
+    }
   }
 
   /**
@@ -907,8 +1052,8 @@ export class OrdersService {
       throw new NotFoundException('Order not found or you do not have permission to sync its shipment');
     }
 
-    if (!order.shipment) {
-      throw new BadRequestException('Order has no active shipment to synchronize.');
+    if (!order.shipment || !order.shipment.providerShipmentId) {
+      throw new BadRequestException('Order has no active or dispatched shipment to synchronize.');
     }
 
     // Query carrier for status

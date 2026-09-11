@@ -36,6 +36,7 @@ describe('OrdersService - Fulfillment & Tracking Unit Tests', () => {
 
     mockLogisticsService = {
       providerName: 'MOCK_LOGISTICS',
+      getProviderName: vi.fn(() => 'MOCK_LOGISTICS'),
       createShipment: vi.fn(),
       getShipmentStatus: vi.fn(),
       cancelShipment: vi.fn(),
@@ -188,10 +189,17 @@ describe('OrdersService - Fulfillment & Tracking Unit Tests', () => {
       shipment: null,
     };
 
-    it('should call logistics provider, create shipment record, and mark order SHIPPED', async () => {
+    it('should stage shipment, call logistics provider outside transaction, and advance order to SHIPPED', async () => {
       mockPrisma.sellerProfile.findUnique.mockResolvedValue(sampleSeller);
       mockPrisma.order.findFirst.mockResolvedValue(orderData);
       mockPrisma.order.findUnique.mockResolvedValue(orderData);
+
+      mockPrisma.shipment.create.mockResolvedValue({
+        id: 'ship-1',
+        orderId: 'order-1',
+        provider: 'MOCK_LOGISTICS',
+        status: ShipmentStatus.CREATED,
+      });
 
       mockLogisticsService.createShipment.mockResolvedValue({
         provider: 'MOCK_LOGISTICS',
@@ -201,7 +209,7 @@ describe('OrdersService - Fulfillment & Tracking Unit Tests', () => {
         estimatedDeliveryAt: new Date(),
       });
 
-      mockPrisma.shipment.create.mockResolvedValue({
+      mockPrisma.shipment.update.mockResolvedValue({
         id: 'ship-1',
         provider: 'MOCK_LOGISTICS',
         providerShipmentId: 'MOCK-1',
@@ -218,14 +226,123 @@ describe('OrdersService - Fulfillment & Tracking Unit Tests', () => {
 
       const result = await ordersService.shipOrder('user-seller-1', 'order-1');
 
-      expect(mockLogisticsService.createShipment).toHaveBeenCalled();
       expect(mockPrisma.shipment.create).toHaveBeenCalled();
+      expect(mockLogisticsService.createShipment).toHaveBeenCalled();
+      expect(mockPrisma.shipment.update).toHaveBeenCalled();
       expect(mockPrisma.order.update).toHaveBeenCalledWith({
         where: { id: 'order-1' },
         data: { status: OrderStatus.SHIPPED },
       });
       expect(result.status).toBe(OrderStatus.SHIPPED);
       expect(result.shipment.trackingNumber).toBe('TRK-001');
+    });
+
+    it('should mark shipment FAILED and keep order READY_FOR_SHIPMENT if provider fails', async () => {
+      mockPrisma.sellerProfile.findUnique.mockResolvedValue(sampleSeller);
+      mockPrisma.order.findFirst.mockResolvedValue(orderData);
+      mockPrisma.order.findUnique.mockResolvedValue(orderData);
+
+      mockPrisma.shipment.create.mockResolvedValue({
+        id: 'ship-1',
+        orderId: 'order-1',
+        provider: 'MOCK_LOGISTICS',
+        status: ShipmentStatus.CREATED,
+      });
+
+      mockLogisticsService.createShipment.mockRejectedValue(
+        new Error('Carrier network unreachable'),
+      );
+
+      mockPrisma.shipment.update.mockResolvedValue({
+        id: 'ship-1',
+        status: ShipmentStatus.FAILED,
+      });
+
+      await expect(ordersService.shipOrder('user-seller-1', 'order-1')).rejects.toThrow(
+        'Carrier network unreachable',
+      );
+
+      expect(mockPrisma.shipment.update).toHaveBeenCalledWith({
+        where: { id: 'ship-1' },
+        data: { status: ShipmentStatus.FAILED },
+      });
+    });
+
+    it('should emergency-record provider reference and throw 500 if Phase 3 persistence fails', async () => {
+      mockPrisma.sellerProfile.findUnique.mockResolvedValue(sampleSeller);
+      mockPrisma.order.findFirst.mockResolvedValue(orderData);
+      mockPrisma.order.findUnique.mockResolvedValue(orderData);
+
+      mockPrisma.shipment.create.mockResolvedValue({
+        id: 'ship-1',
+        orderId: 'order-1',
+        provider: 'MOCK_LOGISTICS',
+        status: ShipmentStatus.CREATED,
+      });
+
+      mockLogisticsService.createShipment.mockResolvedValue({
+        provider: 'MOCK_LOGISTICS',
+        providerShipmentId: 'MOCK-1',
+        trackingNumber: 'TRK-001',
+        status: ShipmentStatus.PICKED_UP,
+        estimatedDeliveryAt: new Date(),
+      });
+
+      // simulatePersistenceFailure: true
+      await expect(
+        ordersService.shipOrder('user-seller-1', 'order-1', { simulatePersistenceFailure: true }),
+      ).rejects.toThrow('Logistics carrier dispatch succeeded with reference MOCK-1');
+
+      // Emergency preserve provider reference was called
+      expect(mockPrisma.shipment.update).toHaveBeenCalledWith({
+        where: { id: 'ship-1' },
+        data: {
+          providerShipmentId: 'MOCK-1',
+          trackingNumber: 'TRK-001',
+          status: ShipmentStatus.CREATED,
+        },
+      });
+    });
+
+    it('should reconcile existing provider consignment without re-calling carrier on retry', async () => {
+      mockPrisma.sellerProfile.findUnique.mockResolvedValue(sampleSeller);
+      // Order already has a shipment with providerShipmentId (from prior failed persistence)
+      const reconciledOrderData = {
+        ...orderData,
+        shipment: {
+          id: 'ship-1',
+          orderId: 'order-1',
+          provider: 'MOCK_LOGISTICS',
+          providerShipmentId: 'MOCK-1',
+          trackingNumber: 'TRK-001',
+          status: ShipmentStatus.CREATED,
+        },
+      };
+      mockPrisma.order.findFirst.mockResolvedValue(reconciledOrderData);
+
+      mockPrisma.shipment.update.mockResolvedValue({
+        id: 'ship-1',
+        provider: 'MOCK_LOGISTICS',
+        providerShipmentId: 'MOCK-1',
+        trackingNumber: 'TRK-001',
+        status: ShipmentStatus.PICKED_UP,
+        estimatedDeliveryAt: new Date(),
+        shippedAt: new Date(),
+      });
+
+      mockPrisma.order.update.mockResolvedValue({
+        id: 'order-1',
+        status: OrderStatus.SHIPPED,
+      });
+
+      mockLogisticsService.createShipment.mockClear();
+
+      const result = await ordersService.shipOrder('user-seller-1', 'order-1');
+
+      // Provider was NOT called again!
+      expect(mockLogisticsService.createShipment).not.toHaveBeenCalled();
+      expect(result.status).toBe(OrderStatus.SHIPPED);
+      expect(result.shipment.providerShipmentId).toBe('MOCK-1');
     });
 
     it('should reject if order is not in READY_FOR_SHIPMENT status', async () => {
@@ -240,11 +357,11 @@ describe('OrdersService - Fulfillment & Tracking Unit Tests', () => {
       );
     });
 
-    it('should reject if order already has an active shipment', async () => {
+    it('should reject if order already has an active delivered/shipped shipment', async () => {
       mockPrisma.sellerProfile.findUnique.mockResolvedValue(sampleSeller);
       mockPrisma.order.findFirst.mockResolvedValue({
         ...orderData,
-        shipment: { id: 'existing-shipment' },
+        shipment: { id: 'existing-shipment', status: ShipmentStatus.PICKED_UP },
       });
 
       await expect(ordersService.shipOrder('user-seller-1', 'order-1')).rejects.toThrow(
