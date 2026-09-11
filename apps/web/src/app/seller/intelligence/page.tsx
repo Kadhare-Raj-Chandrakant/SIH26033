@@ -375,7 +375,7 @@ export default function SellerIntelligencePage() {
                   <h3 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
                     <span>Ranked Channel Comparison</span>
                     <span className="text-xs font-normal text-muted-foreground">
-                      (Evaluated across gross price, haulage logistics, fees & taxes)
+                      (Evaluated across gross price, estimated freight, fees & taxes)
                     </span>
                   </h3>
 
@@ -446,12 +446,12 @@ export default function SellerIntelligencePage() {
                                   <span>- Handling / Packaging:</span>
                                   <span>-₹{opt.handlingCost.toLocaleString('en-IN')}</span>
                                 </div>
-                                <div className="flex justify-between text-destructive">
-                                  <span>
-                                    {opt.channelType === 'MANDI' ? '- Mandi Cess / Tax:' : '- Platform Escrow Fee:'}
-                                  </span>
-                                  <span>-₹{opt.platformOrMandiFee.toLocaleString('en-IN')}</span>
-                                </div>
+                                  <div className="flex justify-between text-destructive">
+                                    <span>
+                                      {opt.channelType === 'MANDI' ? '- Mandi Cess / Tax:' : '- Platform Transaction Fee:'}
+                                    </span>
+                                    <span>-₹{opt.platformOrMandiFee.toLocaleString('en-IN')}</span>
+                                  </div>
                               </div>
 
                               <div className="pt-2 border-t border-border flex justify-between items-baseline font-bold text-sm">
@@ -748,7 +748,7 @@ export default function SellerIntelligencePage() {
                         Cross-Mandi Price & Transport Matrix for {selectedCommodity}
                       </h3>
                       <p className="text-xs text-muted-foreground">
-                        Modal rates evaluated against estimated road freight from {sellerCity}
+                        Modal rates evaluated against estimated freight (straight-line geographic distance) from {sellerCity}
                       </p>
                     </div>
                   </div>
@@ -836,7 +836,7 @@ export default function SellerIntelligencePage() {
               <div className="rounded-2xl border border-border bg-card p-12 text-center">
                 <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-emerald-600 border-r-transparent mb-3" />
                 <p className="text-sm font-semibold text-foreground">
-                  Matching registered buyers by commodity demand, haulage distance, and quantity...
+                  Matching registered buyers by commodity demand, estimated geographic distance, and quantity...
                 </p>
               </div>
             )}

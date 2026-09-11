@@ -133,6 +133,7 @@ export class MockLogisticsProvider implements LogisticsProviderAdapter {
 
     return {
       distanceKm,
+      distanceType: 'ESTIMATED_GEOGRAPHIC',
       estimatedCost: totalEstimatedCost,
       perUnitCost,
       estimatedDays,
@@ -145,8 +146,9 @@ export class MockLogisticsProvider implements LogisticsProviderAdapter {
         handling,
       },
       limitations: [
-        'Logistics estimate provided via MockLogisticsProvider benchmark tariff.',
-        'Final freight is subject to actual weighbridge gross/tare measurement and road tolls.',
+        'Distance represents estimated straight-line (geodesic/Haversine) geographic distance, not actual road-network driving route distance.',
+        'Freight tariff is calculated from configured benchmark rates on geographic distance, not live carrier API quotes.',
+        'Final freight is subject to actual weighbridge gross/tare measurement and road toll charges.',
       ],
     };
   }

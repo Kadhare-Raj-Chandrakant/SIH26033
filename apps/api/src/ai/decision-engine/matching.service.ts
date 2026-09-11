@@ -143,7 +143,7 @@ export class MatchingService {
       const reasons: string[] = [
         `Direct commodity match: ${req.commodity}`,
         `Quantity alignment: Buyer seeks ${reqQty} ${req.unit} (${Math.round(qtyRatio * 100)}% volume compatibility).`,
-        `Fulfillment distance: ${distanceKm} km transit radius.`,
+        `Estimated distance: approximately ${distanceKm} km (straight-line geographic estimate within regional radius).`,
       ];
 
       if (targetPrice) {
@@ -285,7 +285,7 @@ export class MatchingService {
 
       const reasons: string[] = [
         `In-stock match: ${prod.name} (${availQty} ${prod.unit} available).`,
-        `Proximity: Located ${distanceKm} km away (${prod.location || 'Local Regional Hub'}).`,
+        `Proximity: Estimated ${distanceKm} km geographic straight-line distance (${prod.location || 'Local Regional Hub'}).`,
       ];
 
       if (budget) {

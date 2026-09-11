@@ -120,8 +120,10 @@ export class SellTimingService {
         ? 'High: Perishable crop. Weight loss (~1-2%/week) and rotting risks apply if held without cold chain.'
         : 'Low to Moderate: Durable commodity capable of ambient storage with adequate aeration.',
       limitations: [
-        'Predictions reflect APMC wholesale arrivals and seasonal patterns, not unmodeled weather disasters or policy export bans.',
-        'Estimates are advisory and do not represent a guaranteed forward settlement price.',
+        'Advisory is derived from a model-backed heuristic evaluating arrival velocity and forward projections, NOT a dedicated trained optimal selling time model.',
+        'High perishability increases the downside risk of holding produce without temperature-controlled storage.',
+        'Predictions reflect APMC wholesale arrivals and seasonal patterns, not unmodeled weather events or policy export bans.',
+        'Estimates are advisory decision support and do not represent a guaranteed forward settlement price.',
       ],
       generatedAt: new Date().toISOString(),
     };

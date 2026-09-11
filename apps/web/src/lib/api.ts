@@ -826,7 +826,8 @@ export interface DeductionItem {
   category: 'LOGISTICS' | 'HANDLING' | 'STORAGE' | 'FEES' | 'TAX';
   amount: number;
   perUnit: number;
-  status: 'CALCULATED' | 'ESTIMATED' | 'UNAVAILABLE' | 'NOT_APPLICABLE';
+  status: 'ACTUAL' | 'CALCULATED' | 'ESTIMATED' | 'USER_PROVIDED' | 'UNAVAILABLE' | 'NOT_APPLICABLE';
+  source: string;
   notes: string;
 }
 

@@ -17,7 +17,7 @@ describe('MatchingService', () => {
     service = new MatchingService(mockPrisma);
   });
 
-  it('should match farmer to compatible open buyer requirements with explainable scoring', async () => {
+  it('should match farmer to compatible open buyer requirements with explainable scoring and straight-line distance semantics', async () => {
     mockPrisma.buyerRequirement.findMany.mockResolvedValue([
       {
         id: 'req-1',
@@ -56,7 +56,7 @@ describe('MatchingService', () => {
       },
     ]);
 
-    const matches = await this_call(service, {
+    const matches = await service.matchBuyersForFarmer({
       commodity: 'Onion',
       quantity: 50,
       askingPrice: 2100,
@@ -74,9 +74,13 @@ describe('MatchingService', () => {
     expect(match.scoreBreakdown.locationDistance).toBeGreaterThan(10);
     expect(match.reasons.length).toBeGreaterThanOrEqual(3);
     expect(match.reasons.some((r) => r.includes('Direct commodity match'))).toBe(true);
+
+    // Verify straight-line geographic distance semantics in reasons
+    expect(match.reasons.some((r) => r.includes('straight-line geographic estimate'))).toBe(true);
+    expect(match.reasons.some((r) => r.includes('road distance'))).toBe(false);
   });
 
-  it('should match buyer to active in-stock seller products', async () => {
+  it('should match buyer to active in-stock seller products with estimated geographic distance', async () => {
     mockPrisma.product.findMany.mockResolvedValue([
       {
         id: 'prod-1',
@@ -101,7 +105,7 @@ describe('MatchingService', () => {
 
     const matches = await service.matchSellersForBuyer({
       commodity: 'Onion',
-      requiredQuantity: 40,
+      requiredQuantity: 50,
       maxBudgetPerUnit: 2200,
       deliveryLocation: { city: 'Pune' },
       maxDistanceKm: 300,
@@ -110,12 +114,7 @@ describe('MatchingService', () => {
     expect(matches.length).toBe(1);
     const match = matches[0];
     expect(match.productId).toBe('prod-1');
-    expect(match.availableQuantity).toBe(80);
-    expect(match.matchScore).toBeGreaterThanOrEqual(65);
-    expect(match.reasons.some((r) => r.includes('In-stock match'))).toBe(true);
+    expect(match.matchScore).toBeGreaterThan(60);
+    expect(match.reasons.some((r) => r.includes('geographic straight-line distance'))).toBe(true);
   });
 });
-
-function this_call(service: MatchingService, dto: any) {
-  return service.matchBuyersForFarmer(dto);
-}

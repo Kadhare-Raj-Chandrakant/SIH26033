@@ -73,6 +73,7 @@ export interface EstimateLogisticsPayload {
 
 export interface LogisticsEstimateResult {
   distanceKm: number;
+  distanceType: 'ESTIMATED_GEOGRAPHIC';
   estimatedCost: number;
   perUnitCost: number;
   estimatedDays: number;

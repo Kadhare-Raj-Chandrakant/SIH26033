@@ -8,7 +8,7 @@ describe('SellTimingService', () => {
     service = new SellTimingService();
   });
 
-  it('should recommend "Sell now" for highly perishable crops even with modest price gain', () => {
+  it('should recommend "Sell now" for highly perishable crops even with modest price gain and include heuristic disclosure', () => {
     const marketData = {
       forward_outlook: {
         current_modal_price: 2600,
@@ -33,6 +33,10 @@ describe('SellTimingService', () => {
     expect(result.recommendation).toBe('Sell now');
     expect(result.recommendationSummary).toContain('shrinkage');
     expect(result.perishabilityRiskAssessment).toContain('Perishable');
+
+    // Verify heuristic disclosure and non-commanding perishability wording
+    expect(result.limitations.some((l) => l.includes('model-backed heuristic'))).toBe(true);
+    expect(result.limitations.some((l) => l.includes('High perishability increases the downside risk'))).toBe(true);
   });
 
   it('should recommend "Consider waiting" for non-perishables with strong forward price momentum', () => {

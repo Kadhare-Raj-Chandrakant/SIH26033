@@ -181,6 +181,8 @@ export class MarketIntelligenceService {
       limitations: [
         'Inter-market price differentials do not guarantee arbitrage profit due to transit perishability and freight.',
         'Mandi prices reflect APMC wholesale auctions and omit local farm-gate sorting/packaging deductions.',
+        'Distance metrics represent estimated straight-line (geodesic/Haversine) geographic distance, not actual driving road network distance.',
+        'Net after freight figures are based on benchmark tariffs on geographic distance and do not constitute binding carrier quotes.',
       ],
       generatedAt: new Date().toISOString(),
     };

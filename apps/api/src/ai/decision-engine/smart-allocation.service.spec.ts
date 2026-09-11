@@ -108,9 +108,16 @@ describe('SmartAllocationService', () => {
     // Verify that Net Realization of Top is greater than Second despite lower gross price!
     expect(top.estimatedNetRealization).toBeGreaterThan(second.estimatedNetRealization);
 
-    // Verify explainable rationale specifically highlights the logistics saving
+    // Verify explainable rationale specifically highlights the logistics saving and straight-line distance
     expect(result.recommendationRationale).toContain('HIGHER estimated net profit');
     expect(result.recommendationRationale).toContain('logistics savings');
+    expect(result.recommendationRationale).toContain('straight-line distance');
+
+    // Verify removal of escrow terminology
+    expect(top.settlementTimeline).toBe('Direct Settlement upon Weighbridge Acceptance');
+    expect(top.settlementTimeline).not.toContain('Escrow');
+    expect(top.disadvantages.some((d) => d.includes('platform transaction fee'))).toBe(true);
+    expect(top.disadvantages.some((d) => d.toLowerCase().includes('escrow'))).toBe(false);
 
     // Verify prediction log call
     expect(mockPrisma.aiPredictionLog.create).toHaveBeenCalled();

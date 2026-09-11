@@ -246,14 +246,14 @@ export class SmartAllocationService {
             estimatedNetRealization: netCalc.estimatedNetRealization,
             perUnitNetRealization: netCalc.perUnitNetRealization,
             marketActivityProxy: 'COMMITTED_DEMAND',
-            settlementTimeline: 'Escrow Release upon Weighbridge Acceptance',
+            settlementTimeline: 'Direct Settlement upon Weighbridge Acceptance',
             advantages: [
               'Zero APMC market committee cess.',
               'Guaranteed contractual price commitment with verified buyer.',
               buyer.distanceKm < 60 ? 'Close geographic proximity minimizes transit shrinkage.' : 'Bulk trade quantity match.',
             ],
             disadvantages: [
-              '1.5% platform escrow facilitation fee.',
+              '1.5% platform transaction fee.',
               'Payment contingent upon physical acceptance inspection.',
             ],
           });
@@ -359,9 +359,9 @@ export class SmartAllocationService {
     if (second) {
       const netDiff = Math.round(top.estimatedNetRealization - second.estimatedNetRealization);
       if (top.expectedGrossPricePerUnit < second.expectedGrossPricePerUnit) {
-        rationale = `Recommended: ${top.channelName}. Although ${second.channelName} offers a higher gross price (₹${second.expectedGrossPricePerUnit} vs ₹${top.expectedGrossPricePerUnit}/${unit}), ${top.channelName} produces ₹${netDiff.toLocaleString()} HIGHER estimated net profit after factoring in logistics savings (${top.distanceKm} km vs ${second.distanceKm} km) and statutory deductions.`;
+        rationale = `Recommended: ${top.channelName}. Although ${second.channelName} offers a higher gross price (₹${second.expectedGrossPricePerUnit} vs ₹${top.expectedGrossPricePerUnit}/${unit}), ${top.channelName} produces ₹${netDiff.toLocaleString()} HIGHER estimated net profit after factoring in logistics savings (estimated ${top.distanceKm} km vs ${second.distanceKm} km straight-line distance) and statutory deductions.`;
       } else if (top.logisticsCost < second.logisticsCost) {
-        rationale = `Recommended: ${top.channelName}. Offers optimal economics with ₹${netDiff.toLocaleString()} higher estimated net return due to superior price realization and lower transit costs (${top.distanceKm} km vs ${second.distanceKm} km).`;
+        rationale = `Recommended: ${top.channelName}. Offers optimal economics with ₹${netDiff.toLocaleString()} higher estimated net return due to superior price realization and lower transit costs (estimated ${top.distanceKm} km vs ${second.distanceKm} km straight-line distance).`;
       } else {
         rationale = `Recommended: ${top.channelName}. Maximizes your net realization at ₹${top.estimatedNetRealization.toLocaleString()} (₹${top.perUnitNetRealization}/${unit}) across viable selling channels.`;
       }

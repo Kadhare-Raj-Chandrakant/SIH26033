@@ -322,7 +322,7 @@ export default function BuyerSourcingPage() {
                 </Badge>
               </div>
               <p className="text-xs text-muted-foreground">
-                Ranked by multi-factor compatibility: quantity fulfillment, price competitiveness, road haulage distance, and producer reliability.
+                Ranked by multi-factor compatibility: quantity fulfillment, price competitiveness, estimated geographic distance, and producer reliability.
               </p>
             </div>
 
@@ -411,7 +411,7 @@ export default function BuyerSourcingPage() {
                           </span>
                         </div>
                         <div className="rounded-xl bg-muted/20 p-3 col-span-2 sm:col-span-1">
-                          <span className="text-muted-foreground block text-[11px]">Haulage Distance</span>
+                          <span className="text-muted-foreground block text-[11px]">Estimated Distance</span>
                           <span className="font-bold text-foreground text-sm">
                             {match.distanceKm} km
                           </span>
