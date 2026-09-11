@@ -15,6 +15,7 @@ datasource db {
 
 enum Role {
   FARMER
+  FPO
   BUYER
   ADMIN
 }
@@ -28,6 +29,11 @@ enum AccountStatus {
 enum BuyerType {
   INDIVIDUAL
   BUSINESS
+}
+
+enum SellerType {
+  FARMER
+  FPO
 }
 
 enum AddressType {
@@ -59,13 +65,16 @@ enum ProductStatus {
 
 enum OrderStatus {
   PENDING
+  NEGOTIATING
   CONFIRMED
   PROCESSING
   READY_FOR_SHIPMENT
   SHIPPED
+  IN_TRANSIT
   DELIVERED
   CANCELLED
   RETURNED
+  SETTLED
 }
 
 enum PaymentStatus {
@@ -96,7 +105,7 @@ model User {
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
 
-  farmerProfile FarmerProfile?
+  sellerProfile SellerProfile?
   buyerProfile  BuyerProfile?
   addresses     Address[]
   notifications Notification[]
@@ -106,18 +115,21 @@ model User {
   @@index([role])
 }
 
-model FarmerProfile {
-  id                 String   @id @default(uuid())
-  userId             String   @unique
-  user               User     @relation(fields: [userId], references: [id])
-  businessName       String?
+model SellerProfile {
+  id                 String     @id @default(uuid())
+  userId             String     @unique
+  user               User       @relation(fields: [userId], references: [id])
+  sellerType         SellerType @default(FARMER)
+  businessName       String? // Farm name or FPO name
   farmLocation       String?
-  verificationStatus String   @default("PENDING") // Could be an enum later
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
+  verificationStatus String     @default("PENDING")
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
 
   products       Product[]
-  ordersReceived Order[] // Orders placed by buyers for this farmer's products
+  ordersReceived Order[] // Orders placed by buyers for this seller's products
+
+  @@index([sellerType])
 }
 
 model BuyerProfile {
@@ -172,8 +184,8 @@ model Category {
 
 model Product {
   id         String        @id @default(uuid())
-  farmerId   String
-  farmer     FarmerProfile @relation(fields: [farmerId], references: [id])
+  sellerId   String
+  seller     SellerProfile @relation(fields: [sellerId], references: [id])
   categoryId String
   category   Category      @relation(fields: [categoryId], references: [id])
 
@@ -192,7 +204,7 @@ model Product {
   orderItems OrderItem[]
   reviews    Review[]
 
-  @@index([farmerId])
+  @@index([sellerId])
   @@index([categoryId])
   @@index([status])
 }
@@ -227,8 +239,8 @@ model Order {
   orderNumber String        @unique
   buyerId     String
   buyer       BuyerProfile  @relation(fields: [buyerId], references: [id])
-  farmerId    String
-  farmer      FarmerProfile @relation(fields: [farmerId], references: [id])
+  sellerId    String
+  seller      SellerProfile @relation(fields: [sellerId], references: [id])
   status      OrderStatus   @default(PENDING)
   totalAmount Decimal       @db.Decimal(10, 2)
 
@@ -242,7 +254,7 @@ model Order {
   payment Payment?
 
   @@index([buyerId])
-  @@index([farmerId])
+  @@index([sellerId])
   @@index([status])
 }
 
