@@ -25,5 +25,5 @@ export const envValidationSchema = Joi.object({
     then: Joi.optional(),
     otherwise: Joi.required(),
   }),
-  JWT_EXPIRATION: Joi.string().default('7d'),
+  JWT_EXPIRATION: Joi.string().default('15m'),
 });
