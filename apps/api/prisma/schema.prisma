@@ -102,6 +102,20 @@ enum ShipmentStatus {
   CANCELLED
 }
 
+enum ReportStatus {
+  OPEN
+  UNDER_REVIEW
+  RESOLVED
+  DISMISSED
+}
+
+enum ReportTargetType {
+  USER
+  PRODUCT
+  ORDER
+  SELLER
+}
+
 // -----------------------------------------------------------------------------
 // IDENTITY DOMAIN
 // -----------------------------------------------------------------------------
@@ -116,10 +130,13 @@ model User {
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
 
-  sellerProfile SellerProfile?
-  buyerProfile  BuyerProfile?
-  addresses     Address[]
-  notifications Notification[]
+  sellerProfile    SellerProfile?
+  buyerProfile     BuyerProfile?
+  addresses        Address[]
+  notifications    Notification[]
+  auditLogs        AuditLog[]         @relation("UserAuditLogs")
+  reportsCreated   ModerationReport[] @relation("ReportsCreated")
+  reportsReviewed  ModerationReport[] @relation("ReportsReviewed")
 
   @@index([email])
   @@index([mobile])
@@ -451,3 +468,49 @@ model BuyerRequirement {
   @@index([status])
 }
 
+// -----------------------------------------------------------------------------
+// ADMIN & MODERATION DOMAIN (M11)
+// -----------------------------------------------------------------------------
+
+model AuditLog {
+  id            String   @id @default(uuid())
+  actorUserId   String
+  actor         User     @relation("UserAuditLogs", fields: [actorUserId], references: [id], onDelete: Cascade)
+  action        String   // e.g. "USER_STATUS_UPDATE", "SELLER_VERIFICATION", "PRODUCT_MODERATION", "REPORT_RESOLUTION"
+  entityType    String   // e.g. "USER", "SELLER", "PRODUCT", "ORDER", "REPORT"
+  entityId      String
+  previousState Json?
+  newState      Json?
+  reason        String?
+  metadata      Json?
+  ipAddress     String?
+  userAgent     String?
+  createdAt     DateTime @default(now())
+
+  @@index([actorUserId])
+  @@index([entityType, entityId])
+  @@index([action])
+  @@index([createdAt])
+}
+
+model ModerationReport {
+  id               String           @id @default(uuid())
+  reporterUserId   String
+  reporter         User             @relation("ReportsCreated", fields: [reporterUserId], references: [id], onDelete: Cascade)
+  targetType       ReportTargetType
+  targetId         String
+  reason           String
+  description      String?
+  status           ReportStatus     @default(OPEN)
+  reviewedByUserId String?
+  reviewedBy       User?            @relation("ReportsReviewed", fields: [reviewedByUserId], references: [id], onDelete: SetNull)
+  resolutionNotes  String?
+  reviewedAt       DateTime?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  @@index([reporterUserId])
+  @@index([targetType, targetId])
+  @@index([status])
+  @@index([createdAt])
+}

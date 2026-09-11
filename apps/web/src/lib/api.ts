@@ -1149,3 +1149,516 @@ export async function getOpenBuyerRequirements(commodity?: string): Promise<Buye
   }
   return res.json();
 }
+
+// ---------------------------------------------------------------------------
+// Admin & Moderation APIs (M11)
+// ---------------------------------------------------------------------------
+
+export interface AdminDashboardData {
+  users: {
+    total: number;
+    farmers: number;
+    fpos: number;
+    buyers: number;
+    admins: number;
+    active: number;
+    suspended: number;
+    deactivated: number;
+  };
+  marketplace: {
+    totalProducts: number;
+    active: number;
+    outOfStock: number;
+    archived: number;
+    rejected: number;
+    categories: number;
+    totalSellers: number;
+    verifiedSellers: number;
+  };
+  orders: {
+    total: number;
+    byStatus: Record<string, number>;
+    totalVolume: number;
+  };
+  payments: {
+    total: number;
+    byStatus: Record<string, number>;
+    totalSettledAmount: number;
+  };
+  logistics: {
+    totalShipments: number;
+    byStatus: Record<string, number>;
+  };
+  moderation: {
+    pendingReports: number;
+    openReports: number;
+    underReviewReports: number;
+    resolvedReports: number;
+    dismissedReports: number;
+    rejectedProducts: number;
+  };
+  recentActivity: Array<{
+    id: string;
+    action: string;
+    entityType: string;
+    entityId: string;
+    createdAt: string;
+    actorUserId?: string;
+    actor?: { id: string; email: string; role: string };
+  }>;
+}
+
+export interface AdminUser {
+  id: string;
+  email: string;
+  mobile: string | null;
+  role: 'FARMER' | 'FPO' | 'BUYER' | 'ADMIN';
+  status: 'ACTIVE' | 'SUSPENDED' | 'DEACTIVATED';
+  createdAt: string;
+  updatedAt: string;
+  sellerProfile?: {
+    id: string;
+    sellerType: string;
+    businessName: string | null;
+    verificationStatus: string;
+    farmLocation: string | null;
+  } | null;
+  buyerProfile?: {
+    id: string;
+    buyerType: string;
+    businessName: string | null;
+    verificationStatus: string;
+  } | null;
+}
+
+export interface AdminSeller {
+  id: string;
+  sellerType: 'FARMER' | 'FPO';
+  businessName: string | null;
+  farmLocation: string | null;
+  verificationStatus: string;
+  createdAt: string;
+  user: {
+    id: string;
+    email: string;
+    mobile: string | null;
+    status: string;
+    createdAt: string;
+  };
+  _count?: {
+    products: number;
+    ordersReceived: number;
+  };
+}
+
+export interface AdminProduct {
+  id: string;
+  name: string;
+  description: string;
+  price: number | string;
+  unit: string;
+  status: 'ACTIVE' | 'OUT_OF_STOCK' | 'ARCHIVED' | 'REJECTED';
+  location: string | null;
+  createdAt: string;
+  updatedAt: string;
+  category?: { id: string; name: string };
+  inventory?: { availableQuantity: number | string; reservedQuantity: number | string } | null;
+  images?: Array<{ id: string; url: string; isPrimary: boolean }>;
+  seller?: {
+    id: string;
+    sellerType: string;
+    businessName: string | null;
+    verificationStatus: string;
+    farmLocation: string | null;
+    user?: { id: string; email: string; mobile: string | null };
+  };
+}
+
+export interface AdminOrder {
+  id: string;
+  orderNumber: string;
+  status: string;
+  totalAmount: number | string;
+  createdAt: string;
+  buyer?: {
+    id: string;
+    buyerType: string;
+    businessName: string | null;
+    user?: { id: string; email: string; mobile: string | null };
+  };
+  seller?: {
+    id: string;
+    sellerType: string;
+    businessName: string | null;
+    user?: { id: string; email: string; mobile: string | null };
+  };
+  payment?: {
+    id: string;
+    amount: number | string;
+    status: string;
+    providerReference: string | null;
+  } | null;
+  shipment?: {
+    id: string;
+    status: string;
+    provider: string;
+    trackingNumber: string | null;
+  } | null;
+  items?: Array<{
+    id: string;
+    quantity: number | string;
+    unitPrice: number | string;
+    totalPrice: number | string;
+    product: { id: string; name: string; unit: string };
+  }>;
+}
+
+export interface AdminPayment {
+  id: string;
+  orderId: string;
+  amount: number | string;
+  status: string;
+  providerReference: string | null;
+  createdAt: string;
+  updatedAt: string;
+  order?: {
+    id: string;
+    orderNumber: string;
+    totalAmount: number | string;
+  };
+}
+
+export interface AdminShipment {
+  id: string;
+  provider: string;
+  trackingNumber: string | null;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+  order?: {
+    id: string;
+    orderNumber: string;
+  };
+  events?: Array<{
+    id: string;
+    status: string;
+    location: string | null;
+    message: string;
+    occurredAt: string;
+  }>;
+}
+
+export interface AdminReport {
+  id: string;
+  targetType: 'USER' | 'PRODUCT' | 'ORDER' | 'SELLER';
+  targetId: string;
+  reason: string;
+  description: string | null;
+  status: 'OPEN' | 'UNDER_REVIEW' | 'RESOLVED' | 'DISMISSED';
+  resolutionNotes: string | null;
+  createdAt: string;
+  reviewedAt: string | null;
+  reporter?: { id: string; email: string; role: string };
+  reviewedBy?: { id: string; email: string; role: string } | null;
+}
+
+export interface AdminAuditLog {
+  id: string;
+  actorUserId: string;
+  action: string;
+  entityType: string;
+  entityId: string;
+  previousState: Record<string, unknown> | null;
+  newState: Record<string, unknown> | null;
+  reason: string | null;
+  createdAt: string;
+  actor?: { id: string; email: string; role: string };
+}
+
+export interface PaginatedAdminResponse<T> {
+  data: T[];
+  meta: PaginationMeta;
+}
+
+export async function fetchAdminDashboard(token?: string): Promise<AdminDashboardData> {
+  const res = await fetch(`${API_BASE_URL}/admin/dashboard`, {
+    headers: getAuthHeaders(token),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err?.message || 'Failed to fetch admin dashboard');
+  }
+  const json = await res.json();
+  return json?.data ?? json;
+}
+
+export async function fetchAdminUsers(
+  params: { page?: number; limit?: number; search?: string; role?: string; status?: string } = {},
+  token?: string,
+): Promise<PaginatedAdminResponse<AdminUser>> {
+  const url = new URL(`${API_BASE_URL}/admin/users`);
+  if (params.page) url.searchParams.set('page', params.page.toString());
+  if (params.limit) url.searchParams.set('limit', params.limit.toString());
+  if (params.search?.trim()) url.searchParams.set('search', params.search.trim());
+  if (params.role) url.searchParams.set('role', params.role);
+  if (params.status) url.searchParams.set('status', params.status);
+
+  const res = await fetch(url.toString(), { headers: getAuthHeaders(token) });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err?.message || 'Failed to fetch users');
+  }
+  const json = await res.json();
+  return json?.data ?? json;
+}
+
+export async function updateAdminUserStatus(
+  id: string,
+  payload: { status: string; reason?: string },
+  token?: string,
+): Promise<AdminUser> {
+  const res = await fetch(`${API_BASE_URL}/admin/users/${id}/status`, {
+    method: 'PATCH',
+    headers: getAuthHeaders(token),
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err?.message || 'Failed to update user status');
+  }
+  const json = await res.json();
+  return json?.data ?? json;
+}
+
+export async function fetchAdminSellers(
+  params: { page?: number; limit?: number; search?: string; sellerType?: string; verificationStatus?: string } = {},
+  token?: string,
+): Promise<PaginatedAdminResponse<AdminSeller>> {
+  const url = new URL(`${API_BASE_URL}/admin/sellers`);
+  if (params.page) url.searchParams.set('page', params.page.toString());
+  if (params.limit) url.searchParams.set('limit', params.limit.toString());
+  if (params.search?.trim()) url.searchParams.set('search', params.search.trim());
+  if (params.sellerType) url.searchParams.set('sellerType', params.sellerType);
+  if (params.verificationStatus) url.searchParams.set('verificationStatus', params.verificationStatus);
+
+  const res = await fetch(url.toString(), { headers: getAuthHeaders(token) });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err?.message || 'Failed to fetch sellers');
+  }
+  const json = await res.json();
+  return json?.data ?? json;
+}
+
+export async function verifyAdminSeller(
+  id: string,
+  payload: { verificationStatus: string; reason?: string },
+  token?: string,
+): Promise<AdminSeller> {
+  const res = await fetch(`${API_BASE_URL}/admin/sellers/${id}/verify`, {
+    method: 'PATCH',
+    headers: getAuthHeaders(token),
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err?.message || 'Failed to verify seller');
+  }
+  const json = await res.json();
+  return json?.data ?? json;
+}
+
+export async function fetchAdminProducts(
+  params: { page?: number; limit?: number; search?: string; status?: string; categoryId?: string } = {},
+  token?: string,
+): Promise<PaginatedAdminResponse<AdminProduct>> {
+  const url = new URL(`${API_BASE_URL}/admin/products`);
+  if (params.page) url.searchParams.set('page', params.page.toString());
+  if (params.limit) url.searchParams.set('limit', params.limit.toString());
+  if (params.search?.trim()) url.searchParams.set('search', params.search.trim());
+  if (params.status) url.searchParams.set('status', params.status);
+  if (params.categoryId) url.searchParams.set('categoryId', params.categoryId);
+
+  const res = await fetch(url.toString(), { headers: getAuthHeaders(token) });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err?.message || 'Failed to fetch products');
+  }
+  const json = await res.json();
+  return json?.data ?? json;
+}
+
+export async function moderateAdminProduct(
+  id: string,
+  payload: { status: string; reason?: string },
+  token?: string,
+): Promise<AdminProduct> {
+  const res = await fetch(`${API_BASE_URL}/admin/products/${id}/moderate`, {
+    method: 'PATCH',
+    headers: getAuthHeaders(token),
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err?.message || 'Failed to moderate product');
+  }
+  const json = await res.json();
+  return json?.data ?? json;
+}
+
+export async function fetchAdminOrders(
+  params: { page?: number; limit?: number; search?: string; status?: string } = {},
+  token?: string,
+): Promise<PaginatedAdminResponse<AdminOrder>> {
+  const url = new URL(`${API_BASE_URL}/admin/orders`);
+  if (params.page) url.searchParams.set('page', params.page.toString());
+  if (params.limit) url.searchParams.set('limit', params.limit.toString());
+  if (params.search?.trim()) url.searchParams.set('search', params.search.trim());
+  if (params.status) url.searchParams.set('status', params.status);
+
+  const res = await fetch(url.toString(), { headers: getAuthHeaders(token) });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err?.message || 'Failed to fetch orders');
+  }
+  const json = await res.json();
+  return json?.data ?? json;
+}
+
+export async function fetchAdminOrder(id: string, token?: string): Promise<AdminOrder> {
+  const res = await fetch(`${API_BASE_URL}/admin/orders/${id}`, {
+    headers: getAuthHeaders(token),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err?.message || 'Failed to fetch order details');
+  }
+  const json = await res.json();
+  return json?.data ?? json;
+}
+
+export async function fetchAdminPayments(
+  params: { page?: number; limit?: number; status?: string; search?: string } = {},
+  token?: string,
+): Promise<PaginatedAdminResponse<AdminPayment>> {
+  const url = new URL(`${API_BASE_URL}/admin/payments`);
+  if (params.page) url.searchParams.set('page', params.page.toString());
+  if (params.limit) url.searchParams.set('limit', params.limit.toString());
+  if (params.status) url.searchParams.set('status', params.status);
+  if (params.search?.trim()) url.searchParams.set('search', params.search.trim());
+
+  const res = await fetch(url.toString(), { headers: getAuthHeaders(token) });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err?.message || 'Failed to fetch payments');
+  }
+  const json = await res.json();
+  return json?.data ?? json;
+}
+
+export async function fetchAdminShipments(
+  params: { page?: number; limit?: number; status?: string; search?: string; provider?: string } = {},
+  token?: string,
+): Promise<PaginatedAdminResponse<AdminShipment>> {
+  const url = new URL(`${API_BASE_URL}/admin/shipments`);
+  if (params.page) url.searchParams.set('page', params.page.toString());
+  if (params.limit) url.searchParams.set('limit', params.limit.toString());
+  if (params.status) url.searchParams.set('status', params.status);
+  if (params.provider) url.searchParams.set('provider', params.provider);
+  if (params.search?.trim()) url.searchParams.set('search', params.search.trim());
+
+  const res = await fetch(url.toString(), { headers: getAuthHeaders(token) });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err?.message || 'Failed to fetch shipments');
+  }
+  const json = await res.json();
+  return json?.data ?? json;
+}
+
+export async function fetchAdminShipment(id: string, token?: string): Promise<AdminShipment> {
+  const res = await fetch(`${API_BASE_URL}/admin/shipments/${id}`, {
+    headers: getAuthHeaders(token),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err?.message || 'Failed to fetch shipment details');
+  }
+  const json = await res.json();
+  return json?.data ?? json;
+}
+
+export async function fetchAdminReports(
+  params: { page?: number; limit?: number; status?: string; targetType?: string; search?: string } = {},
+  token?: string,
+): Promise<PaginatedAdminResponse<AdminReport>> {
+  const url = new URL(`${API_BASE_URL}/admin/reports`);
+  if (params.page) url.searchParams.set('page', params.page.toString());
+  if (params.limit) url.searchParams.set('limit', params.limit.toString());
+  if (params.status) url.searchParams.set('status', params.status);
+  if (params.targetType) url.searchParams.set('targetType', params.targetType);
+  if (params.search?.trim()) url.searchParams.set('search', params.search.trim());
+
+  const res = await fetch(url.toString(), { headers: getAuthHeaders(token) });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err?.message || 'Failed to fetch reports');
+  }
+  const json = await res.json();
+  return json?.data ?? json;
+}
+
+export async function reviewAdminReport(
+  id: string,
+  payload: { status: string; resolutionNotes?: string },
+  token?: string,
+): Promise<AdminReport> {
+  const res = await fetch(`${API_BASE_URL}/admin/reports/${id}`, {
+    method: 'PATCH',
+    headers: getAuthHeaders(token),
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err?.message || 'Failed to review report');
+  }
+  const json = await res.json();
+  return json?.data ?? json;
+}
+
+export async function createModerationReport(
+  payload: { targetType: string; targetId: string; reason: string; description?: string },
+  token?: string,
+): Promise<AdminReport> {
+  const res = await fetch(`${API_BASE_URL}/reports`, {
+    method: 'POST',
+    headers: getAuthHeaders(token),
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err?.message || 'Failed to submit report');
+  }
+  const json = await res.json();
+  return json?.data ?? json;
+}
+
+export async function fetchAdminAuditLogs(
+  params: { page?: number; limit?: number; action?: string; entityType?: string; entityId?: string } = {},
+  token?: string,
+): Promise<PaginatedAdminResponse<AdminAuditLog>> {
+  const url = new URL(`${API_BASE_URL}/admin/audit-logs`);
+  if (params.page) url.searchParams.set('page', params.page.toString());
+  if (params.limit) url.searchParams.set('limit', params.limit.toString());
+  if (params.action) url.searchParams.set('action', params.action);
+  if (params.entityType) url.searchParams.set('entityType', params.entityType);
+  if (params.entityId) url.searchParams.set('entityId', params.entityId);
+
+  const res = await fetch(url.toString(), { headers: getAuthHeaders(token) });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err?.message || 'Failed to fetch audit logs');
+  }
+  const json = await res.json();
+  return json?.data ?? json;
+}

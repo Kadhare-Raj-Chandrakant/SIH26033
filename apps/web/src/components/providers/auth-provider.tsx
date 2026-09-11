@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { getStoredToken, clearStoredToken, demoLoginBuyer, demoLoginSeller } from '@/lib/api';
+import { getStoredToken, setStoredToken, clearStoredToken, demoLoginBuyer, demoLoginSeller } from '@/lib/api';
 
 export interface AuthUser {
   id: string;
@@ -88,6 +88,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const setAuth = (newToken: string, newUser?: AuthUser | null) => {
+    setStoredToken(newToken);
     setToken(newToken);
     if (newUser) {
       setUser(newUser);

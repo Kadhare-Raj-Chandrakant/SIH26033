@@ -18,6 +18,7 @@ import { CartModule } from './cart/cart.module.js';
 import { OrdersModule } from './orders/orders.module.js';
 import { LogisticsModule } from './logistics/logistics.module.js';
 import { AiModule } from './ai/ai.module.js';
+import { AdminModule } from './admin/admin.module.js';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard.js';
 import { RolesGuard } from './common/guards/roles.guard.js';
 
@@ -38,6 +39,7 @@ import { RolesGuard } from './common/guards/roles.guard.js';
     OrdersModule,
     LogisticsModule,
     AiModule,
+    AdminModule,
     ThrottlerModule.forRoot([
       {
         ttl: 60000,
