@@ -1662,3 +1662,64 @@ export async function fetchAdminAuditLogs(
   const json = await res.json();
   return json?.data ?? json;
 }
+
+// ---------------------------------------------------------------------------
+// Direct Authentication APIs
+// ---------------------------------------------------------------------------
+
+export interface LoginCredentials {
+  email: string;
+  password: string;
+}
+
+export interface RegisterPayload {
+  name: string;
+  email: string;
+  password: string;
+  role: 'FARMER' | 'FPO' | 'BUYER';
+  mobile?: string;
+}
+
+export interface AuthResponse {
+  token: string;
+  user: {
+    id: string;
+    email: string;
+    role: string;
+    status?: string;
+    name?: string;
+  };
+}
+
+export async function loginUser(credentials: LoginCredentials): Promise<AuthResponse> {
+  const res = await fetch(`${API_BASE_URL}/auth/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(credentials),
+  });
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(json?.message || 'Invalid email or password');
+  }
+  const token = json.data?.accessToken || json.accessToken;
+  const user = json.data?.user || json.user;
+  if (!token) {
+    throw new Error('No authentication token received from server');
+  }
+  return { token, user };
+}
+
+export async function registerUser(payload: RegisterPayload): Promise<AuthResponse> {
+  const res = await fetch(`${API_BASE_URL}/auth/register`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(json?.message || 'Registration failed');
+  }
+  // Automatically sign in upon registration to obtain session JWT
+  return loginUser({ email: payload.email, password: payload.password });
+}
+

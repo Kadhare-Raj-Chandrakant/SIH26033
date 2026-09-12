@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Sprout, Search, ShieldCheck, ShoppingCart, Package, Sparkles } from 'lucide-react';
+import { Sprout, Search, ShieldCheck, ShoppingCart, Package, Sparkles, User, LogOut } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useQuery } from '@tanstack/react-query';
@@ -9,7 +9,7 @@ import { fetchCart } from '@/lib/api';
 import { useAuth } from '@/components/providers/auth-provider';
 
 export function MarketplaceNavbar() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user, logout } = useAuth();
 
   const { data: cartResponse } = useQuery({
     queryKey: ['cart'],
@@ -107,6 +107,31 @@ export function MarketplaceNavbar() {
               )}
             </Button>
           </Link>
+
+          {isAuthenticated ? (
+            <div className="flex items-center gap-1.5">
+              <span className="hidden xl:inline text-xs text-muted-foreground font-medium truncate max-w-[120px]">
+                {user?.email}
+              </span>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={logout}
+                className="gap-1.5 text-xs text-muted-foreground hover:text-foreground"
+                title="Sign out of your account"
+              >
+                <LogOut className="h-3.5 w-3.5" />
+                <span className="hidden sm:inline">Sign Out</span>
+              </Button>
+            </div>
+          ) : (
+            <Link href="/login">
+              <Button size="sm" variant="outline" className="gap-1.5 text-xs font-medium border-border/80">
+                <User className="h-3.5 w-3.5" />
+                <span>Sign In</span>
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
     </header>

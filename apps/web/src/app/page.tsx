@@ -18,12 +18,24 @@ export default function Home() {
               </span>
             </div>
           </div>
-          <Link href="/marketplace">
-            <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700 text-white gap-1.5 shadow-sm">
-              <span>Go to Marketplace</span>
-              <ArrowRight className="h-4 w-4" />
-            </Button>
-          </Link>
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            <Link href="/login">
+              <Button size="sm" variant="ghost" className="text-xs sm:text-sm font-medium text-muted-foreground hover:text-foreground">
+                Sign In
+              </Button>
+            </Link>
+            <Link href="/register">
+              <Button size="sm" variant="outline" className="text-xs sm:text-sm font-medium border-border/80 hover:bg-muted hidden sm:inline-flex">
+                Register
+              </Button>
+            </Link>
+            <Link href="/marketplace">
+              <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700 text-white gap-1.5 shadow-sm text-xs sm:text-sm">
+                <span>Marketplace</span>
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Button>
+            </Link>
+          </div>
         </div>
       </header>
 
