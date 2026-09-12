@@ -26,6 +26,21 @@ from .api.v1.health import router as health_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    # Optional Sentry initialization for AI service
+    sentry_dsn = os.getenv("SENTRY_DSN")
+    if sentry_dsn:
+        try:
+            import sentry_sdk
+            sentry_sdk.init(
+                dsn=sentry_dsn,
+                environment=settings.ENVIRONMENT,
+                traces_sample_rate=0.1 if settings.ENVIRONMENT == "production" else 1.0,
+                send_default_pii=False,
+            )
+            logger.info("Sentry monitoring initialized for AI service.")
+        except ImportError:
+            logger.info("sentry_sdk not installed; running in local monitoring mode.")
+
     # Startup: load ML model artifacts into memory
     logger.info("Initializing AI model registry and loading model artifacts...")
     model_registry.load_models()

@@ -264,7 +264,7 @@ export class AiService {
       );
     } catch (err: any) {
       this.logger.warn(
-        `FastAPI market intelligence unavailable for ${commodity}: ${err.message}`,
+        `[AI-Observability] GET /api/v1/market/intelligence/${commodity} FALLBACK: FastAPI unavailable (${err.message})`,
       );
       aiData = {
         commodity,
@@ -312,7 +312,9 @@ export class AiService {
         userId,
       );
     } catch (err: any) {
-      this.logger.warn(`Price prediction model offline: ${err.message}`);
+      this.logger.warn(
+        `[AI-Observability] POST /api/v1/predict/price FALLBACK: Price prediction model offline (${err.message})`,
+      );
       modelAvailable = false;
     }
 
@@ -426,6 +428,7 @@ export class AiService {
     body?: any,
   ): Promise<any> {
     const targetUrl = `${this.aiServiceUrl.replace(/\/$/, '')}${path}`;
+    const startTime = performance.now();
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), this.timeoutMs);
 
@@ -447,6 +450,7 @@ export class AiService {
       }
 
       const response = await fetch(targetUrl, fetchOptions);
+      const duration = Math.round(performance.now() - startTime);
 
       if (!response.ok) {
         let errorBody: any;
@@ -461,6 +465,10 @@ export class AiService {
           errorBody?.message ||
           `AI service returned status ${response.status}`;
 
+        this.logger.warn(
+          `[AI-Observability] ${method} ${path} FAILURE status=${response.status} duration=${duration}ms message="${msg}"`,
+        );
+
         if (response.status === 422) {
           throw new BadRequestException(msg);
         } else if (response.status === 503) {
@@ -470,11 +478,19 @@ export class AiService {
         }
       }
 
-      return await response.json();
+      const data = await response.json();
+      const modelVersion = data?.model_version || data?.version || 'N/A';
+      this.logger.log(
+        `[AI-Observability] ${method} ${path} SUCCESS status=${response.status} duration=${duration}ms model_version=${modelVersion}`,
+      );
+
+      return data;
     } catch (err: any) {
+      const duration = Math.round(performance.now() - startTime);
+
       if (err.name === 'AbortError') {
         this.logger.error(
-          `AI Service request timeout after ${this.timeoutMs}ms on ${path}`,
+          `[AI-Observability] ${method} ${path} TIMEOUT duration=${duration}ms threshold=${this.timeoutMs}ms`,
         );
         throw new GatewayTimeoutException(
           'AI service timed out while processing request',
@@ -489,7 +505,7 @@ export class AiService {
         throw err;
       }
       this.logger.error(
-        `Failed to reach AI service at ${targetUrl}: ${err.message}`,
+        `[AI-Observability] ${method} ${path} UNAVAILABLE duration=${duration}ms error="${err.message}"`,
       );
       throw new ServiceUnavailableException(
         'AI intelligence service is currently unavailable',

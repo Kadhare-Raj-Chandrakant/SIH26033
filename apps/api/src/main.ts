@@ -6,9 +6,18 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module.js';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter.js';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor.js';
+import { LoggingInterceptor } from './common/interceptors/logging.interceptor.js';
+import { requestIdMiddleware } from './common/middleware/request-id.middleware.js';
+import { initSentry } from './common/monitoring/sentry.util.js';
 
 async function bootstrap() {
+  // Initialize error tracking if configured
+  initSentry();
+
   const app = await NestFactory.create(AppModule);
+
+  // Correlation & Request Tracking: Assign/propagate x-request-id on all requests
+  app.use(requestIdMiddleware);
 
   // Security: HTTP headers
   app.use(
@@ -45,7 +54,7 @@ async function bootstrap() {
   );
 
   // Global Interceptors & Filters
-  app.useGlobalInterceptors(new TransformInterceptor());
+  app.useGlobalInterceptors(new LoggingInterceptor(), new TransformInterceptor());
   app.useGlobalFilters(new AllExceptionsFilter());
 
   // Swagger API Documentation

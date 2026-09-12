@@ -1,0 +1,37 @@
+name: Deployment Smoke Test
+
+on:
+  workflow_dispatch:
+    inputs:
+      backend_url:
+        description: 'Backend API URL to verify'
+        required: false
+        default: 'https://sih26033-api.onrender.com'
+      frontend_url:
+        description: 'Frontend Web URL to verify'
+        required: false
+        default: 'https://sih26033.vercel.app'
+      ai_url:
+        description: 'AI Service URL to verify'
+        required: false
+        default: 'https://sih26033-ai.onrender.com'
+
+jobs:
+  smoke-test:
+    name: Post-Deployment Smoke Verification
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Execute Operational Smoke Test
+        env:
+          BACKEND_URL: ${{ github.event.inputs.backend_url || 'https://sih26033-api.onrender.com' }}
+          FRONTEND_URL: ${{ github.event.inputs.frontend_url || 'https://sih26033.vercel.app' }}
+          AI_SERVICE_URL: ${{ github.event.inputs.ai_url || 'https://sih26033-ai.onrender.com' }}
+        run: node scripts/smoke-test.mjs

@@ -49,4 +49,5 @@ export const envValidationSchema = Joi.object({
     then: Joi.string().min(16).required(),
     otherwise: Joi.string().optional(),
   }),
+  SENTRY_DSN: Joi.string().optional().allow(''),
 });

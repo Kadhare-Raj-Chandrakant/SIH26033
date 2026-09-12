@@ -1,6 +1,7 @@
 import { ExceptionFilter, Catch, ArgumentsHost, HttpException, HttpStatus, Logger } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { Prisma } from '@prisma/client';
+import { captureOperationalException } from '../monitoring/sentry.util.js';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
@@ -10,6 +11,16 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
+
+    const requestId =
+      (request as any)?.id ||
+      (typeof request.headers['x-request-id'] === 'string' ? request.headers['x-request-id'] : undefined) ||
+      'unknown';
+
+    // Ensure x-request-id header is reflected in error responses
+    if (typeof response.setHeader === 'function' && !response.getHeader('x-request-id')) {
+      response.setHeader('x-request-id', requestId);
+    }
 
     let status = HttpStatus.INTERNAL_SERVER_ERROR;
     let message: string | object = 'Internal server error';
@@ -40,22 +51,33 @@ export class AllExceptionsFilter implements ExceptionFilter {
           message = 'Database request could not be processed';
           break;
       }
-      this.logger.error(`Prisma known error ${exception.code} on ${request.url}: ${exception.message}`);
+      this.logger.error(`[${requestId}] Prisma known error ${exception.code} on ${request.url}: ${exception.message}`);
     } else if (exception instanceof Prisma.PrismaClientValidationError) {
       status = HttpStatus.BAD_REQUEST;
       message = 'Database query validation failed';
       errorType = 'DatabaseValidationError';
-      this.logger.error(`Prisma validation error on ${request.url}: ${exception.message}`);
+      this.logger.error(`[${requestId}] Prisma validation error on ${request.url}: ${exception.message}`);
     } else if (exception instanceof Error) {
       status = HttpStatus.INTERNAL_SERVER_ERROR;
       message = 'An unexpected internal error occurred';
       errorType = 'InternalServerError';
-      this.logger.error(`Unhandled error on ${request.url}: ${exception.message}`, exception.stack);
+      this.logger.error(`[${requestId}] Unhandled error on ${request.url}: ${exception.message}`, exception.stack);
     } else {
       status = HttpStatus.INTERNAL_SERVER_ERROR;
       message = 'An unexpected error occurred';
       errorType = 'UnknownError';
-      this.logger.error(`Unknown exception on ${request.url}`, String(exception));
+      this.logger.error(`[${requestId}] Unknown exception on ${request.url}`, String(exception));
+    }
+
+    // Capture unhandled operational errors (500+) in Sentry
+    if (status >= 500) {
+      captureOperationalException(exception, {
+        requestId,
+        path: request.url,
+        method: request.method,
+        statusCode: status,
+        errorType,
+      });
     }
 
     response.status(status).json({
@@ -64,6 +86,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
         type: errorType,
         message,
         path: request.url,
+        requestId,
         timestamp: new Date().toISOString(),
       },
     });

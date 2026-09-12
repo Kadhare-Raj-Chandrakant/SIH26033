@@ -61,12 +61,14 @@ Environment configurations are segregated across **Development**, **Test**, and 
 | `CLOUDINARY_API_KEY` | Optional | Cloudinary API Key | `123456789012345` |
 | `CLOUDINARY_API_SECRET`| Optional | Cloudinary API Secret | Secret string |
 | `LOGISTICS_PROVIDER` | Optional (default: `mock`) | Active logistics integration adapter | `mock` |
+| `SENTRY_DSN` | Optional | Sentry project DSN for backend error capture | `https://example@sentry.io/12345` |
 
 ### 2.2 Frontend Environment Variables (`apps/web`)
 
 | Variable | Requirement in Production | Description | Example / Format |
 |---|---|---|---|
 | `NEXT_PUBLIC_API_URL` | **REQUIRED** | Publicly accessible URL to the NestJS API | `https://sih26033-api.onrender.com/api/v1` |
+| `NEXT_PUBLIC_SENTRY_DSN` | Optional | Browser Sentry DSN for frontend telemetry | `https://example@sentry.io/12345` |
 
 ### 2.3 AI Service Environment Variables (`services/ai`)
 
@@ -76,6 +78,7 @@ Environment configurations are segregated across **Development**, **Test**, and 
 | `PORT` | Injected by Render | HTTP listen port | `8080` |
 | `AI_INTERNAL_KEY` | **REQUIRED (min 16 chars)** | Pre-shared key for NestJS authentication | Matches `AI_INTERNAL_KEY` in `apps/api` |
 | `AI_CORS_ORIGIN` | Optional | Internal CORS origins | `https://sih26033-api.onrender.com` |
+| `SENTRY_DSN` | Optional | Sentry DSN for AI service error reporting | `https://example@sentry.io/12345` |
 
 ---
 
@@ -230,3 +233,11 @@ If setting up as a standalone Web Service:
    - Multi-instance distributed rate limiting across horizontal pods via Upstash Redis is a planned future consideration.
 2. **FastAPI Idle Sleep:**
    - If hosted on a free Render tier, the AI service will spin down after inactivity. A paid starter tier is recommended for continuous uptime.
+
+---
+
+## 12. Operations Manual & Production Readiness Checklist
+
+- **Incident Runbook & Triage**: See [OPERATIONS.md](file:///c:/Users/Shrey/OneDrive/Desktop/SIH26033/docs/OPERATIONS.md) for detailed incident mitigation, component failure runbooks, correlation ID logging, and on-call checklists.
+- **Production Readiness Audit**: See [PRODUCTION_READINESS.md](file:///c:/Users/Shrey/OneDrive/Desktop/SIH26033/docs/PRODUCTION_READINESS.md) for verification matrix, testing coverage, and operational constraints.
+- **Post-Deployment Smoke Test**: Execute `npm run smoke-test` to verify end-to-end operational availability across all tiers.
