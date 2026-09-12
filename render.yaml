@@ -1,0 +1,53 @@
+services:
+  # 1. NestJS Backend API (Render Web Service)
+  - type: web
+    name: sih26033-api
+    runtime: node
+    plan: starter
+    region: oregon
+    buildCommand: npm install && npm run build:api && npm run db:generate
+    startCommand: node apps/api/dist/main.js
+    healthCheckPath: /api/v1/health/readiness
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRATION
+        value: 7d
+      - key: CORS_ORIGIN
+        sync: false
+      - key: AI_SERVICE_URL
+        sync: false
+      - key: AI_TIMEOUT_MS
+        value: 5000
+      - key: AI_INTERNAL_KEY
+        generateValue: true
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: LOGISTICS_PROVIDER
+        value: mock
+
+  # 2. FastAPI AI Service (Render Web Service)
+  - type: web
+    name: sih26033-ai
+    runtime: python
+    plan: starter
+    region: oregon
+    rootDir: services/ai
+    buildCommand: pip install -r requirements.txt && python -m training.train_all
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: AI_ENVIRONMENT
+        value: production
+      - key: AI_INTERNAL_KEY
+        sync: false

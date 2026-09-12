@@ -102,6 +102,27 @@ npm run dev:api   # Backend at http://localhost:4000
 | **Infrastructure** | Docker, GitHub Actions, Vercel, Render, Neon, Upstash |
 | **Monitoring** | Sentry |
 
+## 🚀 Production Deployment
+
+The platform is designed for cloud-native deployment across managed services:
+- **Frontend:** Vercel (`apps/web`)
+- **Backend API:** Render Web Service (`apps/api`)
+- **AI Service:** Render Web Service (`services/ai`)
+- **Database:** Neon Serverless PostgreSQL
+- **Cache:** Upstash Redis (TLS)
+- **Media Storage:** Cloudinary
+
+Detailed deployment steps, production environment variable configuration, operational health checks, and rollback strategies are documented in the [Production Deployment Guide](file:///c:/Users/Shrey/OneDrive/Desktop/SIH26033/docs/DEPLOYMENT.md).
+
+```bash
+# Production build commands:
+npm run build:web   # Build optimized Next.js frontend
+npm run build:api   # Build NestJS production bundle
+
+# Production database migration (additive, non-destructive):
+npx prisma migrate deploy --schema apps/api/prisma/schema.prisma
+```
+
 ## 📜 License
 
 This project is developed for SIH 2026.

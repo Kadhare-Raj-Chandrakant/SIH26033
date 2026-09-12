@@ -4,6 +4,7 @@ SIH26033 AI Foundation Service - Main Entrypoint
 FastAPI service exposing baseline agricultural AI/ML capabilities.
 """
 
+import os
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -43,17 +44,25 @@ app = FastAPI(
     redoc_url="/redoc"
 )
 
-# CORS: strictly limited to internal local services
+# CORS: strictly limited to internal services and configured origins
+cors_origins = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:4000",
+    "http://127.0.0.1:4000",
+    "http://localhost:8080",
+    "http://127.0.0.1:8080",
+]
+env_cors = os.getenv("CORS_ORIGIN") or os.getenv("AI_CORS_ORIGIN")
+if env_cors:
+    for origin in env_cors.split(","):
+        origin_clean = origin.strip()
+        if origin_clean and origin_clean not in cors_origins:
+            cors_origins.append(origin_clean)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-        "http://localhost:4000",
-        "http://127.0.0.1:4000",
-        "http://localhost:8080",
-        "http://127.0.0.1:8080"
-    ],
+    allow_origins=cors_origins,
     allow_credentials=True,
     allow_methods=["GET", "POST"],
     allow_headers=["*"],

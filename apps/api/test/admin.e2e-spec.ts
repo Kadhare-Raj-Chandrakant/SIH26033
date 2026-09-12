@@ -57,6 +57,7 @@ describe('AdminController & Moderation (e2e)', () => {
     await prisma.product.deleteMany();
     await prisma.category.deleteMany();
     await prisma.address.deleteMany();
+    await prisma.notification.deleteMany();
     await prisma.sellerProfile.deleteMany();
     await prisma.buyerProfile.deleteMany();
     await prisma.user.deleteMany();
@@ -700,6 +701,7 @@ describe('AdminController & Moderation (e2e)', () => {
       await prisma.product.deleteMany();
       await prisma.category.deleteMany();
       await prisma.address.deleteMany();
+      await prisma.notification.deleteMany();
       await prisma.sellerProfile.deleteMany();
       await prisma.buyerProfile.deleteMany();
       await prisma.user.deleteMany();

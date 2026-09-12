@@ -23,4 +23,23 @@ export class HealthController {
       () => this.prismaHealth.pingCheck('database', this.prismaService),
     ]);
   }
+
+  @Get('readiness')
+  @HealthCheck()
+  @ApiOperation({ summary: 'Check Database and Core Dependency Readiness' })
+  checkReadiness() {
+    return this.health.check([
+      () => this.prismaHealth.pingCheck('database', this.prismaService),
+    ]);
+  }
+
+  @Get('liveness')
+  @ApiOperation({ summary: 'Check Process Liveness' })
+  checkLiveness() {
+    return {
+      status: 'ok',
+      service: 'api',
+      timestamp: new Date().toISOString(),
+    };
+  }
 }

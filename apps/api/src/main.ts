@@ -25,9 +25,13 @@ async function bootstrap() {
   // Global API prefix
   app.setGlobalPrefix('api/v1');
 
-  // Enable CORS for frontend
+  // Enable CORS for frontend (supports single origin or comma-separated list)
+  const rawCors = process.env.CORS_ORIGIN ?? 'http://localhost:3000';
+  const corsOrigins = rawCors.includes(',')
+    ? rawCors.split(',').map((o) => o.trim()).filter(Boolean)
+    : rawCors;
   app.enableCors({
-    origin: process.env.CORS_ORIGIN ?? 'http://localhost:3000',
+    origin: corsOrigins,
     credentials: true,
   });
 
@@ -54,7 +58,10 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, document);
 
-  const port = process.env.API_PORT ?? 4000;
+  // Enable graceful shutdown hooks for SIGTERM / SIGINT (critical for Render deployments)
+  app.enableShutdownHooks();
+
+  const port = process.env.PORT ?? process.env.API_PORT ?? 4000;
   await app.listen(port);
   console.log(`🚀 API running on http://localhost:${port}/api/v1`);
   console.log(`📚 API Docs running on http://localhost:${port}/api/docs`);

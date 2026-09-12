@@ -6,6 +6,7 @@ export const envValidationSchema = Joi.object({
     .valid('development', 'production', 'test')
     .default('development'),
   API_PORT: Joi.number().default(4000),
+  PORT: Joi.number().optional(),
   CORS_ORIGIN: Joi.string().when('NODE_ENV', {
     is: 'production',
     // oxlint-disable-next-line unicorn/no-thenable
