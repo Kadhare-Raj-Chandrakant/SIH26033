@@ -42,8 +42,14 @@ import { RolesGuard } from './common/guards/roles.guard.js';
     AdminModule,
     ThrottlerModule.forRoot([
       {
+        name: 'default',
         ttl: 60000,
-        limit: process.env.NODE_ENV === 'test' ? 1000 : 10, // Relaxed limit in test environment; 10 req/min in dev/prod
+        limit: process.env.NODE_ENV === 'test' ? 1000 : 100, // 100 req/min baseline
+      },
+      {
+        name: 'strict',
+        ttl: 60000,
+        limit: process.env.NODE_ENV === 'test' ? 1000 : 10, // 10 req/min for sensitive operations
       },
     ]),
   ],

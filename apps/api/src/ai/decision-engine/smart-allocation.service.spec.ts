@@ -158,4 +158,45 @@ describe('SmartAllocationService', () => {
     expect(result.eliminatedCandidates.length).toBeGreaterThan(0);
     expect(result.eliminatedCandidates[0].reason).toContain('exceeds maximum transit limit');
   });
+
+  it('should handle null/missing gross selling value and net realization safely without NaN in recommendationRationale', async () => {
+    mockLogisticsService.estimateLogistics.mockResolvedValue({
+      distanceKm: 25,
+      estimatedCost: 1200,
+      perUnitCost: 24,
+      isEstimated: true,
+    });
+
+    // Market with 0 modal_price or missing price
+    const marketIntelligence = {
+      markets: [
+        {
+          market: 'Local Mandi',
+          state: 'Maharashtra',
+          modal_price: 0, // Spot auction without price anchor
+          arrivals: 500,
+        },
+      ],
+      overall_stats: { avg_modal_price: 0 },
+    };
+
+    const result = await service.optimizeAllocation(
+      {
+        commodity: 'Onion',
+        quantity: 50,
+        sellerLocation: { city: 'Nashik', state: 'Maharashtra' },
+        includeMandis: true,
+        includeDirectBuyers: false,
+        includePlatformListing: true,
+      },
+      marketIntelligence,
+    );
+
+    expect(result.recommendationRationale).toBeDefined();
+    expect(result.recommendationRationale).not.toMatch(/NaN/);
+    expect(result.recommendationRationale).not.toMatch(/undefined/);
+    expect(result.recommendationRationale).not.toMatch(/null/);
+    expect(result.recommendationRationale).not.toMatch(/Infinity/);
+    expect(result.recommendationRationale).not.toMatch(/₹NaN/);
+  });
 });

@@ -15,6 +15,7 @@ import {
   ApiResponse,
   ApiBearerAuth,
 } from '@nestjs/swagger';
+import { Throttle } from '@nestjs/throttler';
 import { AiService } from './ai.service.js';
 import { PredictPriceDto } from './dto/predict-price.dto.js';
 import { ForecastDemandDto } from './dto/forecast-demand.dto.js';
@@ -56,6 +57,7 @@ export class AiController {
   }
 
   @Public()
+  @Throttle({ default: { limit: 30, ttl: 60000 } })
   @Post('predict/price')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Infer baseline commodity modal price and explainability factors' })
@@ -70,6 +72,7 @@ export class AiController {
   }
 
   @Public()
+  @Throttle({ default: { limit: 30, ttl: 60000 } })
   @Post('predict/demand')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Forecast agricultural market arrival absorption / demand proxy' })
@@ -84,6 +87,7 @@ export class AiController {
   }
 
   @Public()
+  @Throttle({ default: { limit: 30, ttl: 60000 } })
   @Post('predict/crop')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Recommend optimal crops given soil nutrients, pH, and climate variables' })

@@ -343,8 +343,16 @@ export class SmartAllocationService {
       });
     }
 
-    // Sort descending by estimated net realization
-    candidateOptions.sort((a, b) => b.estimatedNetRealization - a.estimatedNetRealization);
+    // Helper to safely verify valid finite numbers
+    const isValidNum = (val: unknown): val is number =>
+      typeof val === 'number' && Number.isFinite(val);
+
+    // Sort descending by estimated net realization (nulls/non-finite sorted to end)
+    candidateOptions.sort((a, b) => {
+      const aNet = isValidNum(a.estimatedNetRealization) ? a.estimatedNetRealization : -Infinity;
+      const bNet = isValidNum(b.estimatedNetRealization) ? b.estimatedNetRealization : -Infinity;
+      return bNet - aNet;
+    });
 
     // Assign rank
     candidateOptions.forEach((opt, idx) => {
@@ -354,19 +362,50 @@ export class SmartAllocationService {
     const top = candidateOptions[0];
     const second = candidateOptions.length > 1 ? candidateOptions[1] : null;
 
-    // Explainable Rationale comparing the top channels
+    // Explainable Rationale comparing the top channels with strict NaN/null guards
     let rationale = '';
     if (second) {
-      const netDiff = Math.round(top.estimatedNetRealization - second.estimatedNetRealization);
-      if (top.expectedGrossPricePerUnit < second.expectedGrossPricePerUnit) {
-        rationale = `Recommended: ${top.channelName}. Although ${second.channelName} offers a higher gross price (₹${second.expectedGrossPricePerUnit} vs ₹${top.expectedGrossPricePerUnit}/${unit}), ${top.channelName} produces ₹${netDiff.toLocaleString()} HIGHER estimated net profit after factoring in logistics savings (estimated ${top.distanceKm} km vs ${second.distanceKm} km straight-line distance) and statutory deductions.`;
-      } else if (top.logisticsCost < second.logisticsCost) {
-        rationale = `Recommended: ${top.channelName}. Offers optimal economics with ₹${netDiff.toLocaleString()} higher estimated net return due to superior price realization and lower transit costs (estimated ${top.distanceKm} km vs ${second.distanceKm} km straight-line distance).`;
+      const bothNetValid = isValidNum(top.estimatedNetRealization) && isValidNum(second.estimatedNetRealization);
+
+      if (bothNetValid) {
+        const netDiff = Math.round(top.estimatedNetRealization - second.estimatedNetRealization);
+
+        if (
+          isValidNum(top.expectedGrossPricePerUnit) &&
+          isValidNum(second.expectedGrossPricePerUnit) &&
+          top.expectedGrossPricePerUnit < second.expectedGrossPricePerUnit
+        ) {
+          rationale = `Recommended: ${top.channelName}. Although ${second.channelName} offers a higher gross price (₹${second.expectedGrossPricePerUnit} vs ₹${top.expectedGrossPricePerUnit}/${unit}), ${top.channelName} produces ₹${netDiff.toLocaleString()} HIGHER estimated net profit after factoring in logistics savings (estimated ${top.distanceKm} km vs ${second.distanceKm} km straight-line distance) and statutory deductions.`;
+        } else if (
+          isValidNum(top.logisticsCost) &&
+          isValidNum(second.logisticsCost) &&
+          top.logisticsCost < second.logisticsCost &&
+          netDiff > 0
+        ) {
+          rationale = `Recommended: ${top.channelName}. Offers optimal economics with ₹${netDiff.toLocaleString()} higher estimated net return due to superior price realization and lower transit costs (estimated ${top.distanceKm} km vs ${second.distanceKm} km straight-line distance).`;
+        } else {
+          const perUnit = isValidNum(top.perUnitNetRealization) ? ` (₹${top.perUnitNetRealization}/${unit})` : '';
+          rationale = `Recommended: ${top.channelName}. Maximizes your net realization at ₹${top.estimatedNetRealization.toLocaleString()}${perUnit} across viable selling channels.`;
+        }
       } else {
-        rationale = `Recommended: ${top.channelName}. Maximizes your net realization at ₹${top.estimatedNetRealization.toLocaleString()} (₹${top.perUnitNetRealization}/${unit}) across viable selling channels.`;
+        // Qualitative rationale when one or both estimated net values are unavailable/null
+        const transitComparison =
+          isValidNum(top.distanceKm) && isValidNum(second.distanceKm)
+            ? ` (estimated ${top.distanceKm} km vs ${second.distanceKm} km straight-line distance)`
+            : '';
+        rationale = `Recommended: ${top.channelName}. Offers optimal liquidity through physical auction unloading with lower estimated transit distance${transitComparison}.`;
       }
     } else {
-      rationale = `Recommended: ${top.channelName}. Best available single channel yielding ₹${top.estimatedNetRealization.toLocaleString()} net profit.`;
+      if (isValidNum(top.estimatedNetRealization)) {
+        rationale = `Recommended: ${top.channelName}. Best available single channel yielding ₹${top.estimatedNetRealization.toLocaleString()} net profit.`;
+      } else {
+        rationale = `Recommended: ${top.channelName}. Best available single channel based on geographic proximity and market liquidity.`;
+      }
+    }
+
+    // Safety assertion: Ensure user-facing explanation never contains NaN, undefined, null, or Infinity
+    if (/(NaN|undefined|null|Infinity)/.test(rationale)) {
+      rationale = `Recommended: ${top.channelName}. Offers optimal selling channel performance based on available market and transit indicators.`;
     }
 
     const sellerOrigin = [dto.sellerLocation.city, dto.sellerLocation.state]

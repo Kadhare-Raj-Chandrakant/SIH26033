@@ -52,6 +52,8 @@ pnpm-debug.log*
 # ==============================
 coverage/
 .nyc_output/
+.playwright-mcp/
+test-results/
 
 # ==============================
 # Docker
@@ -92,3 +94,6 @@ services/ai/data/feedback_logs.jsonl
 .cache/
 .temp/
 .tmp/
+*.tmp
+*.token
+

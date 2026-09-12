@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsNumber, IsEnum, Min, IsOptional, MaxLength, IsUUID } from 'class-validator';
+import { IsString, IsNotEmpty, IsNumber, IsEnum, Min, Max, IsOptional, MaxLength, IsUUID } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ProductUnit } from '@prisma/client';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
@@ -22,8 +22,9 @@ export class CreateProductDto {
   categoryId: string;
 
   @ApiProperty()
-  @IsNumber()
-  @Min(0)
+  @IsNumber({ allowNaN: false, allowInfinity: false }, { message: 'Price must be a valid finite number' })
+  @Min(0.01, { message: 'Price must be greater than 0' })
+  @Max(10000000, { message: 'Price cannot exceed 10,000,000' })
   @Type(() => Number)
   price: number;
 
@@ -38,8 +39,9 @@ export class CreateProductDto {
   location?: string;
 
   @ApiProperty({ description: 'Initial available inventory quantity' })
-  @IsNumber()
-  @Min(0)
+  @IsNumber({ allowNaN: false, allowInfinity: false }, { message: 'Initial quantity must be a valid finite number' })
+  @Min(0, { message: 'Initial quantity cannot be negative' })
+  @Max(10000000, { message: 'Initial quantity cannot exceed 10,000,000' })
   @Type(() => Number)
   initialQuantity: number;
 }

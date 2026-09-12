@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import helmet from 'helmet';
+import express from 'express';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module.js';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter.js';
@@ -10,7 +11,16 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   // Security: HTTP headers
-  app.use(helmet());
+  app.use(
+    helmet({
+      contentSecurityPolicy: false, // Swagger UI compatibility
+      crossOriginEmbedderPolicy: false,
+    }),
+  );
+
+  // Security: Request body size limits (prevent memory exhaustion attacks)
+  app.use(express.json({ limit: '1mb' }));
+  app.use(express.urlencoded({ extended: true, limit: '1mb' }));
 
   // Global API prefix
   app.setGlobalPrefix('api/v1');

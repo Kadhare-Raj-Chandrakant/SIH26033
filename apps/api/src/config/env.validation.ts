@@ -6,7 +6,12 @@ export const envValidationSchema = Joi.object({
     .valid('development', 'production', 'test')
     .default('development'),
   API_PORT: Joi.number().default(4000),
-  CORS_ORIGIN: Joi.string().default('http://localhost:3000'),
+  CORS_ORIGIN: Joi.string().when('NODE_ENV', {
+    is: 'production',
+    // oxlint-disable-next-line unicorn/no-thenable
+    then: Joi.string().invalid('*').required(),
+    otherwise: Joi.string().default('http://localhost:3000'),
+  }),
   DATABASE_URL: Joi.string().when('NODE_ENV', {
     is: 'test',
     // oxlint-disable-next-line unicorn/no-thenable
@@ -20,10 +25,15 @@ export const envValidationSchema = Joi.object({
     otherwise: Joi.required(),
   }),
   JWT_SECRET: Joi.string().when('NODE_ENV', {
-    is: 'test',
+    is: 'production',
     // oxlint-disable-next-line unicorn/no-thenable
-    then: Joi.optional(),
-    otherwise: Joi.required(),
+    then: Joi.string().min(32).invalid('dev-secret-change-in-production').required(),
+    otherwise: Joi.string().when('NODE_ENV', {
+      is: 'test',
+      // oxlint-disable-next-line unicorn/no-thenable
+      then: Joi.optional(),
+      otherwise: Joi.required(),
+    }),
   }),
   JWT_EXPIRATION: Joi.string().default('15m'),
   CLOUDINARY_CLOUD_NAME: Joi.string().optional(),
@@ -32,5 +42,10 @@ export const envValidationSchema = Joi.object({
   LOGISTICS_PROVIDER: Joi.string().default('mock'),
   AI_SERVICE_URL: Joi.string().default('http://localhost:8080'),
   AI_TIMEOUT_MS: Joi.number().default(5000),
-  AI_INTERNAL_KEY: Joi.string().optional(),
+  AI_INTERNAL_KEY: Joi.string().when('NODE_ENV', {
+    is: 'production',
+    // oxlint-disable-next-line unicorn/no-thenable
+    then: Joi.string().min(16).required(),
+    otherwise: Joi.string().optional(),
+  }),
 });

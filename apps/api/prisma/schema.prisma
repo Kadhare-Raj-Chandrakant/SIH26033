@@ -141,6 +141,7 @@ model User {
   @@index([email])
   @@index([mobile])
   @@index([role])
+  @@index([status])
 }
 
 model SellerProfile {
@@ -158,6 +159,7 @@ model SellerProfile {
   ordersReceived Order[] // Orders placed by buyers for this seller's products
 
   @@index([sellerType])
+  @@index([verificationStatus])
 }
 
 model BuyerProfile {
@@ -238,6 +240,7 @@ model Product {
   @@index([sellerId])
   @@index([categoryId])
   @@index([status])
+  @@index([status, createdAt])
 }
 
 model ProductImage {
@@ -288,6 +291,7 @@ model Order {
   @@index([buyerId])
   @@index([sellerId])
   @@index([status])
+  @@index([status, createdAt])
 }
 
 model OrderItem {
@@ -321,6 +325,7 @@ model Payment {
   updatedAt         DateTime      @updatedAt
 
   @@index([orderId])
+  @@index([status])
 }
 
 // -----------------------------------------------------------------------------

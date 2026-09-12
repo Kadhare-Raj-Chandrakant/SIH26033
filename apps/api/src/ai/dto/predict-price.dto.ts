@@ -1,10 +1,11 @@
-import { IsString, IsOptional, IsNumber, Min, MaxLength } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsNumber, Min, Max, MaxLength, Matches } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 
 export class PredictPriceDto {
   @ApiProperty({ description: 'Agricultural commodity name (e.g. Tomato, Wheat, Potato)', example: 'Tomato' })
   @IsString()
+  @IsNotEmpty()
   @MaxLength(100)
   commodity: string;
 
@@ -29,33 +30,38 @@ export class PredictPriceDto {
   @ApiPropertyOptional({ description: 'Target date in YYYY-MM-DD format', example: '2026-09-15' })
   @IsString()
   @IsOptional()
+  @Matches(/^\d{4}-\d{2}-\d{2}$/, { message: 'targetDate must be in YYYY-MM-DD format' })
   targetDate?: string;
 
   @ApiPropertyOptional({ description: 'Recent 1-day lagged price in INR/quintal', example: 2500 })
-  @IsNumber()
+  @IsNumber({ allowNaN: false, allowInfinity: false })
   @IsOptional()
   @Type(() => Number)
   @Min(0)
+  @Max(10000000)
   historicalPriceLag1?: number;
 
   @ApiPropertyOptional({ description: 'Recent 7-day lagged price in INR/quintal', example: 2450 })
-  @IsNumber()
+  @IsNumber({ allowNaN: false, allowInfinity: false })
   @IsOptional()
   @Type(() => Number)
   @Min(0)
+  @Max(10000000)
   historicalPriceLag7?: number;
 
   @ApiPropertyOptional({ description: 'Recent 7-day rolling average price in INR/quintal', example: 2480 })
-  @IsNumber()
+  @IsNumber({ allowNaN: false, allowInfinity: false })
   @IsOptional()
   @Type(() => Number)
   @Min(0)
+  @Max(10000000)
   historicalPriceRolling7?: number;
 
   @ApiPropertyOptional({ description: 'Recent arrival volume in metric tonnes', example: 3200 })
-  @IsNumber()
+  @IsNumber({ allowNaN: false, allowInfinity: false })
   @IsOptional()
   @Type(() => Number)
   @Min(0)
+  @Max(10000000)
   arrivalsLag1?: number;
 }

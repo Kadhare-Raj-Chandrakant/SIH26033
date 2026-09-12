@@ -10,6 +10,7 @@ import {
   UseInterceptors,
   UploadedFile,
   BadRequestException,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiConsumes, ApiBody } from '@nestjs/swagger';
@@ -55,7 +56,7 @@ export class ProductsController {
   @ApiResponse({ status: 200, description: 'Product updated successfully.' })
   async update(
     @CurrentUser() user: AuthUser,
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() updateProductDto: UpdateProductDto,
   ) {
     return this.productsService.update(user.sub, id, updateProductDto);
@@ -69,7 +70,7 @@ export class ProductsController {
   @ApiResponse({ status: 200, description: 'Product deleted successfully.' })
   async remove(
     @CurrentUser() user: AuthUser,
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
   ) {
     return this.productsService.remove(user.sub, id);
   }
@@ -86,7 +87,7 @@ export class ProductsController {
   @ApiResponse({ status: 200, description: 'Product inventory updated successfully.' })
   async updateInventory(
     @CurrentUser() user: AuthUser,
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() updateInventoryDto: UpdateInventoryDto,
   ) {
     return this.productsService.updateInventory(user.sub, id, updateInventoryDto);
@@ -116,13 +117,25 @@ export class ProductsController {
   @UseInterceptors(
     FileInterceptor('file', {
       limits: {
-        fileSize: 5 * 1024 * 1024, // 5 MB
+        fileSize: 5 * 1024 * 1024, // 5 MB limit
+      },
+      fileFilter: (_req, file, callback) => {
+        const allowedMimes = ['image/jpeg', 'image/png', 'image/webp'];
+        const allowedExts = /\.(jpe?g|png|webp)$/i;
+
+        if (!allowedMimes.includes(file.mimetype) || !allowedExts.test(file.originalname)) {
+          return callback(
+            new BadRequestException('Only image files (JPEG, PNG, WebP) are allowed'),
+            false,
+          );
+        }
+        callback(null, true);
       },
     }),
   )
   async uploadImage(
     @CurrentUser() user: AuthUser,
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @UploadedFile() file: Express.Multer.File,
   ) {
     if (!file) {
@@ -139,8 +152,8 @@ export class ProductsController {
   @ApiResponse({ status: 200, description: 'Product image deleted successfully.' })
   async removeImage(
     @CurrentUser() user: AuthUser,
-    @Param('id') id: string,
-    @Param('imageId') imageId: string,
+    @Param('id', ParseUUIDPipe) id: string,
+    @Param('imageId', ParseUUIDPipe) imageId: string,
   ) {
     return this.productsService.removeImage(user.sub, id, imageId);
   }
@@ -154,7 +167,7 @@ export class ProductsController {
   @ApiOperation({ summary: 'Get a product by ID (Public read)' })
   @ApiResponse({ status: 200, description: 'Product retrieved successfully.' })
   @ApiResponse({ status: 404, description: 'Product not found.' })
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.productsService.findOne(id);
   }
 }

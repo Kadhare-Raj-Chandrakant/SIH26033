@@ -18,19 +18,43 @@ export class AllExceptionsFilter implements ExceptionFilter {
     if (exception instanceof HttpException) {
       status = exception.getStatus();
       const res = exception.getResponse();
-      message = typeof res === 'object' && 'message' in res ? (res as any).message : res;
+      message = typeof res === 'object' && res !== null && 'message' in res ? (res as any).message : res;
       errorType = exception.name;
     } else if (exception instanceof Prisma.PrismaClientKnownRequestError) {
-      // Handle known Prisma errors cleanly (e.g. Unique constraint failed)
-      status = HttpStatus.CONFLICT;
-      message = 'Database constraint violation';
-      errorType = 'PrismaError';
-      // We don't expose the exact DB error string to the user for security.
-      this.logger.error(`Prisma error ${exception.code} on ${request.url}: ${exception.message}`);
+      errorType = 'DatabaseError';
+      switch (exception.code) {
+        case 'P2002':
+          status = HttpStatus.CONFLICT;
+          message = 'A resource with this identifier already exists';
+          break;
+        case 'P2025':
+          status = HttpStatus.NOT_FOUND;
+          message = 'The requested resource was not found';
+          break;
+        case 'P2003':
+          status = HttpStatus.BAD_REQUEST;
+          message = 'Referenced entity does not exist or has active constraints';
+          break;
+        default:
+          status = HttpStatus.BAD_REQUEST;
+          message = 'Database request could not be processed';
+          break;
+      }
+      this.logger.error(`Prisma known error ${exception.code} on ${request.url}: ${exception.message}`);
+    } else if (exception instanceof Prisma.PrismaClientValidationError) {
+      status = HttpStatus.BAD_REQUEST;
+      message = 'Database query validation failed';
+      errorType = 'DatabaseValidationError';
+      this.logger.error(`Prisma validation error on ${request.url}: ${exception.message}`);
     } else if (exception instanceof Error) {
-      errorType = exception.name;
+      status = HttpStatus.INTERNAL_SERVER_ERROR;
+      message = 'An unexpected internal error occurred';
+      errorType = 'InternalServerError';
       this.logger.error(`Unhandled error on ${request.url}: ${exception.message}`, exception.stack);
     } else {
+      status = HttpStatus.INTERNAL_SERVER_ERROR;
+      message = 'An unexpected error occurred';
+      errorType = 'UnknownError';
       this.logger.error(`Unknown exception on ${request.url}`, String(exception));
     }
 

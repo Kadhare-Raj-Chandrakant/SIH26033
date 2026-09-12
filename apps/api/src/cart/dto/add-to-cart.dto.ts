@@ -1,4 +1,4 @@
-import { IsUUID, IsNotEmpty, IsInt, Min } from 'class-validator';
+import { IsUUID, IsNotEmpty, IsInt, Min, Max } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -11,6 +11,7 @@ export class AddToCartDto {
   @ApiProperty({ description: 'Quantity to add (positive integer)', example: 2 })
   @IsInt()
   @Min(1)
+  @Max(100000)
   @Type(() => Number)
   quantity: number;
 }
