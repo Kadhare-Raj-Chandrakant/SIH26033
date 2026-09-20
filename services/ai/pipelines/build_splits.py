@@ -28,7 +28,9 @@ def build_all_splits():
     # 1. Market & Weather features
     merged_path = os.path.join(processed_dir, "mandi_weather_merged.csv")
     if not os.path.exists(merged_path):
-        raise FileNotFoundError(f"Cleaned merged dataset not found at {merged_path}")
+        print(f"[Splits] Cleaned merged dataset not found at {merged_path}. Running preprocessing pipeline...")
+        from .preprocessing import process_all_and_save
+        process_all_and_save()
     
     print("[Splits] Engineering zero-leakage market and temporal features...")
     merged_df = pd.read_csv(merged_path)

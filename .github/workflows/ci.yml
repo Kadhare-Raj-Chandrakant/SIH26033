@@ -70,7 +70,7 @@ jobs:
         run: npm run db:generate
 
       - name: Apply Database Migrations (Isolated CI DB)
-        run: npx prisma migrate deploy --schema apps/api/prisma/schema.prisma
+        run: npm run db:migrate:deploy
 
       - name: Backend Typecheck
         run: npm run type-check -w apps/api
@@ -136,8 +136,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Build Dataset Splits
-        run: python -m pipelines.build_splits
+      - name: Preprocess Datasets & Build Splits
+        run: |
+          python -m pipelines.preprocessing
+          python -m pipelines.build_splits
 
       - name: Verify Training Pipeline Artifacts
         run: python -m training.train_all
