@@ -24,3 +24,7 @@ CREATE INDEX IF NOT EXISTS "Product_district_idx" ON "Product"("district");
 
 -- CreateIndex
 CREATE INDEX IF NOT EXISTS "Product_marketMandi_idx" ON "Product"("marketMandi");
+
+-- Alter Notification foreign key to CASCADE on User delete
+ALTER TABLE "Notification" DROP CONSTRAINT IF EXISTS "Notification_userId_fkey";
+ALTER TABLE "Notification" ADD CONSTRAINT "Notification_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

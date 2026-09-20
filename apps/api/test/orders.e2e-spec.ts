@@ -63,6 +63,7 @@ describe('OrdersController & Purchasing Workflow (e2e)', () => {
     await prisma.address.deleteMany();
     await prisma.sellerProfile.deleteMany();
     await prisma.buyerProfile.deleteMany();
+    await prisma.notification.deleteMany();
     await prisma.user.deleteMany();
 
     const passwordHash = await argon2.hash('SecretPass123!');
