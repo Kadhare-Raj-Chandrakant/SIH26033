@@ -7,6 +7,7 @@ Executes reproducible training for all baseline models:
 3. Crop Recommendation
 """
 
+import os
 import time
 from .train_demand_forecaster import train_demand_model
 from .train_price_predictor import train_price_model
@@ -14,6 +15,12 @@ from .train_crop_recommender import train_crop_model
 
 def train_all():
     start_time = time.time()
+    splits_dir = os.path.join(os.path.dirname(__file__), "..", "data", "splits")
+    if not os.path.exists(os.path.join(splits_dir, "market_train.csv")):
+        print("[train_all] Splits not found. Building reproducible zero-leakage splits...")
+        from pipelines.build_splits import build_all_splits
+        build_all_splits()
+
     print("=" * 60)
     print("STARTING SIH26033 REPRODUCIBLE ML BASELINE MODEL TRAINING")
     print("=" * 60)

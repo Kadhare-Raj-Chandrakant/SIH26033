@@ -163,7 +163,7 @@ function MarketplaceContent() {
                 <div className="flex items-center gap-2">
                   <Search className="h-4 w-4 text-emerald-600" />
                   <span className="text-muted-foreground">Showing produce matching:</span>
-                  <span className="font-bold text-foreground">"{filters.search}"</span>
+                  <span className="font-bold text-foreground">&ldquo;{filters.search}&rdquo;</span>
                   <span className="rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-700 dark:text-emerald-300">
                     {meta?.total !== undefined ? `${meta.total} listings found` : 'Loading...'}
                   </span>

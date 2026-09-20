@@ -228,7 +228,7 @@ CREATE INDEX "FpoFarmerPayment_farmerId_idx" ON "FpoFarmerPayment"("farmerId");
 CREATE INDEX "FpoFarmerPayment_listingId_idx" ON "FpoFarmerPayment"("listingId");
 
 -- AddForeignKey
-ALTER TABLE "FpoOrganization" ADD CONSTRAINT "FpoOrganization_adminId_fkey" FOREIGN KEY ("adminId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "FpoOrganization" ADD CONSTRAINT "FpoOrganization_adminId_fkey" FOREIGN KEY ("adminId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "FpoMembership" ADD CONSTRAINT "FpoMembership_fpoId_fkey" FOREIGN KEY ("fpoId") REFERENCES "FpoOrganization"("id") ON DELETE CASCADE ON UPDATE CASCADE;

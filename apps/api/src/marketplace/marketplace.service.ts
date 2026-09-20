@@ -56,9 +56,9 @@ export class MarketplaceService {
     const rawPrice = product.price ? Number(product.price) : 0;
     const hasValidPrice =
       rawPrice > 0 &&
-      product.illustrativeFarmerListingReferenceInr !== null &&
-      product.illustrativeFarmerListingReferenceInr !== undefined &&
-      Number(product.illustrativeFarmerListingReferenceInr) > 0;
+      (product.illustrativeFarmerListingReferenceInr === null ||
+        product.illustrativeFarmerListingReferenceInr === undefined ||
+        Number(product.illustrativeFarmerListingReferenceInr) > 0);
 
     return {
       id: product.id,

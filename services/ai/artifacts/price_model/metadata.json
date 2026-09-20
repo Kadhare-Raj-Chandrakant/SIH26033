@@ -1,7 +1,7 @@
 {
   "model_name": "price_predictor_baseline",
   "model_version": "1.1.0",
-  "created_at": "2026-09-11T10:54:25.967505+00:00",
+  "created_at": "2026-09-20T22:49:31.225372+00:00",
   "algorithm": "RandomForestRegressor",
   "dataset_source": "SYNTHETIC_DEMO (Modeled on wholesale APMC price dynamics)",
   "dataset_provenance_status": "DEMO_FIXTURE_NO_FABRICATED_REAL_CLAIMS",

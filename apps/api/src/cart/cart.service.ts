@@ -56,9 +56,9 @@ export class CartService {
     const numericPrice = product.price ? product.price.toNumber() : 0;
     const hasValidPrice =
       numericPrice > 0 &&
-      product.illustrativeFarmerListingReferenceInr !== null &&
-      product.illustrativeFarmerListingReferenceInr !== undefined &&
-      product.illustrativeFarmerListingReferenceInr.toNumber() > 0;
+      (product.illustrativeFarmerListingReferenceInr === null ||
+        product.illustrativeFarmerListingReferenceInr === undefined ||
+        product.illustrativeFarmerListingReferenceInr.toNumber() > 0);
 
     if (!hasValidPrice) {
       throw new BadRequestException('Product has no price assigned and is currently out of stock');
@@ -159,9 +159,9 @@ export class CartService {
         : 0;
       const hasValidPrice =
         unitPrice.toNumber() > 0 &&
-        item.product.illustrativeFarmerListingReferenceInr !== null &&
-        item.product.illustrativeFarmerListingReferenceInr !== undefined &&
-        item.product.illustrativeFarmerListingReferenceInr.toNumber() > 0;
+        (item.product.illustrativeFarmerListingReferenceInr === null ||
+          item.product.illustrativeFarmerListingReferenceInr === undefined ||
+          item.product.illustrativeFarmerListingReferenceInr.toNumber() > 0);
 
       const isAvailable =
         item.product.status === ProductStatus.ACTIVE &&

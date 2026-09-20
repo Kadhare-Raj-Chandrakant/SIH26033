@@ -1,4 +1,4 @@
-import { IsArray, IsNotEmpty, IsString, IsOptional, ArrayMinSize, MaxLength } from 'class-validator';
+import { IsArray, IsString, IsOptional, ArrayMinSize, MaxLength } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateBatchDto {

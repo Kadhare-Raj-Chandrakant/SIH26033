@@ -627,7 +627,7 @@ model FpoOrganization {
   description        String?
   logoUrl            String?
   adminId            String
-  admin              User              @relation("FpoAdmin", fields: [adminId], references: [id])
+  admin              User              @relation("FpoAdmin", fields: [adminId], references: [id], onDelete: Cascade)
   createdAt          DateTime          @default(now())
   updatedAt          DateTime          @updatedAt
 

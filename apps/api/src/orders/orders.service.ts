@@ -103,9 +103,9 @@ export class OrdersService {
         const itemPrice = item.product.price ? item.product.price.toNumber() : 0;
         const hasValidPrice =
           itemPrice > 0 &&
-          item.product.illustrativeFarmerListingReferenceInr !== null &&
-          item.product.illustrativeFarmerListingReferenceInr !== undefined &&
-          item.product.illustrativeFarmerListingReferenceInr.toNumber() > 0;
+          (item.product.illustrativeFarmerListingReferenceInr === null ||
+            item.product.illustrativeFarmerListingReferenceInr === undefined ||
+            item.product.illustrativeFarmerListingReferenceInr.toNumber() > 0);
 
         if (!hasValidPrice) {
           throw new BadRequestException(
