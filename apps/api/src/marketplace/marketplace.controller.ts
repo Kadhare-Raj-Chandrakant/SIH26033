@@ -31,6 +31,14 @@ export class MarketplaceController {
     return this.marketplaceService.findAll(query);
   }
 
+  @Get('filter-options')
+  @ApiOperation({
+    summary: 'Get available marketplace filter options including distinct states and districts',
+  })
+  async getFilterOptions() {
+    return this.marketplaceService.getFilterOptions();
+  }
+
   @Get(':id')
   @ApiOperation({
     summary: 'Get marketplace product detail by ID (safe buyer projection)',

@@ -1,0 +1,902 @@
+[
+  {
+    "crop": "Rice",
+    "slug": "rice",
+    "slot": 1,
+    "filename": "rice-1.jpg",
+    "path": "/images/products/rice-1.jpg",
+    "title": "File:Rice grains (IRRI).jpg",
+    "sizeBytes": 195500,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Rice",
+    "slug": "rice",
+    "slot": 2,
+    "filename": "rice-2.jpg",
+    "path": "/images/products/rice-2.jpg",
+    "title": "File:Rice Grains.jpg",
+    "sizeBytes": 89981,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Rice",
+    "slug": "rice",
+    "slot": 3,
+    "filename": "rice-3.jpg",
+    "path": "/images/products/rice-3.jpg",
+    "title": "File:Basmati Rice Kolkata 2011-02-11 1054.JPG",
+    "sizeBytes": 141064,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Wheat",
+    "slug": "wheat",
+    "slot": 1,
+    "filename": "wheat-1.jpg",
+    "path": "/images/products/wheat-1.jpg",
+    "title": "File:Wheat field.jpg",
+    "sizeBytes": 36292,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Wheat",
+    "slug": "wheat",
+    "slot": 2,
+    "filename": "wheat-2.jpg",
+    "path": "/images/products/wheat-2.jpg",
+    "title": "File:Wheat close-up.JPG",
+    "sizeBytes": 198522,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Wheat",
+    "slug": "wheat",
+    "slot": 3,
+    "filename": "wheat-3.jpg",
+    "path": "/images/products/wheat-3.jpg",
+    "title": "File:Wheat Grain.jpg",
+    "sizeBytes": 593976,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Maize",
+    "slug": "maize",
+    "slot": 1,
+    "filename": "maize-1.jpg",
+    "path": "/images/products/maize-1.jpg",
+    "title": "File:Corn on the cob (5178296206).jpg",
+    "sizeBytes": 99219,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Maize",
+    "slug": "maize",
+    "slot": 2,
+    "filename": "maize-2.jpg",
+    "path": "/images/products/maize-2.jpg",
+    "title": "File:Brazilian corn on the cob.jpg",
+    "sizeBytes": 188544,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Maize",
+    "slug": "maize",
+    "slot": 3,
+    "filename": "maize-3.jpg",
+    "path": "/images/products/maize-3.jpg",
+    "title": "File:Corn on Cob- Kolkata - West Bengal - DSC 0010.jpg",
+    "sizeBytes": 145898,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Chickpea",
+    "slug": "chickpea",
+    "slot": 1,
+    "filename": "chickpea-1.jpg",
+    "path": "/images/products/chickpea-1.jpg",
+    "title": "File:Chickpea field in Tamil Nadu JEG6258.jpg",
+    "sizeBytes": 137296,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Chickpea",
+    "slug": "chickpea",
+    "slot": 2,
+    "filename": "chickpea-2.jpg",
+    "path": "/images/products/chickpea-2.jpg",
+    "title": "File:Chickpea field in Tamil Nadu JEG6261.jpg",
+    "sizeBytes": 138610,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Chickpea",
+    "slug": "chickpea",
+    "slot": 3,
+    "filename": "chickpea-3.jpg",
+    "path": "/images/products/chickpea-3.jpg",
+    "title": "File:Chana-Chick pea-Cicer arietinum-September 27, 2016-IMG 8013-2.jpg",
+    "sizeBytes": 301165,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Green Gram",
+    "slug": "green-gram",
+    "slot": 1,
+    "filename": "green-gram-1.jpg",
+    "path": "/images/products/green-gram-1.jpg",
+    "title": "File:Mung beans (Vigna radiata).jpg",
+    "sizeBytes": 95638,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Green Gram",
+    "slug": "green-gram",
+    "slot": 2,
+    "filename": "green-gram-2.jpg",
+    "path": "/images/products/green-gram-2.jpg",
+    "title": "File:Vigna radiata MHNT.BOT.2009.17.4.jpg",
+    "sizeBytes": 118713,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Green Gram",
+    "slug": "green-gram",
+    "slot": 3,
+    "filename": "green-gram-3.jpg",
+    "path": "/images/products/green-gram-3.jpg",
+    "title": "File:Mung bean field.jpg",
+    "sizeBytes": 296342,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Black Gram",
+    "slug": "black-gram",
+    "slot": 1,
+    "filename": "black-gram-1.jpg",
+    "path": "/images/products/black-gram-1.jpg",
+    "title": "File:Black gram.jpg",
+    "sizeBytes": 266526,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Black Gram",
+    "slug": "black-gram",
+    "slot": 2,
+    "filename": "black-gram-2.jpg",
+    "path": "/images/products/black-gram-2.jpg",
+    "title": "File:Vigna mungo.jpg",
+    "sizeBytes": 491334,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Black Gram",
+    "slug": "black-gram",
+    "slot": 3,
+    "filename": "black-gram-3.jpg",
+    "path": "/images/products/black-gram-3.jpg",
+    "title": "File:Vigna mungo without skin.jpg",
+    "sizeBytes": 153628,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Potato",
+    "slug": "potato",
+    "slot": 1,
+    "filename": "potato-1.jpg",
+    "path": "/images/products/potato-1.jpg",
+    "title": "File:Fresh Potatoes.jpg",
+    "sizeBytes": 198117,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Potato",
+    "slug": "potato",
+    "slot": 2,
+    "filename": "potato-2.jpg",
+    "path": "/images/products/potato-2.jpg",
+    "title": "File:Big and fresh potatoes.jpg",
+    "sizeBytes": 245651,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Potato",
+    "slug": "potato",
+    "slot": 3,
+    "filename": "potato-3.jpg",
+    "path": "/images/products/potato-3.jpg",
+    "title": "File:2010-06-19-supermarkt-by-RalfR-29.jpg",
+    "sizeBytes": 140748,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Onion",
+    "slug": "onion",
+    "slot": 1,
+    "filename": "onion-1.jpg",
+    "path": "/images/products/onion-1.jpg",
+    "title": "File:Oignon rosé de roscoffP1000686.jpg",
+    "sizeBytes": 363732,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Onion",
+    "slug": "onion",
+    "slot": 2,
+    "filename": "onion-2.jpg",
+    "path": "/images/products/onion-2.jpg",
+    "title": "File:Red onions.jpg",
+    "sizeBytes": 248618,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Onion",
+    "slug": "onion",
+    "slot": 3,
+    "filename": "onion-3.jpg",
+    "path": "/images/products/onion-3.jpg",
+    "title": "File:13-08-31-wien-redaktionstreffen-EuT-by-Bi-frie-025.jpg",
+    "sizeBytes": 86851,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Tomato",
+    "slug": "tomato",
+    "slot": 1,
+    "filename": "tomato-1.jpg",
+    "path": "/images/products/tomato-1.jpg",
+    "title": "File:0150-Casoledelsa.JPG",
+    "sizeBytes": 132853,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Tomato",
+    "slug": "tomato",
+    "slot": 2,
+    "filename": "tomato-2.jpg",
+    "path": "/images/products/tomato-2.jpg",
+    "title": "File:2014 Prowincja Szirak, Giumri, Owoce i warzywa.jpg",
+    "sizeBytes": 253183,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Tomato",
+    "slug": "tomato",
+    "slot": 3,
+    "filename": "tomato-3.jpg",
+    "path": "/images/products/tomato-3.jpg",
+    "title": "File:2016-10-29 01-04-31 recup.jpg",
+    "sizeBytes": 313317,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Mango",
+    "slug": "mango",
+    "slot": 1,
+    "filename": "mango-1.jpg",
+    "path": "/images/products/mango-1.jpg",
+    "title": "File:Alphonso Ripe Mango from north India.jpg",
+    "sizeBytes": 102698,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Mango",
+    "slug": "mango",
+    "slot": 2,
+    "filename": "mango-2.jpg",
+    "path": "/images/products/mango-2.jpg",
+    "title": "File:Ripe Mango from Nicaragua.jpg",
+    "sizeBytes": 265553,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Mango",
+    "slug": "mango",
+    "slot": 3,
+    "filename": "mango-3.jpg",
+    "path": "/images/products/mango-3.jpg",
+    "title": "File:Ripe mangoes.jpg",
+    "sizeBytes": 178114,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Banana",
+    "slug": "banana",
+    "slot": 1,
+    "filename": "banana-1.jpg",
+    "path": "/images/products/banana-1.jpg",
+    "title": "File:A bunch of bananas.jpg",
+    "sizeBytes": 53874,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Banana",
+    "slug": "banana",
+    "slot": 2,
+    "filename": "banana-2.jpg",
+    "path": "/images/products/banana-2.jpg",
+    "title": "File:10.5 inch banana.JPG",
+    "sizeBytes": 164538,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Banana",
+    "slug": "banana",
+    "slot": 3,
+    "filename": "banana-3.jpg",
+    "path": "/images/products/banana-3.jpg",
+    "title": "File:27 cm banana.JPG",
+    "sizeBytes": 168762,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Apple",
+    "slug": "apple",
+    "slot": 1,
+    "filename": "apple-1.jpg",
+    "path": "/images/products/apple-1.jpg",
+    "title": "File:Apfel 01.jpg",
+    "sizeBytes": 108809,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Apple",
+    "slug": "apple",
+    "slot": 2,
+    "filename": "apple-2.jpg",
+    "path": "/images/products/apple-2.jpg",
+    "title": "File:Apfel 02.jpg",
+    "sizeBytes": 83005,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Apple",
+    "slug": "apple",
+    "slot": 3,
+    "filename": "apple-3.jpg",
+    "path": "/images/products/apple-3.jpg",
+    "title": "File:Red apples.jpg",
+    "sizeBytes": 190242,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Soybean",
+    "slug": "soybean",
+    "slot": 1,
+    "filename": "soybean-1.jpg",
+    "path": "/images/products/soybean-1.jpg",
+    "title": "File:2005soyabean.PNG",
+    "sizeBytes": 114579,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Soybean",
+    "slug": "soybean",
+    "slot": 2,
+    "filename": "soybean-2.jpg",
+    "path": "/images/products/soybean-2.jpg",
+    "title": "File:Glycine max1.jpg",
+    "sizeBytes": 274379,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Soybean",
+    "slug": "soybean",
+    "slot": 3,
+    "filename": "soybean-3.jpg",
+    "path": "/images/products/soybean-3.jpg",
+    "title": "File:A field of Soy beans (Glycine max) (6160141423).jpg",
+    "sizeBytes": 167819,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Groundnut",
+    "slug": "groundnut",
+    "slot": 1,
+    "filename": "groundnut-1.jpg",
+    "path": "/images/products/groundnut-1.jpg",
+    "title": "File:Amendoim no mercado de Wanchaq.JPG",
+    "sizeBytes": 178137,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Groundnut",
+    "slug": "groundnut",
+    "slot": 2,
+    "filename": "groundnut-2.jpg",
+    "path": "/images/products/groundnut-2.jpg",
+    "title": "File:2005groundnut.PNG",
+    "sizeBytes": 116573,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Groundnut",
+    "slug": "groundnut",
+    "slot": 3,
+    "filename": "groundnut-3.jpg",
+    "path": "/images/products/groundnut-3.jpg",
+    "title": "File:A granel (142983393).jpg",
+    "sizeBytes": 180439,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Mustard",
+    "slug": "mustard",
+    "slot": 1,
+    "filename": "mustard-1.jpg",
+    "path": "/images/products/mustard-1.jpg",
+    "title": "File:Mustard seed closeup.jpg",
+    "sizeBytes": 113758,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Mustard",
+    "slug": "mustard",
+    "slot": 2,
+    "filename": "mustard-2.jpg",
+    "path": "/images/products/mustard-2.jpg",
+    "title": "File:Brassicanigra.jpg",
+    "sizeBytes": 83369,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Mustard",
+    "slug": "mustard",
+    "slot": 3,
+    "filename": "mustard-3.jpg",
+    "path": "/images/products/mustard-3.jpg",
+    "title": "File:Alliaria-petiolata-seeds.jpg",
+    "sizeBytes": 177753,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Turmeric",
+    "slug": "turmeric",
+    "slot": 1,
+    "filename": "turmeric-1.jpg",
+    "path": "/images/products/turmeric-1.jpg",
+    "title": "File:Curcuma longa - Hong Kong Botanical Garden - IMG 9629.JPG",
+    "sizeBytes": 292668,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Turmeric",
+    "slug": "turmeric",
+    "slot": 2,
+    "filename": "turmeric-2.jpg",
+    "path": "/images/products/turmeric-2.jpg",
+    "title": "File:Curcuma longa മഞ്ഞൾ Turmeric.jpg",
+    "sizeBytes": 224053,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Turmeric",
+    "slug": "turmeric",
+    "slot": 3,
+    "filename": "turmeric-3.jpg",
+    "path": "/images/products/turmeric-3.jpg",
+    "title": "File:A closeup of Turmeric.JPG",
+    "sizeBytes": 359558,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Dry Red Chilli",
+    "slug": "dry-red-chilli",
+    "slot": 1,
+    "filename": "dry-red-chilli-1.jpg",
+    "path": "/images/products/dry-red-chilli-1.jpg",
+    "title": "File:Dried Red Chili.jpg",
+    "sizeBytes": 397655,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Dry Red Chilli",
+    "slug": "dry-red-chilli",
+    "slot": 2,
+    "filename": "dry-red-chilli-2.jpg",
+    "path": "/images/products/dry-red-chilli-2.jpg",
+    "title": "File:Dried Korean red chillies.jpg",
+    "sizeBytes": 96938,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Dry Red Chilli",
+    "slug": "dry-red-chilli",
+    "slot": 3,
+    "filename": "dry-red-chilli-3.jpg",
+    "path": "/images/products/dry-red-chilli-3.jpg",
+    "title": "File:Dried chillies 2.jpg",
+    "sizeBytes": 197633,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Cumin",
+    "slug": "cumin",
+    "slot": 1,
+    "filename": "cumin-1.jpg",
+    "path": "/images/products/cumin-1.jpg",
+    "title": "File:Cumin-spice.jpg",
+    "sizeBytes": 130031,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Cumin",
+    "slug": "cumin",
+    "slot": 2,
+    "filename": "cumin-2.jpg",
+    "path": "/images/products/cumin-2.jpg",
+    "title": "File:Komijn-spice.jpg",
+    "sizeBytes": 155492,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Cumin",
+    "slug": "cumin",
+    "slot": 3,
+    "filename": "cumin-3.jpg",
+    "path": "/images/products/cumin-3.jpg",
+    "title": "File:Jeera Seeds Closeup.JPG",
+    "sizeBytes": 157376,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Cotton",
+    "slug": "cotton",
+    "slot": 1,
+    "filename": "cotton-1.jpg",
+    "path": "/images/products/cotton-1.jpg",
+    "title": "File:Cotton (8145399540).jpg",
+    "sizeBytes": 241621,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Cotton",
+    "slug": "cotton",
+    "slot": 2,
+    "filename": "cotton-2.jpg",
+    "path": "/images/products/cotton-2.jpg",
+    "title": "File:Cotton - പരുത്തി 03.JPG",
+    "sizeBytes": 115854,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Cotton",
+    "slug": "cotton",
+    "slot": 3,
+    "filename": "cotton-3.jpg",
+    "path": "/images/products/cotton-3.jpg",
+    "title": "File:Braga Pedagogical Farm Coton.jpg",
+    "sizeBytes": 264253,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Sugarcane",
+    "slug": "sugarcane",
+    "slot": 1,
+    "filename": "sugarcane-1.jpg",
+    "path": "/images/products/sugarcane-1.jpg",
+    "title": "File:Sugarcane stalks.jpg",
+    "sizeBytes": 166314,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Sugarcane",
+    "slug": "sugarcane",
+    "slot": 2,
+    "filename": "sugarcane-2.jpg",
+    "path": "/images/products/sugarcane-2.jpg",
+    "title": "File:Cane-sugar.jpg",
+    "sizeBytes": 129606,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Sugarcane",
+    "slug": "sugarcane",
+    "slot": 3,
+    "filename": "sugarcane-3.jpg",
+    "path": "/images/products/sugarcane-3.jpg",
+    "title": "File:Sugarcane field of Kachirapalayam.jpg",
+    "sizeBytes": 245260,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Jute",
+    "slug": "jute",
+    "slot": 1,
+    "filename": "jute-1.jpg",
+    "path": "/images/products/jute-1.jpg",
+    "title": "File:Asahimo.jpg",
+    "sizeBytes": 46946,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Jute",
+    "slug": "jute",
+    "slot": 2,
+    "filename": "jute-2.jpg",
+    "path": "/images/products/jute-2.jpg",
+    "title": "File:Corchorus capsularis - Jardim Botânico de São Paulo - IMG 0245.jpg",
+    "sizeBytes": 129878,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Jute",
+    "slug": "jute",
+    "slot": 3,
+    "filename": "jute-3.jpg",
+    "path": "/images/products/jute-3.jpg",
+    "title": "File:COLLECTIE TROPENMUSEUM Europeaan poseert bij een veld jute of hennep TMnr 10023830.jpg",
+    "sizeBytes": 89104,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Tea Leaves",
+    "slug": "tea-leaves",
+    "slot": 1,
+    "filename": "tea-leaves-1.jpg",
+    "path": "/images/products/tea-leaves-1.jpg",
+    "title": "File:Bai Hao Yin Zhen tea leaf (Fuding).jpg",
+    "sizeBytes": 48666,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Tea Leaves",
+    "slug": "tea-leaves",
+    "slot": 2,
+    "filename": "tea-leaves-2.jpg",
+    "path": "/images/products/tea-leaves-2.jpg",
+    "title": "File:Bai Hao Yin Zhen tea leaf.jpg",
+    "sizeBytes": 47866,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Tea Leaves",
+    "slug": "tea-leaves",
+    "slot": 3,
+    "filename": "tea-leaves-3.jpg",
+    "path": "/images/products/tea-leaves-3.jpg",
+    "title": "File:Assam black tea.jpg",
+    "sizeBytes": 62021,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Coffee",
+    "slug": "coffee",
+    "slot": 1,
+    "filename": "coffee-1.jpg",
+    "path": "/images/products/coffee-1.jpg",
+    "title": "File:Coffee beans.jpg",
+    "sizeBytes": 284145,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Coffee",
+    "slug": "coffee",
+    "slot": 2,
+    "filename": "coffee-2.jpg",
+    "path": "/images/products/coffee-2.jpg",
+    "title": "File:20110111- MG 9606.jpg",
+    "sizeBytes": 235387,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Coffee",
+    "slug": "coffee",
+    "slot": 3,
+    "filename": "coffee-3.jpg",
+    "path": "/images/products/coffee-3.jpg",
+    "title": "File:Bali 003 - Ubud - famous lukaw coffee.jpg",
+    "sizeBytes": 70646,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Coconut",
+    "slug": "coconut",
+    "slot": 1,
+    "filename": "coconut-1.jpg",
+    "path": "/images/products/coconut-1.jpg",
+    "title": "File:Beached coconut.JPG",
+    "sizeBytes": 217505,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Coconut",
+    "slug": "coconut",
+    "slot": 2,
+    "filename": "coconut-2.jpg",
+    "path": "/images/products/coconut-2.jpg",
+    "title": "File:Bathsheba-beach.jpg",
+    "sizeBytes": 58429,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Coconut",
+    "slug": "coconut",
+    "slot": 3,
+    "filename": "coconut-3.jpg",
+    "path": "/images/products/coconut-3.jpg",
+    "title": "File:A coconut -seed.jpg",
+    "sizeBytes": 237512,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Berseem",
+    "slug": "berseem",
+    "slot": 1,
+    "filename": "berseem-1.jpg",
+    "path": "/images/products/berseem-1.jpg",
+    "title": "File:Trifolium alexandrinum eF.jpg",
+    "sizeBytes": 250078,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Berseem",
+    "slug": "berseem",
+    "slot": 2,
+    "filename": "berseem-2.jpg",
+    "path": "/images/products/berseem-2.jpg",
+    "title": "File:Raidjeus1.jpg",
+    "sizeBytes": 59076,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Berseem",
+    "slug": "berseem",
+    "slot": 3,
+    "filename": "berseem-3.jpg",
+    "path": "/images/products/berseem-3.jpg",
+    "title": "File:Berseem - the great forage and soiling crop of the Nile Valley (1902) (14782572785).jpg",
+    "sizeBytes": 171265,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Lucerne",
+    "slug": "lucerne",
+    "slot": 1,
+    "filename": "lucerne-1.jpg",
+    "path": "/images/products/lucerne-1.jpg",
+    "title": "File:Medicago sativa Alfals006.jpg",
+    "sizeBytes": 223654,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Lucerne",
+    "slug": "lucerne",
+    "slot": 2,
+    "filename": "lucerne-2.jpg",
+    "path": "/images/products/lucerne-2.jpg",
+    "title": "File:MedicagoSativa-plant-hr.jpg",
+    "sizeBytes": 368447,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Lucerne",
+    "slug": "lucerne",
+    "slot": 3,
+    "filename": "lucerne-3.jpg",
+    "path": "/images/products/lucerne-3.jpg",
+    "title": "File:Alfalz destacato contra o cielo.jpg",
+    "sizeBytes": 238865,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Fodder Maize",
+    "slug": "fodder-maize",
+    "slot": 1,
+    "filename": "fodder-maize-1.jpg",
+    "path": "/images/products/fodder-maize-1.jpg",
+    "title": "File:Alley cropping corn walnuts.jpg",
+    "sizeBytes": 29342,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Fodder Maize",
+    "slug": "fodder-maize",
+    "slot": 2,
+    "filename": "fodder-maize-2.jpg",
+    "path": "/images/products/fodder-maize-2.jpg",
+    "title": "File:African American farmer in corn field, Alachua County, Florida.jpg",
+    "sizeBytes": 63950,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Fodder Maize",
+    "slug": "fodder-maize",
+    "slot": 3,
+    "filename": "fodder-maize-3.jpg",
+    "path": "/images/products/fodder-maize-3.jpg",
+    "title": "File:Agro PR Milho em Palotina.jpg",
+    "sizeBytes": 302408,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Marigold",
+    "slug": "marigold",
+    "slot": 1,
+    "filename": "marigold-1.jpg",
+    "path": "/images/products/marigold-1.jpg",
+    "title": "File:Beautiful Flowers 1.JPG",
+    "sizeBytes": 308994,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Marigold",
+    "slug": "marigold",
+    "slot": 2,
+    "filename": "marigold-2.jpg",
+    "path": "/images/products/marigold-2.jpg",
+    "title": "File:Flower found at Shivapuri National Park 31.jpg",
+    "sizeBytes": 109748,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Marigold",
+    "slug": "marigold",
+    "slot": 3,
+    "filename": "marigold-3.jpg",
+    "path": "/images/products/marigold-3.jpg",
+    "title": "File:Flower found at Shivapuri National Park 36.jpg",
+    "sizeBytes": 85588,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Rose",
+    "slug": "rose",
+    "slot": 1,
+    "filename": "rose-1.jpg",
+    "path": "/images/products/rose-1.jpg",
+    "title": "File:Red rose flower close up.jpg",
+    "sizeBytes": 39318,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Rose",
+    "slug": "rose",
+    "slot": 2,
+    "filename": "rose-2.jpg",
+    "path": "/images/products/rose-2.jpg",
+    "title": "File:A close-up of climbing roses.jpg",
+    "sizeBytes": 150335,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Rose",
+    "slug": "rose",
+    "slot": 3,
+    "filename": "rose-3.jpg",
+    "path": "/images/products/rose-3.jpg",
+    "title": "File:Pink rose bloom of a climbing rose at Boreham, Essex, England 1.jpg",
+    "sizeBytes": 137076,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Ashwagandha",
+    "slug": "ashwagandha",
+    "slot": 1,
+    "filename": "ashwagandha-1.jpg",
+    "path": "/images/products/ashwagandha-1.jpg",
+    "title": "File:Ashvagandha.jpg",
+    "sizeBytes": 264296,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Ashwagandha",
+    "slug": "ashwagandha",
+    "slot": 2,
+    "filename": "ashwagandha-2.jpg",
+    "path": "/images/products/ashwagandha-2.jpg",
+    "title": "File:Ashwagandha (Withania somnifera).jpg",
+    "sizeBytes": 418936,
+    "status": "SUCCESS"
+  },
+  {
+    "crop": "Ashwagandha",
+    "slug": "ashwagandha",
+    "slot": 3,
+    "filename": "ashwagandha-3.jpg",
+    "path": "/images/products/ashwagandha-3.jpg",
+    "title": "File:A field of Withania somnifera.JPG",
+    "sizeBytes": 479111,
+    "status": "SUCCESS"
+  }
+]

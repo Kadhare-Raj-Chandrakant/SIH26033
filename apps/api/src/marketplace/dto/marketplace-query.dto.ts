@@ -28,6 +28,18 @@ export class MarketplaceQueryDto {
   @MaxLength(100)
   location?: string;
 
+  @ApiPropertyOptional({ description: 'Filter by state (e.g. Madhya Pradesh, Rajasthan)' })
+  @IsOptional()
+  @IsString()
+  @MaxLength(100)
+  state?: string;
+
+  @ApiPropertyOptional({ description: 'Filter by district (e.g. Indore, Guntur)' })
+  @IsOptional()
+  @IsString()
+  @MaxLength(100)
+  district?: string;
+
   @ApiPropertyOptional({ description: 'Minimum price filter (>= 0)' })
   @IsOptional()
   @Type(() => Number)

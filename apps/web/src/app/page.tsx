@@ -69,7 +69,7 @@ export default function Home() {
                   <ArrowRight className="h-4 w-4" />
                 </Button>
               </Link>
-              <Link href="/marketplace?categoryId=">
+              <Link href="/categories">
                 <Button size="lg" variant="outline" className="h-12 px-8 text-base">
                   Browse All Categories
                 </Button>

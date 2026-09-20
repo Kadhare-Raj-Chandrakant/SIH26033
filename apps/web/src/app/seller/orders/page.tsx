@@ -34,8 +34,17 @@ import {
 } from 'lucide-react';
 import { useAuth } from '@/components/providers/auth-provider';
 import { useIsMounted } from '@/lib/use-is-mounted';
+import { RoleGuard } from '@/components/auth/role-guard';
 
 export default function SellerOrdersPage() {
+  return (
+    <RoleGuard allowedRoles={['FARMER', 'FPO']}>
+      <SellerOrdersContent />
+    </RoleGuard>
+  );
+}
+
+function SellerOrdersContent() {
   const mounted = useIsMounted();
   const queryClient = useQueryClient();
   const { token, isAuthenticated, user, setAuth } = useAuth();

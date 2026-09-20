@@ -19,8 +19,17 @@ import {
 } from 'lucide-react';
 import { useAuth } from '@/components/providers/auth-provider';
 import { useIsMounted } from '@/lib/use-is-mounted';
+import { RoleGuard } from '@/components/auth/role-guard';
 
 export default function OrdersPage() {
+  return (
+    <RoleGuard allowedRoles={['BUYER']}>
+      <OrdersPageContent />
+    </RoleGuard>
+  );
+}
+
+function OrdersPageContent() {
   const mounted = useIsMounted();
   const { token, isAuthenticated, isLoading: authLoading } = useAuth();
   const [page, setPage] = useState(1);

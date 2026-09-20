@@ -1,13 +1,13 @@
 'use client';
 
-import { useSyncExternalStore } from 'react';
-
-const emptySubscribe = () => () => {};
+import { useEffect, useState } from 'react';
 
 export function useIsMounted(): boolean {
-  return useSyncExternalStore(
-    emptySubscribe,
-    () => true,
-    () => false,
-  );
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  return mounted;
 }

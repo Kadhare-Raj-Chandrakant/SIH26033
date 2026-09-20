@@ -3,7 +3,7 @@
 import { use } from 'react';
 import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
-import { fetchMarketplaceProductById, getMarketIntelligence } from '@/lib/api';
+import { fetchMarketplaceProductById } from '@/lib/api';
 import { MarketplaceNavbar } from '@/components/marketplace/marketplace-navbar';
 import { ProductGallery } from '@/components/marketplace/product-gallery';
 import { AddToCartSection } from '@/components/marketplace/add-to-cart-section';
@@ -19,10 +19,11 @@ import {
   Building2,
   PackageCheck,
   AlertCircle,
-  TrendingUp,
-  TrendingDown,
-  Sparkles,
   Info,
+  User,
+  Layers,
+  FileText,
+  Tag,
 } from 'lucide-react';
 
 interface PageProps {
@@ -40,10 +41,35 @@ export default function ProductDetailPage({ params }: PageProps) {
   } = useQuery({
     queryKey: ['marketplace-product', id],
     queryFn: () => fetchMarketplaceProductById(id),
-    retry: 1,
+    staleTime: 30000,
   });
 
   const product = response?.data;
+
+  // Indian Rupee number formatter (e.g. ₹2,760 / quintal)
+  const formatInr = (amount: number | null | undefined) => {
+    if (amount === null || amount === undefined || isNaN(amount) || amount === 0) return null;
+    return new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+      maximumFractionDigits: 0,
+    }).format(amount);
+  };
+
+  const hasDemoPrice =
+    product?.illustrativeFarmerListingReferenceInr !== null &&
+    product?.illustrativeFarmerListingReferenceInr !== undefined &&
+    !isNaN(product.illustrativeFarmerListingReferenceInr) &&
+    product.illustrativeFarmerListingReferenceInr > 0;
+
+  const demoPriceDisplay = hasDemoPrice
+    ? `${formatInr(product?.illustrativeFarmerListingReferenceInr)} / quintal`
+    : 'Out of stock';
+
+  const locationDisplay =
+    product?.district && product?.state
+      ? `${product.district}, ${product.state}`
+      : product?.location || 'India';
 
   return (
     <div className="min-h-screen bg-zinc-50/50 dark:bg-zinc-950/50">
@@ -76,10 +102,6 @@ export default function ProductDetailPage({ params }: PageProps) {
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
             <div className="lg:col-span-7 space-y-4">
               <Skeleton className="aspect-[4/3] w-full rounded-2xl" />
-              <div className="flex gap-3">
-                <Skeleton className="h-16 w-16 rounded-lg" />
-                <Skeleton className="h-16 w-16 rounded-lg" />
-              </div>
             </div>
             <div className="lg:col-span-5 space-y-5">
               <Skeleton className="h-8 w-3/4" />
@@ -112,51 +134,84 @@ export default function ProductDetailPage({ params }: PageProps) {
         {/* Active Product Details */}
         {product && !isLoading && (
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
-            {/* Left Column: Image Gallery */}
             <div className="lg:col-span-7">
-              <ProductGallery images={product.images} productName={product.name} />
+              <ProductGallery
+                primaryImage={product.primaryImage}
+                images={product.images}
+                productName={product.name}
+                location={locationDisplay}
+              />
 
-              {/* Product Detailed Description */}
-              <div className="mt-8 rounded-2xl border border-border/80 bg-card p-6 shadow-sm">
-                <h3 className="text-base font-bold text-foreground">Produce Description</h3>
-                <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-muted-foreground">
-                  {product.description || 'No detailed description provided by the producer.'}
-                </p>
 
-                <Separator className="my-6" />
 
-                <div className="grid grid-cols-2 gap-4 text-xs">
-                  <div>
-                    <span className="text-muted-foreground">Category:</span>
-                    <p className="font-semibold text-foreground mt-0.5">
-                      {product.category?.name || 'General Produce'}
-                    </p>
-                  </div>
-                  <div>
-                    <span className="text-muted-foreground">Unit Specification:</span>
-                    <p className="font-semibold text-foreground mt-0.5">{product.unit}</p>
-                  </div>
-                  <div>
-                    <span className="text-muted-foreground">Origin Location:</span>
-                    <p className="font-semibold text-foreground mt-0.5">
-                      {product.location || 'Local Farm'}
-                    </p>
-                  </div>
-                  <div>
-                    <span className="text-muted-foreground">Listed On:</span>
-                    <p className="font-semibold text-foreground mt-0.5">
-                      {new Date(product.createdAt).toLocaleDateString(undefined, {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric',
-                      })}
-                    </p>
+              {/* Product Detailed Description & Specifications */}
+              <div className="mt-8 rounded-2xl border border-border/80 bg-card p-6 shadow-sm space-y-6">
+                <div>
+                  <h3 className="text-base font-bold text-foreground">Produce Description</h3>
+                  <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-muted-foreground">
+                    {product.description || 'Verified agricultural listing sourced directly from regional producers.'}
+                  </p>
+                </div>
+
+                {/* Listing Details & Metadata */}
+                <div>
+                  <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
+                    Listing Specifications
+                  </h4>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3.5 text-xs">
+                    <div className="rounded-xl border border-border/60 bg-muted/30 p-3">
+                      <span className="text-muted-foreground block text-[11px]">Category</span>
+                      <p className="font-semibold text-foreground mt-0.5">
+                        {product.category?.name || 'Produce'}
+                      </p>
+                    </div>
+
+                    <div className="rounded-xl border border-border/60 bg-muted/30 p-3">
+                      <span className="text-muted-foreground block text-[11px]">Variety / Grade</span>
+                      <p className="font-semibold text-foreground mt-0.5">
+                        {product.varietyType || 'Standard'}
+                      </p>
+                    </div>
+
+                    <div className="rounded-xl border border-border/60 bg-muted/30 p-3">
+                      <span className="text-muted-foreground block text-[11px]">Selling Unit</span>
+                      <p className="font-semibold text-foreground mt-0.5">
+                        {product.sellingUnit || product.unit}
+                      </p>
+                    </div>
+
+                    <div className="rounded-xl border border-border/60 bg-muted/30 p-3">
+                      <span className="text-muted-foreground block text-[11px]">Available Stock</span>
+                      <p className={`font-semibold mt-0.5 ${hasDemoPrice ? 'text-foreground' : 'text-rose-600 dark:text-rose-400'}`}>
+                        {hasDemoPrice ? `${product.availableQuantity} ${product.unit}` : 'Out of stock'}
+                      </p>
+                    </div>
+
+                    <div className="rounded-xl border border-border/60 bg-muted/30 p-3">
+                      <span className="text-muted-foreground block text-[11px]">Origin Location</span>
+                      <p className="font-semibold text-foreground mt-0.5">
+                        {locationDisplay}
+                      </p>
+                    </div>
                   </div>
                 </div>
+
+                {/* Notes Section */}
+                {product.notes && (
+                  <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-4 text-xs">
+                    <div className="flex items-center gap-2 text-emerald-800 dark:text-emerald-300 font-semibold mb-1">
+                      <FileText className="h-4 w-4 text-emerald-600" />
+                      <span>Market & Source Notes</span>
+                    </div>
+                    <p className="text-muted-foreground leading-relaxed mt-1">
+                      {product.notes}
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
 
-            {/* Right Column: Key Details, Seller Card, Future CTA */}
+            {/* Right Column: Key Details, Seller Card, Add to Cart */}
             <div className="lg:col-span-5 space-y-6">
               <div className="rounded-2xl border border-border/80 bg-card p-6 shadow-sm space-y-5">
                 {/* Badges */}
@@ -164,47 +219,70 @@ export default function ProductDetailPage({ params }: PageProps) {
                   <Badge variant="secondary" className="text-xs">
                     {product.category?.name}
                   </Badge>
-                  <Badge
-                    variant={product.seller.sellerType === 'FPO' ? 'fpo' : 'farmer'}
-                    className="text-xs font-semibold"
-                  >
-                    {product.seller.sellerType} Listing
-                  </Badge>
-                  <Badge variant="success" className="text-xs">
-                    <PackageCheck className="mr-1 h-3.5 w-3.5" />
-                    In Stock: {product.availableQuantity} {product.unit}
-                  </Badge>
+                  {product.varietyType && (
+                    <Badge variant="outline" className="text-xs font-medium">
+                      {product.varietyType}
+                    </Badge>
+                  )}
+                  {hasDemoPrice ? (
+                    <Badge variant="success" className="text-xs">
+                      <PackageCheck className="mr-1 h-3.5 w-3.5" />
+                      In Stock: {product.availableQuantity} {product.unit}
+                    </Badge>
+                  ) : (
+                    <Badge variant="destructive" className="text-xs bg-rose-600 hover:bg-rose-600 text-white border-0">
+                      <AlertCircle className="mr-1 h-3.5 w-3.5" />
+                      Out of Stock
+                    </Badge>
+                  )}
                 </div>
 
-                {/* Title */}
+                {/* Title & Location */}
                 <div>
                   <h1 className="text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl">
                     {product.name}
                   </h1>
-                  {product.location && (
-                    <div className="mt-2 flex items-center gap-1.5 text-xs text-muted-foreground">
-                      <MapPin className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
-                      <span>{product.location}</span>
-                    </div>
-                  )}
-                </div>
-
-                {/* Price Display */}
-                <div className="rounded-xl bg-emerald-500/5 border border-emerald-500/10 p-4">
-                  <span className="text-xs text-muted-foreground block mb-1 font-medium">
-                    Direct Sourcing Price
-                  </span>
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-3xl font-extrabold text-foreground">
-                      ₹{product.price.toFixed(2)}
-                    </span>
-                    <span className="text-sm font-medium text-muted-foreground">
-                      per {product.unit}
-                    </span>
+                  <div className="mt-2 flex items-center gap-1.5 text-xs text-muted-foreground">
+                    <MapPin className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
+                    <span>{locationDisplay}</span>
                   </div>
                 </div>
 
-                {/* Verified Seller Information Card */}
+                {/* Price Display Section: Direct Farmer Listing */}
+                <div className={`rounded-2xl border p-4 sm:p-5 space-y-3.5 ${hasDemoPrice ? 'border-emerald-500/35 bg-emerald-500/5' : 'border-rose-500/30 bg-rose-500/5'}`}>
+                  <div>
+                    <div className="flex items-center justify-between text-xs text-muted-foreground mb-1">
+                      <span className={`font-bold text-sm ${hasDemoPrice ? 'text-emerald-800 dark:text-emerald-300' : 'text-rose-800 dark:text-rose-300'}`}>
+                        Farmer’s listing price
+                      </span>
+                      <Badge variant="outline" className={`text-[10px] ${hasDemoPrice ? 'border-emerald-600/30 text-emerald-700 dark:text-emerald-300 bg-emerald-500/10' : 'border-rose-600/30 text-rose-700 dark:text-rose-300 bg-rose-500/10'}`}>
+                        {hasDemoPrice ? 'Farmer Listing' : 'Unavailable'}
+                      </Badge>
+                    </div>
+                    <div className="flex items-baseline gap-2">
+                      <span
+                        className={`font-extrabold ${
+                          hasDemoPrice
+                            ? 'text-2xl sm:text-3xl text-foreground'
+                            : 'text-2xl sm:text-3xl text-rose-600 dark:text-rose-400 font-bold'
+                        }`}
+                      >
+                        {demoPriceDisplay}
+                      </span>
+                    </div>
+                    {hasDemoPrice ? (
+                      <p className="text-xs text-muted-foreground/80 mt-1">
+                        Illustrative demo listing price—not an actual farmer offer.
+                      </p>
+                    ) : (
+                      <p className="text-xs text-muted-foreground/80 mt-1">
+                        Pricing not available. This product is currently out of stock.
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Verified Farmer & Farm Card */}
                 <Card className="border border-border/60 bg-muted/20">
                   <CardContent className="p-4 space-y-3">
                     <div className="flex items-center justify-between">
@@ -217,29 +295,29 @@ export default function ProductDetailPage({ params }: PageProps) {
                       </Badge>
                     </div>
 
-                    <div className="space-y-1.5">
+                    <div className="space-y-1.5 text-xs">
                       <div className="flex items-center gap-2">
-                        <Building2 className="h-4 w-4 text-muted-foreground shrink-0" />
+                        <User className="h-4 w-4 text-emerald-600 shrink-0" />
                         <span className="text-sm font-semibold text-foreground">
-                          {product.seller.businessName || 'Independent Farmer'}
+                          {product.farmerName || product.seller.businessName || 'Independent Farmer'}
                         </span>
+                        {product.farmName && (
+                          <span className="text-muted-foreground">
+                            ({product.farmName})
+                          </span>
+                        )}
                       </div>
-                      {product.seller.farmLocation && (
-                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                          <MapPin className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                          <span>{product.seller.farmLocation}</span>
-                        </div>
-                      )}
+                      <div className="flex items-center gap-2 text-muted-foreground">
+                        <MapPin className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                        <span>{locationDisplay}</span>
+                      </div>
+                    </div>
+                    <div className="pt-2 border-t border-border/40 text-[11px] text-muted-foreground flex items-center gap-1.5">
+                      <ShieldCheck className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
+                      <span>Direct farmer listing • Connect directly with verified producers</span>
                     </div>
                   </CardContent>
                 </Card>
-
-                {/* Market Intelligence & Price Benchmark */}
-                <ProductMarketIntelligence
-                  commodityName={product.name.split(' ')[0] || product.category?.name || 'Tomato'}
-                  productPrice={product.price}
-                  productUnit={product.unit}
-                />
 
                 {/* Interactive Add To Cart Section */}
                 <AddToCartSection product={product} />
@@ -248,109 +326,6 @@ export default function ProductDetailPage({ params }: PageProps) {
           </div>
         )}
       </main>
-    </div>
-  );
-}
-
-function ProductMarketIntelligence({
-  commodityName,
-  productPrice,
-  productUnit,
-}: {
-  commodityName: string;
-  productPrice: number;
-  productUnit: string;
-}) {
-  const { data: marketData, isLoading } = useQuery({
-    queryKey: ['market-intelligence', commodityName],
-    queryFn: () => getMarketIntelligence(commodityName),
-    staleTime: 60000,
-    retry: false,
-  });
-
-  if (isLoading) {
-    return (
-      <div className="rounded-xl border border-border/60 bg-card p-4 text-xs space-y-2">
-        <Skeleton className="h-4 w-1/2" />
-        <Skeleton className="h-8 w-full" />
-      </div>
-    );
-  }
-
-  if (!marketData || !marketData.overallStats) {
-    return null;
-  }
-
-  const isKg = productUnit.toLowerCase().includes('kg');
-  const mandiModalPerKg = marketData.overallStats.avgModalPrice / 100;
-  const comparisonPrice = isKg ? mandiModalPerKg : marketData.overallStats.avgModalPrice;
-  const isCompetitive = productPrice <= comparisonPrice * 1.1;
-
-  return (
-    <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-4 space-y-3">
-      <div className="flex items-center justify-between">
-        <span className="text-xs font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-300 flex items-center gap-1.5">
-          <Sparkles className="h-3.5 w-3.5 text-emerald-600" />
-          APMC Mandi Intelligence Benchmark
-        </span>
-        <Badge
-          variant={isCompetitive ? 'success' : 'secondary'}
-          className="text-[10px] py-0.5"
-        >
-          {isCompetitive ? 'Direct Farm Advantage' : 'Premium Graded Produce'}
-        </Badge>
-      </div>
-
-      <div className="grid grid-cols-2 gap-3 text-xs">
-        <div>
-          <span className="text-muted-foreground block text-[11px]">Regional APMC Modal Rate:</span>
-          <span className="font-bold text-foreground text-sm">
-            ₹{marketData.overallStats.avgModalPrice}/q
-            {isKg && (
-              <span className="text-[11px] font-normal text-muted-foreground block">
-                (~₹{mandiModalPerKg.toFixed(2)}/kg)
-              </span>
-            )}
-          </span>
-        </div>
-        <div>
-          <span className="text-muted-foreground block text-[11px]">Wholesale Absorption Proxy:</span>
-          <span className="font-bold text-foreground text-sm">
-            {marketData.overallStats.totalArrivalsTonnes.toLocaleString()} Tonnes
-          </span>
-          <span className="text-[10px] text-muted-foreground block">
-            Across {marketData.totalMarketsReporting} reporting mandis
-          </span>
-        </div>
-      </div>
-
-      {marketData.forwardOutlook && (
-        <div className="flex items-center gap-2 text-xs pt-1 border-t border-emerald-500/10">
-          <span className="text-muted-foreground">7-Day Price Direction:</span>
-          <Badge variant="outline" className="text-[10px] gap-1 font-semibold">
-            {marketData.forwardOutlook.price_trend_direction === 'RISING' ? (
-              <>
-                <TrendingUp className="h-3 w-3 text-emerald-600" />
-                <span>RISING TREND</span>
-              </>
-            ) : marketData.forwardOutlook.price_trend_direction === 'FALLING' ? (
-              <>
-                <TrendingDown className="h-3 w-3 text-rose-500" />
-                <span>FALLING TREND</span>
-              </>
-            ) : (
-              <span>STABLE</span>
-            )}
-          </Badge>
-        </div>
-      )}
-
-      <div className="text-[10px] text-muted-foreground/90 flex items-start gap-1 pt-1 border-t border-emerald-500/10">
-        <Info className="h-3 w-3 shrink-0 mt-0.5 text-muted-foreground" />
-        <span>
-          Mandi benchmark is calculated from regional APMC wholesale arrivals as of {marketData.reportingDate}. Platform orders feature verified direct producer traceability.
-        </span>
-      </div>
     </div>
   );
 }

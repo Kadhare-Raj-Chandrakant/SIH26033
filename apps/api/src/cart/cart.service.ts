@@ -53,6 +53,17 @@ export class CartService {
       throw new BadRequestException('Product is not active or available for purchase');
     }
 
+    const numericPrice = product.price ? product.price.toNumber() : 0;
+    const hasValidPrice =
+      numericPrice > 0 &&
+      product.illustrativeFarmerListingReferenceInr !== null &&
+      product.illustrativeFarmerListingReferenceInr !== undefined &&
+      product.illustrativeFarmerListingReferenceInr.toNumber() > 0;
+
+    if (!hasValidPrice) {
+      throw new BadRequestException('Product has no price assigned and is currently out of stock');
+    }
+
     const availableStock = product.inventory ? product.inventory.availableQuantity.toNumber() : 0;
 
     if (availableStock <= 0) {
@@ -146,8 +157,15 @@ export class CartService {
       const availableStock = item.product.inventory
         ? item.product.inventory.availableQuantity.toNumber()
         : 0;
+      const hasValidPrice =
+        unitPrice.toNumber() > 0 &&
+        item.product.illustrativeFarmerListingReferenceInr !== null &&
+        item.product.illustrativeFarmerListingReferenceInr !== undefined &&
+        item.product.illustrativeFarmerListingReferenceInr.toNumber() > 0;
+
       const isAvailable =
         item.product.status === ProductStatus.ACTIVE &&
+        hasValidPrice &&
         availableStock >= quantity.toNumber();
 
       subtotal = subtotal.add(lineTotal);
@@ -163,7 +181,7 @@ export class CartService {
         availableStock,
         isAvailable,
         productStatus: item.product.status,
-        image: item.product.images[0]?.url || null,
+        image: item.product.primaryImage || item.product.images[0]?.url || null,
         seller: {
           id: item.product.seller.id,
           sellerType: item.product.seller.sellerType,

@@ -24,17 +24,46 @@ function LoginForm() {
   const returnUrl = searchParams.get('returnUrl') || searchParams.get('redirect');
 
   const handlePostAuthRedirect = (role: string) => {
-    if (returnUrl && returnUrl.startsWith('/') && !returnUrl.startsWith('//')) {
-      router.push(returnUrl);
+    // If a Farmer logs in, prevent redirection into buyer-only purchase pages
+    if (role === 'FARMER' || role === 'FPO') {
+      if (
+        returnUrl &&
+        (returnUrl.startsWith('/cart') ||
+          returnUrl.startsWith('/checkout') ||
+          returnUrl.startsWith('/orders') ||
+          returnUrl.startsWith('/marketplace/sourcing'))
+      ) {
+        router.push('/seller/orders');
+        return;
+      }
+      if (returnUrl && returnUrl.startsWith('/') && !returnUrl.startsWith('//')) {
+        router.push(returnUrl);
+        return;
+      }
+      router.push('/seller/orders');
       return;
     }
+
+    // If a Buyer logs in, prevent redirection into farmer-only seller portals
+    if (role === 'BUYER') {
+      if (returnUrl && returnUrl.startsWith('/seller')) {
+        router.push('/marketplace');
+        return;
+      }
+      if (returnUrl && returnUrl.startsWith('/') && !returnUrl.startsWith('//')) {
+        router.push(returnUrl);
+        return;
+      }
+      router.push('/marketplace');
+      return;
+    }
+
     if (role === 'ADMIN') {
       router.push('/admin');
-    } else if (role === 'FARMER' || role === 'FPO') {
-      router.push('/seller/orders');
-    } else {
-      router.push('/marketplace');
+      return;
     }
+
+    router.push('/marketplace');
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -72,10 +101,11 @@ function LoginForm() {
     try {
       if (type === 'buyer') {
         await loginAsDemoBuyer();
-        router.push(returnUrl && returnUrl.startsWith('/') ? returnUrl : '/marketplace');
+        handlePostAuthRedirect('BUYER');
       } else {
-        await loginAsDemoSeller(type === 'fpo' ? 'FPO' : 'FARMER');
-        router.push(returnUrl && returnUrl.startsWith('/') ? returnUrl : '/seller/orders');
+        const role = type === 'fpo' ? 'FPO' : 'FARMER';
+        await loginAsDemoSeller(role);
+        handlePostAuthRedirect(role);
       }
     } catch (err: unknown) {
       setErrorMessage(err instanceof Error ? err.message : 'Demo login failed.');
@@ -184,6 +214,12 @@ function LoginForm() {
                     <label htmlFor="login-password" className="block text-xs font-semibold text-foreground">
                       Password
                     </label>
+                    <Link
+                      href="/forgot-password"
+                      className="text-xs font-medium text-emerald-600 hover:text-emerald-700 underline underline-offset-2"
+                    >
+                      Forgot password?
+                    </Link>
                   </div>
                   <div className="relative">
                     <Input

@@ -323,7 +323,7 @@ export class MatchingService {
           sellerReliability: sellerScore,
         },
         reasons,
-        imageUrl: prod.images[0]?.url || null,
+        imageUrl: prod.primaryImage || prod.images[0]?.url || null,
       });
     }
 

@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -27,26 +28,45 @@ import {
 } from 'lucide-react';
 import { useAuth } from '@/components/providers/auth-provider';
 import { useIsMounted } from '@/lib/use-is-mounted';
+import { RoleGuard } from '@/components/auth/role-guard';
 
 export default function CartPage() {
+  return (
+    <RoleGuard allowedRoles={['BUYER']}>
+      <CartPageContent />
+    </RoleGuard>
+  );
+}
+
+function CartPageContent() {
   const mounted = useIsMounted();
   const queryClient = useQueryClient();
-  const { token, isAuthenticated, loginAsDemoBuyer, isLoading: authLoading } = useAuth();
+  const { token, user, isAuthenticated, isLoading: authLoading } = useAuth();
+
+  const isBuyer = user?.role === 'BUYER';
 
   const {
     data: cartResponse,
     isLoading: cartLoading,
     isError,
     error,
+    refetch,
   } = useQuery({
-    queryKey: ['cart'],
+    queryKey: ['cart', token],
     queryFn: () => fetchCart(token || undefined),
-    enabled: mounted && isAuthenticated,
+    enabled: mounted && isAuthenticated && !!token && isBuyer,
   });
 
+  const [updatingItemId, setUpdatingItemId] = useState<string | null>(null);
+
   const updateQuantityMutation = useMutation({
-    mutationFn: ({ productId, quantity }: { productId: string; quantity: number }) =>
-      updateCartItemQuantity(productId, quantity, token || undefined),
+    mutationFn: ({ productId, quantity }: { productId: string; quantity: number }) => {
+      setUpdatingItemId(productId);
+      return updateCartItemQuantity(productId, quantity, token || undefined);
+    },
+    onSettled: () => {
+      setUpdatingItemId(null);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['cart'] });
     },
@@ -90,7 +110,7 @@ export default function CartPage() {
             </p>
           </div>
 
-          {items.length > 0 && (
+          {mounted && items.length > 0 && isBuyer && (
             <Button
               variant="outline"
               size="sm"
@@ -105,7 +125,7 @@ export default function CartPage() {
         </div>
 
         {/* Loading State */}
-        {(!mounted || authLoading || cartLoading) && (
+        {(!mounted || authLoading || (cartLoading && isBuyer)) && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             <div className="lg:col-span-8 space-y-4">
               <Skeleton className="h-28 w-full rounded-2xl" />
@@ -118,20 +138,38 @@ export default function CartPage() {
           </div>
         )}
 
+
+
         {/* Error State */}
-        {isError && !cartLoading && (
-          <div className="rounded-2xl border border-destructive/20 bg-card p-10 text-center space-y-3">
-            <AlertCircle className="h-10 w-10 text-destructive mx-auto" />
-            <h3 className="text-base font-bold text-foreground">Failed to Load Cart</h3>
-            <p className="text-xs text-muted-foreground">{(error as Error)?.message}</p>
-            <Button size="sm" onClick={() => loginAsDemoBuyer()}>
-              Re-authenticate Session
-            </Button>
-          </div>
-        )}
+        {mounted && isError && !cartLoading && (() => {
+          const errMsg = (error as Error)?.message || '';
+          const isRateLimited =
+            errMsg.toLowerCase().includes('too many') ||
+            errMsg.toLowerCase().includes('throttler') ||
+            errMsg.toLowerCase().includes('quickly');
+
+          return (
+            <div className="rounded-2xl border border-destructive/20 bg-card p-10 text-center space-y-3 max-w-lg mx-auto my-6 shadow-sm">
+              <AlertCircle className="h-10 w-10 text-destructive mx-auto" />
+              <h3 className="text-base font-bold text-foreground">
+                {isRateLimited ? 'Too Many Rapid Clicks' : 'Failed to Load Cart'}
+              </h3>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                {isRateLimited
+                  ? 'We noticed multiple quick clicks. Please pause for a brief moment and click Retry to reload your cart.'
+                  : errMsg}
+              </p>
+              <div className="flex justify-center gap-3 pt-2">
+                <Button size="sm" onClick={() => refetch()} className="bg-emerald-600 hover:bg-emerald-700 text-white">
+                  Retry Loading Cart
+                </Button>
+              </div>
+            </div>
+          );
+        })()}
 
         {/* Empty Cart State */}
-        {!cartLoading && !isError && items.length === 0 && (
+        {mounted && !cartLoading && !isError && isBuyer && items.length === 0 && (
           <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border bg-card p-12 text-center shadow-sm">
             <div className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-600 mb-4">
               <ShoppingCart className="h-8 w-8" />
@@ -150,7 +188,7 @@ export default function CartPage() {
         )}
 
         {/* Cart Contents */}
-        {!cartLoading && !isError && items.length > 0 && (
+        {mounted && !cartLoading && !isError && isBuyer && items.length > 0 && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             {/* Items List */}
             <div className="lg:col-span-8 space-y-4">
@@ -248,14 +286,22 @@ export default function CartPage() {
                                   quantity: Math.max(1, item.quantity - 1),
                                 })
                               }
-                              disabled={item.quantity <= 1 || updateQuantityMutation.isPending}
+                              disabled={
+                                item.quantity <= 1 ||
+                                updateQuantityMutation.isPending ||
+                                updatingItemId === item.productId
+                              }
                               className="h-7 w-7 text-muted-foreground hover:text-foreground"
                             >
                               <Minus className="h-3 w-3" />
                             </Button>
 
                             <span className="w-10 text-center text-xs font-bold text-foreground">
-                              {item.quantity}
+                              {updatingItemId === item.productId ? (
+                                <span className="animate-pulse">...</span>
+                              ) : (
+                                item.quantity
+                              )}
                             </span>
 
                             <Button
@@ -270,7 +316,8 @@ export default function CartPage() {
                               }
                               disabled={
                                 item.quantity >= item.availableStock ||
-                                updateQuantityMutation.isPending
+                                updateQuantityMutation.isPending ||
+                                updatingItemId === item.productId
                               }
                               className="h-7 w-7 text-muted-foreground hover:text-foreground"
                             >

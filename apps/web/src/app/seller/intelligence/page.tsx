@@ -33,6 +33,8 @@ import {
   BuyerMatchItem,
 } from '@/lib/api';
 
+import { RoleGuard } from '@/components/auth/role-guard';
+
 const COMMODITIES = [
   'Tomato',
   'Onion',
@@ -57,6 +59,14 @@ const CITIES = [
 ];
 
 export default function SellerIntelligencePage() {
+  return (
+    <RoleGuard allowedRoles={['FARMER', 'FPO']}>
+      <SellerIntelligenceContent />
+    </RoleGuard>
+  );
+}
+
+function SellerIntelligenceContent() {
   const [selectedCommodity, setSelectedCommodity] = useState<string>('Tomato');
   const [quantity, setQuantity] = useState<number>(50);
   const [sellerCity, setSellerCity] = useState<string>('Pune');

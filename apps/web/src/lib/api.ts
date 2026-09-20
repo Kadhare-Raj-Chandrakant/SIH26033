@@ -29,8 +29,21 @@ export interface MarketplaceProduct {
   status: string;
   availableQuantity: number;
   category: Category;
+  primaryImage?: string | null;
   images: ProductImage[];
+
   seller: SellerInfo;
+  farmerName?: string | null;
+  farmName?: string | null;
+  state?: string | null;
+  district?: string | null;
+  marketMandi?: string | null;
+  varietyType?: string | null;
+  sellingUnit?: string | null;
+  officialMandiModalPriceInr?: number | null;
+  illustrativeFarmerListingReferenceInr?: number | null;
+  officialPriceDate?: string | null;
+  notes?: string | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -53,10 +66,23 @@ export interface MarketplaceProductDetailResponse {
   data: MarketplaceProduct;
 }
 
+export interface FilterOptionsData {
+  states: string[];
+  districtsByState: Record<string, string[]>;
+  allDistricts: string[];
+}
+
+export interface FilterOptionsResponse {
+  success: boolean;
+  data: FilterOptionsData;
+}
+
 export interface MarketplaceQueryParams {
   search?: string;
   categoryId?: string;
   location?: string;
+  state?: string;
+  district?: string;
   minPrice?: number;
   maxPrice?: number;
   sort?: 'price_asc' | 'price_desc' | 'newest' | 'name_asc' | 'name_desc';
@@ -226,6 +252,17 @@ function getAuthHeaders(customToken?: string): HeadersInit {
   return headers;
 }
 
+export function parseApiError(res: Response, errorData: any, fallbackMessage: string): string {
+  if (res.status === 429) {
+    return 'Too many rapid requests. Please pause for a moment and try again.';
+  }
+  const rawMsg = errorData?.error?.message || errorData?.message;
+  if (typeof rawMsg === 'string' && (rawMsg.includes('ThrottlerException') || rawMsg.includes('Too Many Requests'))) {
+    return 'Too many rapid requests. Please pause for a moment and try again.';
+  }
+  return rawMsg || fallbackMessage;
+}
+
 // ---------------------------------------------------------------------------
 // Marketplace APIs
 // ---------------------------------------------------------------------------
@@ -238,6 +275,8 @@ export async function fetchMarketplaceProducts(
   if (params.search?.trim()) url.searchParams.set('search', params.search.trim());
   if (params.categoryId) url.searchParams.set('categoryId', params.categoryId);
   if (params.location?.trim()) url.searchParams.set('location', params.location.trim());
+  if (params.state?.trim()) url.searchParams.set('state', params.state.trim());
+  if (params.district?.trim()) url.searchParams.set('district', params.district.trim());
   if (params.minPrice !== undefined && !isNaN(params.minPrice))
     url.searchParams.set('minPrice', params.minPrice.toString());
   if (params.maxPrice !== undefined && !isNaN(params.maxPrice))
@@ -273,6 +312,19 @@ export async function fetchMarketplaceProductById(
   return res.json();
 }
 
+export async function fetchMarketplaceFilterOptions(): Promise<FilterOptionsResponse> {
+  const res = await fetch(`${API_BASE_URL}/marketplace/products/filter-options`, {
+    headers: { Accept: 'application/json' },
+  });
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(parseApiError(res, errorData, 'Failed to fetch filter options'));
+  }
+
+  return res.json();
+}
+
 export async function fetchCategories(): Promise<{ success: boolean; data: Category[] }> {
   const res = await fetch(`${API_BASE_URL}/categories`, {
     headers: { Accept: 'application/json' },
@@ -300,7 +352,7 @@ export async function fetchCart(token?: string): Promise<CartResponse> {
 
   if (!res.ok) {
     const errorData = await res.json().catch(() => ({}));
-    throw new Error(errorData?.message || 'Failed to fetch cart');
+    throw new Error(parseApiError(res, errorData, 'Failed to fetch cart'));
   }
 
   return res.json();
@@ -319,7 +371,7 @@ export async function addToCart(
 
   if (!res.ok) {
     const errorData = await res.json().catch(() => ({}));
-    throw new Error(errorData?.message || 'Failed to add item to cart');
+    throw new Error(parseApiError(res, errorData, 'Failed to add item to cart'));
   }
 
   return res.json();
@@ -338,7 +390,7 @@ export async function updateCartItemQuantity(
 
   if (!res.ok) {
     const errorData = await res.json().catch(() => ({}));
-    throw new Error(errorData?.message || 'Failed to update cart quantity');
+    throw new Error(parseApiError(res, errorData, 'Failed to update cart quantity'));
   }
 
   return res.json();
@@ -355,7 +407,7 @@ export async function removeCartItem(
 
   if (!res.ok) {
     const errorData = await res.json().catch(() => ({}));
-    throw new Error(errorData?.message || 'Failed to remove item from cart');
+    throw new Error(parseApiError(res, errorData, 'Failed to remove item from cart'));
   }
 
   return res.json();
@@ -369,7 +421,7 @@ export async function clearCart(token?: string): Promise<{ success: boolean; dat
 
   if (!res.ok) {
     const errorData = await res.json().catch(() => ({}));
-    throw new Error(errorData?.message || 'Failed to clear cart');
+    throw new Error(parseApiError(res, errorData, 'Failed to clear cart'));
   }
 
   return res.json();
@@ -386,7 +438,7 @@ export async function fetchAddresses(token?: string): Promise<{ success: boolean
 
   if (!res.ok) {
     const errorData = await res.json().catch(() => ({}));
-    throw new Error(errorData?.message || 'Failed to fetch addresses');
+    throw new Error(errorData?.error?.message || errorData?.message || 'Failed to fetch addresses');
   }
 
   return res.json();
@@ -414,7 +466,7 @@ export async function createAddress(
 
   if (!res.ok) {
     const errorData = await res.json().catch(() => ({}));
-    throw new Error(errorData?.message || 'Failed to create address');
+    throw new Error(errorData?.error?.message || errorData?.message || 'Failed to create address');
   }
 
   return res.json();
@@ -436,7 +488,7 @@ export async function createOrder(
 
   if (!res.ok) {
     const errorData = await res.json().catch(() => ({}));
-    throw new Error(errorData?.message || 'Failed to create order');
+    throw new Error(errorData?.error?.message || errorData?.message || 'Failed to create order');
   }
 
   return res.json();
@@ -456,7 +508,7 @@ export async function fetchBuyerOrders(
 
   if (!res.ok) {
     const errorData = await res.json().catch(() => ({}));
-    throw new Error(errorData?.message || 'Failed to fetch orders');
+    throw new Error(errorData?.error?.message || errorData?.message || 'Failed to fetch orders');
   }
 
   return res.json();
@@ -1722,4 +1774,86 @@ export async function registerUser(payload: RegisterPayload): Promise<AuthRespon
   // Automatically sign in upon registration to obtain session JWT
   return loginUser({ email: payload.email, password: payload.password });
 }
+
+export interface ForgotPasswordResponse {
+  message: string;
+  resetToken?: string;
+  resetUrl?: string;
+}
+
+export async function requestPasswordReset(email: string): Promise<ForgotPasswordResponse> {
+  const res = await fetch(`${API_BASE_URL}/auth/forgot-password`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email }),
+  });
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(json?.message || 'Failed to request password reset');
+  }
+  return json?.data ?? json;
+}
+
+export interface ResetPasswordPayload {
+  token: string;
+  newPassword: string;
+}
+
+export async function resetPassword(payload: ResetPasswordPayload): Promise<{ message: string }> {
+  const res = await fetch(`${API_BASE_URL}/auth/reset-password`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(json?.message || 'Failed to reset password');
+  }
+  return json?.data ?? json;
+}
+
+// ---------------------------------------------------------------------------
+// Farmer / Seller Products Management
+// ---------------------------------------------------------------------------
+
+export interface SellerProductItem {
+  id: string;
+  name: string;
+  description?: string | null;
+  price: number;
+  unit: string;
+  status: string;
+  primaryImage?: string | null;
+  createdAt: string;
+  updatedAt: string;
+  category?: {
+    id: string;
+    name: string;
+    slug: string;
+  } | null;
+  inventory?: {
+    availableQuantity: number;
+    reservedQuantity: number;
+    totalQuantity: number;
+  } | null;
+  images?: Array<{
+    id: string;
+    url: string;
+    isPrimary: boolean;
+  }>;
+}
+
+export async function fetchSellerProducts(
+  token?: string,
+): Promise<{ success: boolean; data: SellerProductItem[] }> {
+  const res = await fetch(`${API_BASE_URL}/seller/products`, {
+    headers: getAuthHeaders(token),
+  });
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData?.message || 'Failed to fetch seller products');
+  }
+  return res.json();
+}
+
 

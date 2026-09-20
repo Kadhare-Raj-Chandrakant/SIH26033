@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { addToCart, MarketplaceProduct } from '@/lib/api';
 import { Button } from '@/components/ui/button';
-import { Minus, Plus, ShoppingCart, Check, AlertCircle } from 'lucide-react';
+import { Minus, Plus, ShoppingCart, Check, AlertCircle, Tractor, LogIn } from 'lucide-react';
 import { useAuth } from '@/components/providers/auth-provider';
 
 interface AddToCartSectionProps {
@@ -16,13 +16,34 @@ export function AddToCartSection({ product }: AddToCartSectionProps) {
   const [quantity, setQuantity] = useState(1);
   const [successMessage, setSuccessMessage] = useState(false);
   const queryClient = useQueryClient();
-  const { token, isAuthenticated, loginAsDemoBuyer } = useAuth();
+  const { token, user, isAuthenticated } = useAuth();
+
+  const isBuyer = user?.role === 'BUYER';
+  const isFarmer = user?.role === 'FARMER' || user?.role === 'FPO';
 
   const maxStock = product.availableQuantity || 0;
-  const isOutOfStock = maxStock <= 0 || product.status !== 'ACTIVE';
+  const hasValidPrice =
+    product.price !== null &&
+    product.price !== undefined &&
+    !isNaN(product.price) &&
+    product.price > 0 &&
+    product.illustrativeFarmerListingReferenceInr !== null &&
+    product.illustrativeFarmerListingReferenceInr !== undefined &&
+    !isNaN(product.illustrativeFarmerListingReferenceInr) &&
+    product.illustrativeFarmerListingReferenceInr > 0;
+
+  const isOutOfStock = maxStock <= 0 || product.status !== 'ACTIVE' || !hasValidPrice;
 
   const mutation = useMutation({
-    mutationFn: () => addToCart(product.id, quantity, token || undefined),
+    mutationFn: async () => {
+      if (!hasValidPrice) {
+        throw new Error('This item is currently out of stock and cannot be added to cart.');
+      }
+      if (!isAuthenticated || !isBuyer || !token) {
+        throw new Error('Please sign in with a Buyer account to add items to cart.');
+      }
+      return addToCart(product.id, quantity, token);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['cart'] });
       setSuccessMessage(true);
@@ -53,10 +74,7 @@ export function AddToCartSection({ product }: AddToCartSectionProps) {
     }
   };
 
-  const handleAddToCart = async () => {
-    if (!isAuthenticated) {
-      await loginAsDemoBuyer();
-    }
+  const handleAddToCart = () => {
     mutation.mutate();
   };
 
@@ -65,15 +83,91 @@ export function AddToCartSection({ product }: AddToCartSectionProps) {
       <div className="rounded-2xl border border-destructive/20 bg-destructive/5 p-5 text-center space-y-2">
         <div className="inline-flex items-center gap-1.5 text-xs font-bold text-destructive">
           <AlertCircle className="h-4 w-4" />
-          <span>Currently Unavailable</span>
+          <span>Out of Stock</span>
         </div>
         <p className="text-xs text-muted-foreground">
-          This produce is currently out of stock or archived by the farmer. Check back soon for the next harvest batch.
+          {!hasValidPrice
+            ? 'This produce does not currently have pricing assigned and is out of stock. It cannot be added to cart.'
+            : 'This produce is currently out of stock or archived by the farmer. Check back soon for the next harvest batch.'}
         </p>
       </div>
     );
   }
 
+  const returnUrl = `/marketplace/products/${product.id}`;
+
+  // 1. Logged-out Visitor Experience
+  if (!isAuthenticated) {
+    return (
+      <div className="rounded-2xl border border-emerald-500/30 bg-card p-5 shadow-sm space-y-3.5 text-center">
+        <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">
+          <ShoppingCart className="h-5 w-5" />
+        </div>
+        <div className="space-y-1">
+          <h3 className="text-sm font-bold text-foreground">Sign In to Buy</h3>
+          <p className="text-xs text-muted-foreground leading-relaxed max-w-sm mx-auto">
+            Direct farmer sourcing, cart management, and order checkout require an active <strong>Buyer</strong> account.
+          </p>
+        </div>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 pt-1">
+          <Link
+            href={`/login?returnUrl=${encodeURIComponent(returnUrl)}`}
+            className="w-full sm:w-auto"
+          >
+            <Button size="sm" className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold h-9 px-5 gap-1.5 shadow-sm">
+              <LogIn className="h-3.5 w-3.5" />
+              <span>Sign In as Buyer</span>
+            </Button>
+          </Link>
+          <Link
+            href={`/register?role=BUYER&returnUrl=${encodeURIComponent(returnUrl)}`}
+            className="w-full sm:w-auto"
+          >
+            <Button size="sm" variant="outline" className="w-full sm:w-auto text-xs h-9 px-4 border-border/80">
+              Create Buyer Account
+            </Button>
+          </Link>
+        </div>
+        <p className="text-[11px] text-muted-foreground pt-1">
+          Direct farmer listing • Purchase directly from verified producers
+        </p>
+      </div>
+    );
+  }
+
+  // 2. Logged-in Farmer / Producer Experience
+  if (isFarmer) {
+    return (
+      <div className="rounded-2xl border border-amber-500/30 bg-amber-500/5 p-5 shadow-sm space-y-3 text-center">
+        <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/15 text-amber-600 border border-amber-500/30">
+          <Tractor className="h-5 w-5" />
+        </div>
+        <div className="space-y-1">
+          <h3 className="text-sm font-bold text-foreground">Buyer Account Required</h3>
+          <p className="text-xs text-muted-foreground leading-relaxed max-w-md mx-auto">
+            You are signed in with a <strong>Farmer/Producer</strong> account (<span className="font-mono text-foreground">{user?.email}</span>). Producer accounts list and fulfill produce and cannot make buyer purchases.
+          </p>
+        </div>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 pt-1">
+          <Link
+            href={`/login?returnUrl=${encodeURIComponent(returnUrl)}`}
+            className="w-full sm:w-auto"
+          >
+            <Button size="sm" className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold h-9 px-4">
+              Sign In with Buyer Account
+            </Button>
+          </Link>
+          <Link href="/seller/orders" className="w-full sm:w-auto">
+            <Button size="sm" variant="outline" className="w-full sm:w-auto text-xs h-9 px-4 border-border/80">
+              Go to Producer Orders
+            </Button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  // 3. Logged-in Buyer Experience
   const lineTotal = product.price * quantity;
 
   return (
@@ -168,6 +262,11 @@ export function AddToCartSection({ product }: AddToCartSectionProps) {
           {mutation.error?.message || 'Failed to add item to cart'}
         </p>
       )}
+
+      {/* Farmer Listing Assurance */}
+      <p className="text-[11px] text-center text-muted-foreground pt-0.5">
+        Direct farmer listing • Purchase directly from verified producers
+      </p>
     </div>
   );
 }

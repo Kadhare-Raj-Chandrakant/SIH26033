@@ -116,6 +116,64 @@ enum ReportTargetType {
   SELLER
 }
 
+enum FpoLegalStructure {
+  PRODUCER_COMPANY
+  COOPERATIVE
+  SECTION_8
+  OTHER
+}
+
+enum FpoStatus {
+  PENDING_VERIFICATION
+  ACTIVE
+  SUSPENDED
+  REJECTED
+}
+
+enum FpoMembershipStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  LEFT
+}
+
+enum FpoListingStatus {
+  COMMITTED
+  COLLECTED
+  AGGREGATED
+  SOLD
+  CANCELLED
+}
+
+enum FpoBatchStatus {
+  OPEN
+  SEALED
+  MATCHED
+  DISPATCHED
+  COMPLETED
+  CANCELLED
+}
+
+enum FpoBuyRequestStatus {
+  OPEN
+  PARTIALLY_MATCHED
+  FULLY_MATCHED
+  CLOSED
+  EXPIRED
+}
+
+enum FpoSettlementStatus {
+  PENDING
+  PROCESSING
+  DISTRIBUTED
+  FAILED
+}
+
+enum OrderType {
+  INDIVIDUAL
+  FPO_BULK
+}
+
 // -----------------------------------------------------------------------------
 // IDENTITY DOMAIN
 // -----------------------------------------------------------------------------
@@ -137,6 +195,14 @@ model User {
   auditLogs        AuditLog[]         @relation("UserAuditLogs")
   reportsCreated   ModerationReport[] @relation("ReportsCreated")
   reportsReviewed  ModerationReport[] @relation("ReportsReviewed")
+
+  // FPO Relations
+  fpoOrganizations  FpoOrganization[]  @relation("FpoAdmin")
+  fpoMemberships    FpoMembership[]
+  fpoListings       FpoListing[]
+  fpoBuyRequests    FpoBuyRequest[]
+  fpoSettlements    FpoSettlement[]
+  fpoFarmerPayments FpoFarmerPayment[]
 
   @@index([email])
   @@index([mobile])
@@ -223,12 +289,27 @@ model Product {
 
   name        String
   description String
-  price       Decimal       @db.Decimal(10, 2)
+  price       Decimal       @default(0) @db.Decimal(10, 2)
   unit        ProductUnit
   status      ProductStatus @default(ACTIVE)
   location    String? // General location descriptor
 
+  // SIH26033 Demo Dataset Fields
+  farmerName                            String?
+  farmName                              String?
+  state                                 String?
+  district                              String?
+  marketMandi                           String?
+  varietyType                           String?
+  sellingUnit                           String?       @default("Rs./Quintal")
+  officialMandiModalPriceInr            Decimal?      @db.Decimal(10, 2)
+  illustrativeFarmerListingReferenceInr Decimal?      @db.Decimal(10, 2)
+  officialPriceDate                     String?
+  notes                                 String?
+  primaryImage                          String?
+
   createdAt DateTime @default(now())
+
   updatedAt DateTime @updatedAt
 
   images     ProductImage[]
@@ -241,6 +322,8 @@ model Product {
   @@index([categoryId])
   @@index([status])
   @@index([status, createdAt])
+  @@index([state])
+  @@index([district])
 }
 
 model ProductImage {
@@ -276,6 +359,7 @@ model Order {
   sellerId    String
   seller      SellerProfile @relation(fields: [sellerId], references: [id])
   status      OrderStatus   @default(PENDING)
+  orderType   OrderType     @default(INDIVIDUAL)
   totalAmount Decimal       @db.Decimal(10, 2)
 
   // Historical snapshot of the address
@@ -518,4 +602,180 @@ model ModerationReport {
   @@index([targetType, targetId])
   @@index([status])
   @@index([createdAt])
+}
+
+// -----------------------------------------------------------------------------
+// FPO (FARMER PRODUCER ORGANISATION) AGGREGATION DOMAIN
+// -----------------------------------------------------------------------------
+
+model FpoOrganization {
+  id                 String            @id @default(uuid())
+  name               String
+  registrationNumber String            @unique
+  legalStructure     FpoLegalStructure
+  status             FpoStatus         @default(PENDING_VERIFICATION)
+  registrationDate   DateTime?
+  state              String
+  district           String
+  address            String
+  pincode            String
+  contactEmail       String
+  contactPhone       String
+  bankAccountNumber  String?
+  ifscCode           String?
+  bankName           String?
+  description        String?
+  logoUrl            String?
+  adminId            String
+  admin              User              @relation("FpoAdmin", fields: [adminId], references: [id])
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+
+  memberships FpoMembership[]
+  listings    FpoListing[]
+  batches     FpoAggregationBatch[]
+  buyRequests FpoBuyRequest[]
+  settlements FpoSettlement[]
+
+  @@index([state, district])
+  @@index([status])
+}
+
+model FpoMembership {
+  id              String              @id @default(uuid())
+  fpoId           String
+  fpo             FpoOrganization     @relation(fields: [fpoId], references: [id], onDelete: Cascade)
+  farmerId        String
+  farmer          User                @relation(fields: [farmerId], references: [id], onDelete: Cascade)
+  status          FpoMembershipStatus @default(PENDING)
+  shareCapital    Decimal?            @db.Decimal(10, 2)
+  joinedAt        DateTime?
+  approvedAt      DateTime?
+  approvedBy      String?
+  rejectionReason String?
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+
+  @@unique([fpoId, farmerId])
+  @@index([farmerId, status])
+  @@index([fpoId])
+}
+
+model FpoListing {
+  id                  String               @id @default(uuid())
+  fpoId               String
+  fpo                 FpoOrganization      @relation(fields: [fpoId], references: [id], onDelete: Cascade)
+  farmerId            String
+  farmer              User                 @relation(fields: [farmerId], references: [id], onDelete: Cascade)
+  commodity           String
+  quantityQuintals    Decimal              @db.Decimal(10, 2)
+  qualityGrade        String?
+  expectedHarvestDate DateTime?
+  actualCollectedQty  Decimal?             @db.Decimal(10, 2)
+  notes               String?
+  status              FpoListingStatus     @default(COMMITTED)
+  batchId             String?
+  batch               FpoAggregationBatch? @relation(fields: [batchId], references: [id], onDelete: SetNull)
+  payments            FpoFarmerPayment[]
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+
+  @@index([fpoId, status])
+  @@index([farmerId])
+  @@index([commodity])
+}
+
+model FpoAggregationBatch {
+  id            String          @id @default(uuid())
+  fpoId         String
+  fpo           FpoOrganization @relation(fields: [fpoId], references: [id], onDelete: Cascade)
+  batchNumber   String          @unique
+  commodity     String
+  totalQuantity Decimal         @db.Decimal(10, 2)
+  qualityGrade  String?
+  status        FpoBatchStatus  @default(OPEN)
+  sealedAt      DateTime?
+  buyRequestId  String?
+  buyRequest    FpoBuyRequest?  @relation(fields: [buyRequestId], references: [id], onDelete: SetNull)
+  orderId       String?
+  listings      FpoListing[]
+  settlements   FpoSettlement[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  @@index([fpoId, status])
+  @@index([commodity, status])
+}
+
+model FpoBuyRequest {
+  id                  String              @id @default(uuid())
+  buyerId             String
+  buyer               User                @relation(fields: [buyerId], references: [id], onDelete: Cascade)
+  fpoId               String?
+  fpo                 FpoOrganization?    @relation(fields: [fpoId], references: [id], onDelete: SetNull)
+  commodity           String
+  requiredQuantity    Decimal             @db.Decimal(10, 2)
+  filledQuantity      Decimal             @default(0) @db.Decimal(10, 2)
+  targetPrice         Decimal?            @db.Decimal(10, 2)
+  deliveryCity        String?
+  maxDistanceKm       Float?
+  qualityRequirements String?
+  notes               String?
+  status              FpoBuyRequestStatus @default(OPEN)
+  expiresAt           DateTime?
+  batches             FpoAggregationBatch[]
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+
+  @@index([status, commodity])
+  @@index([buyerId])
+}
+
+model FpoSettlement {
+  id               String              @id @default(uuid())
+  fpoId            String
+  fpo              FpoOrganization     @relation(fields: [fpoId], references: [id], onDelete: Cascade)
+  adminId          String?
+  admin            User?               @relation(fields: [adminId], references: [id], onDelete: SetNull)
+  orderId          String              @unique
+  batchId          String
+  batch            FpoAggregationBatch @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  grossAmount      Decimal             @db.Decimal(10, 2)
+  fpoCommission    Decimal             @db.Decimal(10, 2)
+  transportCost    Decimal             @db.Decimal(10, 2)
+  handlingCost     Decimal             @db.Decimal(10, 2)
+  otherDeductions  Decimal             @default(0) @db.Decimal(10, 2)
+  netDistributable Decimal             @db.Decimal(10, 2)
+  status           FpoSettlementStatus @default(PENDING)
+  distributedAt    DateTime?
+  farmerPayments   FpoFarmerPayment[]
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
+
+  @@index([fpoId])
+  @@index([batchId])
+}
+
+model FpoFarmerPayment {
+  id             String              @id @default(uuid())
+  settlementId   String
+  settlement     FpoSettlement       @relation(fields: [settlementId], references: [id], onDelete: Cascade)
+  farmerId       String
+  farmer         User                @relation(fields: [farmerId], references: [id], onDelete: Cascade)
+  listingId      String
+  listing        FpoListing          @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  quantity       Decimal             @db.Decimal(10, 2)
+  ratePerQuintal Decimal             @db.Decimal(10, 2)
+  grossAmount    Decimal             @db.Decimal(10, 2)
+  deductions     Decimal             @default(0) @db.Decimal(10, 2)
+  netAmount      Decimal             @db.Decimal(10, 2)
+  status         FpoSettlementStatus @default(PENDING)
+  paidAt         DateTime?
+  transactionId  String?
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+
+  @@index([settlementId])
+  @@index([farmerId])
+  @@index([listingId])
 }

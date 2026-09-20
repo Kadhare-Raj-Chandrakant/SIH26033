@@ -27,11 +27,20 @@ import {
   ChevronLeft,
 } from 'lucide-react';
 import { useAuth } from '@/components/providers/auth-provider';
+import { RoleGuard } from '@/components/auth/role-guard';
 
 export default function CheckoutPage() {
+  return (
+    <RoleGuard allowedRoles={['BUYER']}>
+      <CheckoutPageContent />
+    </RoleGuard>
+  );
+}
+
+function CheckoutPageContent() {
   const router = useRouter();
   const queryClient = useQueryClient();
-  const { token, isAuthenticated, isLoading: authLoading } = useAuth();
+  const { token, user, isAuthenticated, isLoading: authLoading } = useAuth();
 
   const [selectedAddressId, setSelectedAddressId] = useState<string | null>(null);
   const [showNewAddressForm, setShowNewAddressForm] = useState(false);
@@ -46,9 +55,9 @@ export default function CheckoutPage() {
 
   // Fetch cart
   const { data: cartResponse, isLoading: cartLoading } = useQuery({
-    queryKey: ['cart'],
+    queryKey: ['cart', token],
     queryFn: () => fetchCart(token || undefined),
-    enabled: isAuthenticated,
+    enabled: isAuthenticated && !!token && user?.role === 'BUYER',
   });
 
   // Fetch addresses
@@ -99,6 +108,7 @@ export default function CheckoutPage() {
   const items = cartData?.items || [];
   const subtotal = cartData?.subtotal || 0;
   const addresses: Address[] = addressesResponse?.data || [];
+  const hasUnavailableItems = items.some((item) => !item.isAvailable);
 
   // Auto-select default address
   if (!selectedAddressId && addresses.length > 0) {
@@ -445,7 +455,7 @@ export default function CheckoutPage() {
                 {/* Confirm Order Button */}
                 <Button
                   onClick={handlePlaceOrder}
-                  disabled={!selectedAddressId || items.length === 0 || placeOrderMutation.isPending}
+                  disabled={!selectedAddressId || items.length === 0 || hasUnavailableItems || placeOrderMutation.isPending}
                   className="w-full h-11 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold gap-2 shadow-md shadow-emerald-600/20"
                 >
                   {placeOrderMutation.isPending ? (
@@ -457,6 +467,13 @@ export default function CheckoutPage() {
                     </>
                   )}
                 </Button>
+
+                {hasUnavailableItems && (
+                  <div className="flex items-center gap-2 rounded-xl bg-destructive/10 border border-destructive/20 p-3 text-xs text-destructive">
+                    <AlertCircle className="h-4 w-4 shrink-0" />
+                    <span>Your cart contains out-of-stock items. Please return to cart to remove them.</span>
+                  </div>
+                )}
 
                 {placeOrderMutation.isError && (
                   <div className="flex items-center gap-2 rounded-xl bg-destructive/10 border border-destructive/20 p-3 text-xs text-destructive">

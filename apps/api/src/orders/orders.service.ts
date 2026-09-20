@@ -100,6 +100,19 @@ export class OrdersService {
           );
         }
 
+        const itemPrice = item.product.price ? item.product.price.toNumber() : 0;
+        const hasValidPrice =
+          itemPrice > 0 &&
+          item.product.illustrativeFarmerListingReferenceInr !== null &&
+          item.product.illustrativeFarmerListingReferenceInr !== undefined &&
+          item.product.illustrativeFarmerListingReferenceInr.toNumber() > 0;
+
+        if (!hasValidPrice) {
+          throw new BadRequestException(
+            `Product "${item.product.name}" has no price assigned and is out of stock. Cannot create order.`,
+          );
+        }
+
         // Atomic inventory reservation: decrement availableQuantity, increment reservedQuantity
         const reservation = await tx.inventory.updateMany({
           where: {
@@ -183,6 +196,7 @@ export class OrdersService {
                     id: true,
                     name: true,
                     unit: true,
+                    primaryImage: true,
                     images: { where: { isPrimary: true }, take: 1 },
                   },
                 },
@@ -231,7 +245,7 @@ export class OrdersService {
           quantity: item.quantity.toNumber(),
           unitPrice: item.unitPrice.toNumber(),
           totalPrice: item.totalPrice.toNumber(),
-          image: item.product.images[0]?.url || null,
+          image: item.product.primaryImage || item.product.images[0]?.url || null,
         })),
       }));
 
@@ -267,6 +281,7 @@ export class OrdersService {
                   id: true,
                   name: true,
                   unit: true,
+                  primaryImage: true,
                   images: { where: { isPrimary: true }, take: 1 },
                 },
               },
@@ -306,7 +321,7 @@ export class OrdersService {
         quantity: item.quantity.toNumber(),
         unitPrice: item.unitPrice.toNumber(),
         totalPrice: item.totalPrice.toNumber(),
-        image: item.product.images[0]?.url || null,
+        image: item.product.primaryImage || item.product.images[0]?.url || null,
       })),
     }));
 
@@ -340,6 +355,7 @@ export class OrdersService {
                 id: true,
                 name: true,
                 unit: true,
+                primaryImage: true,
                 images: { where: { isPrimary: true }, take: 1 },
               },
             },
@@ -403,7 +419,7 @@ export class OrdersService {
         quantity: item.quantity.toNumber(),
         unitPrice: item.unitPrice.toNumber(),
         totalPrice: item.totalPrice.toNumber(),
-        image: item.product.images[0]?.url || null,
+        image: item.product.primaryImage || item.product.images[0]?.url || null,
       })),
     };
   }
@@ -488,6 +504,7 @@ export class OrdersService {
                   id: true,
                   name: true,
                   unit: true,
+                  primaryImage: true,
                   images: { where: { isPrimary: true }, take: 1 },
                 },
               },
@@ -540,7 +557,7 @@ export class OrdersService {
         quantity: item.quantity.toNumber(),
         unitPrice: item.unitPrice.toNumber(),
         totalPrice: item.totalPrice.toNumber(),
-        image: item.product.images[0]?.url || null,
+        image: item.product.primaryImage || item.product.images[0]?.url || null,
       })),
     }));
 
@@ -573,6 +590,7 @@ export class OrdersService {
                 id: true,
                 name: true,
                 unit: true,
+                primaryImage: true,
                 images: { where: { isPrimary: true }, take: 1 },
               },
             },
@@ -634,7 +652,7 @@ export class OrdersService {
         quantity: item.quantity.toNumber(),
         unitPrice: item.unitPrice.toNumber(),
         totalPrice: item.totalPrice.toNumber(),
-        image: item.product.images[0]?.url || null,
+        image: item.product.primaryImage || item.product.images[0]?.url || null,
       })),
     };
   }

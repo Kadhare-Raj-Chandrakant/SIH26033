@@ -70,11 +70,48 @@ export class MarketplaceProductDto {
   @ApiProperty({ type: SafeCategoryDto })
   category: SafeCategoryDto;
 
+  @ApiPropertyOptional({ nullable: true, description: 'Single primary image for the listing' })
+  primaryImage?: string | null;
+
   @ApiProperty({ type: [SafeImageDto] })
   images: SafeImageDto[];
 
+
   @ApiProperty({ type: SafeSellerDto })
   seller: SafeSellerDto;
+
+  @ApiPropertyOptional({ nullable: true })
+  farmerName?: string | null;
+
+  @ApiPropertyOptional({ nullable: true })
+  farmName?: string | null;
+
+  @ApiPropertyOptional({ nullable: true })
+  state?: string | null;
+
+  @ApiPropertyOptional({ nullable: true })
+  district?: string | null;
+
+  @ApiPropertyOptional({ nullable: true })
+  marketMandi?: string | null;
+
+  @ApiPropertyOptional({ nullable: true })
+  varietyType?: string | null;
+
+  @ApiPropertyOptional({ nullable: true })
+  sellingUnit?: string | null;
+
+  @ApiPropertyOptional({ nullable: true })
+  officialMandiModalPriceInr?: number | null;
+
+  @ApiPropertyOptional({ nullable: true })
+  illustrativeFarmerListingReferenceInr?: number | null;
+
+  @ApiPropertyOptional({ nullable: true })
+  officialPriceDate?: string | null;
+
+  @ApiPropertyOptional({ nullable: true })
+  notes?: string | null;
 
   @ApiProperty()
   createdAt: Date;

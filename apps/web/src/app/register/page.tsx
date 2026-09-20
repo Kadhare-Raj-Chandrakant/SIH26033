@@ -17,7 +17,11 @@ function RegisterForm() {
   const searchParams = useSearchParams();
   const { setAuth } = useAuth();
 
-  const [role, setRole] = useState<AccountRole>('FARMER');
+  const requestedRole = searchParams.get('role')?.toUpperCase();
+  const initialRole: AccountRole =
+    requestedRole === 'BUYER' ? 'BUYER' : requestedRole === 'FPO' ? 'FPO' : 'FARMER';
+
+  const [role, setRole] = useState<AccountRole>(initialRole);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [mobile, setMobile] = useState('');
@@ -62,12 +66,29 @@ function RegisterForm() {
 
       setAuth(token, authUser);
 
-      if (returnUrl && returnUrl.startsWith('/') && !returnUrl.startsWith('//')) {
-        router.push(returnUrl);
-      } else if (role === 'FARMER' || role === 'FPO') {
-        router.push('/seller/orders');
+      // Safe role-based post-registration redirection
+      if (role === 'FARMER' || role === 'FPO') {
+        if (
+          returnUrl &&
+          (returnUrl.startsWith('/cart') ||
+            returnUrl.startsWith('/checkout') ||
+            returnUrl.startsWith('/orders') ||
+            returnUrl.startsWith('/marketplace/sourcing'))
+        ) {
+          router.push('/seller/orders');
+        } else if (returnUrl && returnUrl.startsWith('/') && !returnUrl.startsWith('//')) {
+          router.push(returnUrl);
+        } else {
+          router.push('/seller/orders');
+        }
       } else {
-        router.push('/marketplace');
+        if (returnUrl && returnUrl.startsWith('/seller')) {
+          router.push('/marketplace');
+        } else if (returnUrl && returnUrl.startsWith('/') && !returnUrl.startsWith('//')) {
+          router.push(returnUrl);
+        } else {
+          router.push('/marketplace');
+        }
       }
     } catch (err: unknown) {
       setErrorMessage(

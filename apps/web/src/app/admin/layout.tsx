@@ -26,6 +26,7 @@ const navItems = [
   { label: 'Overview', href: '/admin', icon: Shield },
   { label: 'Users', href: '/admin/users', icon: Users },
   { label: 'Sellers & FPOs', href: '/admin/sellers', icon: Store },
+  { label: 'FPO Verification', href: '/admin/fpo', icon: Store },
   { label: 'Product Moderation', href: '/admin/products', icon: Package },
   { label: 'Orders', href: '/admin/orders', icon: ShoppingCart },
   { label: 'Payments', href: '/admin/payments', icon: CreditCard },

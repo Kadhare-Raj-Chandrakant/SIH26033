@@ -273,13 +273,24 @@ export class ProductsService {
 
     const uploadResult = await this.cloudinaryService.uploadImage(file);
 
-    return this.prisma.productImage.create({
-      data: {
-        productId,
-        cloudinaryId: uploadResult.public_id,
-        url: uploadResult.secure_url,
-      },
-    });
+    const [newImage] = await this.prisma.$transaction([
+      this.prisma.productImage.create({
+        data: {
+          productId,
+          cloudinaryId: uploadResult.public_id,
+          url: uploadResult.secure_url,
+          isPrimary: !product.primaryImage,
+        },
+      }),
+      this.prisma.product.update({
+        where: { id: productId },
+        data: {
+          primaryImage: product.primaryImage || uploadResult.secure_url,
+        },
+      }),
+    ]);
+
+    return newImage;
   }
 
   async removeImage(userId: string, productId: string, imageId: string) {
@@ -315,6 +326,18 @@ export class ProductsService {
 
     if (image.cloudinaryId) {
       this.cloudinaryService.deleteImage(image.cloudinaryId).catch(() => {});
+    }
+
+    // If deleted image was primary, set next available image or null
+    if (product.primaryImage === image.url) {
+      const remainingImage = await this.prisma.productImage.findFirst({
+        where: { productId },
+        orderBy: { createdAt: 'asc' },
+      });
+      await this.prisma.product.update({
+        where: { id: productId },
+        data: { primaryImage: remainingImage ? remainingImage.url : null },
+      });
     }
 
     return { success: true, message: 'Product image deleted successfully' };

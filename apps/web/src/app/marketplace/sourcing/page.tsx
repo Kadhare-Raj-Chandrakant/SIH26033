@@ -30,6 +30,7 @@ import {
   SellerMatchItem,
 } from '@/lib/api';
 import { useAuth } from '@/components/providers/auth-provider';
+import { RoleGuard } from '@/components/auth/role-guard';
 
 const COMMODITIES = [
   'Tomato',
@@ -55,6 +56,14 @@ const CITIES = [
 ];
 
 export default function BuyerSourcingPage() {
+  return (
+    <RoleGuard allowedRoles={['BUYER']}>
+      <BuyerSourcingContent />
+    </RoleGuard>
+  );
+}
+
+function BuyerSourcingContent() {
   const queryClient = useQueryClient();
   const { token } = useAuth();
 
@@ -97,10 +106,8 @@ export default function BuyerSourcingPage() {
   // Mutation: Post Requirement
   const postRequirementMutation = useMutation({
     mutationFn: async () => {
-      let authToken = token;
-      if (!authToken) {
-        const demoAuth = await demoLoginBuyer();
-        authToken = demoAuth.token;
+      if (!token) {
+        throw new Error('Authentication required to post buyer requirement');
       }
       return createBuyerRequirement(
         {
@@ -112,7 +119,7 @@ export default function BuyerSourcingPage() {
           notes,
           unit: 'quintal',
         },
-        authToken,
+        token || undefined,
       );
     },
     onSuccess: () => {

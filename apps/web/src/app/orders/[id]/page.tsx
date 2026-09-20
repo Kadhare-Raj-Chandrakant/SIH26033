@@ -29,12 +29,21 @@ import {
 } from 'lucide-react';
 import { useAuth } from '@/components/providers/auth-provider';
 import { useIsMounted } from '@/lib/use-is-mounted';
+import { RoleGuard } from '@/components/auth/role-guard';
 
 interface PageProps {
   params: Promise<{ id: string }>;
 }
 
 export default function OrderDetailPage({ params }: PageProps) {
+  return (
+    <RoleGuard allowedRoles={['BUYER']}>
+      <OrderDetailContent params={params} />
+    </RoleGuard>
+  );
+}
+
+function OrderDetailContent({ params }: PageProps) {
   const { id } = use(params);
   const mounted = useIsMounted();
   const queryClient = useQueryClient();

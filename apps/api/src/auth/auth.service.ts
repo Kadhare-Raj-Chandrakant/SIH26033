@@ -1,8 +1,8 @@
-import { Injectable, UnauthorizedException, ConflictException, ForbiddenException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, ConflictException, ForbiddenException, BadRequestException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as argon2 from 'argon2';
 import { PrismaService } from '../prisma/prisma.service.js';
-import { RegisterDto, LoginDto } from './dto/auth.dto.js';
+import { RegisterDto, LoginDto, ForgotPasswordDto, ResetPasswordDto } from './dto/auth.dto.js';
 import { Role } from '@prisma/client';
 
 @Injectable()
@@ -113,5 +113,70 @@ export class AuthService {
 
     const { passwordHash: _, ...sanitizedUser } = user;
     return sanitizedUser;
+  }
+
+  async forgotPassword(dto: ForgotPasswordDto) {
+    const user = await this.prisma.user.findUnique({
+      where: { email: dto.email.trim().toLowerCase() },
+    });
+
+    if (!user) {
+      return {
+        message: 'If an account exists with this email address, a password reset link has been generated.',
+      };
+    }
+
+    if (user.status === 'SUSPENDED' || user.status === 'DEACTIVATED') {
+      throw new UnauthorizedException('Account is inactive. Please contact support.');
+    }
+
+    const resetToken = this.jwtService.sign(
+      {
+        sub: user.id,
+        email: user.email,
+        type: 'password_reset',
+      },
+      { expiresIn: '15m' },
+    );
+
+    const resetUrl = `http://localhost:3000/reset-password?token=${resetToken}`;
+    console.log(`🔑 [Password Reset] Link generated for ${user.email}: ${resetUrl}`);
+
+    return {
+      message: 'If an account exists with this email address, a password reset link has been generated.',
+      resetToken,
+      resetUrl,
+    };
+  }
+
+  async resetPassword(dto: ResetPasswordDto) {
+    let payload: { sub?: string; email?: string; type?: string };
+    try {
+      payload = this.jwtService.verify(dto.token);
+    } catch {
+      throw new BadRequestException('Password reset link is invalid or has expired. Please request a new one.');
+    }
+
+    if (payload?.type !== 'password_reset' || !payload?.sub) {
+      throw new BadRequestException('Invalid password reset token.');
+    }
+
+    const user = await this.prisma.user.findUnique({
+      where: { id: payload.sub },
+    });
+
+    if (!user) {
+      throw new BadRequestException('User account no longer exists.');
+    }
+
+    const passwordHash = await argon2.hash(dto.newPassword);
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: { passwordHash },
+    });
+
+    return {
+      message: 'Password has been reset successfully. You may now log in with your new password.',
+    };
   }
 }

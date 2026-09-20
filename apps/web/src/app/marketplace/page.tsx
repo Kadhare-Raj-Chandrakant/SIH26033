@@ -1,11 +1,12 @@
 'use client';
 
-import { Suspense, useTransition } from 'react';
+import { Suspense, useTransition, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import {
   fetchMarketplaceProducts,
   fetchCategories,
+  fetchMarketplaceFilterOptions,
   type MarketplaceQueryParams,
   type MarketplaceProduct,
   type Category,
@@ -14,21 +15,24 @@ import { MarketplaceNavbar } from '@/components/marketplace/marketplace-navbar';
 import { ProductCard } from '@/components/marketplace/product-card';
 import { FilterSidebar } from '@/components/marketplace/filter-sidebar';
 import { PaginationControls } from '@/components/marketplace/pagination-controls';
+import { ListingDetailsModal } from '@/components/marketplace/listing-details-modal';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
-import { AlertCircle, PackageOpen, Sparkles, Filter } from 'lucide-react';
-import { useState } from 'react';
+import { AlertCircle, PackageOpen, Sparkles, Filter, Search, X } from 'lucide-react';
 
 function MarketplaceContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [, startTransition] = useTransition();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<MarketplaceProduct | null>(null);
 
   // Extract query params from URL
   const filters: MarketplaceQueryParams = {
     search: searchParams.get('search') || undefined,
     categoryId: searchParams.get('categoryId') || undefined,
+    state: searchParams.get('state') || undefined,
+    district: searchParams.get('district') || undefined,
     location: searchParams.get('location') || undefined,
     minPrice: searchParams.get('minPrice')
       ? parseFloat(searchParams.get('minPrice')!)
@@ -38,7 +42,7 @@ function MarketplaceContent() {
       : undefined,
     sort: (searchParams.get('sort') as MarketplaceQueryParams['sort']) || 'newest',
     page: searchParams.get('page') ? parseInt(searchParams.get('page')!, 10) : 1,
-    limit: 12,
+    limit: 18,
   };
 
   // Synchronize state changes to URL query parameters
@@ -54,13 +58,13 @@ function MarketplaceContent() {
     });
 
     startTransition(() => {
-      router.push(`/marketplace?${params.toString()}`);
+      router.push(`/marketplace?${params.toString()}`, { scroll: false });
     });
   };
 
   const resetFilters = () => {
     startTransition(() => {
-      router.push('/marketplace');
+      router.push('/marketplace', { scroll: false });
     });
   };
 
@@ -81,7 +85,14 @@ function MarketplaceContent() {
     queryFn: fetchCategories,
   });
 
+  const { data: filterOptionsData } = useQuery({
+    queryKey: ['marketplace-filter-options'],
+    queryFn: fetchMarketplaceFilterOptions,
+    staleTime: 60000,
+  });
+
   const categories = categoriesData?.data || [];
+  const filterOptions = filterOptionsData?.data;
   const products = productsData?.data || [];
   const meta = productsData?.meta;
 
@@ -101,7 +112,7 @@ function MarketplaceContent() {
               Buyer Agricultural Marketplace
             </h1>
             <p className="mt-2 text-sm sm:text-base text-muted-foreground">
-              Discover, compare, and source verified farm-fresh produce directly from local farmers and Farmer Producer Organisations (FPOs).
+              Discover, compare, and source verified farm-fresh produce directly from local farmers. All listings are direct farmer listings with authentic harvest and origin details.
             </p>
           </div>
         </div>
@@ -136,6 +147,7 @@ function MarketplaceContent() {
               <FilterSidebar
                 categories={categories}
                 filters={filters}
+                filterOptions={filterOptions}
                 onFilterChange={updateFilters}
                 onResetFilters={resetFilters}
                 isLoading={isProductsLoading}
@@ -145,6 +157,29 @@ function MarketplaceContent() {
 
           {/* Product Grid Area */}
           <section className="lg:col-span-3">
+            {/* Active Search Feedback Banner */}
+            {filters.search && (
+              <div className="mb-5 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-3 text-xs shadow-sm">
+                <div className="flex items-center gap-2">
+                  <Search className="h-4 w-4 text-emerald-600" />
+                  <span className="text-muted-foreground">Showing produce matching:</span>
+                  <span className="font-bold text-foreground">"{filters.search}"</span>
+                  <span className="rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-700 dark:text-emerald-300">
+                    {meta?.total !== undefined ? `${meta.total} listings found` : 'Loading...'}
+                  </span>
+                </div>
+                <Button
+                  variant="outline"
+                  size="xs"
+                  onClick={() => updateFilters({ search: undefined, page: 1 })}
+                  className="h-7 gap-1 text-xs text-muted-foreground hover:text-foreground"
+                >
+                  <X className="h-3 w-3" />
+                  <span>Clear Search</span>
+                </Button>
+              </div>
+            )}
+
             {/* Loading State Skeleton */}
             {isProductsLoading && (
               <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -216,7 +251,11 @@ function MarketplaceContent() {
               <div className="space-y-8">
                 <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
                   {products.map((product: MarketplaceProduct) => (
-                    <ProductCard key={product.id} product={product} />
+                    <ProductCard
+                      key={product.id}
+                      product={product}
+                      onQuickView={setSelectedProduct}
+                    />
                   ))}
                 </div>
 
@@ -233,6 +272,13 @@ function MarketplaceContent() {
           </section>
         </div>
       </main>
+
+      {/* Quick View / Listing Details Modal */}
+      <ListingDetailsModal
+        product={selectedProduct}
+        isOpen={!!selectedProduct}
+        onClose={() => setSelectedProduct(null)}
+      />
     </div>
   );
 }
