@@ -96,6 +96,26 @@ export class LogisticsService {
     }
   }
 
+  findFarmerMandiLane(state: string, district: string, mandiIdOrOptionOrName: string) {
+    if (this.adapter instanceof MockLogisticsProvider) {
+      return this.adapter.findFarmerMandiLane(state, district, mandiIdOrOptionOrName);
+    }
+    return null;
+  }
+
+  findBuyerBulkLane(
+    originState: string,
+    originDistrict: string,
+    destState: string,
+    destCity?: string,
+    destDistrict?: string,
+  ) {
+    if (this.adapter instanceof MockLogisticsProvider) {
+      return this.adapter.findBuyerBulkLane(originState, originDistrict, destState, destCity, destDistrict);
+    }
+    return null;
+  }
+
   /**
    * Controlled business mapping from platform ShipmentStatus to OrderStatus
    */

@@ -38,9 +38,27 @@ export class CreateProductDto {
   @MaxLength(255)
   location?: string;
 
+  @ApiPropertyOptional({ description: 'Specific commodity variety or cultivar' })
+  @IsString()
+  @IsOptional()
+  @MaxLength(100)
+  varietyType?: string;
+
+  @ApiPropertyOptional({ description: 'Quality grade, specifications, or harvesting notes' })
+  @IsString()
+  @IsOptional()
+  @MaxLength(1000)
+  notes?: string;
+
+  @ApiPropertyOptional({ description: 'Primary image URL' })
+  @IsString()
+  @IsOptional()
+  @MaxLength(1000)
+  primaryImage?: string;
+
   @ApiProperty({ description: 'Initial available inventory quantity' })
   @IsNumber({ allowNaN: false, allowInfinity: false }, { message: 'Initial quantity must be a valid finite number' })
-  @Min(0, { message: 'Initial quantity cannot be negative' })
+  @Min(0.01, { message: 'Initial quantity must be greater than 0' })
   @Max(10000000, { message: 'Initial quantity cannot exceed 10,000,000' })
   @Type(() => Number)
   initialQuantity: number;

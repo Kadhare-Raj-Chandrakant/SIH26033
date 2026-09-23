@@ -1,24 +1,26 @@
 'use client';
 
-import { Suspense, useTransition, useState } from 'react';
+import { Suspense, useTransition, useState, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import {
   fetchMarketplaceProducts,
   fetchCategories,
   fetchMarketplaceFilterOptions,
+  getMarketplaceLandedCost,
+  fetchAddresses,
   type MarketplaceQueryParams,
   type MarketplaceProduct,
   type Category,
+  type MarketplaceLandedCostResult,
+  type ProductLandedCostItem,
 } from '@/lib/api';
 import { MarketplaceNavbar } from '@/components/marketplace/marketplace-navbar';
 import { ProductCard } from '@/components/marketplace/product-card';
 import { FilterSidebar } from '@/components/marketplace/filter-sidebar';
 import { PaginationControls } from '@/components/marketplace/pagination-controls';
 import { ListingDetailsModal } from '@/components/marketplace/listing-details-modal';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Button } from '@/components/ui/button';
-import { AlertCircle, PackageOpen, Sparkles, Filter, Search, X } from 'lucide-react';
+import { useAuth } from '@/components/providers/auth-provider';
 
 function MarketplaceContent() {
   const searchParams = useSearchParams();
@@ -27,7 +29,11 @@ function MarketplaceContent() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<MarketplaceProduct | null>(null);
 
-  // Extract query params from URL
+  const { token } = useAuth();
+  const [isLandedCostMode, setIsLandedCostMode] = useState<boolean>(true);
+  const [buyerCity, setBuyerCity] = useState<string>('Mumbai');
+  const [buyerState, setBuyerState] = useState<string>('Maharashtra');
+
   const filters: MarketplaceQueryParams = {
     search: searchParams.get('search') || undefined,
     categoryId: searchParams.get('categoryId') || undefined,
@@ -45,7 +51,38 @@ function MarketplaceContent() {
     limit: 18,
   };
 
-  // Synchronize state changes to URL query parameters
+  const { data: addressData } = useQuery({
+    queryKey: ['buyer-addresses', token],
+    queryFn: () => fetchAddresses(token || undefined),
+    enabled: !!token,
+  });
+
+  useEffect(() => {
+    if (addressData?.data && addressData.data.length > 0) {
+      const def = addressData.data.find((a) => a.isDefault) || addressData.data[0];
+      if (def.city) setBuyerCity(def.city);
+      if (def.state) setBuyerState(def.state);
+    }
+  }, [addressData]);
+
+  const {
+    data: landedCostData,
+    isLoading: isLandedCostLoading,
+  } = useQuery<MarketplaceLandedCostResult>({
+    queryKey: ['marketplace-landed-cost', buyerCity, buyerState, filters.search],
+    queryFn: () =>
+      getMarketplaceLandedCost(
+        {
+          destinationCity: buyerCity,
+          destinationState: buyerState,
+          commodity: filters.search || undefined,
+        },
+        token || undefined,
+      ),
+    enabled: isLandedCostMode,
+    staleTime: 60000,
+  });
+
   const updateFilters = (newFilters: Partial<MarketplaceQueryParams>) => {
     const params = new URLSearchParams(searchParams.toString());
 
@@ -68,7 +105,6 @@ function MarketplaceContent() {
     });
   };
 
-  // Queries
   const {
     data: productsData,
     isLoading: isProductsLoading,
@@ -96,54 +132,116 @@ function MarketplaceContent() {
   const products = productsData?.data || [];
   const meta = productsData?.meta;
 
+  const landedCostMap = new Map<string, ProductLandedCostItem>();
+  if (isLandedCostMode && landedCostData?.products) {
+    for (const item of landedCostData.products) {
+      landedCostMap.set(item.productId, item);
+    }
+  }
+
+  const sortedProducts = [...products].sort((a, b) => {
+    if (isLandedCostMode && landedCostMap.size > 0) {
+      const itemA = landedCostMap.get(a.id);
+      const itemB = landedCostMap.get(b.id);
+      const costA = itemA ? itemA.totalLandedCostPerQuintal : Infinity;
+      const costB = itemB ? itemB.totalLandedCostPerQuintal : Infinity;
+      return costA - costB;
+    }
+    return 0;
+  });
+
   return (
-    <div className="min-h-screen bg-zinc-50/50 dark:bg-zinc-950/50">
+    <div className="min-h-screen bg-[#F7F5EE] text-[#1E221B]">
       <MarketplaceNavbar />
 
       {/* Hero / Header Bar */}
-      <section className="border-b border-border/60 bg-gradient-to-b from-emerald-500/5 via-transparent to-transparent py-8 sm:py-10">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-700 dark:text-emerald-300">
-              <Sparkles className="h-3.5 w-3.5" />
-              <span>Direct From Certified Producers</span>
+      <section className="border-b border-[#DFD8CB] bg-[#FAF8F2] py-8 sm:py-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+            <div className="max-w-2xl">
+              <span className="inline-block px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-[#E2EDE2] text-[#233D22] border border-[#CCDBCB] mb-2.5">
+                Verified Agricultural Trade Gateway
+              </span>
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-[#1E221B]">
+                Marketplace Showcase
+              </h1>
+              <p className="mt-2 text-xs sm:text-sm text-[#616857] leading-relaxed">
+                Direct trade lots from verified farmers and FPOs with deterministic road logistics, digital assaying slips, and escrow payment settlement.
+              </p>
             </div>
-            <h1 className="mt-3 text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl lg:text-4xl">
-              Buyer Agricultural Marketplace
-            </h1>
-            <p className="mt-2 text-sm sm:text-base text-muted-foreground">
-              Discover, compare, and source verified farm-fresh produce directly from local farmers. All listings are direct farmer listings with authentic harvest and origin details.
-            </p>
+
+            {/* Landed Cost Mode Control Box */}
+            <div className="rounded-lg border border-[#DFD8CB] bg-[#FCFAF6] p-4 sm:p-5 space-y-3 min-w-[320px]">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#1E221B]">
+                  Landed Cost Intelligence
+                </span>
+                <button
+                  onClick={() => setIsLandedCostMode(!isLandedCostMode)}
+                  className={`px-3 py-1 text-xs font-semibold rounded border transition-colors ${
+                    isLandedCostMode
+                      ? 'bg-[#233D22] text-[#FAF8F2] border-[#233D22]'
+                      : 'bg-[#FFFFFF] text-[#484E40] border-[#DFD8CB]'
+                  }`}
+                >
+                  {isLandedCostMode ? 'Active' : 'Enable'}
+                </button>
+              </div>
+
+              {isLandedCostMode && (
+                <div className="space-y-2 pt-2 border-t border-[#ECE5D8]">
+                  <div className="flex items-center justify-between gap-2 text-xs">
+                    <span className="text-[#6B7260] font-medium">Delivery Destination:</span>
+                    <select
+                      value={buyerCity}
+                      onChange={(e) => {
+                        const city = e.target.value;
+                        setBuyerCity(city);
+                        if (city === 'Delhi') setBuyerState('Delhi');
+                        else if (city === 'Ahmedabad') setBuyerState('Gujarat');
+                        else if (city === 'Indore') setBuyerState('Madhya Pradesh');
+                        else if (city === 'Hyderabad') setBuyerState('Telangana');
+                        else setBuyerState('Maharashtra');
+                      }}
+                      className="h-8 px-2 rounded border border-[#DFD8CB] bg-[#F7F5EE] text-xs font-semibold text-[#1E221B] focus:outline-none focus:border-[#233D22]"
+                    >
+                      <option value="Mumbai">Mumbai, Maharashtra</option>
+                      <option value="Pune">Pune, Maharashtra</option>
+                      <option value="Delhi">Delhi, Delhi</option>
+                      <option value="Ahmedabad">Ahmedabad, Gujarat</option>
+                      <option value="Indore">Indore, Madhya Pradesh</option>
+                      <option value="Hyderabad">Hyderabad, Telangana</option>
+                    </select>
+                  </div>
+                  <span className="text-[10px] text-[#7A8070] block">
+                    Calculates: Farmgate Price + Commercial Road Freight + Handling
+                  </span>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </section>
 
       {/* Main Catalog View */}
-      <main className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
+      <main className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
         {/* Mobile Filter Toggle */}
         <div className="mb-4 flex items-center justify-between lg:hidden">
-          <span className="text-xs text-muted-foreground">
-            {meta?.total ? `${meta.total} products found` : 'Searching...'}
+          <span className="text-xs text-[#6B7260]">
+            {meta?.total ? `${meta.total} trading lots active` : 'Searching...'}
           </span>
-          <Button
-            variant="outline"
-            size="sm"
+          <button
             onClick={() => setMobileFiltersOpen(!mobileFiltersOpen)}
-            className="gap-1.5 text-xs"
+            className="h-8 px-3 text-xs font-semibold uppercase tracking-wider text-[#233D22] border border-[#DFD8CB] bg-[#FFFFFF] rounded"
           >
-            <Filter className="h-3.5 w-3.5 text-emerald-600" />
             {mobileFiltersOpen ? 'Hide Filters' : 'Show Filters'}
-          </Button>
+          </button>
         </div>
 
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
-          {/* Desktop / Collapsible Mobile Sidebar */}
-          <aside
-            className={`lg:col-span-1 ${
-              mobileFiltersOpen ? 'block' : 'hidden lg:block'
-            }`}
-          >
-            <div className="sticky top-24">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-4 items-start">
+          {/* Sidebar */}
+          <aside className={`lg:col-span-1 ${mobileFiltersOpen ? 'block' : 'hidden lg:block'}`}>
+            <div className="sticky top-28">
               <FilterSidebar
                 categories={categories}
                 filters={filters}
@@ -157,104 +255,106 @@ function MarketplaceContent() {
 
           {/* Product Grid Area */}
           <section className="lg:col-span-3">
-            {/* Active Search Feedback Banner */}
-            {filters.search && (
-              <div className="mb-5 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-3 text-xs shadow-sm">
-                <div className="flex items-center gap-2">
-                  <Search className="h-4 w-4 text-emerald-600" />
-                  <span className="text-muted-foreground">Showing produce matching:</span>
-                  <span className="font-bold text-foreground">&ldquo;{filters.search}&rdquo;</span>
-                  <span className="rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-700 dark:text-emerald-300">
-                    {meta?.total !== undefined ? `${meta.total} listings found` : 'Loading...'}
+            {/* Active Landed Cost Decision Banner */}
+            {isLandedCostMode && landedCostData && (
+              <div className="mb-6 rounded-lg border border-[#CCDBCB] bg-[#F0F5EE] p-4 space-y-2">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <span className="bg-[#233D22] text-[#FAF8F2] text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded">
+                      Landed Cost Engine
+                    </span>
+                    <span className="text-xs font-bold text-[#1E221B]">
+                      Destination: {landedCostData.buyerDestination.city}, {landedCostData.buyerDestination.state}
+                    </span>
+                  </div>
+                  <span className="text-[10px] font-mono text-[#5A6352] bg-[#FFFFFF] px-2 py-0.5 rounded border border-[#DFD8CB]">
+                    {landedCostData.calculationFormula}
                   </span>
                 </div>
-                <Button
-                  variant="outline"
-                  size="xs"
-                  onClick={() => updateFilters({ search: undefined, page: 1 })}
-                  className="h-7 gap-1 text-xs text-muted-foreground hover:text-foreground"
-                >
-                  <X className="h-3 w-3" />
-                  <span>Clear Search</span>
-                </Button>
+                <p className="text-xs text-[#3E4536] leading-relaxed">
+                  {landedCostData.summaryExplanation}
+                </p>
               </div>
             )}
 
-            {/* Loading State Skeleton */}
+            {/* Active Search Feedback Banner */}
+            {filters.search && (
+              <div className="mb-5 flex items-center justify-between p-3 rounded border border-[#DFD8CB] bg-[#FAF8F2] text-xs">
+                <div>
+                  <span className="text-[#6B7260]">Filtered by search: </span>
+                  <strong className="text-[#1E221B]">&ldquo;{filters.search}&rdquo;</strong>
+                  <span className="ml-2 text-[10px] font-bold uppercase bg-[#EAE4D6] px-2 py-0.5 rounded text-[#4B5242]">
+                    {meta?.total !== undefined ? `${meta.total} lots found` : 'Searching...'}
+                  </span>
+                </div>
+                <button
+                  onClick={() => updateFilters({ search: undefined, page: 1 })}
+                  className="text-xs font-semibold text-[#8B4513] hover:underline"
+                >
+                  Clear Search
+                </button>
+              </div>
+            )}
+
+            {/* Loading State (No pulsing skeletons) */}
             {isProductsLoading && (
-              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                {Array.from({ length: 6 }).map((_, i) => (
-                  <div
-                    key={i}
-                    className="overflow-hidden rounded-xl border border-border/70 bg-card p-4 space-y-4"
-                  >
-                    <Skeleton className="aspect-[4/3] w-full rounded-lg" />
-                    <Skeleton className="h-4 w-2/3" />
-                    <Skeleton className="h-3 w-full" />
-                    <Skeleton className="h-3 w-4/5" />
-                    <div className="flex justify-between pt-2">
-                      <Skeleton className="h-6 w-20" />
-                      <Skeleton className="h-8 w-20 rounded-md" />
-                    </div>
-                  </div>
-                ))}
+              <div className="p-12 text-center border border-[#DFD8CB] rounded-lg bg-[#FCFAF6]">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#6B7260] block mb-2">
+                  Querying APMC & Farmgate Nodes
+                </span>
+                <p className="text-sm font-serif font-bold text-[#1E221B]">
+                  Loading verified agricultural batches...
+                </p>
               </div>
             )}
 
             {/* Error State */}
             {isProductsError && !isProductsLoading && (
-              <div className="flex flex-col items-center justify-center rounded-2xl border border-destructive/20 bg-destructive/5 p-12 text-center">
-                <AlertCircle className="h-12 w-12 text-destructive" />
-                <h3 className="mt-4 text-base font-semibold text-foreground">
-                  Failed to Load Products
+              <div className="p-8 text-center border border-[#E5B5B5] rounded-lg bg-[#FDF2F2]">
+                <h3 className="font-serif font-bold text-base text-[#9B1C1C]">
+                  Unable to Retrieve Market Listings
                 </h3>
-                <p className="mt-1 max-w-md text-xs text-muted-foreground">
+                <p className="mt-1 text-xs text-[#771D1D] max-w-md mx-auto">
                   {(productsError as Error)?.message ||
-                    'An unexpected error occurred while fetching marketplace items.'}
+                    'An unexpected network error occurred while querying the commodity index.'}
                 </p>
-                <Button
-                  variant="outline"
-                  size="sm"
+                <button
                   onClick={() => refetchProducts()}
-                  className="mt-5"
+                  className="mt-4 px-4 py-2 text-xs font-bold uppercase tracking-wider bg-[#233D22] text-[#FAF8F2] rounded"
                 >
-                  Try Again
-                </Button>
+                  Retry Request
+                </button>
               </div>
             )}
 
             {/* Empty State */}
             {!isProductsLoading && !isProductsError && products.length === 0 && (
-              <div className="flex flex-col items-center justify-center rounded-2xl border border-border/70 bg-card p-12 text-center shadow-sm">
-                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600">
-                  <PackageOpen className="h-7 w-7" />
-                </div>
-                <h3 className="mt-4 text-base font-semibold text-foreground">
-                  No Available Products Found
+              <div className="p-12 text-center border border-[#DFD8CB] rounded-lg bg-[#FCFAF6]">
+                <h3 className="font-serif font-bold text-lg text-[#1E221B]">
+                  No Matching Commodity Batches Found
                 </h3>
-                <p className="mt-1 max-w-md text-xs text-muted-foreground">
-                  We could not find any active in-stock produce matching your current search criteria or price filters.
+                <p className="mt-2 text-xs text-[#6B7260] max-w-md mx-auto leading-relaxed">
+                  No active harvest lots match your currently selected filters or price thresholds. Adjust your filters or reset to browse all lots.
                 </p>
-                <Button
-                  variant="outline"
-                  size="sm"
+                <button
                   onClick={resetFilters}
-                  className="mt-5 text-xs text-emerald-600 hover:text-emerald-700"
+                  className="mt-5 px-5 py-2 text-xs font-semibold uppercase tracking-wider border border-[#233D22] text-[#233D22] rounded hover:bg-[#EAE4D6]"
                 >
                   Reset All Filters
-                </Button>
+                </button>
               </div>
             )}
 
             {/* Product Cards Grid */}
-            {!isProductsLoading && !isProductsError && products.length > 0 && (
+            {!isProductsLoading && !isProductsError && sortedProducts.length > 0 && (
               <div className="space-y-8">
-                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                  {products.map((product: MarketplaceProduct) => (
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  {sortedProducts.map((product: MarketplaceProduct) => (
                     <ProductCard
                       key={product.id}
                       product={product}
                       onQuickView={setSelectedProduct}
+                      landedCost={landedCostMap.get(product.id)}
                     />
                   ))}
                 </div>
@@ -287,10 +387,8 @@ export default function MarketplacePage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen flex items-center justify-center bg-background">
-          <div className="text-sm font-medium text-muted-foreground animate-pulse">
-            Loading Agricultural Marketplace...
-          </div>
+        <div className="min-h-screen flex items-center justify-center bg-[#F7F5EE] text-xs text-[#6B7260]">
+          Loading Agricultural Marketplace...
         </div>
       }
     >

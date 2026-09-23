@@ -58,6 +58,7 @@ export class LogisticsProviderException extends Error {
 
 export interface EstimateLocation {
   city?: string;
+  district?: string;
   state?: string;
   pincode?: string;
   latitude?: number;
@@ -69,11 +70,12 @@ export interface EstimateLogisticsPayload {
   destination: EstimateLocation;
   weightKg: number;
   commodity?: string;
+  quantityQuintals?: number;
 }
 
 export interface LogisticsEstimateResult {
   distanceKm: number;
-  distanceType: 'ESTIMATED_GEOGRAPHIC';
+  distanceType: 'ESTIMATED_GEOGRAPHIC' | 'EXACT_LANE' | 'RATE_CARD_FALLBACK';
   estimatedCost: number;
   perUnitCost: number;
   estimatedDays: number;
@@ -84,6 +86,15 @@ export interface LogisticsEstimateResult {
     distanceFare: number;
     fuelSurcharge: number;
     handling: number;
+    loading?: number;
+    insurance?: number;
+    fixedLaneCharge?: number;
+  };
+  laneDetails?: {
+    laneId?: string;
+    laneType?: string;
+    matchType: 'EXACT' | 'NORMALIZED' | 'RATE_CARD_FALLBACK';
+    originLocationId?: string;
   };
   limitations?: string[];
 }

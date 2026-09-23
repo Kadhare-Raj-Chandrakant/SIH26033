@@ -12,20 +12,6 @@ import {
   Address,
 } from '@/lib/api';
 import { MarketplaceNavbar } from '@/components/marketplace/marketplace-navbar';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
-import { Input } from '@/components/ui/input';
-import { Skeleton } from '@/components/ui/skeleton';
-import {
-  MapPin,
-  CheckCircle2,
-  AlertCircle,
-  Plus,
-  ShieldCheck,
-  ChevronLeft,
-} from 'lucide-react';
 import { useAuth } from '@/components/providers/auth-provider';
 import { RoleGuard } from '@/components/auth/role-guard';
 
@@ -53,14 +39,12 @@ function CheckoutPageContent() {
     pincode: '',
   });
 
-  // Fetch cart
   const { data: cartResponse, isLoading: cartLoading } = useQuery({
     queryKey: ['cart', token],
     queryFn: () => fetchCart(token || undefined),
     enabled: isAuthenticated && !!token && user?.role === 'BUYER',
   });
 
-  // Fetch addresses
   const {
     data: addressesResponse,
     isLoading: addressesLoading,
@@ -71,7 +55,6 @@ function CheckoutPageContent() {
     enabled: isAuthenticated,
   });
 
-  // Create address mutation
   const createAddressMutation = useMutation({
     mutationFn: () => createAddress(addressForm, token || undefined),
     onSuccess: (data) => {
@@ -89,7 +72,6 @@ function CheckoutPageContent() {
     },
   });
 
-  // Place order mutation
   const placeOrderMutation = useMutation({
     mutationFn: (addressId: string) => createOrder(addressId, token || undefined),
     onSuccess: (response) => {
@@ -110,7 +92,6 @@ function CheckoutPageContent() {
   const addresses: Address[] = addressesResponse?.data || [];
   const hasUnavailableItems = items.some((item) => !item.isAvailable);
 
-  // Auto-select default address
   if (!selectedAddressId && addresses.length > 0) {
     const defaultAddr = addresses.find((a) => a.isDefault) || addresses[0];
     setSelectedAddressId(defaultAddr.id);
@@ -130,71 +111,64 @@ function CheckoutPageContent() {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-50/50 dark:bg-zinc-950/50">
+    <div className="min-h-screen flex flex-col bg-[#F7F5EE] text-[#1E221B]">
       <MarketplaceNavbar />
 
-      <main className="container mx-auto px-4 py-8 sm:px-6 lg:px-8 max-w-5xl">
-        {/* Navigation breadcrumb */}
-        <nav className="mb-6 flex items-center gap-2 text-xs text-muted-foreground">
-          <Link
-            href="/cart"
-            className="flex items-center gap-1 font-medium hover:text-emerald-600 transition-colors"
-          >
-            <ChevronLeft className="h-4 w-4" />
-            Back to Cart
+      <main className="flex-1 max-w-5xl mx-auto w-full px-4 py-8 sm:px-6 lg:px-8">
+        {/* Navigation Breadcrumb */}
+        <nav className="mb-6 flex items-center gap-2 text-xs text-[#6B7260]">
+          <Link href="/cart" className="hover:text-[#1E221B] font-medium">
+            ← Back to Cart
           </Link>
           <span>/</span>
-          <span className="font-semibold text-foreground">Order Review & Confirmation</span>
+          <span className="font-bold text-[#1E221B]">Trade Settlement & Escrow Commitment</span>
         </nav>
 
-        <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground mb-2">
-          Order Review & Confirmation
-        </h1>
-        <p className="text-xs sm:text-sm text-muted-foreground mb-8">
-          Review your direct farm produce selection and confirm your delivery destination.
-        </p>
+        <div className="mb-8 pb-4 border-b border-[#DFD8CB]">
+          <span className="text-[10px] font-bold uppercase tracking-wider text-[#556448] block mb-1">
+            B2B Commercial Contract
+          </span>
+          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#1E221B]">
+            Trade Settlement & Escrow Commitment
+          </h1>
+          <p className="text-xs text-[#6B7260] mt-1">
+            Review delivery destination, weighbridge inspection terms, and authorize payment into secure escrow.
+          </p>
+        </div>
 
-        {/* Loading state */}
+        {/* Loading State */}
         {(authLoading || cartLoading || addressesLoading) && (
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-            <div className="md:col-span-7 space-y-4">
-              <Skeleton className="h-44 w-full rounded-2xl" />
-              <Skeleton className="h-56 w-full rounded-2xl" />
-            </div>
-            <div className="md:col-span-5">
-              <Skeleton className="h-72 w-full rounded-2xl" />
-            </div>
+          <div className="p-12 text-center border border-[#DFD8CB] rounded-lg bg-[#FCFAF6]">
+            <p className="text-sm font-serif font-bold text-[#1E221B]">
+              Preparing Trade Settlement Manifest...
+            </p>
           </div>
         )}
 
         {/* Content */}
         {!cartLoading && !addressesLoading && (
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
-            {/* Left Column: Shipping Address & Item Review */}
+            {/* Left Column: Address & Lot Review */}
             <div className="md:col-span-7 space-y-6">
-              {/* 1. Shipping Address Selection */}
-              <Card className="rounded-2xl border border-border/80 bg-card p-5 sm:p-6 shadow-sm space-y-4">
+              {/* Delivery Destination */}
+              <div className="rounded-lg border border-[#DFD8CB] bg-[#FCFAF6] p-6 space-y-4">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-base font-bold text-foreground flex items-center gap-2">
-                    <MapPin className="h-4 w-4 text-emerald-600" />
-                    Delivery Destination
+                  <h2 className="text-base font-serif font-bold text-[#1E221B]">
+                    Delivery Destination & Warehouse
                   </h2>
 
                   {!showNewAddressForm && (
-                    <Button
+                    <button
                       type="button"
-                      variant="outline"
-                      size="sm"
                       onClick={() => setShowNewAddressForm(true)}
-                      className="text-xs gap-1 h-8"
+                      className="h-8 px-3 text-xs font-semibold uppercase tracking-wider border border-[#DFD8CB] bg-[#FFFFFF] rounded text-[#233D22] hover:bg-[#F2EFE7]"
                     >
-                      <Plus className="h-3.5 w-3.5" />
-                      <span>Add Address</span>
-                    </Button>
+                      + Add Location
+                    </button>
                   )}
                 </div>
 
-                {/* Existing addresses list */}
+                {/* Existing addresses */}
                 {!showNewAddressForm && addresses.length > 0 && (
                   <div className="space-y-3">
                     {addresses.map((addr) => {
@@ -203,37 +177,36 @@ function CheckoutPageContent() {
                         <div
                           key={addr.id}
                           onClick={() => setSelectedAddressId(addr.id)}
-                          className={`cursor-pointer rounded-xl border p-4 transition-all ${
+                          className={`p-4 rounded border cursor-pointer transition-all ${
                             isSelected
-                              ? 'border-emerald-600 bg-emerald-50/20 dark:bg-emerald-950/20 shadow-sm'
-                              : 'border-border/70 bg-card hover:border-border'
+                              ? 'border-[#233D22] bg-[#F0F5EE] ring-1 ring-[#233D22]'
+                              : 'border-[#DFD8CB] bg-[#FFFFFF] hover:bg-[#F7F5EE]'
                           }`}
                         >
-                          <div className="flex items-start justify-between gap-3">
+                          <div className="flex items-start justify-between">
                             <div className="space-y-1">
                               <div className="flex items-center gap-2">
-                                <span className="font-bold text-sm text-foreground">
+                                <span className="font-bold text-xs text-[#1E221B]">
                                   {addr.name}
                                 </span>
-                                <Badge variant="secondary" className="text-[10px] py-0">
-                                  {addr.type}
-                                </Badge>
                                 {addr.isDefault && (
-                                  <span className="text-[10px] font-semibold text-emerald-600">
-                                    Default
+                                  <span className="text-[10px] font-bold uppercase bg-[#E8F0E2] text-[#233D22] px-1.5 py-0.2 rounded">
+                                    Primary Hub
                                   </span>
                                 )}
                               </div>
-                              <p className="text-xs text-muted-foreground">
-                                {addr.addressLine}, {addr.city}, {addr.state} - {addr.pincode}
+                              <p className="text-xs text-[#5D6352]">{addr.addressLine}</p>
+                              <p className="text-xs text-[#5D6352]">
+                                {addr.city}, {addr.state} - {addr.pincode}
                               </p>
-                              <p className="text-xs text-muted-foreground">Phone: {addr.phone}</p>
+                              <p className="text-[11px] text-[#7A8070]">Phone: {addr.phone}</p>
                             </div>
-
-                            <div className="h-5 w-5 shrink-0 rounded-full border border-border flex items-center justify-center">
-                              {isSelected && (
-                                <div className="h-3 w-3 rounded-full bg-emerald-600" />
-                              )}
+                            <div className="mt-1">
+                              <span className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center ${
+                                isSelected ? 'border-[#233D22] bg-[#233D22]' : 'border-[#C8C0AF]'
+                              }`}>
+                                {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-white"></span>}
+                              </span>
                             </div>
                           </div>
                         </div>
@@ -242,250 +215,202 @@ function CheckoutPageContent() {
                   </div>
                 )}
 
-                {/* No addresses notice */}
-                {!showNewAddressForm && addresses.length === 0 && (
-                  <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-xs text-amber-900 dark:text-amber-200">
-                    <p className="font-bold">No Delivery Address Registered</p>
-                    <p className="mt-1">
-                      Please add a shipping address below before confirming your purchase.
-                    </p>
-                    <Button
-                      size="sm"
-                      onClick={() => setShowNewAddressForm(true)}
-                      className="mt-3 bg-emerald-600 hover:bg-emerald-700 text-white text-xs"
-                    >
-                      Add Address Now
-                    </Button>
-                  </div>
-                )}
-
-                {/* New address form */}
+                {/* New Address Form */}
                 {showNewAddressForm && (
                   <form onSubmit={handleAddressSubmit} className="space-y-3 pt-2">
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <label className="text-[11px] font-semibold text-muted-foreground">
-                          Recipient Name *
+                        <label className="text-[10px] uppercase font-bold text-[#52594B] block mb-1">
+                          Facility / Receiver Name
                         </label>
-                        <Input
+                        <input
+                          type="text"
                           required
                           value={addressForm.name}
-                          onChange={(e) =>
-                            setAddressForm((p) => ({ ...p, name: e.target.value }))
-                          }
-                          placeholder="e.g. Ramesh Patel"
-                          className="mt-1 h-9 text-xs"
+                          onChange={(e) => setAddressForm({ ...addressForm, name: e.target.value })}
+                          placeholder="e.g. Central Flour Mill"
+                          className="w-full h-8 px-2.5 text-xs bg-[#F7F5EE] border border-[#DFD8CB] rounded text-[#1E221B] focus:outline-none focus:border-[#233D22]"
                         />
                       </div>
                       <div>
-                        <label className="text-[11px] font-semibold text-muted-foreground">
-                          Contact Phone *
+                        <label className="text-[10px] uppercase font-bold text-[#52594B] block mb-1">
+                          Contact Phone
                         </label>
-                        <Input
+                        <input
+                          type="tel"
                           required
                           value={addressForm.phone}
-                          onChange={(e) =>
-                            setAddressForm((p) => ({ ...p, phone: e.target.value }))
-                          }
-                          placeholder="+919876543210"
-                          className="mt-1 h-9 text-xs"
+                          onChange={(e) => setAddressForm({ ...addressForm, phone: e.target.value })}
+                          placeholder="9876543210"
+                          className="w-full h-8 px-2.5 text-xs bg-[#F7F5EE] border border-[#DFD8CB] rounded text-[#1E221B] focus:outline-none focus:border-[#233D22]"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="text-[11px] font-semibold text-muted-foreground">
-                        Street Address / Premises *
+                      <label className="text-[10px] uppercase font-bold text-[#52594B] block mb-1">
+                        Street Address & Warehouse Gate
                       </label>
-                      <Input
+                      <input
+                        type="text"
                         required
                         value={addressForm.addressLine}
-                        onChange={(e) =>
-                          setAddressForm((p) => ({ ...p, addressLine: e.target.value }))
-                        }
-                        placeholder="Plot No, Street, Landmark"
-                        className="mt-1 h-9 text-xs"
+                        onChange={(e) => setAddressForm({ ...addressForm, addressLine: e.target.value })}
+                        placeholder="Plot 42, Industrial Area, Gate 3"
+                        className="w-full h-8 px-2.5 text-xs bg-[#F7F5EE] border border-[#DFD8CB] rounded text-[#1E221B] focus:outline-none focus:border-[#233D22]"
                       />
                     </div>
 
                     <div className="grid grid-cols-3 gap-3">
                       <div>
-                        <label className="text-[11px] font-semibold text-muted-foreground">City *</label>
-                        <Input
+                        <label className="text-[10px] uppercase font-bold text-[#52594B] block mb-1">City</label>
+                        <input
+                          type="text"
                           required
                           value={addressForm.city}
-                          onChange={(e) =>
-                            setAddressForm((p) => ({ ...p, city: e.target.value }))
-                          }
-                          placeholder="City"
-                          className="mt-1 h-9 text-xs"
+                          onChange={(e) => setAddressForm({ ...addressForm, city: e.target.value })}
+                          placeholder="Nagpur"
+                          className="w-full h-8 px-2.5 text-xs bg-[#F7F5EE] border border-[#DFD8CB] rounded text-[#1E221B] focus:outline-none focus:border-[#233D22]"
                         />
                       </div>
                       <div>
-                        <label className="text-[11px] font-semibold text-muted-foreground">State *</label>
-                        <Input
+                        <label className="text-[10px] uppercase font-bold text-[#52594B] block mb-1">State</label>
+                        <input
+                          type="text"
                           required
                           value={addressForm.state}
-                          onChange={(e) =>
-                            setAddressForm((p) => ({ ...p, state: e.target.value }))
-                          }
-                          placeholder="State"
-                          className="mt-1 h-9 text-xs"
+                          onChange={(e) => setAddressForm({ ...addressForm, state: e.target.value })}
+                          placeholder="Maharashtra"
+                          className="w-full h-8 px-2.5 text-xs bg-[#F7F5EE] border border-[#DFD8CB] rounded text-[#1E221B] focus:outline-none focus:border-[#233D22]"
                         />
                       </div>
                       <div>
-                        <label className="text-[11px] font-semibold text-muted-foreground">PIN *</label>
-                        <Input
+                        <label className="text-[10px] uppercase font-bold text-[#52594B] block mb-1">PIN Code</label>
+                        <input
+                          type="text"
                           required
                           value={addressForm.pincode}
-                          onChange={(e) =>
-                            setAddressForm((p) => ({ ...p, pincode: e.target.value }))
-                          }
-                          placeholder="PIN Code"
-                          className="mt-1 h-9 text-xs"
+                          onChange={(e) => setAddressForm({ ...addressForm, pincode: e.target.value })}
+                          placeholder="440001"
+                          className="w-full h-8 px-2.5 text-xs bg-[#F7F5EE] border border-[#DFD8CB] rounded text-[#1E221B] focus:outline-none focus:border-[#233D22]"
                         />
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-2 pt-2">
-                      <Button
+                    <div className="flex gap-2 pt-2">
+                      <button
                         type="submit"
-                        size="sm"
                         disabled={createAddressMutation.isPending}
-                        className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs h-9"
+                        className="px-4 py-2 text-xs font-bold uppercase tracking-wider bg-[#233D22] text-[#FAF8F2] rounded"
                       >
-                        {createAddressMutation.isPending ? 'Saving...' : 'Save & Select Address'}
-                      </Button>
-                      <Button
+                        {createAddressMutation.isPending ? 'Saving...' : 'Save Destination'}
+                      </button>
+                      <button
                         type="button"
-                        variant="ghost"
-                        size="sm"
                         onClick={() => setShowNewAddressForm(false)}
-                        className="text-xs h-9"
+                        className="px-4 py-2 text-xs font-semibold uppercase tracking-wider border border-[#DFD8CB] bg-[#FFFFFF] rounded text-[#6B7260]"
                       >
                         Cancel
-                      </Button>
+                      </button>
                     </div>
-
-                    {createAddressMutation.isError && (
-                      <p className="text-xs text-destructive">
-                        {createAddressMutation.error?.message || 'Failed to save address'}
-                      </p>
-                    )}
                   </form>
                 )}
-              </Card>
+              </div>
 
-              {/* 2. Items in Order Review */}
-              <Card className="rounded-2xl border border-border/80 bg-card p-5 sm:p-6 shadow-sm space-y-4">
-                <h2 className="text-base font-bold text-foreground">Produce Review</h2>
-                <div className="divide-y divide-border/40">
+              {/* Reserved Batches Itemized Review */}
+              <div className="rounded-lg border border-[#DFD8CB] bg-[#FCFAF6] p-6 space-y-4">
+                <h2 className="text-base font-serif font-bold text-[#1E221B]">
+                  Reserved Trade Batches ({items.length})
+                </h2>
+
+                <div className="divide-y divide-[#ECE5D8]">
                   {items.map((item) => (
-                    <div key={item.id} className="py-3 flex items-center justify-between gap-4">
-                      <div className="space-y-0.5 min-w-0">
-                        <p className="text-sm font-bold text-foreground truncate">
-                          {item.productName}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {item.quantity} {item.unit} × ₹{item.unitPrice.toFixed(2)}
-                        </p>
-                        <p className="text-[11px] text-muted-foreground">
-                          Producer: {item.seller.businessName || 'Verified Producer'}
-                        </p>
+                    <div key={item.id} className="py-3 flex items-center justify-between text-xs">
+                      <div>
+                        <span className="font-bold text-[#1E221B] block">{item.productName}</span>
+                        <span className="text-[11px] text-[#6B7260]">
+                          Producer: {item.seller?.businessName || 'Verified Collective'} • {item.seller?.farmLocation || 'India'}
+                        </span>
                       </div>
-
                       <div className="text-right">
-                        <span className="text-sm font-bold text-foreground">
-                          ₹{item.lineTotal.toFixed(2)}
+                        <span className="font-bold text-[#1E221B] block">
+                          ₹{(item.unitPrice * item.quantity).toLocaleString('en-IN')}
+                        </span>
+                        <span className="text-[11px] text-[#7A8070]">
+                          {item.quantity} {item.unit.toLowerCase()} @ ₹{item.unitPrice}/unit
                         </span>
                       </div>
                     </div>
                   ))}
                 </div>
-              </Card>
+              </div>
             </div>
 
-            {/* Right Column: Order Confirmation Summary */}
-            <div className="md:col-span-5">
-              <Card className="rounded-2xl border border-border/80 bg-card p-6 shadow-sm space-y-5 sticky top-24">
-                <h2 className="text-base font-bold text-foreground">Purchasing Summary</h2>
+            {/* Right Column: Order Summary & Settlement */}
+            <div className="md:col-span-5 space-y-6">
+              <div className="rounded-lg border border-[#DFD8CB] bg-[#FCFAF6] p-6 space-y-4">
+                <h2 className="text-base font-serif font-bold text-[#1E221B]">
+                  Trade Contract Summary
+                </h2>
 
-                <div className="space-y-2.5 text-xs">
-                  <div className="flex justify-between text-muted-foreground">
-                    <span>Items Count:</span>
-                    <span className="font-semibold text-foreground">{items.length} items</span>
+                <div className="space-y-2 text-xs text-[#5D6352] pt-3 border-t border-[#ECE5D8]">
+                  <div className="flex justify-between">
+                    <span>Farmgate Value</span>
+                    <span className="font-semibold text-[#1E221B]">₹{subtotal.toLocaleString('en-IN')}</span>
                   </div>
-
-                  <div className="flex justify-between text-muted-foreground">
-                    <span>Produce Subtotal:</span>
-                    <span className="font-bold text-foreground">₹{subtotal.toFixed(2)}</span>
+                  <div className="flex justify-between">
+                    <span>Logistics Freight Margin</span>
+                    <span className="text-[#233D22] font-semibold">Included</span>
                   </div>
-
-                  <div className="flex justify-between text-muted-foreground">
-                    <span>Platform Commission:</span>
-                    <span className="font-semibold text-emerald-600">₹0.00 (Zero Intermediary)</span>
+                  <div className="flex justify-between">
+                    <span>Assaying & Weighbridge Fee</span>
+                    <span className="text-[#233D22] font-semibold">Platform Subsidized</span>
                   </div>
-                </div>
-
-                <Separator />
-
-                <div className="flex items-baseline justify-between">
-                  <span className="text-sm font-bold text-foreground">Total Payable</span>
-                  <div className="text-right">
-                    <span className="text-2xl font-extrabold text-foreground">
-                      ₹{subtotal.toFixed(2)}
-                    </span>
-                    <span className="text-[10px] text-muted-foreground block">
-                      Snapshotted upon confirmation
-                    </span>
+                  <div className="flex justify-between">
+                    <span>Banking Escrow Protection</span>
+                    <span className="text-[#233D22] font-semibold">Active</span>
                   </div>
                 </div>
 
-                {/* Important Notice: No Fake Payment */}
-                <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-3.5 space-y-1 text-xs text-emerald-900 dark:text-emerald-300">
-                  <div className="flex items-center gap-1.5 font-bold">
-                    <ShieldCheck className="h-4 w-4 text-emerald-600 shrink-0" />
-                    <span>Direct Farm Order Placement</span>
-                  </div>
-                  <p className="text-[11px] leading-relaxed text-muted-foreground">
-                    Confirming this order locks the produce stock and creates verified purchase records with the respective producers. Payment settlements and fulfillment follow milestone workflows.
-                  </p>
+                <div className="pt-3 border-t border-[#ECE5D8] flex justify-between items-baseline">
+                  <span className="font-bold text-xs uppercase tracking-wider text-[#1E221B]">Total Escrow Amount</span>
+                  <span className="text-xl font-serif font-bold text-[#1E221B]">
+                    ₹{subtotal.toLocaleString('en-IN')}
+                  </span>
                 </div>
-
-                {/* Confirm Order Button */}
-                <Button
-                  onClick={handlePlaceOrder}
-                  disabled={!selectedAddressId || items.length === 0 || hasUnavailableItems || placeOrderMutation.isPending}
-                  className="w-full h-11 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold gap-2 shadow-md shadow-emerald-600/20"
-                >
-                  {placeOrderMutation.isPending ? (
-                    <span>Placing Order...</span>
-                  ) : (
-                    <>
-                      <CheckCircle2 className="h-4 w-4" />
-                      <span>Confirm Order</span>
-                    </>
-                  )}
-                </Button>
-
-                {hasUnavailableItems && (
-                  <div className="flex items-center gap-2 rounded-xl bg-destructive/10 border border-destructive/20 p-3 text-xs text-destructive">
-                    <AlertCircle className="h-4 w-4 shrink-0" />
-                    <span>Your cart contains out-of-stock items. Please return to cart to remove them.</span>
-                  </div>
-                )}
 
                 {placeOrderMutation.isError && (
-                  <div className="flex items-center gap-2 rounded-xl bg-destructive/10 border border-destructive/20 p-3 text-xs text-destructive">
-                    <AlertCircle className="h-4 w-4 shrink-0" />
-                    <span>{placeOrderMutation.error?.message || 'Failed to place order'}</span>
+                  <div className="p-3 bg-[#FDF2F2] border border-[#F8B4B4] rounded text-xs text-[#9B1C1C]">
+                    {(placeOrderMutation.error as Error)?.message || 'Trade settlement could not be initialized.'}
                   </div>
                 )}
-              </Card>
+
+                <div className="pt-2">
+                  <button
+                    onClick={handlePlaceOrder}
+                    disabled={!selectedAddressId || hasUnavailableItems || placeOrderMutation.isPending}
+                    className="w-full h-11 bg-[#233D22] hover:bg-[#1C321B] text-[#FAF8F2] text-xs font-bold uppercase tracking-wider rounded transition-colors disabled:opacity-50"
+                  >
+                    {placeOrderMutation.isPending ? 'Committing Escrow...' : 'Confirm Trade & Fund Escrow →'}
+                  </button>
+                </div>
+
+                <div className="pt-3 border-t border-[#ECE5D8] text-[10px] text-[#6B7260] space-y-1">
+                  <p>• Funds remain in banking trustee escrow until destination receipt verification</p>
+                  <p>• Automated digital assaying reports issued upon truck unloading</p>
+                </div>
+              </div>
             </div>
           </div>
         )}
       </main>
+
+      {/* Footer */}
+      <footer className="border-t border-[#DFD8CB] bg-[#FAF8F2] py-8 text-center text-xs text-[#6B7260]">
+        <div className="max-w-7xl mx-auto px-4">
+          <p>Aroha Agricultural Marketplace Trade Settlement & Escrow Gateway</p>
+        </div>
+      </footer>
     </div>
   );
 }

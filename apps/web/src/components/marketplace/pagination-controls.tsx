@@ -1,7 +1,5 @@
 'use client';
 
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import type { PaginationMeta } from '@/lib/api';
 
 interface PaginationControlsProps {
@@ -20,24 +18,21 @@ export function PaginationControls({
   if (totalPages <= 1) return null;
 
   return (
-    <div className="flex flex-col items-center justify-between gap-4 border-t border-border/60 pt-6 sm:flex-row">
-      <div className="text-xs text-muted-foreground">
-        Showing Page <span className="font-semibold text-foreground">{page}</span> of{' '}
-        <span className="font-semibold text-foreground">{totalPages}</span> (
-        {total} total items)
+    <div className="flex flex-col items-center justify-between gap-4 border-t border-[#DFD8CB] pt-6 sm:flex-row">
+      <div className="text-xs text-[#6B7260]">
+        Showing Page <span className="font-bold text-[#1E221B]">{page}</span> of{' '}
+        <span className="font-bold text-[#1E221B]">{totalPages}</span> (
+        {total} total batches)
       </div>
 
       <div className="flex items-center gap-2">
-        <Button
-          variant="outline"
-          size="sm"
+        <button
           onClick={() => onPageChange(Math.max(page - 1, 1))}
           disabled={page <= 1 || isLoading}
-          className="gap-1 text-xs"
+          className="h-8 px-3 text-xs font-semibold text-[#283C22] border border-[#DFD8CB] bg-[#FFFFFF] rounded hover:bg-[#F2EFE7] disabled:opacity-50"
         >
-          <ChevronLeft className="h-4 w-4" />
           Previous
-        </Button>
+        </button>
 
         <div className="flex items-center gap-1">
           {Array.from({ length: totalPages }, (_, i) => i + 1)
@@ -48,33 +43,30 @@ export function PaginationControls({
 
               return (
                 <div key={p} className="flex items-center gap-1">
-                  {showEllipsis && <span className="px-1 text-xs text-muted-foreground">...</span>}
-                  <Button
-                    variant={p === page ? 'default' : 'outline'}
-                    size="xs"
+                  {showEllipsis && <span className="px-1 text-xs text-[#6B7260]">...</span>}
+                  <button
                     onClick={() => onPageChange(p)}
                     disabled={isLoading}
-                    className={`h-7 w-7 text-xs ${
-                      p === page ? 'bg-emerald-600 hover:bg-emerald-700 text-white' : ''
+                    className={`h-8 w-8 text-xs font-semibold rounded border transition-colors ${
+                      p === page
+                        ? 'bg-[#233D22] text-[#FAF8F2] border-[#233D22]'
+                        : 'bg-[#FFFFFF] text-[#283C22] border-[#DFD8CB] hover:bg-[#F2EFE7]'
                     }`}
                   >
                     {p}
-                  </Button>
+                  </button>
                 </div>
               );
             })}
         </div>
 
-        <Button
-          variant="outline"
-          size="sm"
+        <button
           onClick={() => onPageChange(Math.min(page + 1, totalPages))}
           disabled={page >= totalPages || isLoading}
-          className="gap-1 text-xs"
+          className="h-8 px-3 text-xs font-semibold text-[#283C22] border border-[#DFD8CB] bg-[#FFFFFF] rounded hover:bg-[#F2EFE7] disabled:opacity-50"
         >
           Next
-          <ChevronRight className="h-4 w-4" />
-        </Button>
+        </button>
       </div>
     </div>
   );

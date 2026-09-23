@@ -124,6 +124,7 @@ export interface Address {
   phone: string;
   addressLine: string;
   city: string;
+  district?: string | null;
   state: string;
   pincode: string;
   country: string;
@@ -1071,10 +1072,11 @@ export async function calculateNetRealization(payload: {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
   });
+  const json = await res.json().catch(() => ({}));
   if (!res.ok) {
-    throw new Error('Failed to calculate net realization breakdown');
+    throw new Error(json?.message || 'Failed to calculate net realization breakdown');
   }
-  return res.json();
+  return json?.data ?? json;
 }
 
 export async function getBestTimeToSell(payload: {
@@ -1088,10 +1090,11 @@ export async function getBestTimeToSell(payload: {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
   });
+  const json = await res.json().catch(() => ({}));
   if (!res.ok) {
-    throw new Error('Failed to evaluate best time to sell');
+    throw new Error(json?.message || 'Failed to evaluate best time to sell');
   }
-  return res.json();
+  return json?.data ?? json;
 }
 
 export async function getSmartAllocation(
@@ -1113,11 +1116,11 @@ export async function getSmartAllocation(
     headers: getAuthHeaders(token),
     body: JSON.stringify(payload),
   });
+  const json = await res.json().catch(() => ({}));
   if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err?.message || 'Failed to calculate smart allocation');
+    throw new Error(json?.message || 'Failed to calculate smart allocation');
   }
-  return res.json();
+  return json?.data ?? json;
 }
 
 export async function matchBuyersForFarmer(
@@ -1136,11 +1139,11 @@ export async function matchBuyersForFarmer(
     headers: getAuthHeaders(token),
     body: JSON.stringify(payload),
   });
+  const json = await res.json().catch(() => ({}));
   if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err?.message || 'Failed to find matched buyers');
+    throw new Error(json?.message || 'Failed to find matched buyers');
   }
-  return res.json();
+  return json?.data ?? json;
 }
 
 export async function matchSellersForBuyer(
@@ -1159,11 +1162,11 @@ export async function matchSellersForBuyer(
     headers: getAuthHeaders(token),
     body: JSON.stringify(payload),
   });
+  const json = await res.json().catch(() => ({}));
   if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err?.message || 'Failed to find matched seller products');
+    throw new Error(json?.message || 'Failed to find matched seller products');
   }
-  return res.json();
+  return json?.data ?? json;
 }
 
 export async function createBuyerRequirement(
@@ -1823,6 +1826,15 @@ export interface SellerProductItem {
   price: number;
   unit: string;
   status: string;
+  varietyType?: string | null;
+  notes?: string | null;
+  farmerName?: string | null;
+  farmName?: string | null;
+  state?: string | null;
+  district?: string | null;
+  location?: string | null;
+  sellingUnit?: string | null;
+  illustrativeFarmerListingReferenceInr?: number | null;
   primaryImage?: string | null;
   createdAt: string;
   updatedAt: string;
@@ -1834,13 +1846,39 @@ export interface SellerProductItem {
   inventory?: {
     availableQuantity: number;
     reservedQuantity: number;
-    totalQuantity: number;
+    totalQuantity?: number;
   } | null;
   images?: Array<{
     id: string;
     url: string;
     isPrimary: boolean;
   }>;
+}
+
+export interface CreateProductInput {
+  name: string;
+  description: string;
+  categoryId: string;
+  price: number;
+  unit: 'KG' | 'GRAM' | 'QUINTAL' | 'TONNE' | 'LITER' | 'MILLILITER' | 'PIECE' | 'DOZEN' | 'BOX';
+  initialQuantity: number;
+  varietyType?: string;
+  notes?: string;
+  primaryImage?: string;
+  location?: string;
+}
+
+export interface UpdateProductInput {
+  name?: string;
+  description?: string;
+  categoryId?: string;
+  price?: number;
+  unit?: 'KG' | 'GRAM' | 'QUINTAL' | 'TONNE' | 'LITER' | 'MILLILITER' | 'PIECE' | 'DOZEN' | 'BOX';
+  varietyType?: string;
+  notes?: string;
+  primaryImage?: string;
+  location?: string;
+  status?: 'ACTIVE' | 'OUT_OF_STOCK' | 'ARCHIVED';
 }
 
 export async function fetchSellerProducts(
@@ -1856,4 +1894,339 @@ export async function fetchSellerProducts(
   return res.json();
 }
 
+export async function createProduct(
+  data: CreateProductInput,
+  token?: string,
+): Promise<{ success: boolean; data: SellerProductItem }> {
+  const res = await fetch(`${API_BASE_URL}/products`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...getAuthHeaders(token),
+    },
+    body: JSON.stringify(data),
+  });
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    const errorMsg = Array.isArray(json?.message)
+      ? json.message.join(', ')
+      : json?.message || 'Failed to create product';
+    throw new Error(errorMsg);
+  }
+  return { success: true, data: json?.data ?? json };
+}
 
+export async function updateProduct(
+  id: string,
+  data: UpdateProductInput,
+  token?: string,
+): Promise<{ success: boolean; data: SellerProductItem }> {
+  const res = await fetch(`${API_BASE_URL}/products/${id}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      ...getAuthHeaders(token),
+    },
+    body: JSON.stringify(data),
+  });
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    const errorMsg = Array.isArray(json?.message)
+      ? json.message.join(', ')
+      : json?.message || 'Failed to update product';
+    throw new Error(errorMsg);
+  }
+  return { success: true, data: json?.data ?? json };
+}
+
+export async function deleteProduct(
+  id: string,
+  token?: string,
+): Promise<{ success: boolean }> {
+  const res = await fetch(`${API_BASE_URL}/products/${id}`, {
+    method: 'DELETE',
+    headers: getAuthHeaders(token),
+  });
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(json?.message || 'Failed to delete product');
+  }
+  return { success: true };
+}
+
+export async function updateProductInventory(
+  id: string,
+  data: { availableQuantity?: number; reservedQuantity?: number },
+  token?: string,
+): Promise<{ success: boolean; data: any }> {
+  const res = await fetch(`${API_BASE_URL}/products/${id}/inventory`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      ...getAuthHeaders(token),
+    },
+    body: JSON.stringify(data),
+  });
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(json?.message || 'Failed to update inventory');
+  }
+  return { success: true, data: json?.data ?? json };
+}
+
+export async function uploadProductImage(
+  productId: string,
+  file: File,
+  token?: string,
+): Promise<{ success: boolean; data: any }> {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const headers: Record<string, string> = {};
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
+  const res = await fetch(`${API_BASE_URL}/products/${productId}/images`, {
+    method: 'POST',
+    headers,
+    body: formData,
+  });
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(json?.message || 'Failed to upload product image');
+  }
+  return { success: true, data: json?.data ?? json };
+}
+
+export async function deleteProductImage(
+  productId: string,
+  imageId: string,
+  token?: string,
+): Promise<{ success: boolean }> {
+  const res = await fetch(`${API_BASE_URL}/products/${productId}/images/${imageId}`, {
+    method: 'DELETE',
+    headers: getAuthHeaders(token),
+  });
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(json?.message || 'Failed to delete product image');
+  }
+  return { success: true };
+}
+// ---------------------------------------------------------------------------
+// Unified Market Intelligence Decision Support APIs (Modules A, B, C)
+// ---------------------------------------------------------------------------
+
+export interface LocalMandiCandidate {
+  mandiId: string;
+  marketOption: 'A' | 'B' | 'C' | string;
+  marketName: string;
+  state: string;
+  district: string;
+  commodity: string;
+  category: string;
+  variety: string;
+  minPrice: number;
+  modalPrice: number;
+  maxPrice: number;
+  priceDate: string;
+  marketArrivalsTonnes: number;
+  roadDistanceKm: number;
+  freightPerQuintal: number;
+  handlingPerQuintal: number;
+  loadingPerQuintal: number;
+  totalDeductionsPerQuintal: number;
+  estimatedNetRealizationPerQuintal: number;
+  totalNetRealization: number;
+  transitDays: number;
+  rank: number;
+  isRecommended: boolean;
+  economicTradeoff: string;
+}
+
+export interface FarmerMandiIntelligenceResult {
+  farmerOrigin: {
+    state: string;
+    district: string;
+    addressLine?: string;
+    source: 'REGISTERED_ADDRESS' | 'FARM_LOCATION' | 'EXPLICIT_QUERY' | 'DEFAULT_DEMO';
+  };
+  commodity: string;
+  quantityQuintals: number;
+  candidates: LocalMandiCandidate[];
+  recommendedMandi: LocalMandiCandidate | null;
+  recommendationRationale: string;
+  calculationFormula: string;
+  generatedAt: string;
+}
+
+export async function getFarmerMandiIntelligence(
+  params: {
+    commodity: string;
+    quantityQuintals?: number;
+    state?: string;
+    district?: string;
+  },
+  token?: string,
+): Promise<FarmerMandiIntelligenceResult> {
+  const q = new URLSearchParams();
+  if (params.commodity) q.set('commodity', params.commodity);
+  if (params.quantityQuintals) q.set('quantityQuintals', String(params.quantityQuintals));
+  if (params.state) q.set('state', params.state);
+  if (params.district) q.set('district', params.district);
+
+  const res = await fetch(`${API_BASE_URL}/ai/mandi-intelligence?${q.toString()}`, {
+    headers: getAuthHeaders(token),
+  });
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(json?.message || 'Failed to fetch local mandi intelligence');
+  }
+  return json?.data ?? json;
+}
+
+export interface EvaluatedBulkRfq {
+  rfqId: string;
+  scenario: 'A' | 'B' | 'C' | 'D' | string;
+  buyerName: string;
+  buyerType: string;
+  buyerEmail?: string;
+  commodity: string;
+  requiredQuantity: number;
+  fpoAvailableCapacity: number;
+  capacityStatus: 'FULLY_FULFILLABLE' | 'PARTIALLY_FULFILLABLE' | 'NOT_FEASIBLE';
+  targetPriceInrPerQuintal: number;
+  deliveryCity: string;
+  deliveryState: string;
+  maxDistanceKm: number;
+  roadDistanceKm: number;
+  isDistanceFeasible: boolean;
+  freightInrPerQuintal: number;
+  fixedLaneChargeInr: number;
+  fixedChargePerQuintal: number;
+  loadingInrPerQuintal: number;
+  handlingInrPerQuintal: number;
+  insuranceInrPerQuintal: number;
+  estimatedLogisticsCostPerQuintal: number;
+  estimatedNetPerQuintal: number;
+  totalPotentialNetRevenue: number;
+  totalEstimatedNetRealization?: number;
+  qualityRequirements: string;
+  notes: string;
+  rank: number;
+  isEconomicallyRecommended: boolean;
+  tradeoffExplanation: string;
+}
+
+export interface FpoBulkIntelligenceResult {
+  fpo: {
+    id: string;
+    name: string;
+    state: string;
+    district: string;
+  };
+  commodity: string;
+  fpoCapacityQuintals: number;
+  rfqs: EvaluatedBulkRfq[];
+  recommendedRfq: EvaluatedBulkRfq | null;
+  sideBySideComparisonSummary: string;
+  tradeoffs: string[];
+  generatedAt: string;
+}
+
+export async function getFpoBulkIntelligence(
+  fpoId: string,
+  commodity?: string,
+  token?: string,
+): Promise<FpoBulkIntelligenceResult> {
+  const q = new URLSearchParams();
+  if (commodity) q.set('commodity', commodity);
+
+  const res = await fetch(
+    `${API_BASE_URL}/ai/fpo-bulk-intelligence/${encodeURIComponent(fpoId)}${q.toString() ? `?${q.toString()}` : ''}`,
+    {
+      headers: getAuthHeaders(token),
+    },
+  );
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(json?.message || 'Failed to fetch FPO bulk buyer intelligence');
+  }
+  return json?.data ?? json;
+}
+
+export interface LandedCostBreakdown {
+  freightPerQuintal: number;
+  fixedChargePerQuintal: number;
+  handlingPerQuintal: number;
+  loadingPerQuintal: number;
+  insurancePerQuintal: number;
+}
+
+export interface ProductLandedCostItem {
+  productId: string;
+  productName: string;
+  category: string;
+  varietyType?: string;
+  farmerName: string;
+  farmName?: string;
+  sellerBusinessName?: string;
+  primaryImage?: string;
+  originState: string;
+  originDistrict: string;
+  originLocationDisplay: string;
+  availableQuantity: number;
+  unit: string;
+  roadDistanceKm: number;
+  productPricePerQuintal: number;
+  logisticsCostPerQuintal: number;
+  totalLandedCostPerQuintal: number;
+  totalLandedOrderCost: number;
+  costBreakdown: LandedCostBreakdown;
+  rankByLandedCost: number;
+  rankByListPrice: number;
+  isEconomicallyRecommended: boolean;
+  economicNote: string;
+  laneType: 'LOCAL' | 'INTRA_STATE' | 'INTER_STATE' | 'FALLBACK_RATE_CARD';
+  matchType: 'EXACT' | 'CARRIER_RATE_CARD';
+}
+
+export interface MarketplaceLandedCostResult {
+  buyerDestination: {
+    state: string;
+    city: string;
+    district: string;
+    source: string;
+  };
+  orderQuantityQuintals: number;
+  products: ProductLandedCostItem[];
+  recommendedProduct: ProductLandedCostItem | null;
+  calculationFormula: string;
+  summaryExplanation: string;
+  generatedAt: string;
+}
+
+export async function getMarketplaceLandedCost(
+  payload: {
+    destinationCity?: string;
+    destinationState?: string;
+    commodity?: string;
+    quantityQuintals?: number;
+  },
+  token?: string,
+): Promise<MarketplaceLandedCostResult> {
+  const res = await fetch(`${API_BASE_URL}/ai/marketplace-landed-cost`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...getAuthHeaders(token),
+    },
+    body: JSON.stringify(payload),
+  });
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(json?.message || 'Failed to evaluate marketplace landed cost');
+  }
+  return json?.data ?? json;
+}

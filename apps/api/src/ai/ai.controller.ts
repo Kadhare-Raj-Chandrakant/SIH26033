@@ -33,10 +33,19 @@ import { Roles } from '../common/decorators/roles.decorator.js';
 import { RolesGuard } from '../common/guards/roles.guard.js';
 import { Role } from '@prisma/client';
 
+import { MandiIntelligenceService } from './decision-engine/mandi-intelligence.service.js';
+import { BulkBuyerIntelligenceService } from './decision-engine/bulk-buyer-intelligence.service.js';
+import { MarketplaceLandedCostService } from './decision-engine/marketplace-landed-cost.service.js';
+
 @ApiTags('AI & Machine Learning Foundation')
 @Controller('ai')
 export class AiController {
-  constructor(private readonly aiService: AiService) {}
+  constructor(
+    private readonly aiService: AiService,
+    private readonly mandiIntelligenceService: MandiIntelligenceService,
+    private readonly bulkBuyerIntelligenceService: BulkBuyerIntelligenceService,
+    private readonly marketplaceLandedCostService: MarketplaceLandedCostService,
+  ) {}
 
   @Public()
   @Get('health')
@@ -221,6 +230,71 @@ export class AiController {
     @CurrentUser() _user: AuthUser,
   ) {
     return this.aiService.matchSellers(dto);
+  }
+
+  // --- UNIFIED MARKET INTELLIGENCE DECISION MODULES ---
+
+  @ApiBearerAuth()
+  @Roles(Role.FARMER, Role.FPO, Role.ADMIN)
+  @Get('mandi-intelligence')
+  @ApiOperation({ summary: 'Module A: Farmer -> Local Mandi Intelligence (Deterministic Net Realization)' })
+  @ApiResponse({ status: 200, description: 'Ranked local mandis with deterministic net realization waterfall' })
+  async getLocalMandiIntelligence(
+    @Query('commodity') commodity?: string,
+    @Query('state') state?: string,
+    @Query('district') district?: string,
+    @Query('quantity') quantity?: string,
+    @CurrentUser() user?: AuthUser,
+  ) {
+    return this.mandiIntelligenceService.getFarmerMandiIntelligence({
+      userId: user?.sub,
+      commodity: commodity || 'Tomato',
+      state,
+      district,
+      quantityQuintals: quantity ? parseFloat(quantity) : undefined,
+    });
+  }
+
+  @ApiBearerAuth()
+  @Roles(Role.FPO, Role.ADMIN, Role.FARMER)
+  @Get('fpo-bulk-intelligence/:fpoId')
+  @ApiOperation({ summary: 'Module B: Farmer/FPO -> Bulk Buyer Intelligence (Capacity & RFQ Tradeoffs)' })
+  @ApiResponse({ status: 200, description: 'Competing RFQs side-by-side comparison and capacity feasibility' })
+  async getFpoBulkIntelligence(
+    @Param('fpoId') fpoId: string,
+    @Query('commodity') commodity?: string,
+    @CurrentUser() user?: AuthUser,
+  ) {
+    return this.bulkBuyerIntelligenceService.evaluateBulkRfqsForFpo(
+      fpoId,
+      commodity,
+      user ? { id: user.sub, role: user.role } : undefined,
+    );
+  }
+
+  @ApiBearerAuth()
+  @Roles(Role.BUYER, Role.FARMER, Role.FPO, Role.ADMIN)
+  @Post('marketplace-landed-cost')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Module C: Buyer -> Marketplace Landed Cost Intelligence (Product Price + Logistics)' })
+  @ApiResponse({ status: 200, description: 'Products ranked by Total Landed Cost with arithmetic breakdown' })
+  async calculateMarketplaceLandedCost(
+    @Body()
+    body: {
+      buyerDestination: { state?: string; city?: string; district?: string };
+      productIds?: string[];
+      commodity?: string;
+      quantityQuintals?: number;
+    },
+    @CurrentUser() user?: AuthUser,
+  ) {
+    return this.marketplaceLandedCostService.calculateLandedCosts({
+      buyerDestination: body.buyerDestination || {},
+      userId: user?.sub,
+      productIds: body.productIds,
+      commodity: body.commodity,
+      quantityQuintals: body.quantityQuintals,
+    });
   }
 }
 

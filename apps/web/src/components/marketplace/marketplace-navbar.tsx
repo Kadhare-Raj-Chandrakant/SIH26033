@@ -3,29 +3,6 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
-import {
-  Sprout,
-  Search,
-  ShieldCheck,
-  ShoppingCart,
-  Package,
-  Sparkles,
-  User,
-  LogOut,
-  Tractor,
-  Layers,
-  Store,
-  Menu,
-  X,
-  LogIn,
-  UserPlus,
-  Building2,
-  Users,
-  FileCheck,
-  ArrowRightLeft,
-} from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { useQuery } from '@tanstack/react-query';
 import { fetchCart } from '@/lib/api';
 import { useAuth } from '@/components/providers/auth-provider';
@@ -44,7 +21,6 @@ export function MarketplaceNavbar() {
   const isAdmin = mounted && isAuthenticated && user?.role === 'ADMIN';
   const isVisitor = mounted && !isAuthenticated;
 
-  // Cart count only fetched for active Buyer sessions
   const { data: cartResponse } = useQuery({
     queryKey: ['cart', token],
     queryFn: () => fetchCart(token || undefined),
@@ -70,104 +46,107 @@ export function MarketplaceNavbar() {
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-border/80 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-40 w-full border-b border-[#DFD8CB] bg-[#F7F5EE]">
+      {/* Top Banner Notice */}
+      <div className="border-b border-[#E0D9CB] bg-[#EDE7DA] px-4 py-1.5 text-xs text-[#4E5246] text-center font-medium">
+        <span>Aroha National Agricultural Marketplace: Integrating 50,000+ Verified Farmers, FPOs, and Institutional Buyers across India</span>
+      </div>
+
+      <div className="max-w-7xl mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Brand Logo */}
         <div className="flex items-center gap-6">
-          <Link href="/" className="flex items-center gap-2.5 transition-opacity hover:opacity-90">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-md shadow-emerald-600/20">
-              <Sprout className="h-5 w-5" />
+          <Link href="/" className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-md bg-[#233D22] flex items-center justify-center text-[#F7F5EE]">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 2a10 10 0 0 1 10 10c0 5.523-4.477 10-10 10S2 17.523 2 12A10 10 0 0 1 12 2z" fill="#2E4221" opacity="0.3"/>
+                <path d="M12 22V12" />
+                <path d="M12 12c0-4 3-7 7-7" />
+                <path d="M12 15c-3 0-5-2-5-5 0-3 3-5 5-5" />
+              </svg>
             </div>
             <div>
-              <span className="text-lg font-bold tracking-tight text-foreground sm:text-xl">
-                SIH<span className="text-emerald-600">26033</span>
-              </span>
-              <span className="hidden text-[11px] text-muted-foreground sm:block">
-                Direct Farmer & FPO Marketplace
-              </span>
+              <span className="text-2xl font-serif font-bold tracking-tight text-[#1E221B]">Aroha</span>
+              <span className="block text-[10px] tracking-wider uppercase text-[#6B7060] font-sans font-semibold">Agricultural Exchange</span>
             </div>
           </Link>
 
-          {/* Desktop Navigation Links — Strictly Role Partitioned */}
-          <nav className="hidden items-center gap-4 lg:gap-5 md:flex">
-            {/* 1. Logged-out Visitor Navigation */}
+          {/* Desktop Navigation Links — Role Partitioned */}
+          <nav className="hidden items-center gap-5 md:flex text-sm font-medium text-[#3E4336]">
+            {/* 1. Logged-out Visitor */}
             {isVisitor && (
               <>
                 <Link
                   href="/marketplace"
-                  className={`text-sm font-medium transition-colors ${
+                  className={`transition-colors ${
                     isLinkActive('/marketplace')
-                      ? 'text-emerald-600 font-semibold'
-                      : 'text-foreground/80 hover:text-emerald-600'
+                      ? 'text-[#1E221B] font-bold pb-1 border-b-2 border-[#233D22]'
+                      : 'hover:text-[#1E221B]'
                   }`}
                 >
-                  Browse Marketplace
+                  Marketplace
                 </Link>
                 <Link
                   href="/categories"
-                  className={`text-sm font-medium transition-colors ${
+                  className={`transition-colors ${
                     isLinkActive('/categories')
-                      ? 'text-emerald-600 font-semibold'
-                      : 'text-muted-foreground hover:text-emerald-600'
+                      ? 'text-[#1E221B] font-bold pb-1 border-b-2 border-[#233D22]'
+                      : 'hover:text-[#1E221B]'
                   }`}
                 >
                   Categories
                 </Link>
                 <Link
                   href="/fpo"
-                  className={`text-sm font-medium transition-colors flex items-center gap-1.5 ${
-                    isLinkActive('/fpo') && !pathname?.startsWith('/fpo/dashboard')
-                      ? 'text-emerald-600 font-semibold'
-                      : 'text-muted-foreground hover:text-emerald-600'
+                  className={`transition-colors ${
+                    isLinkActive('/fpo')
+                      ? 'text-[#1E221B] font-bold pb-1 border-b-2 border-[#233D22]'
+                      : 'hover:text-[#1E221B]'
                   }`}
                 >
-                  <Building2 className="h-3.5 w-3.5 text-emerald-600" />
-                  <span>FPO Directory</span>
+                  FPO Directory
                 </Link>
               </>
             )}
 
-            {/* 2. Buyer Account Navigation */}
+            {/* 2. Buyer Navigation */}
             {isBuyer && (
               <>
                 <Link
                   href="/marketplace"
-                  className={`text-sm font-medium transition-colors ${
+                  className={`transition-colors ${
                     isLinkActive('/marketplace')
-                      ? 'text-emerald-600 font-semibold'
-                      : 'text-foreground/80 hover:text-emerald-600'
+                      ? 'text-[#1E221B] font-bold pb-1 border-b-2 border-[#233D22]'
+                      : 'hover:text-[#1E221B]'
                   }`}
                 >
                   Marketplace
                 </Link>
                 <Link
-                  href="/fpo/buy-requests"
-                  className={`text-sm font-medium transition-colors flex items-center gap-1.5 ${
-                    isLinkActive('/fpo/buy-requests')
-                      ? 'text-emerald-600 font-semibold'
-                      : 'text-muted-foreground hover:text-emerald-600'
+                  href="/marketplace/sourcing"
+                  className={`transition-colors ${
+                    isLinkActive('/marketplace/sourcing')
+                      ? 'text-[#1E221B] font-bold pb-1 border-b-2 border-[#233D22]'
+                      : 'hover:text-[#1E221B]'
                   }`}
                 >
-                  <Package className="h-3.5 w-3.5 text-emerald-600" />
-                  <span>Bulk Sourcing</span>
+                  Bulk Sourcing
                 </Link>
                 <Link
                   href="/fpo"
-                  className={`text-sm font-medium transition-colors flex items-center gap-1.5 ${
+                  className={`transition-colors ${
                     pathname === '/fpo'
-                      ? 'text-emerald-600 font-semibold'
-                      : 'text-muted-foreground hover:text-emerald-600'
+                      ? 'text-[#1E221B] font-bold pb-1 border-b-2 border-[#233D22]'
+                      : 'hover:text-[#1E221B]'
                   }`}
                 >
-                  <Building2 className="h-3.5 w-3.5 text-emerald-600" />
-                  <span>FPO Directory</span>
+                  FPO Directory
                 </Link>
                 <Link
                   href="/orders"
-                  className={`text-sm font-medium transition-colors ${
+                  className={`transition-colors ${
                     isLinkActive('/orders')
-                      ? 'text-emerald-600 font-semibold'
-                      : 'text-muted-foreground hover:text-emerald-600'
+                      ? 'text-[#1E221B] font-bold pb-1 border-b-2 border-[#233D22]'
+                      : 'hover:text-[#1E221B]'
                   }`}
                 >
                   My Orders
@@ -175,112 +154,114 @@ export function MarketplaceNavbar() {
               </>
             )}
 
-            {/* 3. Farmer Account Navigation */}
+            {/* 3. Farmer Navigation */}
             {isFarmer && (
               <>
                 <Link
-                  href="/fpo/join"
-                  className={`text-sm font-medium transition-colors flex items-center gap-1.5 ${
-                    isLinkActive('/fpo/join')
-                      ? 'text-emerald-600 font-semibold'
-                      : 'text-foreground/80 hover:text-emerald-600'
-                  }`}
-                >
-                  <Users className="h-3.5 w-3.5 text-emerald-600" />
-                  <span>Join FPO</span>
-                </Link>
-                <Link
-                  href="/fpo/commit"
-                  className={`text-sm font-medium transition-colors flex items-center gap-1.5 ${
-                    isLinkActive('/fpo/commit')
-                      ? 'text-emerald-600 font-semibold'
-                      : 'text-muted-foreground hover:text-emerald-600'
-                  }`}
-                >
-                  <FileCheck className="h-3.5 w-3.5 text-emerald-600" />
-                  <span>Commit Produce</span>
-                </Link>
-                <Link
-                  href="/fpo"
-                  className={`text-sm font-medium transition-colors flex items-center gap-1.5 ${
-                    pathname === '/fpo'
-                      ? 'text-emerald-600 font-semibold'
-                      : 'text-muted-foreground hover:text-emerald-600'
-                  }`}
-                >
-                  <Building2 className="h-3.5 w-3.5 text-emerald-600" />
-                  <span>FPO Directory</span>
-                </Link>
-                <Link
                   href="/seller/products"
-                  className={`text-sm font-medium transition-colors flex items-center gap-1.5 ${
+                  className={`transition-colors ${
                     isLinkActive('/seller/products')
-                      ? 'text-emerald-600 font-semibold'
-                      : 'text-muted-foreground hover:text-emerald-600'
+                      ? 'text-[#1E221B] font-bold pb-1 border-b-2 border-[#233D22]'
+                      : 'hover:text-[#1E221B]'
                   }`}
                 >
-                  <Layers className="h-3.5 w-3.5 text-emerald-600" />
-                  <span>My Direct Listings</span>
+                  My Direct Listings
                 </Link>
                 <Link
                   href="/seller/orders"
-                  className={`text-sm font-medium transition-colors flex items-center gap-1.5 ${
+                  className={`transition-colors ${
                     isLinkActive('/seller/orders')
-                      ? 'text-emerald-600 font-semibold'
-                      : 'text-muted-foreground hover:text-emerald-600'
+                      ? 'text-[#1E221B] font-bold pb-1 border-b-2 border-[#233D22]'
+                      : 'hover:text-[#1E221B]'
                   }`}
                 >
-                  <Tractor className="h-3.5 w-3.5 text-emerald-600" />
-                  <span>Fulfillment</span>
+                  Fulfillment
+                </Link>
+                <Link
+                  href="/fpo/commit"
+                  className={`transition-colors ${
+                    isLinkActive('/fpo/commit')
+                      ? 'text-[#1E221B] font-bold pb-1 border-b-2 border-[#233D22]'
+                      : 'hover:text-[#1E221B]'
+                  }`}
+                >
+                  Commit Produce
+                </Link>
+                <Link
+                  href="/seller/intelligence"
+                  className={`transition-colors ${
+                    isLinkActive('/seller/intelligence')
+                      ? 'text-[#1E221B] font-bold pb-1 border-b-2 border-[#233D22]'
+                      : 'hover:text-[#1E221B]'
+                  }`}
+                >
+                  Mandi Intelligence
+                </Link>
+                <Link
+                  href="/fpo"
+                  className={`transition-colors ${
+                    pathname === '/fpo'
+                      ? 'text-[#1E221B] font-bold pb-1 border-b-2 border-[#233D22]'
+                      : 'hover:text-[#1E221B]'
+                  }`}
+                >
+                  FPO Directory
                 </Link>
               </>
             )}
 
-            {/* 4. FPO Account Navigation */}
+            {/* 4. FPO Navigation */}
             {isFpo && (
               <>
                 <Link
                   href="/fpo/dashboard"
-                  className={`text-sm font-medium transition-colors flex items-center gap-1.5 ${
+                  className={`transition-colors ${
                     isLinkActive('/fpo/dashboard')
-                      ? 'text-emerald-600 font-semibold'
-                      : 'text-foreground/80 hover:text-emerald-600'
+                      ? 'text-[#1E221B] font-bold pb-1 border-b-2 border-[#233D22]'
+                      : 'hover:text-[#1E221B]'
                   }`}
                 >
-                  <Building2 className="h-3.5 w-3.5 text-emerald-600" />
-                  <span>FPO Dashboard</span>
+                  FPO Dashboard
                 </Link>
                 <Link
-                  href="/fpo"
-                  className={`text-sm font-medium transition-colors flex items-center gap-1.5 ${
-                    pathname === '/fpo'
-                      ? 'text-emerald-600 font-semibold'
-                      : 'text-muted-foreground hover:text-emerald-600'
+                  href="/fpo/dashboard/listings"
+                  className={`transition-colors ${
+                    isLinkActive('/fpo/dashboard/listings')
+                      ? 'text-[#1E221B] font-bold pb-1 border-b-2 border-[#233D22]'
+                      : 'hover:text-[#1E221B]'
                   }`}
                 >
-                  <span>FPO Directory</span>
+                  Batch Listings
                 </Link>
                 <Link
                   href="/seller/orders"
-                  className={`text-sm font-medium transition-colors flex items-center gap-1.5 ${
+                  className={`transition-colors ${
                     isLinkActive('/seller/orders')
-                      ? 'text-emerald-600 font-semibold'
-                      : 'text-muted-foreground hover:text-emerald-600'
+                      ? 'text-[#1E221B] font-bold pb-1 border-b-2 border-[#233D22]'
+                      : 'hover:text-[#1E221B]'
                   }`}
                 >
-                  <Tractor className="h-3.5 w-3.5 text-emerald-600" />
-                  <span>Bulk Orders</span>
+                  Orders
+                </Link>
+                <Link
+                  href="/seller/intelligence"
+                  className={`transition-colors ${
+                    isLinkActive('/seller/intelligence')
+                      ? 'text-[#1E221B] font-bold pb-1 border-b-2 border-[#233D22]'
+                      : 'hover:text-[#1E221B]'
+                  }`}
+                >
+                  Mandi Intelligence
                 </Link>
                 <Link
                   href="/marketplace"
-                  className={`text-sm font-medium transition-colors flex items-center gap-1.5 ${
+                  className={`transition-colors ${
                     isLinkActive('/marketplace')
-                      ? 'text-emerald-600 font-semibold'
-                      : 'text-muted-foreground hover:text-emerald-600'
+                      ? 'text-[#1E221B] font-bold pb-1 border-b-2 border-[#233D22]'
+                      : 'hover:text-[#1E221B]'
                   }`}
                 >
-                  <Store className="h-3.5 w-3.5 text-muted-foreground" />
-                  <span>Marketplace</span>
+                  Marketplace
                 </Link>
               </>
             )}
@@ -290,35 +271,33 @@ export function MarketplaceNavbar() {
               <>
                 <Link
                   href="/admin"
-                  className={`text-sm font-medium transition-colors ${
+                  className={`transition-colors ${
                     pathname === '/admin'
-                      ? 'text-emerald-600 font-semibold'
-                      : 'text-foreground/80 hover:text-emerald-600'
+                      ? 'text-[#1E221B] font-bold pb-1 border-b-2 border-[#233D22]'
+                      : 'hover:text-[#1E221B]'
                   }`}
                 >
-                  Admin Overview
+                  Overview
                 </Link>
                 <Link
                   href="/admin/fpo"
-                  className={`text-sm font-medium transition-colors flex items-center gap-1.5 ${
+                  className={`transition-colors ${
                     isLinkActive('/admin/fpo')
-                      ? 'text-emerald-600 font-semibold'
-                      : 'text-muted-foreground hover:text-emerald-600'
+                      ? 'text-[#1E221B] font-bold pb-1 border-b-2 border-[#233D22]'
+                      : 'hover:text-[#1E221B]'
                   }`}
                 >
-                  <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
-                  <span>FPO Verification</span>
+                  FPO Verifications
                 </Link>
                 <Link
-                  href="/fpo"
-                  className={`text-sm font-medium transition-colors flex items-center gap-1.5 ${
-                    pathname === '/fpo'
-                      ? 'text-emerald-600 font-semibold'
-                      : 'text-muted-foreground hover:text-emerald-600'
+                  href="/admin/orders"
+                  className={`transition-colors ${
+                    isLinkActive('/admin/orders')
+                      ? 'text-[#1E221B] font-bold pb-1 border-b-2 border-[#233D22]'
+                      : 'hover:text-[#1E221B]'
                   }`}
                 >
-                  <Building2 className="h-3.5 w-3.5 text-emerald-600" />
-                  <span>FPO Directory</span>
+                  Dispatches
                 </Link>
               </>
             )}
@@ -326,438 +305,175 @@ export function MarketplaceNavbar() {
         </div>
 
         {/* Right Side Header Controls */}
-        <div className="flex items-center gap-2.5 sm:gap-3">
-          {/* Quick Search Shortcut */}
-          <Button
-            size="sm"
-            variant="outline"
+        <div className="flex items-center gap-3">
+          {/* Quick Search Button */}
+          <button
             onClick={handleSearchClick}
-            className="gap-1.5 hidden sm:inline-flex border-border/80 hover:border-emerald-500/50 hover:bg-emerald-50/50 dark:hover:bg-emerald-950/30 text-xs h-9 px-3"
-            title="Search produce in marketplace"
+            className="hidden sm:inline-flex items-center gap-1.5 h-9 px-3.5 text-xs font-medium text-[#484E40] border border-[#DFD8CB] bg-[#FFFFFF] rounded-md hover:bg-[#F2EFE7]"
           >
-            <Search className="h-3.5 w-3.5 text-emerald-600" />
-            <span>Search</span>
-          </Button>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.3-4.3" />
+            </svg>
+            <span>Search Crops</span>
+          </button>
 
-          {/* Logged-out Visitor Actions */}
+          {/* Visitor Actions */}
           {isVisitor && (
             <div className="flex items-center gap-2">
               <Link href="/login">
-                <Button size="sm" variant="ghost" className="gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground h-9 px-3">
-                  <LogIn className="h-3.5 w-3.5" />
-                  <span>Sign In</span>
-                </Button>
+                <button suppressHydrationWarning className="h-9 px-4 text-xs font-semibold uppercase tracking-wider text-[#233D22] border border-[#C8C0AF] rounded-md hover:bg-[#EAE4D6]">
+                  Sign In
+                </button>
               </Link>
               <Link href="/register">
-                <Button size="sm" className="gap-1.5 text-xs font-medium bg-emerald-600 hover:bg-emerald-700 text-white h-9 px-3.5 shadow-sm">
-                  <UserPlus className="h-3.5 w-3.5" />
-                  <span>Register</span>
-                </Button>
+                <button suppressHydrationWarning className="h-9 px-4 text-xs font-semibold uppercase tracking-wider bg-[#233D22] text-[#F7F5EE] rounded-md hover:bg-[#1C321B]">
+                  Register
+                </button>
               </Link>
             </div>
           )}
 
           {/* Buyer Actions */}
           {isBuyer && (
-            <div className="flex items-center gap-2">
-              {/* Cart Button */}
+            <div className="flex items-center gap-2.5">
               <Link href="/cart">
-                <Button
-                  size="sm"
-                  className="relative gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm shadow-emerald-600/20 text-xs h-9 px-3.5"
-                >
-                  <ShoppingCart className="h-4 w-4" />
-                  <span className="hidden sm:inline">Cart</span>
+                <button className="relative flex items-center gap-1.5 h-9 px-3.5 bg-[#233D22] hover:bg-[#1C321B] text-[#FAF8F2] text-xs font-semibold rounded-md">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <circle cx="8" cy="21" r="1" />
+                    <circle cx="19" cy="21" r="1" />
+                    <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
+                  </svg>
+                  <span>Cart</span>
                   {cartItemCount > 0 && (
-                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-amber-400 text-[11px] font-bold text-zinc-950">
+                    <span className="flex h-4 w-4 items-center justify-center rounded-full bg-[#BD8728] text-[10px] font-bold text-[#1E221B]">
                       {cartItemCount}
                     </span>
                   )}
-                </Button>
+                </button>
               </Link>
 
-              {/* Buyer Identity Badge */}
-              <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-800 dark:text-emerald-300">
-                <span className="font-semibold text-[10px] uppercase tracking-wider bg-emerald-600 text-white px-1.5 py-0.2 rounded">
+              <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded border border-[#DFD8CB] bg-[#FFFFFF] text-xs text-[#283C22]">
+                <span className="font-bold text-[10px] uppercase bg-[#E2EDE2] text-[#233D22] px-1.5 py-0.5 rounded">
                   Buyer
                 </span>
-                <span className="font-medium truncate max-w-[130px]" title={user?.email}>
-                  {user?.email}
-                </span>
+                <span className="font-medium truncate max-w-[130px]">{(user as any)?.name || user?.email}</span>
               </div>
 
-              {/* Sign Out */}
-              <Button
-                size="sm"
-                variant="ghost"
+              <button
                 onClick={logout}
-                className="gap-1.5 text-xs text-muted-foreground hover:text-foreground h-9 px-2.5"
+                className="h-9 px-2.5 text-xs text-[#6B7260] hover:text-[#1E221B]"
                 title="Sign out"
               >
-                <LogOut className="h-3.5 w-3.5" />
-                <span className="hidden sm:inline">Sign Out</span>
-              </Button>
+                Sign Out
+              </button>
             </div>
           )}
 
           {/* Farmer Actions */}
           {isFarmer && (
-            <div className="flex items-center gap-2">
-              <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/25 text-xs text-amber-900 dark:text-amber-200">
-                <span className="font-semibold text-[10px] uppercase tracking-wider bg-amber-600 text-white px-1.5 py-0.2 rounded">
+            <div className="flex items-center gap-2.5">
+              <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded border border-[#DFD8CB] bg-[#FFFFFF] text-xs text-[#283C22]">
+                <span className="font-bold text-[10px] uppercase bg-[#EAE4D6] text-[#634914] px-1.5 py-0.5 rounded">
                   Farmer
                 </span>
-                <span className="font-medium truncate max-w-[140px]" title={user?.email}>
-                  {user?.email}
-                </span>
+                <span className="font-medium truncate max-w-[130px]">{(user as any)?.name || user?.email}</span>
               </div>
-              <Button
-                size="sm"
-                variant="ghost"
+
+              <button
                 onClick={logout}
-                className="gap-1.5 text-xs text-muted-foreground hover:text-foreground h-9 px-2.5"
-                title="Sign out of seller account"
+                className="h-9 px-2.5 text-xs text-[#6B7260] hover:text-[#1E221B]"
+                title="Sign out"
               >
-                <LogOut className="h-3.5 w-3.5" />
-                <span className="hidden sm:inline">Sign Out</span>
-              </Button>
+                Sign Out
+              </button>
             </div>
           )}
 
           {/* FPO Actions */}
           {isFpo && (
-            <div className="flex items-center gap-2">
-              <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-xs text-emerald-900 dark:text-emerald-200">
-                <span className="font-semibold text-[10px] uppercase tracking-wider bg-emerald-600 text-white px-1.5 py-0.2 rounded">
+            <div className="flex items-center gap-2.5">
+              <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded border border-[#DFD8CB] bg-[#FFFFFF] text-xs text-[#283C22]">
+                <span className="font-bold text-[10px] uppercase bg-[#E2EDE2] text-[#233D22] px-1.5 py-0.5 rounded">
                   FPO Admin
                 </span>
-                <span className="font-medium truncate max-w-[140px]" title={user?.email}>
-                  {user?.email}
-                </span>
+                <span className="font-medium truncate max-w-[130px]">{(user as any)?.name || user?.email}</span>
               </div>
-              <Button
-                size="sm"
-                variant="ghost"
+
+              <button
                 onClick={logout}
-                className="gap-1.5 text-xs text-muted-foreground hover:text-foreground h-9 px-2.5"
-                title="Sign out of FPO account"
+                className="h-9 px-2.5 text-xs text-[#6B7260] hover:text-[#1E221B]"
+                title="Sign out"
               >
-                <LogOut className="h-3.5 w-3.5" />
-                <span className="hidden sm:inline">Sign Out</span>
-              </Button>
+                Sign Out
+              </button>
             </div>
           )}
 
           {/* Admin Actions */}
           {isAdmin && (
-            <div className="flex items-center gap-2">
-              <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-purple-500/10 border border-purple-500/25 text-xs text-purple-900 dark:text-purple-200">
-                <span className="font-semibold text-[10px] uppercase tracking-wider bg-purple-600 text-white px-1.5 py-0.2 rounded">
+            <div className="flex items-center gap-2.5">
+              <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded border border-[#DFD8CB] bg-[#FFFFFF] text-xs text-[#283C22]">
+                <span className="font-bold text-[10px] uppercase bg-[#DFD8CB] text-[#1E221B] px-1.5 py-0.5 rounded">
                   Admin
                 </span>
-                <span className="font-medium truncate max-w-[140px]" title={user?.email}>
-                  {user?.email}
-                </span>
+                <span className="font-medium truncate max-w-[130px]">{user?.email}</span>
               </div>
-              <Button
-                size="sm"
-                variant="ghost"
+
+              <button
                 onClick={logout}
-                className="gap-1.5 text-xs text-muted-foreground hover:text-foreground h-9 px-2.5"
-                title="Sign out of admin account"
+                className="h-9 px-2.5 text-xs text-[#6B7260] hover:text-[#1E221B]"
+                title="Sign out"
               >
-                <LogOut className="h-3.5 w-3.5" />
-                <span className="hidden sm:inline">Sign Out</span>
-              </Button>
+                Sign Out
+              </button>
             </div>
           )}
 
-          {/* Mobile Menu Toggle Button */}
+          {/* Mobile menu toggle */}
           <button
-            type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="flex md:hidden h-9 w-9 items-center justify-center rounded-lg border border-border text-foreground hover:bg-muted"
-            aria-label="Toggle Navigation Menu"
+            className="md:hidden p-2 text-[#2A3521] border border-[#DFD8CB] rounded-md"
+            aria-label="Toggle menu"
           >
-            {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
           </button>
         </div>
       </div>
 
-      {/* Mobile Drawer Menu */}
+      {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-border/80 bg-background/95 px-4 py-4 space-y-3 shadow-lg animate-in slide-in-from-top-2 duration-200">
-          {/* Mobile Identity for logged in users */}
-          {isAuthenticated && user && (
-            <div className="p-3 rounded-xl bg-muted/60 text-xs flex items-center justify-between">
-              <span className="font-medium text-foreground truncate max-w-[180px]">
-                {user.email}
-              </span>
-              <Badge variant="outline" className="text-[10px] uppercase font-bold">
-                {user.role}
-              </Badge>
-            </div>
-          )}
+        <div className="md:hidden border-t border-[#DFD8CB] bg-[#F7F5EE] px-4 py-4 space-y-2 text-sm">
+          <Link href="/marketplace" className="block py-1 font-medium">Marketplace</Link>
+          <Link href="/categories" className="block py-1 font-medium">Categories</Link>
+          <Link href="/fpo" className="block py-1 font-medium">FPO Directory</Link>
+          {(isFarmer || isFpo || isAdmin) && <Link href="/seller/intelligence" className="block py-1 font-medium">Mandi Intelligence</Link>}
+          {isBuyer && <Link href="/orders" className="block py-1 font-medium">My Orders</Link>}
+          {isFarmer && <Link href="/seller/orders" className="block py-1 font-medium">Fulfillment</Link>}
+          {isFpo && <Link href="/fpo/dashboard" className="block py-1 font-medium">FPO Dashboard</Link>}
+          {isAdmin && <Link href="/admin" className="block py-1 font-medium">Admin Overview</Link>}
 
-          {/* Mobile Nav Links based on Role */}
-          <div className="flex flex-col space-y-2 text-sm font-medium">
-            {isVisitor && (
-              <>
-                <Link
-                  href="/marketplace"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="p-2 rounded-lg hover:bg-muted text-foreground"
-                >
-                  Browse Marketplace
+          <div className="pt-2 border-t border-[#DFD8CB]">
+            {isVisitor ? (
+              <div className="flex gap-2">
+                <Link href="/login" className="flex-1">
+                  <button suppressHydrationWarning className="w-full py-2 text-xs font-semibold uppercase border border-[#C8C0AF] rounded-md">Sign In</button>
                 </Link>
-                <Link
-                  href="/categories"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="p-2 rounded-lg hover:bg-muted text-muted-foreground"
-                >
-                  Categories
+                <Link href="/register" className="flex-1">
+                  <button suppressHydrationWarning className="w-full py-2 text-xs font-semibold uppercase bg-[#233D22] text-[#F7F5EE] rounded-md">Register</button>
                 </Link>
-                <Link
-                  href="/fpo"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="p-2 rounded-lg hover:bg-muted text-muted-foreground"
-                >
-                  FPO Directory
-                </Link>
-                <div className="pt-2 flex flex-col gap-2">
-                  <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
-                    <Button size="sm" variant="outline" className="w-full justify-center">
-                      Sign In
-                    </Button>
-                  </Link>
-                  <Link href="/register" onClick={() => setMobileMenuOpen(false)}>
-                    <Button size="sm" className="w-full bg-emerald-600 hover:bg-emerald-700 text-white justify-center">
-                      Register
-                    </Button>
-                  </Link>
-                </div>
-              </>
-            )}
-
-            {isBuyer && (
-              <>
-                <Link
-                  href="/marketplace"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="p-2 rounded-lg hover:bg-muted text-foreground"
-                >
-                  Marketplace
-                </Link>
-                <Link
-                  href="/fpo/buy-requests"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="p-2 rounded-lg hover:bg-muted text-muted-foreground flex items-center gap-2"
-                >
-                  <Package className="h-3.5 w-3.5 text-emerald-600" />
-                  <span>Bulk Sourcing</span>
-                </Link>
-                <Link
-                  href="/fpo"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="p-2 rounded-lg hover:bg-muted text-muted-foreground flex items-center gap-2"
-                >
-                  <Building2 className="h-3.5 w-3.5 text-emerald-600" />
-                  <span>FPO Directory</span>
-                </Link>
-                <Link
-                  href="/orders"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="p-2 rounded-lg hover:bg-muted text-muted-foreground"
-                >
-                  My Orders
-                </Link>
-                <Link
-                  href="/cart"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="p-2 rounded-lg hover:bg-muted text-muted-foreground flex items-center justify-between"
-                >
-                  <span>My Cart</span>
-                  {cartItemCount > 0 && (
-                    <span className="h-5 w-5 rounded-full bg-amber-400 text-black text-[11px] font-bold flex items-center justify-center">
-                      {cartItemCount}
-                    </span>
-                  )}
-                </Link>
-                <div className="pt-2">
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => {
-                      logout();
-                      setMobileMenuOpen(false);
-                    }}
-                    className="w-full text-destructive border-destructive/30 justify-center gap-1.5"
-                  >
-                    <LogOut className="h-3.5 w-3.5" />
-                    <span>Sign Out</span>
-                  </Button>
-                </div>
-              </>
-            )}
-
-            {isFarmer && (
-              <>
-                <Link
-                  href="/fpo/join"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="p-2 rounded-lg hover:bg-muted text-foreground flex items-center gap-2"
-                >
-                  <Users className="h-3.5 w-3.5 text-emerald-600" />
-                  <span>Join FPO</span>
-                </Link>
-                <Link
-                  href="/fpo/commit"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="p-2 rounded-lg hover:bg-muted text-muted-foreground flex items-center gap-2"
-                >
-                  <FileCheck className="h-3.5 w-3.5 text-emerald-600" />
-                  <span>Commit Produce</span>
-                </Link>
-                <Link
-                  href="/fpo/commit#listings"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="p-2 rounded-lg hover:bg-muted text-muted-foreground flex items-center gap-2"
-                >
-                  <Layers className="h-3.5 w-3.5 text-emerald-600" />
-                  <span>My FPO Listings</span>
-                </Link>
-                <Link
-                  href="/fpo"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="p-2 rounded-lg hover:bg-muted text-muted-foreground flex items-center gap-2"
-                >
-                  <Building2 className="h-3.5 w-3.5 text-emerald-600" />
-                  <span>FPO Directory</span>
-                </Link>
-                <Link
-                  href="/seller/products"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="p-2 rounded-lg hover:bg-muted text-muted-foreground flex items-center gap-2"
-                >
-                  <Layers className="h-3.5 w-3.5 text-muted-foreground" />
-                  <span>My Direct Listings</span>
-                </Link>
-                <Link
-                  href="/seller/orders"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="p-2 rounded-lg hover:bg-muted text-muted-foreground flex items-center gap-2"
-                >
-                  <Tractor className="h-3.5 w-3.5 text-muted-foreground" />
-                  <span>Fulfillment</span>
-                </Link>
-                <div className="pt-2">
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => {
-                      logout();
-                      setMobileMenuOpen(false);
-                    }}
-                    className="w-full text-destructive border-destructive/30 justify-center gap-1.5"
-                  >
-                    <LogOut className="h-3.5 w-3.5" />
-                    <span>Sign Out</span>
-                  </Button>
-                </div>
-              </>
-            )}
-
-            {isFpo && (
-              <>
-                <Link
-                  href="/fpo/dashboard"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="p-2 rounded-lg hover:bg-muted text-foreground flex items-center gap-2"
-                >
-                  <Building2 className="h-3.5 w-3.5 text-emerald-600" />
-                  <span>FPO Dashboard</span>
-                </Link>
-                <Link
-                  href="/fpo"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="p-2 rounded-lg hover:bg-muted text-muted-foreground flex items-center gap-2"
-                >
-                  <Users className="h-3.5 w-3.5 text-emerald-600" />
-                  <span>FPO Directory</span>
-                </Link>
-                <Link
-                  href="/seller/orders"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="p-2 rounded-lg hover:bg-muted text-muted-foreground flex items-center gap-2"
-                >
-                  <Tractor className="h-3.5 w-3.5 text-emerald-600" />
-                  <span>Bulk Orders</span>
-                </Link>
-                <Link
-                  href="/marketplace"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="p-2 rounded-lg hover:bg-muted text-muted-foreground flex items-center gap-2"
-                >
-                  <Store className="h-3.5 w-3.5 text-muted-foreground" />
-                  <span>Marketplace</span>
-                </Link>
-                <div className="pt-2">
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => {
-                      logout();
-                      setMobileMenuOpen(false);
-                    }}
-                    className="w-full text-destructive border-destructive/30 justify-center gap-1.5"
-                  >
-                    <LogOut className="h-3.5 w-3.5" />
-                    <span>Sign Out</span>
-                  </Button>
-                </div>
-              </>
-            )}
-
-            {isAdmin && (
-              <>
-                <Link
-                  href="/admin"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="p-2 rounded-lg hover:bg-muted text-foreground flex items-center gap-2"
-                >
-                  <span>Admin Overview</span>
-                </Link>
-                <Link
-                  href="/admin/fpo"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="p-2 rounded-lg hover:bg-muted text-muted-foreground flex items-center gap-2"
-                >
-                  <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
-                  <span>FPO Verification</span>
-                </Link>
-                <Link
-                  href="/fpo"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="p-2 rounded-lg hover:bg-muted text-muted-foreground flex items-center gap-2"
-                >
-                  <Building2 className="h-3.5 w-3.5 text-emerald-600" />
-                  <span>FPO Directory</span>
-                </Link>
-                <div className="pt-2">
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => {
-                      logout();
-                      setMobileMenuOpen(false);
-                    }}
-                    className="w-full text-destructive border-destructive/30 justify-center gap-1.5"
-                  >
-                    <LogOut className="h-3.5 w-3.5" />
-                    <span>Sign Out</span>
-                  </Button>
-                </div>
-              </>
+              </div>
+            ) : (
+              <button
+                onClick={logout}
+                className="w-full py-2 text-xs font-semibold uppercase border border-[#C8C0AF] text-[#6B7260] rounded-md"
+              >
+                Sign Out ({user?.role})
+              </button>
             )}
           </div>
         </div>
@@ -765,4 +481,3 @@ export function MarketplaceNavbar() {
     </header>
   );
 }
-

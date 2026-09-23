@@ -253,6 +253,7 @@ model Address {
   phone       String
   addressLine String
   city        String
+  district    String?
   state       String
   pincode     String
   country     String      @default("India")
@@ -263,6 +264,7 @@ model Address {
   updatedAt   DateTime    @updatedAt
 
   @@index([userId])
+  @@index([state, district])
 }
 
 // -----------------------------------------------------------------------------

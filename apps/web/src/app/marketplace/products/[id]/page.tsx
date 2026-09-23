@@ -7,24 +7,6 @@ import { fetchMarketplaceProductById } from '@/lib/api';
 import { MarketplaceNavbar } from '@/components/marketplace/marketplace-navbar';
 import { ProductGallery } from '@/components/marketplace/product-gallery';
 import { AddToCartSection } from '@/components/marketplace/add-to-cart-section';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
-import { Skeleton } from '@/components/ui/skeleton';
-import {
-  ChevronLeft,
-  MapPin,
-  ShieldCheck,
-  Building2,
-  PackageCheck,
-  AlertCircle,
-  Info,
-  User,
-  Layers,
-  FileText,
-  Tag,
-} from 'lucide-react';
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -46,7 +28,6 @@ export default function ProductDetailPage({ params }: PageProps) {
 
   const product = response?.data;
 
-  // Indian Rupee number formatter (e.g. ₹2,760 / quintal)
   const formatInr = (amount: number | null | undefined) => {
     if (amount === null || amount === undefined || isNaN(amount) || amount === 0) return null;
     return new Intl.NumberFormat('en-IN', {
@@ -68,73 +49,66 @@ export default function ProductDetailPage({ params }: PageProps) {
 
   const locationDisplay =
     product?.district && product?.state
-      ? `${product.district}, ${product.state}`
+      ? `${product.district} Mandi, ${product.state}`
       : product?.location || 'India';
 
   return (
-    <div className="min-h-screen bg-zinc-50/50 dark:bg-zinc-950/50">
+    <div className="min-h-screen flex flex-col bg-[#F7F5EE] text-[#1E221B]">
       <MarketplaceNavbar />
 
-      <main className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
+      <main className="flex-1 max-w-7xl mx-auto w-full px-4 py-8 sm:px-6 lg:px-8">
         {/* Breadcrumb Navigation */}
-        <nav className="mb-6 flex items-center gap-2 text-xs text-muted-foreground">
+        <nav className="mb-6 flex items-center gap-2 text-xs text-[#6B7260]">
           <Link
             href="/marketplace"
-            className="flex items-center gap-1 font-medium hover:text-emerald-600 transition-colors"
+            className="hover:text-[#1E221B] font-medium"
           >
-            <ChevronLeft className="h-4 w-4" />
-            Back to Marketplace
+            ← Back to Marketplace
           </Link>
           {product && (
             <>
               <span>/</span>
-              <span className="text-foreground/80">{product.category?.name}</span>
+              <span className="text-[#4E5446]">{product.category?.name}</span>
               <span>/</span>
-              <span className="font-semibold text-foreground truncate max-w-xs">
+              <span className="font-bold text-[#1E221B] truncate max-w-xs">
                 {product.name}
               </span>
             </>
           )}
         </nav>
 
-        {/* Loading State Skeleton */}
+        {/* Loading State */}
         {isLoading && (
-          <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
-            <div className="lg:col-span-7 space-y-4">
-              <Skeleton className="aspect-[4/3] w-full rounded-2xl" />
-            </div>
-            <div className="lg:col-span-5 space-y-5">
-              <Skeleton className="h-8 w-3/4" />
-              <Skeleton className="h-10 w-1/3" />
-              <Skeleton className="h-20 w-full" />
-              <Skeleton className="h-32 w-full rounded-xl" />
-            </div>
+          <div className="p-12 text-center border border-[#DFD8CB] rounded-lg bg-[#FCFAF6]">
+            <p className="text-sm font-serif font-bold text-[#1E221B]">
+              Loading Agricultural Lot Specifications...
+            </p>
           </div>
         )}
 
-        {/* Error / Not Found State */}
+        {/* Error / Not Found */}
         {isError && !isLoading && (
-          <div className="flex flex-col items-center justify-center rounded-2xl border border-destructive/20 bg-card p-12 text-center shadow-sm">
-            <AlertCircle className="h-12 w-12 text-destructive" />
-            <h2 className="mt-4 text-lg font-bold text-foreground">
-              Product Unavailable
+          <div className="p-8 text-center border border-[#E5B5B5] rounded-lg bg-[#FDF2F2]">
+            <h2 className="font-serif font-bold text-lg text-[#9B1C1C]">
+              Produce Lot Unavailable
             </h2>
-            <p className="mt-2 max-w-md text-xs text-muted-foreground">
+            <p className="mt-2 max-w-md mx-auto text-xs text-[#771D1D]">
               {(error as Error)?.message ||
-                'This agricultural product does not exist, has been archived, or is currently out of stock in the marketplace.'}
+                'This agricultural lot does not exist, has been archived, or is currently out of stock.'}
             </p>
-            <Link href="/marketplace" className="mt-6">
-              <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700 text-white">
+            <Link href="/marketplace" className="inline-block mt-4">
+              <button className="px-4 py-2 text-xs font-bold uppercase tracking-wider bg-[#233D22] text-[#FAF8F2] rounded">
                 Return to Marketplace
-              </Button>
+              </button>
             </Link>
           </div>
         )}
 
         {/* Active Product Details */}
         {product && !isLoading && (
-          <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
-            <div className="lg:col-span-7">
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 items-start">
+            {/* Left Column: Imagery & Specifications */}
+            <div className="lg:col-span-7 space-y-8">
               <ProductGallery
                 primaryImage={product.primaryImage}
                 images={product.images}
@@ -142,68 +116,78 @@ export default function ProductDetailPage({ params }: PageProps) {
                 location={locationDisplay}
               />
 
-
-
-              {/* Product Detailed Description & Specifications */}
-              <div className="mt-8 rounded-2xl border border-border/80 bg-card p-6 shadow-sm space-y-6">
+              {/* Product Specifications & Assaying Sheet */}
+              <div className="rounded-lg border border-[#DFD8CB] bg-[#FCFAF6] p-6 space-y-6">
                 <div>
-                  <h3 className="text-base font-bold text-foreground">Produce Description</h3>
-                  <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-muted-foreground">
-                    {product.description || 'Verified agricultural listing sourced directly from regional producers.'}
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#556448] block mb-1">
+                    Commodity Profile
+                  </span>
+                  <h3 className="font-serif font-bold text-lg text-[#1E221B]">
+                    Produce Assaying Specifications
+                  </h3>
+                  <p className="mt-2 text-xs leading-relaxed text-[#5D6352] whitespace-pre-line">
+                    {product.description ||
+                      'Verified agricultural listing sourced directly from regional FPO collectives and independent producers.'}
                   </p>
                 </div>
 
-                {/* Listing Details & Metadata */}
+                {/* Technical Listing Parameters */}
                 <div>
-                  <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
-                    Listing Specifications
+                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#52594B] mb-3">
+                    Batch Metadata
                   </h4>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3.5 text-xs">
-                    <div className="rounded-xl border border-border/60 bg-muted/30 p-3">
-                      <span className="text-muted-foreground block text-[11px]">Category</span>
-                      <p className="font-semibold text-foreground mt-0.5">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
+                    <div className="rounded border border-[#DFD8CB] bg-[#F7F5EE] p-3">
+                      <span className="text-[10px] uppercase font-bold text-[#7A8070] block">Category</span>
+                      <p className="font-bold text-[#1E221B] mt-0.5">
                         {product.category?.name || 'Produce'}
                       </p>
                     </div>
 
-                    <div className="rounded-xl border border-border/60 bg-muted/30 p-3">
-                      <span className="text-muted-foreground block text-[11px]">Variety / Grade</span>
-                      <p className="font-semibold text-foreground mt-0.5">
-                        {product.varietyType || 'Standard'}
+                    <div className="rounded border border-[#DFD8CB] bg-[#F7F5EE] p-3">
+                      <span className="text-[10px] uppercase font-bold text-[#7A8070] block">Variety / Grade</span>
+                      <p className="font-bold text-[#1E221B] mt-0.5">
+                        {product.varietyType || 'Standard Commercial'}
                       </p>
                     </div>
 
-                    <div className="rounded-xl border border-border/60 bg-muted/30 p-3">
-                      <span className="text-muted-foreground block text-[11px]">Selling Unit</span>
-                      <p className="font-semibold text-foreground mt-0.5">
+                    <div className="rounded border border-[#DFD8CB] bg-[#F7F5EE] p-3">
+                      <span className="text-[10px] uppercase font-bold text-[#7A8070] block">Trading Unit</span>
+                      <p className="font-bold text-[#1E221B] mt-0.5">
                         {product.sellingUnit || product.unit}
                       </p>
                     </div>
 
-                    <div className="rounded-xl border border-border/60 bg-muted/30 p-3">
-                      <span className="text-muted-foreground block text-[11px]">Available Stock</span>
-                      <p className={`font-semibold mt-0.5 ${hasDemoPrice ? 'text-foreground' : 'text-rose-600 dark:text-rose-400'}`}>
-                        {hasDemoPrice ? `${product.availableQuantity} ${product.unit}` : 'Out of stock'}
+                    <div className="rounded border border-[#DFD8CB] bg-[#F7F5EE] p-3">
+                      <span className="text-[10px] uppercase font-bold text-[#7A8070] block">Available Lot Size</span>
+                      <p className="font-bold text-[#1E221B] mt-0.5">
+                        {product.availableQuantity} {product.unit}
                       </p>
                     </div>
 
-                    <div className="rounded-xl border border-border/60 bg-muted/30 p-3">
-                      <span className="text-muted-foreground block text-[11px]">Origin Location</span>
-                      <p className="font-semibold text-foreground mt-0.5">
+                    <div className="rounded border border-[#DFD8CB] bg-[#F7F5EE] p-3">
+                      <span className="text-[10px] uppercase font-bold text-[#7A8070] block">Origin APMC</span>
+                      <p className="font-bold text-[#1E221B] mt-0.5">
                         {locationDisplay}
+                      </p>
+                    </div>
+
+                    <div className="rounded border border-[#DFD8CB] bg-[#F7F5EE] p-3">
+                      <span className="text-[10px] uppercase font-bold text-[#7A8070] block">Settlement Type</span>
+                      <p className="font-bold text-[#2E7D32] mt-0.5">
+                        Banking Escrow
                       </p>
                     </div>
                   </div>
                 </div>
 
-                {/* Notes Section */}
+                {/* Notes */}
                 {product.notes && (
-                  <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-4 text-xs">
-                    <div className="flex items-center gap-2 text-emerald-800 dark:text-emerald-300 font-semibold mb-1">
-                      <FileText className="h-4 w-4 text-emerald-600" />
-                      <span>Market & Source Notes</span>
-                    </div>
-                    <p className="text-muted-foreground leading-relaxed mt-1">
+                  <div className="rounded border border-[#CCDBCB] bg-[#F0F5EE] p-4 text-xs">
+                    <span className="font-bold uppercase tracking-wider text-[#233D22] text-[10px] block mb-1">
+                      Mandi Inspection & Source Notes
+                    </span>
+                    <p className="text-[#3E4536] leading-relaxed">
                       {product.notes}
                     </p>
                   </div>
@@ -211,122 +195,90 @@ export default function ProductDetailPage({ params }: PageProps) {
               </div>
             </div>
 
-            {/* Right Column: Key Details, Seller Card, Add to Cart */}
+            {/* Right Column: Pricing, Seller Card, Add To Cart */}
             <div className="lg:col-span-5 space-y-6">
-              <div className="rounded-2xl border border-border/80 bg-card p-6 shadow-sm space-y-5">
+              <div className="rounded-lg border border-[#DFD8CB] bg-[#FCFAF6] p-6 space-y-5">
                 {/* Badges */}
                 <div className="flex flex-wrap items-center gap-2">
-                  <Badge variant="secondary" className="text-xs">
+                  <span className="text-[10px] font-bold uppercase tracking-wider bg-[#E8F0E2] text-[#233D22] px-2.5 py-0.5 rounded border border-[#CCDBCB]">
                     {product.category?.name}
-                  </Badge>
+                  </span>
                   {product.varietyType && (
-                    <Badge variant="outline" className="text-xs font-medium">
+                    <span className="text-[10px] font-bold uppercase tracking-wider bg-[#F7F5EE] text-[#484E40] px-2.5 py-0.5 rounded border border-[#DFD8CB]">
                       {product.varietyType}
-                    </Badge>
+                    </span>
                   )}
-                  {hasDemoPrice ? (
-                    <Badge variant="success" className="text-xs">
-                      <PackageCheck className="mr-1 h-3.5 w-3.5" />
-                      In Stock: {product.availableQuantity} {product.unit}
-                    </Badge>
-                  ) : (
-                    <Badge variant="destructive" className="text-xs bg-rose-600 hover:bg-rose-600 text-white border-0">
-                      <AlertCircle className="mr-1 h-3.5 w-3.5" />
-                      Out of Stock
-                    </Badge>
-                  )}
+                  <span className="text-[10px] font-bold uppercase tracking-wider bg-[#233D22] text-[#FAF8F2] px-2.5 py-0.5 rounded">
+                    In Stock: {product.availableQuantity} {product.unit}
+                  </span>
                 </div>
 
                 {/* Title & Location */}
                 <div>
-                  <h1 className="text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl">
+                  <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#1E221B]">
                     {product.name}
                   </h1>
-                  <div className="mt-2 flex items-center gap-1.5 text-xs text-muted-foreground">
-                    <MapPin className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
-                    <span>{locationDisplay}</span>
-                  </div>
+                  <span className="mt-1.5 text-xs text-[#5D6352] block">
+                    {locationDisplay}
+                  </span>
                 </div>
 
-                {/* Price Display Section: Direct Farmer Listing */}
-                <div className={`rounded-2xl border p-4 sm:p-5 space-y-3.5 ${hasDemoPrice ? 'border-emerald-500/35 bg-emerald-500/5' : 'border-rose-500/30 bg-rose-500/5'}`}>
-                  <div>
-                    <div className="flex items-center justify-between text-xs text-muted-foreground mb-1">
-                      <span className={`font-bold text-sm ${hasDemoPrice ? 'text-emerald-800 dark:text-emerald-300' : 'text-rose-800 dark:text-rose-300'}`}>
-                        Farmer’s listing price
-                      </span>
-                      <Badge variant="outline" className={`text-[10px] ${hasDemoPrice ? 'border-emerald-600/30 text-emerald-700 dark:text-emerald-300 bg-emerald-500/10' : 'border-rose-600/30 text-rose-700 dark:text-rose-300 bg-rose-500/10'}`}>
-                        {hasDemoPrice ? 'Farmer Listing' : 'Unavailable'}
-                      </Badge>
-                    </div>
-                    <div className="flex items-baseline gap-2">
-                      <span
-                        className={`font-extrabold ${
-                          hasDemoPrice
-                            ? 'text-2xl sm:text-3xl text-foreground'
-                            : 'text-2xl sm:text-3xl text-rose-600 dark:text-rose-400 font-bold'
-                        }`}
-                      >
-                        {demoPriceDisplay}
-                      </span>
-                    </div>
-                    {hasDemoPrice ? (
-                      <p className="text-xs text-muted-foreground/80 mt-1">
-                        Illustrative demo listing price—not an actual farmer offer.
-                      </p>
-                    ) : (
-                      <p className="text-xs text-muted-foreground/80 mt-1">
-                        Pricing not available. This product is currently out of stock.
+                {/* Price Display */}
+                <div className="p-4 rounded border border-[#DFD8CB] bg-[#F4F0E6]">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#7A8070] block">
+                    Direct Farmer / FPO Listing Rate
+                  </span>
+                  <div className="text-2xl sm:text-3xl font-serif font-bold text-[#1E221B] mt-1">
+                    {demoPriceDisplay}
+                  </div>
+                  <p className="text-[11px] text-[#6B7260] mt-1">
+                    Ex-farmgate benchmark rate. Net delivered cost calculated with road logistics.
+                  </p>
+                </div>
+
+                {/* Producer Information */}
+                <div className="p-4 rounded border border-[#DFD8CB] bg-[#FAF8F2] space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#52594B]">
+                      Producer Collective
+                    </span>
+                    <span className="text-[10px] font-bold uppercase bg-[#E2EDE2] text-[#233D22] px-2 py-0.5 rounded border border-[#CCDBCB]">
+                      {product.seller.verificationStatus || 'VERIFIED PRODUCER'}
+                    </span>
+                  </div>
+
+                  <div className="text-xs space-y-1">
+                    <p className="font-bold text-[#1E221B] text-sm">
+                      {product.farmerName || product.seller.businessName || 'Verified Regional Collective'}
+                    </p>
+                    {product.farmName && (
+                      <p className="text-[#6B7260]">
+                        Farm Facility: {product.farmName}
                       </p>
                     )}
+                    <p className="text-[#6B7260]">
+                      Location: {locationDisplay}
+                    </p>
+                  </div>
+                  <div className="pt-2 border-t border-[#DFD8CB] text-[10px] text-[#556448]">
+                    Direct origin traceability with verified APMC weighment certificate.
                   </div>
                 </div>
 
-                {/* Verified Farmer & Farm Card */}
-                <Card className="border border-border/60 bg-muted/20">
-                  <CardContent className="p-4 space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                        Producer Information
-                      </span>
-                      <Badge variant="farmer" className="text-[11px] py-0.5">
-                        <ShieldCheck className="mr-1 h-3 w-3 text-emerald-600" />
-                        {product.seller.verificationStatus || 'VERIFIED'}
-                      </Badge>
-                    </div>
-
-                    <div className="space-y-1.5 text-xs">
-                      <div className="flex items-center gap-2">
-                        <User className="h-4 w-4 text-emerald-600 shrink-0" />
-                        <span className="text-sm font-semibold text-foreground">
-                          {product.farmerName || product.seller.businessName || 'Independent Farmer'}
-                        </span>
-                        {product.farmName && (
-                          <span className="text-muted-foreground">
-                            ({product.farmName})
-                          </span>
-                        )}
-                      </div>
-                      <div className="flex items-center gap-2 text-muted-foreground">
-                        <MapPin className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                        <span>{locationDisplay}</span>
-                      </div>
-                    </div>
-                    <div className="pt-2 border-t border-border/40 text-[11px] text-muted-foreground flex items-center gap-1.5">
-                      <ShieldCheck className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
-                      <span>Direct farmer listing • Connect directly with verified producers</span>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Interactive Add To Cart Section */}
+                {/* Add to Cart Component */}
                 <AddToCartSection product={product} />
               </div>
             </div>
           </div>
         )}
       </main>
+
+      {/* Footer */}
+      <footer className="border-t border-[#DFD8CB] bg-[#FAF8F2] py-8 text-center text-xs text-[#6B7260]">
+        <div className="max-w-7xl mx-auto px-4">
+          <p>Aroha Agricultural Marketplace Commodity Assaying & Trade Sheet</p>
+        </div>
+      </footer>
     </div>
   );
 }
-

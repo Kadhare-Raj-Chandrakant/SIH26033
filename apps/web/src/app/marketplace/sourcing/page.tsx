@@ -8,24 +8,20 @@ import {
   CheckCircle2,
   Building2,
   MapPin,
-  Sparkles,
   ArrowRight,
   ShieldCheck,
   PackageCheck,
   AlertCircle,
   Users,
   Target,
+  Scale,
 } from 'lucide-react';
 import { MarketplaceNavbar } from '@/components/marketplace/marketplace-navbar';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
 import {
   createBuyerRequirement,
   getOpenBuyerRequirements,
   matchSellersForBuyer,
-  demoLoginBuyer,
   BuyerRequirement,
   SellerMatchItem,
 } from '@/lib/api';
@@ -139,38 +135,38 @@ function BuyerSourcingContent() {
   });
 
   return (
-    <div className="min-h-screen bg-zinc-50/50 dark:bg-zinc-950/50">
+    <div className="min-h-screen bg-[#F7F5EE] text-[#1E221B]">
       <MarketplaceNavbar />
 
-      <main className="container mx-auto px-4 py-8 sm:px-6 lg:px-8 space-y-8">
+      <main className="container mx-auto px-4 py-8 sm:px-6 lg:px-8 space-y-8 max-w-6xl">
         {/* Page Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border/80 pb-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[#DFD8CB] pb-6">
           <div>
             <div className="flex items-center gap-2 mb-1.5">
-              <span className="flex h-6 w-6 items-center justify-center rounded-md bg-emerald-600/10 text-emerald-600">
-                <Target className="h-3.5 w-3.5" />
+              <span className="flex h-5 w-5 items-center justify-center rounded bg-[#233D22]/10 text-[#233D22]">
+                <Target className="h-3 w-3" />
               </span>
-              <span className="text-xs font-semibold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
-                Direct Sourcing & Producer Matching
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#233D22]">
+                Direct Sourcing & Farmgate Matching
               </span>
             </div>
-            <h1 className="text-2xl font-black tracking-tight text-foreground sm:text-3xl">
+            <h1 className="text-3xl font-serif font-bold tracking-tight text-[#1E221B]">
               Buyer Procurement Hub
             </h1>
-            <p className="mt-1 text-sm text-muted-foreground max-w-2xl">
-              Publish bulk commodity requirements and let the AI matching engine rank verified farmers and FPOs based on batch availability, freight proximity, and target price feasibility.
+            <p className="mt-1 text-xs sm:text-sm text-[#5D6352] max-w-2xl leading-relaxed">
+              Publish institutional commodity requirements and let the matching engine score verified farmers and FPOs based on batch availability, freight proximity, and target price feasibility.
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5">
             <Link href="/marketplace">
-              <Button variant="outline" size="sm" className="text-xs">
+              <Button variant="outline" size="sm" className="text-xs border-[#DFD8CB] bg-[#FCFAF6] text-[#1E221B] hover:bg-[#EFE9DC] rounded">
                 Browse Full Catalog
               </Button>
             </Link>
             <Link href="/seller/intelligence">
-              <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs">
-                Farmer Intelligence
+              <Button size="sm" className="bg-[#233D22] hover:bg-[#1E331D] text-[#F7F5EE] text-xs font-semibold rounded">
+                Mandi Intelligence
               </Button>
             </Link>
           </div>
@@ -180,44 +176,44 @@ function BuyerSourcingContent() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Left Column: Post Requirement Form (5 Cols) */}
           <div className="lg:col-span-5">
-            <div className="rounded-2xl border border-border/80 bg-card p-6 shadow-sm space-y-5 sticky top-24">
-              <div className="flex items-center justify-between">
-                <h2 className="text-base font-bold text-foreground flex items-center gap-2">
-                  <PlusCircle className="h-4 w-4 text-emerald-600" />
-                  Post Bulk Requirement
+            <div className="rounded-md border border-[#DFD8CB] bg-[#FCFAF6] p-5 space-y-4 sticky top-24">
+              <div className="flex items-center justify-between border-b border-[#DFD8CB] pb-3">
+                <h2 className="text-base font-serif font-bold text-[#1E221B] flex items-center gap-2">
+                  <PlusCircle className="h-4 w-4 text-[#233D22]" />
+                  <span>Post Procurement Order</span>
                 </h2>
-                <Badge variant="outline" className="text-[10px]">
-                  Institutional & Retail
-                </Badge>
+                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-[#F4F0E6] text-[#5D6352] border border-[#DFD8CB]">
+                  Institutional / Retail
+                </span>
               </div>
 
               {formFeedback && (
                 <div
-                  className={`p-3.5 rounded-xl text-xs flex items-start gap-2.5 ${
+                  className={`p-3 rounded text-xs flex items-start gap-2 ${
                     formFeedback.type === 'success'
-                      ? 'bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 border border-emerald-500/20'
-                      : 'bg-destructive/10 text-destructive border border-destructive/20'
+                      ? 'bg-[#233D22]/10 text-[#233D22] border border-[#233D22]/20'
+                      : 'bg-[#9A3412]/10 text-[#9A3412] border border-[#9A3412]/20'
                   }`}
                 >
                   {formFeedback.type === 'success' ? (
-                    <CheckCircle2 className="h-4 w-4 shrink-0 mt-0.5 text-emerald-600" />
+                    <CheckCircle2 className="h-4 w-4 shrink-0 mt-0.5 text-[#233D22]" />
                   ) : (
-                    <AlertCircle className="h-4 w-4 shrink-0 mt-0.5 text-destructive" />
+                    <AlertCircle className="h-4 w-4 shrink-0 mt-0.5 text-[#9A3412]" />
                   )}
                   <span>{formFeedback.message}</span>
                 </div>
               )}
 
-              <div className="space-y-4 text-xs">
+              <div className="space-y-3.5 text-xs">
                 {/* Commodity */}
                 <div>
-                  <label className="block font-semibold text-foreground mb-1.5">
+                  <label className="block font-semibold text-[#1E221B] mb-1">
                     Commodity Needed
                   </label>
                   <select
                     value={commodity}
                     onChange={(e) => setCommodity(e.target.value)}
-                    className="w-full h-10 px-3 rounded-xl border border-border bg-background text-sm font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                    className="w-full h-9 px-3 rounded border border-[#DFD8CB] bg-[#F7F5EE] text-xs font-medium text-[#1E221B] focus:outline-none focus:border-[#233D22]"
                   >
                     {COMMODITIES.map((c) => (
                       <option key={c} value={c}>
@@ -227,10 +223,10 @@ function BuyerSourcingContent() {
                   </select>
                 </div>
 
-                {/* Required Quantity */}
+                {/* Required Quantity & Target Budget */}
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block font-semibold text-foreground mb-1.5">
+                    <label className="block font-semibold text-[#1E221B] mb-1">
                       Required Quantity (q)
                     </label>
                     <input
@@ -238,19 +234,19 @@ function BuyerSourcingContent() {
                       min={1}
                       value={requiredQuantity}
                       onChange={(e) => setRequiredQuantity(Math.max(1, Number(e.target.value) || 1))}
-                      className="w-full h-10 px-3 rounded-xl border border-border bg-background text-sm font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                      className="w-full h-9 px-3 rounded border border-[#DFD8CB] bg-[#F7F5EE] text-xs font-medium text-[#1E221B] focus:outline-none focus:border-[#233D22]"
                     />
                   </div>
                   <div>
-                    <label className="block font-semibold text-foreground mb-1.5">
-                      Target Budget (₹/q)
+                    <label className="block font-semibold text-[#1E221B] mb-1">
+                      Target Ceiling (₹/q)
                     </label>
                     <input
                       type="number"
                       min={100}
                       value={targetPrice}
                       onChange={(e) => setTargetPrice(Number(e.target.value) || 0)}
-                      className="w-full h-10 px-3 rounded-xl border border-border bg-background text-sm font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                      className="w-full h-9 px-3 rounded border border-[#DFD8CB] bg-[#F7F5EE] text-xs font-medium text-[#1E221B] focus:outline-none focus:border-[#233D22]"
                     />
                   </div>
                 </div>
@@ -258,13 +254,13 @@ function BuyerSourcingContent() {
                 {/* Delivery Location & Max Distance */}
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block font-semibold text-foreground mb-1.5">
-                      Delivery Destination
+                    <label className="block font-semibold text-[#1E221B] mb-1">
+                      Destination City
                     </label>
                     <select
                       value={deliveryCity}
                       onChange={(e) => setDeliveryCity(e.target.value)}
-                      className="w-full h-10 px-3 rounded-xl border border-border bg-background text-sm font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                      className="w-full h-9 px-3 rounded border border-[#DFD8CB] bg-[#F7F5EE] text-xs font-medium text-[#1E221B] focus:outline-none focus:border-[#233D22]"
                     >
                       {CITIES.map((c) => (
                         <option key={c} value={c}>
@@ -274,7 +270,7 @@ function BuyerSourcingContent() {
                     </select>
                   </div>
                   <div>
-                    <label className="block font-semibold text-foreground mb-1.5">
+                    <label className="block font-semibold text-[#1E221B] mb-1">
                       Max Transit (km)
                     </label>
                     <input
@@ -283,21 +279,21 @@ function BuyerSourcingContent() {
                       max={1000}
                       value={maxDistanceKm}
                       onChange={(e) => setMaxDistanceKm(Number(e.target.value) || 100)}
-                      className="w-full h-10 px-3 rounded-xl border border-border bg-background text-sm font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                      className="w-full h-9 px-3 rounded border border-[#DFD8CB] bg-[#F7F5EE] text-xs font-medium text-[#1E221B] focus:outline-none focus:border-[#233D22]"
                     />
                   </div>
                 </div>
 
                 {/* Notes / Specs */}
                 <div>
-                  <label className="block font-semibold text-foreground mb-1.5">
-                    Procurement Specifications / Notes
+                  <label className="block font-semibold text-[#1E221B] mb-1">
+                    Quality Specifications / Delivery Notes
                   </label>
                   <textarea
-                    rows={3}
+                    rows={2}
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
-                    className="w-full p-3 rounded-xl border border-border bg-background text-xs font-normal text-foreground focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                    className="w-full p-2.5 rounded border border-[#DFD8CB] bg-[#F7F5EE] text-xs text-[#1E221B] focus:outline-none focus:border-[#233D22]"
                   />
                 </div>
               </div>
@@ -305,49 +301,49 @@ function BuyerSourcingContent() {
               <Button
                 onClick={() => postRequirementMutation.mutate()}
                 disabled={postRequirementMutation.isPending}
-                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs py-2.5 rounded-xl shadow-sm"
+                className="w-full bg-[#233D22] hover:bg-[#1E331D] text-[#F7F5EE] font-semibold text-xs py-2 rounded transition-colors"
               >
-                {postRequirementMutation.isPending ? 'Publishing Requirement...' : 'Publish Sourcing Requirement'}
+                {postRequirementMutation.isPending ? 'Publishing Order...' : 'Publish Procurement Requirement'}
               </Button>
 
-              <p className="text-[11px] text-muted-foreground text-center">
-                Published requirements are instantly matched with verified farmers and FPOs in regional range.
+              <p className="text-[11px] text-[#5D6352] text-center">
+                Published orders are indexed directly with verified farmers and FPOs in regional freight range.
               </p>
             </div>
           </div>
 
           {/* Right Column: Matched Sellers & Inventory (7 Cols) */}
           <div className="lg:col-span-7 space-y-6">
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <h2 className="text-base font-bold text-foreground flex items-center gap-2">
-                  <Sparkles className="h-4 w-4 text-emerald-600" />
-                  Instant Matched Producers & Harvest
+            <div className="border-b border-[#DFD8CB] pb-3">
+              <div className="flex items-center justify-between mb-1">
+                <h2 className="text-base font-serif font-bold text-[#1E221B] flex items-center gap-2">
+                  <Scale className="h-4 w-4 text-[#233D22]" />
+                  <span>Matched Regional Farm Inventory</span>
                 </h2>
-                <Badge variant="outline" className="text-xs">
+                <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-[#F4F0E6] text-[#233D22] border border-[#DFD8CB]">
                   {matchedSellers?.length || 0} Matches Found
-                </Badge>
+                </span>
               </div>
-              <p className="text-xs text-muted-foreground">
-                Ranked by multi-factor compatibility: quantity fulfillment, price competitiveness, estimated geographic distance, and producer reliability.
+              <p className="text-xs text-[#5D6352]">
+                Ranked by volume capacity, price competitiveness, road distance, and producer fulfillment reliability.
               </p>
             </div>
 
             {isMatchingLoading && (
-              <div className="rounded-2xl border border-border bg-card p-12 text-center">
-                <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-emerald-600 border-r-transparent mb-3" />
-                <p className="text-sm font-semibold text-foreground">
-                  Scoring available farm inventories against required volume and transit distance...
+              <div className="rounded-md border border-[#DFD8CB] bg-[#FCFAF6] p-10 text-center">
+                <div className="inline-block h-6 w-6 border-2 border-[#233D22] border-t-transparent rounded-full animate-spin mb-3" />
+                <p className="text-xs font-semibold text-[#1E221B]">
+                  Matching regional farm inventories against your required volume and transit radius...
                 </p>
               </div>
             )}
 
             {!isMatchingLoading && (!matchedSellers || matchedSellers.length === 0) && (
-              <div className="rounded-2xl border border-border bg-card p-12 text-center">
-                <PackageCheck className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
-                <h3 className="font-bold text-foreground text-sm">No Matching Inventory Within Range</h3>
-                <p className="text-xs text-muted-foreground max-w-md mx-auto mt-1">
-                  No active listings match {commodity} within {maxDistanceKm} km of {deliveryCity} under target budget. Try increasing max transit distance or target budget.
+              <div className="rounded-md border border-[#DFD8CB] bg-[#FCFAF6] p-10 text-center">
+                <PackageCheck className="h-8 w-8 text-[#5D6352]/40 mx-auto mb-2" />
+                <h3 className="font-serif font-bold text-[#1E221B] text-sm">No Matching Inventory Within Range</h3>
+                <p className="text-xs text-[#5D6352] max-w-md mx-auto mt-1">
+                  No active listings match {commodity} within {maxDistanceKm} km of {deliveryCity} under target budget. Try widening transit radius or ceiling price.
                 </p>
               </div>
             )}
@@ -355,168 +351,161 @@ function BuyerSourcingContent() {
             {matchedSellers && matchedSellers.length > 0 && (
               <div className="space-y-4">
                 {matchedSellers.map((match) => (
-                  <Card
+                  <div
                     key={match.productId}
-                    className="border border-border/80 shadow-sm hover:border-emerald-500/50 transition-all overflow-hidden"
+                    className="border border-[#DFD8CB] rounded-md bg-[#FCFAF6] p-4 space-y-3"
                   >
-                    <CardContent className="p-5 space-y-4">
-                      {/* Top Bar: Producer & Match Score */}
-                      <div className="flex items-start justify-between">
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <h3 className="font-bold text-foreground text-base">
-                              {match.productName}
-                            </h3>
-                            <Badge
-                              variant={match.sellerType === 'FPO' ? 'fpo' : 'farmer'}
-                              className="text-[10px]"
-                            >
-                              {match.sellerType}
-                            </Badge>
-                            <Badge variant="farmer" className="text-[10px] py-0.5">
-                              <ShieldCheck className="mr-1 h-3 w-3 text-emerald-600" />
-                              {match.verificationStatus}
-                            </Badge>
-                          </div>
-                          <span className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
-                            <Building2 className="h-3 w-3" />
-                            {match.businessName || match.sellerName} •{' '}
-                            <MapPin className="h-3 w-3 text-emerald-600" />
-                            {match.location || 'Regional Farm'} ({match.distanceKm} km away)
+                    {/* Top Bar: Producer & Match Score */}
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <h3 className="font-serif font-bold text-[#1E221B] text-base">
+                            {match.productName}
+                          </h3>
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#F4F0E6] text-[#233D22] border border-[#DFD8CB]">
+                            {match.sellerType}
+                          </span>
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#233D22]/10 text-[#233D22] flex items-center gap-1">
+                            <ShieldCheck className="h-3 w-3" />
+                            {match.verificationStatus}
                           </span>
                         </div>
-
-                        <div className="flex flex-col items-end">
-                          <Badge
-                            className={`text-xs font-bold px-2.5 py-1 ${
-                              match.matchScore >= 80
-                                ? 'bg-emerald-600 text-white'
-                                : match.matchScore >= 60
-                                ? 'bg-amber-500 text-zinc-950'
-                                : 'bg-muted text-foreground'
-                            }`}
-                          >
-                            {match.matchScore}/100 Match
-                          </Badge>
-                        </div>
-                      </div>
-
-                      <Separator />
-
-                      {/* Economics & Stock */}
-                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
-                        <div className="rounded-xl bg-muted/20 p-3">
-                          <span className="text-muted-foreground block text-[11px]">Direct Price</span>
-                          <span className="font-bold text-foreground text-sm">
-                            ₹{match.unitPrice}/{match.unit}
-                          </span>
-                        </div>
-                        <div className="rounded-xl bg-muted/20 p-3">
-                          <span className="text-muted-foreground block text-[11px]">Available Stock</span>
-                          <span className="font-bold text-foreground text-sm">
-                            {match.availableQuantity} {match.unit}
-                          </span>
-                        </div>
-                        <div className="rounded-xl bg-muted/20 p-3 col-span-2 sm:col-span-1">
-                          <span className="text-muted-foreground block text-[11px]">Estimated Distance</span>
-                          <span className="font-bold text-foreground text-sm">
-                            {match.distanceKm} km
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* Score Breakdown Pills */}
-                      <div className="space-y-1.5">
-                        <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground block">
-                          Scoring Vectors:
+                        <span className="text-xs text-[#5D6352] flex items-center gap-1.5 mt-0.5">
+                          <Building2 className="h-3 w-3" />
+                          {match.businessName || match.sellerName} •{' '}
+                          <MapPin className="h-3 w-3 text-[#233D22]" />
+                          {match.location || 'Regional Farm'} ({match.distanceKm} km away)
                         </span>
-                        <div className="flex flex-wrap gap-1.5 text-[11px]">
-                          <span className="rounded-md bg-muted px-2 py-0.5 text-muted-foreground">
-                            Volume: {match.scoreBreakdown.quantityFulfillment}%
-                          </span>
-                          <span className="rounded-md bg-muted px-2 py-0.5 text-muted-foreground">
-                            Price: {match.scoreBreakdown.priceCompetitiveness}%
-                          </span>
-                          <span className="rounded-md bg-muted px-2 py-0.5 text-muted-foreground">
-                            Distance: {match.scoreBreakdown.distanceLogistics}%
-                          </span>
-                          <span className="rounded-md bg-muted px-2 py-0.5 text-muted-foreground">
-                            Trust: {match.scoreBreakdown.sellerReliability}%
-                          </span>
+                      </div>
+
+                      <div className="flex flex-col items-end">
+                        <span
+                          className={`text-xs font-bold px-2.5 py-1 rounded ${
+                            match.matchScore >= 80
+                              ? 'bg-[#233D22] text-[#F7F5EE]'
+                              : match.matchScore >= 60
+                              ? 'bg-[#BD8728] text-[#F7F5EE]'
+                              : 'bg-[#F4F0E6] text-[#1E221B] border border-[#DFD8CB]'
+                          }`}
+                        >
+                          {match.matchScore}/100 Match
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Economics & Stock */}
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 text-xs">
+                      <div className="rounded bg-[#F4F0E6] p-2.5 border border-[#DFD8CB]">
+                        <span className="text-[#5D6352] block text-[10px] uppercase font-bold tracking-wider">Direct Price</span>
+                        <span className="font-bold text-[#1E221B] text-sm">
+                          ₹{match.unitPrice}/{match.unit}
+                        </span>
+                      </div>
+                      <div className="rounded bg-[#F4F0E6] p-2.5 border border-[#DFD8CB]">
+                        <span className="text-[#5D6352] block text-[10px] uppercase font-bold tracking-wider">Available Stock</span>
+                        <span className="font-bold text-[#1E221B] text-sm">
+                          {match.availableQuantity} {match.unit}
+                        </span>
+                      </div>
+                      <div className="rounded bg-[#F4F0E6] p-2.5 border border-[#DFD8CB] col-span-2 sm:col-span-1">
+                        <span className="text-[#5D6352] block text-[10px] uppercase font-bold tracking-wider">Estimated Transit</span>
+                        <span className="font-bold text-[#1E221B] text-sm">
+                          {match.distanceKm} km
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Score Breakdown Pills */}
+                    <div className="space-y-1">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-[#5D6352] block">
+                        Compatibility Scoring:
+                      </span>
+                      <div className="flex flex-wrap gap-1.5 text-[11px]">
+                        <span className="rounded bg-[#F4F0E6] px-2 py-0.5 text-[#5D6352] border border-[#DFD8CB]">
+                          Volume: {match.scoreBreakdown.quantityFulfillment}%
+                        </span>
+                        <span className="rounded bg-[#F4F0E6] px-2 py-0.5 text-[#5D6352] border border-[#DFD8CB]">
+                          Price: {match.scoreBreakdown.priceCompetitiveness}%
+                        </span>
+                        <span className="rounded bg-[#F4F0E6] px-2 py-0.5 text-[#5D6352] border border-[#DFD8CB]">
+                          Distance: {match.scoreBreakdown.distanceLogistics}%
+                        </span>
+                        <span className="rounded bg-[#F4F0E6] px-2 py-0.5 text-[#5D6352] border border-[#DFD8CB]">
+                          Trust: {match.scoreBreakdown.sellerReliability}%
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Reasons */}
+                    <div className="rounded bg-[#F4F0E6] border border-[#DFD8CB] p-2.5 space-y-1">
+                      {match.reasons.map((reason, idx) => (
+                        <div key={idx} className="flex items-center gap-1.5 text-xs text-[#1E221B]">
+                          <CheckCircle2 className="h-3 w-3 text-[#233D22] shrink-0" />
+                          <span>{reason}</span>
                         </div>
-                      </div>
+                      ))}
+                    </div>
 
-                      {/* Reasons */}
-                      <div className="rounded-xl bg-emerald-500/5 border border-emerald-500/10 p-3 space-y-1">
-                        {match.reasons.map((reason, idx) => (
-                          <div key={idx} className="flex items-center gap-1.5 text-xs text-foreground">
-                            <CheckCircle2 className="h-3 w-3 text-emerald-600 shrink-0" />
-                            <span>{reason}</span>
-                          </div>
-                        ))}
-                      </div>
-
-                      {/* Action CTA */}
-                      <div className="pt-2 flex justify-end">
-                        <Link href={`/marketplace/products/${match.productId}`}>
-                          <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs gap-1">
-                            <span>View Product & Purchase</span>
-                            <ArrowRight className="h-3.5 w-3.5" />
-                          </Button>
-                        </Link>
-                      </div>
-                    </CardContent>
-                  </Card>
+                    {/* Action CTA */}
+                    <div className="pt-2 flex justify-end">
+                      <Link href={`/marketplace/products/${match.productId}`}>
+                        <Button size="sm" className="bg-[#233D22] hover:bg-[#1E331D] text-[#F7F5EE] text-xs font-semibold rounded gap-1">
+                          <span>View Product & Purchase</span>
+                          <ArrowRight className="h-3.5 w-3.5" />
+                        </Button>
+                      </Link>
+                    </div>
+                  </div>
                 ))}
               </div>
             )}
 
             {/* Open Requirements Board */}
-            <div className="pt-6 border-t border-border">
-              <h3 className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
-                <Users className="h-4 w-4 text-emerald-600" />
-                Active Marketplace Sourcing Board ({requirements?.length || 0})
+            <div className="pt-6 border-t border-[#DFD8CB]">
+              <h3 className="text-sm font-serif font-bold text-[#1E221B] mb-2 flex items-center gap-2">
+                <Users className="h-4 w-4 text-[#233D22]" />
+                <span>Active Sourcing Board ({requirements?.length || 0})</span>
               </h3>
-              <p className="text-xs text-muted-foreground mb-4">
+              <p className="text-xs text-[#5D6352] mb-3">
                 Open procurement requests visible to verified producers and aggregator FPOs across the region.
               </p>
 
               {requirements && requirements.length > 0 ? (
-                <div className="space-y-3">
+                <div className="space-y-2.5">
                   {requirements.map((req) => (
                     <div
                       key={req.id}
-                      className="rounded-xl border border-border/60 bg-card p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs"
+                      className="rounded border border-[#DFD8CB] bg-[#FCFAF6] p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs"
                     >
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className="font-bold text-foreground text-sm">
+                          <span className="font-bold text-[#1E221B] text-sm">
                             {req.requiredQuantity} {req.unit} of {req.commodity}
                           </span>
-                          <Badge variant="outline" className="text-[10px]">
+                          <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#F4F0E6] text-[#5D6352] border border-[#DFD8CB]">
                             {req.status}
-                          </Badge>
+                          </span>
                         </div>
-                        <span className="text-muted-foreground flex items-center gap-1 mt-0.5">
-                          <MapPin className="h-3 w-3 text-emerald-600" />
+                        <span className="text-[#5D6352] flex items-center gap-1 mt-0.5">
+                          <MapPin className="h-3 w-3 text-[#233D22]" />
                           Delivery to {req.deliveryLocation || 'Designated Warehouse'}
                           {req.targetPrice ? ` • Target: ₹${req.targetPrice}/${req.unit}` : ''}
                         </span>
                         {req.notes && (
-                          <p className="text-muted-foreground mt-1 text-[11px] italic">
+                          <p className="text-[#5D6352] mt-1 text-[11px] italic">
                             &quot;{req.notes}&quot;
                           </p>
                         )}
                       </div>
 
-                      <Badge variant="secondary" className="text-[10px] shrink-0 self-start sm:self-auto">
+                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-[#F4F0E6] text-[#1E221B] border border-[#DFD8CB] shrink-0 self-start sm:self-auto">
                         Posted by {req.buyer?.businessName || 'Verified Buyer'}
-                      </Badge>
+                      </span>
                     </div>
                   ))}
                 </div>
               ) : (
-                <div className="p-4 rounded-xl border border-border/40 bg-muted/10 text-center text-xs text-muted-foreground">
+                <div className="p-4 rounded border border-[#DFD8CB] bg-[#FCFAF6] text-center text-xs text-[#5D6352]">
                   No other active procurement requests currently listed for {commodity}.
                 </div>
               )}

@@ -124,33 +124,33 @@ export default function AdminProductsPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="space-y-6 max-w-6xl">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#DFD8CB] pb-4">
         <div>
-          <h1 className="text-xl font-bold text-slate-100 flex items-center gap-2">
-            <Package className="w-5 h-5 text-emerald-400" />
-            Product Listing Moderation
+          <h1 className="text-2xl font-serif font-bold text-[#1E221B] flex items-center gap-2">
+            <Package className="w-5 h-5 text-[#233D22]" />
+            <span>Produce Listing Moderation</span>
           </h1>
-          <p className="text-xs text-slate-400">Review, approve, reject, or archive marketplace listings</p>
+          <p className="text-xs text-[#5D6352] mt-0.5">Audit quality specifications, pricing authenticity, and crop grade compliance</p>
         </div>
       </div>
 
       {/* Filter Bar */}
-      <div className="p-4 bg-slate-900 border border-slate-800 rounded-xl flex flex-col md:flex-row items-center gap-3">
+      <div className="p-3.5 bg-[#FCFAF6] border border-[#DFD8CB] rounded-md flex flex-col md:flex-row items-center gap-3">
         <form onSubmit={handleSearchSubmit} className="flex-1 w-full flex items-center gap-2">
           <div className="relative flex-1">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-[#5D6352] absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
-              placeholder="Search product title or description..."
+              placeholder="Search product title or crop variety..."
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              className="w-full pl-9 pr-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+              className="w-full pl-9 pr-3 py-2 bg-[#F7F5EE] border border-[#DFD8CB] rounded text-xs text-[#1E221B] placeholder-[#8A8E82] focus:outline-none focus:border-[#233D22]"
             />
           </div>
           <button
             type="submit"
-            className="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium rounded-lg transition-colors shrink-0"
+            className="px-3.5 py-2 bg-[#233D22] hover:bg-[#1E331D] text-[#F7F5EE] text-xs font-semibold rounded transition-colors shrink-0"
           >
             Search
           </button>
@@ -163,7 +163,7 @@ export default function AdminProductsPage() {
               setStatus(e.target.value);
               setPage(1);
             }}
-            className="px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-300 focus:outline-none focus:border-emerald-500"
+            className="px-3 py-2 bg-[#F7F5EE] border border-[#DFD8CB] rounded text-xs text-[#1E221B] focus:outline-none focus:border-[#233D22]"
           >
             <option value="">All Listing Statuses</option>
             <option value="ACTIVE">ACTIVE</option>
@@ -175,65 +175,65 @@ export default function AdminProductsPage() {
       </div>
 
       {/* Products Table */}
-      <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-sm">
+      <div className="bg-[#FCFAF6] border border-[#DFD8CB] rounded-md overflow-hidden">
         {isLoading ? (
-          <div className="p-12 text-center text-xs text-slate-400">Loading marketplace listings...</div>
+          <div className="p-10 text-center text-xs text-[#5D6352]">Loading marketplace catalog...</div>
         ) : isError ? (
-          <div className="p-8 text-center text-xs text-red-400">
+          <div className="p-8 text-center text-xs text-[#9A3412]">
             {error instanceof Error ? error.message : 'Failed to load products'}
           </div>
         ) : products.length === 0 ? (
-          <div className="p-12 text-center text-xs text-slate-500">No listings found matching criteria.</div>
+          <div className="p-10 text-center text-xs text-[#5D6352]">No produce listings match filter criteria.</div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-slate-300">
-              <thead className="bg-slate-950/70 border-b border-slate-800 text-[11px] text-slate-400 uppercase tracking-wider font-semibold">
+            <table className="w-full text-left text-xs border-collapse">
+              <thead className="bg-[#F4F0E6] border-b border-[#DFD8CB] text-[10px] text-[#5D6352] uppercase tracking-wider font-bold">
                 <tr>
-                  <th className="py-3.5 px-4">Commodity / Product</th>
-                  <th className="py-3.5 px-4">Category</th>
-                  <th className="py-3.5 px-4">Price & Stock</th>
-                  <th className="py-3.5 px-4">Seller</th>
-                  <th className="py-3.5 px-4">Status</th>
-                  <th className="py-3.5 px-4 text-right">Actions</th>
+                  <th className="py-3 px-4">Commodity / Lot</th>
+                  <th className="py-3 px-4">Category</th>
+                  <th className="py-3 px-4">Price & Available Stock</th>
+                  <th className="py-3 px-4">Producer</th>
+                  <th className="py-3 px-4">Catalog Status</th>
+                  <th className="py-3 px-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/80">
+              <tbody className="divide-y divide-[#DFD8CB] text-[#1E221B]">
                 {products.map((p) => (
-                  <tr key={p.id} className="hover:bg-slate-800/40 transition-colors">
-                    <td className="py-3.5 px-4">
-                      <div className="font-semibold text-slate-100">{p.name}</div>
-                      <div className="text-[11px] text-slate-500 line-clamp-1">{p.description}</div>
+                  <tr key={p.id} className="hover:bg-[#F4F0E6]/50 transition-colors">
+                    <td className="py-3 px-4">
+                      <div className="font-semibold text-[#1E221B]">{p.name}</div>
+                      <div className="text-[11px] text-[#5D6352] line-clamp-1">{p.description}</div>
                     </td>
-                    <td className="py-3.5 px-4 text-slate-400 text-[11px]">
+                    <td className="py-3 px-4 text-[#5D6352] text-[11px]">
                       {p.category?.name || 'Uncategorized'}
                     </td>
-                    <td className="py-3.5 px-4">
-                      <div className="font-medium text-slate-200">
+                    <td className="py-3 px-4">
+                      <div className="font-semibold text-[#1E221B]">
                         ₹{Number(p.price).toFixed(2)} / {p.unit}
                       </div>
-                      <div className="text-[11px] text-slate-500">
-                        Stock: {Number(p.inventory?.availableQuantity || 0)} {p.unit}
+                      <div className="text-[11px] text-[#5D6352]">
+                        Available: {Number(p.inventory?.availableQuantity || 0)} {p.unit}
                       </div>
                     </td>
-                    <td className="py-3.5 px-4">
-                      <div className="flex items-center gap-1.5 text-slate-300">
-                        <Store className="w-3 h-3 text-slate-500" />
-                        <span className="font-medium">{p.seller?.businessName || 'Seller'}</span>
+                    <td className="py-3 px-4">
+                      <div className="flex items-center gap-1.5 text-[#1E221B]">
+                        <Store className="w-3 h-3 text-[#233D22]" />
+                        <span className="font-semibold">{p.seller?.businessName || 'Seller'}</span>
                       </div>
-                      <span className="text-[10px] text-slate-500 block">
+                      <span className="text-[10px] text-[#5D6352] block">
                         {p.seller?.sellerType} • {p.seller?.verificationStatus}
                       </span>
                     </td>
-                    <td className="py-3.5 px-4">
+                    <td className="py-3 px-4">
                       <span
-                        className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold ${
+                        className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${
                           p.status === 'ACTIVE'
-                            ? 'bg-emerald-500/10 text-emerald-400'
+                            ? 'bg-[#233D22]/10 text-[#233D22] border-[#233D22]/20'
                             : p.status === 'OUT_OF_STOCK'
-                              ? 'bg-amber-500/10 text-amber-400'
-                              : p.status === 'ARCHIVED'
-                                ? 'bg-slate-800 text-slate-400'
-                                : 'bg-red-500/10 text-red-400'
+                            ? 'bg-[#BD8728]/10 text-[#BD8728] border-[#BD8728]/20'
+                            : p.status === 'ARCHIVED'
+                            ? 'bg-[#F4F0E6] text-[#5D6352] border-[#DFD8CB]'
+                            : 'bg-[#9A3412]/10 text-[#9A3412] border-[#9A3412]/20'
                         }`}
                       >
                         {p.status === 'ACTIVE' && <CheckCircle className="w-2.5 h-2.5" />}
@@ -243,13 +243,13 @@ export default function AdminProductsPage() {
                         {p.status}
                       </span>
                     </td>
-                    <td className="py-3.5 px-4 text-right">
+                    <td className="py-3 px-4 text-right">
                       <button
                         onClick={() => handleOpenModerateModal(p)}
-                        className="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] rounded transition-colors inline-flex items-center gap-1.5"
+                        className="px-2.5 py-1 bg-[#F4F0E6] hover:bg-[#EFE9DC] text-[#1E221B] border border-[#DFD8CB] text-[11px] font-semibold rounded transition-colors inline-flex items-center gap-1.5"
                       >
-                        <ShieldAlert className="w-3 h-3 text-amber-400" />
-                        Moderate
+                        <ShieldAlert className="w-3 h-3 text-[#BD8728]" />
+                        <span>Moderate</span>
                       </button>
                     </td>
                   </tr>
@@ -260,26 +260,26 @@ export default function AdminProductsPage() {
         )}
 
         {/* Pagination Footer */}
-        <div className="p-4 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+        <div className="p-3.5 border-t border-[#DFD8CB] bg-[#F4F0E6]/50 flex items-center justify-between text-xs text-[#5D6352]">
           <div>
-            Showing <span className="font-semibold text-slate-200">{products.length}</span> of{' '}
-            <span className="font-semibold text-slate-200">{meta.total}</span> listings
+            Showing <span className="font-bold text-[#1E221B]">{products.length}</span> of{' '}
+            <span className="font-bold text-[#1E221B]">{meta.total}</span> listings
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
             <button
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page <= 1}
-              className="p-1.5 bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed text-slate-300 rounded transition-colors"
+              className="p-1 bg-[#FCFAF6] hover:bg-[#EFE9DC] border border-[#DFD8CB] disabled:opacity-40 disabled:cursor-not-allowed text-[#1E221B] rounded transition-colors"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
-            <span className="px-2 font-medium text-slate-300">
+            <span className="px-2 font-semibold text-[#1E221B] text-xs">
               Page {meta.page} of {meta.totalPages}
             </span>
             <button
               onClick={() => setPage((p) => Math.min(meta.totalPages, p + 1))}
               disabled={page >= meta.totalPages}
-              className="p-1.5 bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed text-slate-300 rounded transition-colors"
+              className="p-1 bg-[#FCFAF6] hover:bg-[#EFE9DC] border border-[#DFD8CB] disabled:opacity-40 disabled:cursor-not-allowed text-[#1E221B] rounded transition-colors"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
@@ -289,29 +289,29 @@ export default function AdminProductsPage() {
 
       {/* Product Moderation Modal */}
       {selectedProduct && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 max-w-md w-full shadow-2xl">
-            <h2 className="text-base font-bold text-slate-100 mb-1">Moderate Listing</h2>
-            <p className="text-xs text-slate-400 mb-4">
-              Target Product: <span className="text-slate-200 font-medium">{selectedProduct.name}</span>
-              <span className="block text-[11px] text-slate-500 mt-0.5">
-                Current Status: <span className="text-amber-400 font-semibold">{selectedProduct.status}</span>
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+          <div className="bg-[#FCFAF6] border border-[#DFD8CB] rounded-md p-6 max-w-md w-full">
+            <h2 className="text-base font-serif font-bold text-[#1E221B] mb-1">Moderate Produce Listing</h2>
+            <p className="text-xs text-[#5D6352] mb-4">
+              Lot: <span className="text-[#1E221B] font-semibold">{selectedProduct.name}</span>
+              <span className="block text-[11px] text-[#5D6352] mt-0.5">
+                Current Status: <span className="text-[#BD8728] font-bold">{selectedProduct.status}</span>
               </span>
             </p>
 
             {updateError && (
-              <div className="mb-4 p-3 bg-red-950/50 border border-red-800/50 rounded-lg text-xs text-red-300">
+              <div className="mb-4 p-3 bg-[#9A3412]/10 border border-[#9A3412]/20 rounded text-xs text-[#9A3412]">
                 {updateError}
               </div>
             )}
 
             <form onSubmit={handleModerateProduct} className="space-y-4">
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1.5">Action / Target Status</label>
+                <label className="block text-xs font-semibold text-[#1E221B] mb-1">Action / Target Status</label>
                 <select
                   value={newStatus}
                   onChange={(e) => setNewStatus(e.target.value as 'ACTIVE' | 'OUT_OF_STOCK' | 'ARCHIVED' | 'REJECTED')}
-                  className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-200 focus:outline-none focus:border-emerald-500"
+                  className="w-full px-3 py-2 bg-[#F7F5EE] border border-[#DFD8CB] rounded text-xs text-[#1E221B] focus:outline-none focus:border-[#233D22]"
                 >
                   {getAvailableTransitions(selectedProduct.status).map((t) => (
                     <option key={t.value} value={t.value}>
@@ -322,8 +322,8 @@ export default function AdminProductsPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1.5">
-                  Moderation Rationale / Mandi Inspection Notes <span className="text-red-400">*</span>
+                <label className="block text-xs font-semibold text-[#1E221B] mb-1">
+                  Moderation Rationale / Assaying Audit Notes <span className="text-[#9A3412]">*</span>
                 </label>
                 <textarea
                   required
@@ -331,24 +331,24 @@ export default function AdminProductsPage() {
                   value={reason}
                   onChange={(e) => setReason(e.target.value)}
                   placeholder="State clear reasons for rejection, quality dispute resolution, or compliance notes..."
-                  className="w-full px-3.5 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                  className="w-full px-3 py-2 bg-[#F7F5EE] border border-[#DFD8CB] rounded text-xs text-[#1E221B] placeholder-[#8A8E82] focus:outline-none focus:border-[#233D22]"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2">
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#DFD8CB]">
                 <button
                   type="button"
                   onClick={() => setSelectedProduct(null)}
-                  className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs rounded-lg transition-colors"
+                  className="px-3.5 py-1.5 bg-[#F4F0E6] hover:bg-[#EFE9DC] text-[#1E221B] border border-[#DFD8CB] text-xs font-semibold rounded transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isUpdating}
-                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white text-xs font-semibold rounded-lg transition-colors"
+                  className="px-4 py-1.5 bg-[#233D22] hover:bg-[#1E331D] disabled:opacity-50 text-[#F7F5EE] text-xs font-semibold rounded transition-colors"
                 >
-                  {isUpdating ? 'Recording Moderation...' : 'Confirm Decision'}
+                  {isUpdating ? 'Recording Decision...' : 'Confirm Decision'}
                 </button>
               </div>
             </form>

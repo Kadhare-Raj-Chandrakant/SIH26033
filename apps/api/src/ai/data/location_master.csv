@@ -1,0 +1,766 @@
+﻿location_id,state,district,location_type,display_name,primary_buyer_hub_city,primary_buyer_hub_district,data_status,verified
+LOC-DBC2770203,Andaman and Nicobar Islands,Nicobars,DISTRICT,"Nicobars, Andaman and Nicobar Islands",Port Blair,South Andamans,SYNTHETIC_DEMO,FALSE
+LOC-842205D316,Andaman and Nicobar Islands,North And Middle Andaman,DISTRICT,"North And Middle Andaman, Andaman and Nicobar Islands",Port Blair,South Andamans,SYNTHETIC_DEMO,FALSE
+LOC-0D5274856D,Andaman and Nicobar Islands,South Andamans,DISTRICT,"South Andamans, Andaman and Nicobar Islands",Port Blair,South Andamans,SYNTHETIC_DEMO,FALSE
+LOC-8E856935B9,Andhra Pradesh,Anakapalli,DISTRICT,"Anakapalli, Andhra Pradesh",Vijayawada,NTR,SYNTHETIC_DEMO,FALSE
+LOC-DD49E1527E,Andhra Pradesh,Ananthapuramu,DISTRICT,"Ananthapuramu, Andhra Pradesh",Vijayawada,NTR,SYNTHETIC_DEMO,FALSE
+LOC-557FEAA102,Andhra Pradesh,Annamayya,DISTRICT,"Annamayya, Andhra Pradesh",Vijayawada,NTR,SYNTHETIC_DEMO,FALSE
+LOC-90114A8985,Andhra Pradesh,Bapatla,DISTRICT,"Bapatla, Andhra Pradesh",Vijayawada,NTR,SYNTHETIC_DEMO,FALSE
+LOC-E5CE3FCC4E,Andhra Pradesh,Chittoor,DISTRICT,"Chittoor, Andhra Pradesh",Vijayawada,NTR,SYNTHETIC_DEMO,FALSE
+LOC-FE58EC8CBA,Andhra Pradesh,East Godavari,DISTRICT,"East Godavari, Andhra Pradesh",Vijayawada,NTR,SYNTHETIC_DEMO,FALSE
+LOC-8B822D4362,Andhra Pradesh,Eluru,DISTRICT,"Eluru, Andhra Pradesh",Vijayawada,NTR,SYNTHETIC_DEMO,FALSE
+LOC-70601242A0,Andhra Pradesh,Guntur,DISTRICT,"Guntur, Andhra Pradesh",Vijayawada,NTR,SYNTHETIC_DEMO,FALSE
+LOC-F399370809,Andhra Pradesh,Kakinada,DISTRICT,"Kakinada, Andhra Pradesh",Vijayawada,NTR,SYNTHETIC_DEMO,FALSE
+LOC-8B60F404CB,Andhra Pradesh,Krishna,DISTRICT,"Krishna, Andhra Pradesh",Vijayawada,NTR,SYNTHETIC_DEMO,FALSE
+LOC-97856C020E,Andhra Pradesh,Kurnool,DISTRICT,"Kurnool, Andhra Pradesh",Vijayawada,NTR,SYNTHETIC_DEMO,FALSE
+LOC-B91C854C06,Andhra Pradesh,Markapuram,DISTRICT,"Markapuram, Andhra Pradesh",Vijayawada,NTR,SYNTHETIC_DEMO,FALSE
+LOC-77871AC36C,Andhra Pradesh,Nandyal,DISTRICT,"Nandyal, Andhra Pradesh",Vijayawada,NTR,SYNTHETIC_DEMO,FALSE
+LOC-5E64F27011,Andhra Pradesh,Ntr,DISTRICT,"Ntr, Andhra Pradesh",Vijayawada,NTR,SYNTHETIC_DEMO,FALSE
+LOC-8DB647E302,Andhra Pradesh,Palnadu,DISTRICT,"Palnadu, Andhra Pradesh",Vijayawada,NTR,SYNTHETIC_DEMO,FALSE
+LOC-13F8AAD2C1,Andhra Pradesh,Parvathipuram Manyam,DISTRICT,"Parvathipuram Manyam, Andhra Pradesh",Vijayawada,NTR,SYNTHETIC_DEMO,FALSE
+LOC-9615D776A1,Andhra Pradesh,Prakasam,DISTRICT,"Prakasam, Andhra Pradesh",Vijayawada,NTR,SYNTHETIC_DEMO,FALSE
+LOC-A572998DDC,Andhra Pradesh,Sri Potti Sriramulu Nellore,DISTRICT,"Sri Potti Sriramulu Nellore, Andhra Pradesh",Vijayawada,NTR,SYNTHETIC_DEMO,FALSE
+LOC-C137ADD22E,Andhra Pradesh,Sri Sathya Sai,DISTRICT,"Sri Sathya Sai, Andhra Pradesh",Vijayawada,NTR,SYNTHETIC_DEMO,FALSE
+LOC-DB0FA299A3,Andhra Pradesh,Srikakulam,DISTRICT,"Srikakulam, Andhra Pradesh",Vijayawada,NTR,SYNTHETIC_DEMO,FALSE
+LOC-9DBD93A78A,Andhra Pradesh,Tirupati,DISTRICT,"Tirupati, Andhra Pradesh",Vijayawada,NTR,SYNTHETIC_DEMO,FALSE
+LOC-78DC13EB3B,Andhra Pradesh,Visakhapatnam,DISTRICT,"Visakhapatnam, Andhra Pradesh",Vijayawada,NTR,SYNTHETIC_DEMO,FALSE
+LOC-5CA6AF75F0,Andhra Pradesh,Vizianagaram,DISTRICT,"Vizianagaram, Andhra Pradesh",Vijayawada,NTR,SYNTHETIC_DEMO,FALSE
+LOC-437766248E,Andhra Pradesh,West Godavari,DISTRICT,"West Godavari, Andhra Pradesh",Vijayawada,NTR,SYNTHETIC_DEMO,FALSE
+LOC-E469226677,Andhra Pradesh,Y.S.R.,DISTRICT,"Y.S.R., Andhra Pradesh",Vijayawada,NTR,SYNTHETIC_DEMO,FALSE
+LOC-23FA91BB84,Arunachal Pradesh,Anjaw,DISTRICT,"Anjaw, Arunachal Pradesh",Itanagar,Papum Pare,SYNTHETIC_DEMO,FALSE
+LOC-490D6DBA81,Arunachal Pradesh,Bichom,DISTRICT,"Bichom, Arunachal Pradesh",Itanagar,Papum Pare,SYNTHETIC_DEMO,FALSE
+LOC-D2DA922D02,Arunachal Pradesh,Changlang,DISTRICT,"Changlang, Arunachal Pradesh",Itanagar,Papum Pare,SYNTHETIC_DEMO,FALSE
+LOC-22A2B03990,Arunachal Pradesh,Dibang Valley,DISTRICT,"Dibang Valley, Arunachal Pradesh",Itanagar,Papum Pare,SYNTHETIC_DEMO,FALSE
+LOC-3C4D14176C,Arunachal Pradesh,East Kameng,DISTRICT,"East Kameng, Arunachal Pradesh",Itanagar,Papum Pare,SYNTHETIC_DEMO,FALSE
+LOC-F41B834B5A,Arunachal Pradesh,East Siang,DISTRICT,"East Siang, Arunachal Pradesh",Itanagar,Papum Pare,SYNTHETIC_DEMO,FALSE
+LOC-80B5001CA9,Arunachal Pradesh,Kamle,DISTRICT,"Kamle, Arunachal Pradesh",Itanagar,Papum Pare,SYNTHETIC_DEMO,FALSE
+LOC-19243CC80A,Arunachal Pradesh,Keyi Panyor,DISTRICT,"Keyi Panyor, Arunachal Pradesh",Itanagar,Papum Pare,SYNTHETIC_DEMO,FALSE
+LOC-73A71AB6F0,Arunachal Pradesh,Kra Daadi,DISTRICT,"Kra Daadi, Arunachal Pradesh",Itanagar,Papum Pare,SYNTHETIC_DEMO,FALSE
+LOC-53127136EC,Arunachal Pradesh,Kurung Kumey,DISTRICT,"Kurung Kumey, Arunachal Pradesh",Itanagar,Papum Pare,SYNTHETIC_DEMO,FALSE
+LOC-D6B6C6F872,Arunachal Pradesh,Leparada,DISTRICT,"Leparada, Arunachal Pradesh",Itanagar,Papum Pare,SYNTHETIC_DEMO,FALSE
+LOC-D5D75F3E15,Arunachal Pradesh,Lohit,DISTRICT,"Lohit, Arunachal Pradesh",Itanagar,Papum Pare,SYNTHETIC_DEMO,FALSE
+LOC-07D8CDEEEB,Arunachal Pradesh,Longding,DISTRICT,"Longding, Arunachal Pradesh",Itanagar,Papum Pare,SYNTHETIC_DEMO,FALSE
+LOC-335F2A324D,Arunachal Pradesh,Lower Dibang Valley,DISTRICT,"Lower Dibang Valley, Arunachal Pradesh",Itanagar,Papum Pare,SYNTHETIC_DEMO,FALSE
+LOC-655972E917,Arunachal Pradesh,Lower Siang,DISTRICT,"Lower Siang, Arunachal Pradesh",Itanagar,Papum Pare,SYNTHETIC_DEMO,FALSE
+LOC-72DD635FBF,Arunachal Pradesh,Lower Subansiri,DISTRICT,"Lower Subansiri, Arunachal Pradesh",Itanagar,Papum Pare,SYNTHETIC_DEMO,FALSE
+LOC-079BCE8840,Arunachal Pradesh,Namsai,DISTRICT,"Namsai, Arunachal Pradesh",Itanagar,Papum Pare,SYNTHETIC_DEMO,FALSE
+LOC-9158B6EDCD,Arunachal Pradesh,Pakke Kessang,DISTRICT,"Pakke Kessang, Arunachal Pradesh",Itanagar,Papum Pare,SYNTHETIC_DEMO,FALSE
+LOC-C68D37F2A6,Arunachal Pradesh,Papum Pare,DISTRICT,"Papum Pare, Arunachal Pradesh",Itanagar,Papum Pare,SYNTHETIC_DEMO,FALSE
+LOC-7AAD6EB764,Arunachal Pradesh,Shi Yomi,DISTRICT,"Shi Yomi, Arunachal Pradesh",Itanagar,Papum Pare,SYNTHETIC_DEMO,FALSE
+LOC-E44AF9D74A,Arunachal Pradesh,Siang,DISTRICT,"Siang, Arunachal Pradesh",Itanagar,Papum Pare,SYNTHETIC_DEMO,FALSE
+LOC-F8597C3BDB,Arunachal Pradesh,Tawang,DISTRICT,"Tawang, Arunachal Pradesh",Itanagar,Papum Pare,SYNTHETIC_DEMO,FALSE
+LOC-EFB161F39E,Arunachal Pradesh,Tirap,DISTRICT,"Tirap, Arunachal Pradesh",Itanagar,Papum Pare,SYNTHETIC_DEMO,FALSE
+LOC-087172D569,Arunachal Pradesh,Upper Siang,DISTRICT,"Upper Siang, Arunachal Pradesh",Itanagar,Papum Pare,SYNTHETIC_DEMO,FALSE
+LOC-7B7EC28801,Arunachal Pradesh,Upper Subansiri,DISTRICT,"Upper Subansiri, Arunachal Pradesh",Itanagar,Papum Pare,SYNTHETIC_DEMO,FALSE
+LOC-659CE4DB8D,Arunachal Pradesh,West Kameng,DISTRICT,"West Kameng, Arunachal Pradesh",Itanagar,Papum Pare,SYNTHETIC_DEMO,FALSE
+LOC-7D584E4438,Arunachal Pradesh,West Siang,DISTRICT,"West Siang, Arunachal Pradesh",Itanagar,Papum Pare,SYNTHETIC_DEMO,FALSE
+LOC-00781000CA,Assam,Bajali,DISTRICT,"Bajali, Assam",Guwahati,Kamrup Metro,SYNTHETIC_DEMO,FALSE
+LOC-4587BB8B45,Assam,Baksa,DISTRICT,"Baksa, Assam",Guwahati,Kamrup Metro,SYNTHETIC_DEMO,FALSE
+LOC-1E29F948B9,Assam,Barpeta,DISTRICT,"Barpeta, Assam",Guwahati,Kamrup Metro,SYNTHETIC_DEMO,FALSE
+LOC-C892B37BBF,Assam,Biswanath,DISTRICT,"Biswanath, Assam",Guwahati,Kamrup Metro,SYNTHETIC_DEMO,FALSE
+LOC-1E72B47829,Assam,Bongaigaon,DISTRICT,"Bongaigaon, Assam",Guwahati,Kamrup Metro,SYNTHETIC_DEMO,FALSE
+LOC-3E3DE518DF,Assam,Cachar,DISTRICT,"Cachar, Assam",Guwahati,Kamrup Metro,SYNTHETIC_DEMO,FALSE
+LOC-944CD47104,Assam,Charaideo,DISTRICT,"Charaideo, Assam",Guwahati,Kamrup Metro,SYNTHETIC_DEMO,FALSE
+LOC-7EAB129F9B,Assam,Chirang,DISTRICT,"Chirang, Assam",Guwahati,Kamrup Metro,SYNTHETIC_DEMO,FALSE
+LOC-32BB78744F,Assam,Darrang,DISTRICT,"Darrang, Assam",Guwahati,Kamrup Metro,SYNTHETIC_DEMO,FALSE
+LOC-7FCC93EA9E,Assam,Dhemaji,DISTRICT,"Dhemaji, Assam",Guwahati,Kamrup Metro,SYNTHETIC_DEMO,FALSE
+LOC-8A16DDBB79,Assam,Dhubri,DISTRICT,"Dhubri, Assam",Guwahati,Kamrup Metro,SYNTHETIC_DEMO,FALSE
+LOC-A6BDB5463F,Assam,Dibrugarh,DISTRICT,"Dibrugarh, Assam",Guwahati,Kamrup Metro,SYNTHETIC_DEMO,FALSE
+LOC-4B423B5772,Assam,Dima Hasao,DISTRICT,"Dima Hasao, Assam",Guwahati,Kamrup Metro,SYNTHETIC_DEMO,FALSE
+LOC-A53E1AD12B,Assam,Goalpara,DISTRICT,"Goalpara, Assam",Guwahati,Kamrup Metro,SYNTHETIC_DEMO,FALSE
+LOC-4F54279EB5,Assam,Golaghat,DISTRICT,"Golaghat, Assam",Guwahati,Kamrup Metro,SYNTHETIC_DEMO,FALSE
+LOC-5AC18B99B7,Assam,Hailakandi,DISTRICT,"Hailakandi, Assam",Guwahati,Kamrup Metro,SYNTHETIC_DEMO,FALSE
+LOC-79209FA47E,Assam,Hojai,DISTRICT,"Hojai, Assam",Guwahati,Kamrup Metro,SYNTHETIC_DEMO,FALSE
+LOC-9B7372DE32,Assam,Jorhat,DISTRICT,"Jorhat, Assam",Guwahati,Kamrup Metro,SYNTHETIC_DEMO,FALSE
+LOC-4B2F6050E6,Assam,Kamrup,DISTRICT,"Kamrup, Assam",Guwahati,Kamrup Metro,SYNTHETIC_DEMO,FALSE
+LOC-30E4D8ED84,Assam,Kamrup Metro,DISTRICT,"Kamrup Metro, Assam",Guwahati,Kamrup Metro,SYNTHETIC_DEMO,FALSE
+LOC-FB5F87B3F4,Assam,Karbi Anglong,DISTRICT,"Karbi Anglong, Assam",Guwahati,Kamrup Metro,SYNTHETIC_DEMO,FALSE
+LOC-491899461D,Assam,Kokrajhar,DISTRICT,"Kokrajhar, Assam",Guwahati,Kamrup Metro,SYNTHETIC_DEMO,FALSE
+LOC-1739FFD0A2,Assam,Lakhimpur,DISTRICT,"Lakhimpur, Assam",Guwahati,Kamrup Metro,SYNTHETIC_DEMO,FALSE
+LOC-C4E955A75C,Assam,Majuli,DISTRICT,"Majuli, Assam",Guwahati,Kamrup Metro,SYNTHETIC_DEMO,FALSE
+LOC-88B82C45D8,Assam,Marigaon,DISTRICT,"Marigaon, Assam",Guwahati,Kamrup Metro,SYNTHETIC_DEMO,FALSE
+LOC-969825558D,Assam,Nagaon,DISTRICT,"Nagaon, Assam",Guwahati,Kamrup Metro,SYNTHETIC_DEMO,FALSE
+LOC-96D1B0C0DC,Assam,Nalbari,DISTRICT,"Nalbari, Assam",Guwahati,Kamrup Metro,SYNTHETIC_DEMO,FALSE
+LOC-81C33DD8C3,Assam,Sivasagar,DISTRICT,"Sivasagar, Assam",Guwahati,Kamrup Metro,SYNTHETIC_DEMO,FALSE
+LOC-E3365B10CE,Assam,Sonitpur,DISTRICT,"Sonitpur, Assam",Guwahati,Kamrup Metro,SYNTHETIC_DEMO,FALSE
+LOC-1D2332BFA9,Assam,South Salmara Mancachar,DISTRICT,"South Salmara Mancachar, Assam",Guwahati,Kamrup Metro,SYNTHETIC_DEMO,FALSE
+LOC-45FC841462,Assam,Tinsukia,DISTRICT,"Tinsukia, Assam",Guwahati,Kamrup Metro,SYNTHETIC_DEMO,FALSE
+LOC-B1D96B0019,Assam,Udalguri,DISTRICT,"Udalguri, Assam",Guwahati,Kamrup Metro,SYNTHETIC_DEMO,FALSE
+LOC-378330CF9A,Assam,West Karbi Anglong,DISTRICT,"West Karbi Anglong, Assam",Guwahati,Kamrup Metro,SYNTHETIC_DEMO,FALSE
+LOC-18544CEBCB,Bihar,Araria,DISTRICT,"Araria, Bihar",Patna,Patna,SYNTHETIC_DEMO,FALSE
+LOC-C8DB06B371,Bihar,Arwal,DISTRICT,"Arwal, Bihar",Patna,Patna,SYNTHETIC_DEMO,FALSE
+LOC-813F2FE1D8,Bihar,Aurangabad,DISTRICT,"Aurangabad, Bihar",Patna,Patna,SYNTHETIC_DEMO,FALSE
+LOC-D619F7E21F,Bihar,Banka,DISTRICT,"Banka, Bihar",Patna,Patna,SYNTHETIC_DEMO,FALSE
+LOC-DAE987CC4F,Bihar,Begusarai,DISTRICT,"Begusarai, Bihar",Patna,Patna,SYNTHETIC_DEMO,FALSE
+LOC-C700824702,Bihar,Bhagalpur,DISTRICT,"Bhagalpur, Bihar",Patna,Patna,SYNTHETIC_DEMO,FALSE
+LOC-0E5EEC2EDB,Bihar,Bhojpur,DISTRICT,"Bhojpur, Bihar",Patna,Patna,SYNTHETIC_DEMO,FALSE
+LOC-E7685FB09A,Bihar,Buxar,DISTRICT,"Buxar, Bihar",Patna,Patna,SYNTHETIC_DEMO,FALSE
+LOC-0EBC199325,Bihar,Darbhanga,DISTRICT,"Darbhanga, Bihar",Patna,Patna,SYNTHETIC_DEMO,FALSE
+LOC-F2852EC79F,Bihar,Gaya,DISTRICT,"Gaya, Bihar",Patna,Patna,SYNTHETIC_DEMO,FALSE
+LOC-B631889074,Bihar,Gopalganj,DISTRICT,"Gopalganj, Bihar",Patna,Patna,SYNTHETIC_DEMO,FALSE
+LOC-6BFD2EF65C,Bihar,Jamui,DISTRICT,"Jamui, Bihar",Patna,Patna,SYNTHETIC_DEMO,FALSE
+LOC-99821D8AC1,Bihar,Jehanabad,DISTRICT,"Jehanabad, Bihar",Patna,Patna,SYNTHETIC_DEMO,FALSE
+LOC-A78D397CEE,Bihar,Kaimur (Bhabua),DISTRICT,"Kaimur (Bhabua), Bihar",Patna,Patna,SYNTHETIC_DEMO,FALSE
+LOC-B7808EEBDB,Bihar,Katihar,DISTRICT,"Katihar, Bihar",Patna,Patna,SYNTHETIC_DEMO,FALSE
+LOC-AEB2F2307B,Bihar,Khagaria,DISTRICT,"Khagaria, Bihar",Patna,Patna,SYNTHETIC_DEMO,FALSE
+LOC-8011B4C628,Bihar,Kishanganj,DISTRICT,"Kishanganj, Bihar",Patna,Patna,SYNTHETIC_DEMO,FALSE
+LOC-0E179F8BBF,Bihar,Lakhisarai,DISTRICT,"Lakhisarai, Bihar",Patna,Patna,SYNTHETIC_DEMO,FALSE
+LOC-0F5F4BAD14,Bihar,Madhepura,DISTRICT,"Madhepura, Bihar",Patna,Patna,SYNTHETIC_DEMO,FALSE
+LOC-E684B389E9,Bihar,Madhubani,DISTRICT,"Madhubani, Bihar",Patna,Patna,SYNTHETIC_DEMO,FALSE
+LOC-26B20D33F1,Bihar,Munger,DISTRICT,"Munger, Bihar",Patna,Patna,SYNTHETIC_DEMO,FALSE
+LOC-4006442481,Bihar,Muzaffarpur,DISTRICT,"Muzaffarpur, Bihar",Patna,Patna,SYNTHETIC_DEMO,FALSE
+LOC-E18B9153A0,Bihar,Nalanda,DISTRICT,"Nalanda, Bihar",Patna,Patna,SYNTHETIC_DEMO,FALSE
+LOC-5ED7E0AB25,Bihar,Nawada,DISTRICT,"Nawada, Bihar",Patna,Patna,SYNTHETIC_DEMO,FALSE
+LOC-8B76647A72,Bihar,Pashchim Champaran,DISTRICT,"Pashchim Champaran, Bihar",Patna,Patna,SYNTHETIC_DEMO,FALSE
+LOC-5360AD6AD6,Bihar,Patna,DISTRICT,"Patna, Bihar",Patna,Patna,SYNTHETIC_DEMO,FALSE
+LOC-92DE69F36A,Bihar,Purbi Champaran,DISTRICT,"Purbi Champaran, Bihar",Patna,Patna,SYNTHETIC_DEMO,FALSE
+LOC-A1C551C268,Bihar,Purnia,DISTRICT,"Purnia, Bihar",Patna,Patna,SYNTHETIC_DEMO,FALSE
+LOC-CD6AF43ED4,Bihar,Rohtas,DISTRICT,"Rohtas, Bihar",Patna,Patna,SYNTHETIC_DEMO,FALSE
+LOC-6BD7C4CAEC,Bihar,Saharsa,DISTRICT,"Saharsa, Bihar",Patna,Patna,SYNTHETIC_DEMO,FALSE
+LOC-B1DDA7AB17,Bihar,Samastipur,DISTRICT,"Samastipur, Bihar",Patna,Patna,SYNTHETIC_DEMO,FALSE
+LOC-E0464B0E57,Bihar,Saran,DISTRICT,"Saran, Bihar",Patna,Patna,SYNTHETIC_DEMO,FALSE
+LOC-5399A17E3A,Bihar,Sheikhpura,DISTRICT,"Sheikhpura, Bihar",Patna,Patna,SYNTHETIC_DEMO,FALSE
+LOC-6958180F6A,Bihar,Sheohar,DISTRICT,"Sheohar, Bihar",Patna,Patna,SYNTHETIC_DEMO,FALSE
+LOC-3A84109942,Bihar,Sitamarhi,DISTRICT,"Sitamarhi, Bihar",Patna,Patna,SYNTHETIC_DEMO,FALSE
+LOC-9E2FC60C59,Bihar,Siwan,DISTRICT,"Siwan, Bihar",Patna,Patna,SYNTHETIC_DEMO,FALSE
+LOC-7CEB0A3B91,Bihar,Supaul,DISTRICT,"Supaul, Bihar",Patna,Patna,SYNTHETIC_DEMO,FALSE
+LOC-EE3B26DB09,Bihar,Vaishali,DISTRICT,"Vaishali, Bihar",Patna,Patna,SYNTHETIC_DEMO,FALSE
+LOC-D844870B41,Chandigarh,Chandigarh,DISTRICT,"Chandigarh, Chandigarh",Chandigarh,Chandigarh,SYNTHETIC_DEMO,FALSE
+LOC-B3B74D80B4,Chhattisgarh,Balod,DISTRICT,"Balod, Chhattisgarh",Raipur,Raipur,SYNTHETIC_DEMO,FALSE
+LOC-E363F1A211,Chhattisgarh,Balodabazar-Bhatapara,DISTRICT,"Balodabazar-Bhatapara, Chhattisgarh",Raipur,Raipur,SYNTHETIC_DEMO,FALSE
+LOC-25B38ACAC3,Chhattisgarh,Balrampur-Ramanujganj,DISTRICT,"Balrampur-Ramanujganj, Chhattisgarh",Raipur,Raipur,SYNTHETIC_DEMO,FALSE
+LOC-16820161C3,Chhattisgarh,Bastar,DISTRICT,"Bastar, Chhattisgarh",Raipur,Raipur,SYNTHETIC_DEMO,FALSE
+LOC-A8B7A22E0F,Chhattisgarh,Bemetara,DISTRICT,"Bemetara, Chhattisgarh",Raipur,Raipur,SYNTHETIC_DEMO,FALSE
+LOC-04AAA40ACA,Chhattisgarh,Bijapur,DISTRICT,"Bijapur, Chhattisgarh",Raipur,Raipur,SYNTHETIC_DEMO,FALSE
+LOC-6F902B8512,Chhattisgarh,Bilaspur,DISTRICT,"Bilaspur, Chhattisgarh",Raipur,Raipur,SYNTHETIC_DEMO,FALSE
+LOC-BBC996C2F8,Chhattisgarh,Dakshin Bastar Dantewada,DISTRICT,"Dakshin Bastar Dantewada, Chhattisgarh",Raipur,Raipur,SYNTHETIC_DEMO,FALSE
+LOC-5D42CB9714,Chhattisgarh,Dhamtari,DISTRICT,"Dhamtari, Chhattisgarh",Raipur,Raipur,SYNTHETIC_DEMO,FALSE
+LOC-5D44365D8A,Chhattisgarh,Durg,DISTRICT,"Durg, Chhattisgarh",Raipur,Raipur,SYNTHETIC_DEMO,FALSE
+LOC-07B896E78C,Chhattisgarh,Gariyaband,DISTRICT,"Gariyaband, Chhattisgarh",Raipur,Raipur,SYNTHETIC_DEMO,FALSE
+LOC-7FD5764EDD,Chhattisgarh,Gaurela-Pendra-Marwahi,DISTRICT,"Gaurela-Pendra-Marwahi, Chhattisgarh",Raipur,Raipur,SYNTHETIC_DEMO,FALSE
+LOC-8272733222,Chhattisgarh,Janjgir-Champa,DISTRICT,"Janjgir-Champa, Chhattisgarh",Raipur,Raipur,SYNTHETIC_DEMO,FALSE
+LOC-16ED0580EE,Chhattisgarh,Jashpur,DISTRICT,"Jashpur, Chhattisgarh",Raipur,Raipur,SYNTHETIC_DEMO,FALSE
+LOC-0A98F06D2B,Chhattisgarh,Kabeerdham,DISTRICT,"Kabeerdham, Chhattisgarh",Raipur,Raipur,SYNTHETIC_DEMO,FALSE
+LOC-0D90199A96,Chhattisgarh,Khairagarh-Chhuikhadan-Gandai,DISTRICT,"Khairagarh-Chhuikhadan-Gandai, Chhattisgarh",Raipur,Raipur,SYNTHETIC_DEMO,FALSE
+LOC-7E4E31A73E,Chhattisgarh,Kondagaon,DISTRICT,"Kondagaon, Chhattisgarh",Raipur,Raipur,SYNTHETIC_DEMO,FALSE
+LOC-55550E20C3,Chhattisgarh,Korba,DISTRICT,"Korba, Chhattisgarh",Raipur,Raipur,SYNTHETIC_DEMO,FALSE
+LOC-18372EF257,Chhattisgarh,Korea,DISTRICT,"Korea, Chhattisgarh",Raipur,Raipur,SYNTHETIC_DEMO,FALSE
+LOC-C654C5763B,Chhattisgarh,Mahasamund,DISTRICT,"Mahasamund, Chhattisgarh",Raipur,Raipur,SYNTHETIC_DEMO,FALSE
+LOC-66A7764468,Chhattisgarh,Manendragarh-Chirmiri-Bharatpur,DISTRICT,"Manendragarh-Chirmiri-Bharatpur, Chhattisgarh",Raipur,Raipur,SYNTHETIC_DEMO,FALSE
+LOC-5FDD0C9CB6,Chhattisgarh,Mohla-Manpur-Ambagarh Chouki,DISTRICT,"Mohla-Manpur-Ambagarh Chouki, Chhattisgarh",Raipur,Raipur,SYNTHETIC_DEMO,FALSE
+LOC-07697757A2,Chhattisgarh,Mungeli,DISTRICT,"Mungeli, Chhattisgarh",Raipur,Raipur,SYNTHETIC_DEMO,FALSE
+LOC-E4D78E381A,Chhattisgarh,Narayanpur,DISTRICT,"Narayanpur, Chhattisgarh",Raipur,Raipur,SYNTHETIC_DEMO,FALSE
+LOC-E24AF2B6CE,Chhattisgarh,Raigarh,DISTRICT,"Raigarh, Chhattisgarh",Raipur,Raipur,SYNTHETIC_DEMO,FALSE
+LOC-1AF8B9BE25,Chhattisgarh,Raipur,DISTRICT,"Raipur, Chhattisgarh",Raipur,Raipur,SYNTHETIC_DEMO,FALSE
+LOC-7A74986072,Chhattisgarh,Rajnandgaon,DISTRICT,"Rajnandgaon, Chhattisgarh",Raipur,Raipur,SYNTHETIC_DEMO,FALSE
+LOC-E544443BA9,Chhattisgarh,Sakti,DISTRICT,"Sakti, Chhattisgarh",Raipur,Raipur,SYNTHETIC_DEMO,FALSE
+LOC-47F36CD5C0,Chhattisgarh,Sarangarh-Bilaigarh,DISTRICT,"Sarangarh-Bilaigarh, Chhattisgarh",Raipur,Raipur,SYNTHETIC_DEMO,FALSE
+LOC-61F73935C0,Chhattisgarh,Sukma,DISTRICT,"Sukma, Chhattisgarh",Raipur,Raipur,SYNTHETIC_DEMO,FALSE
+LOC-E5CF2D71FD,Chhattisgarh,Surajpur,DISTRICT,"Surajpur, Chhattisgarh",Raipur,Raipur,SYNTHETIC_DEMO,FALSE
+LOC-28EA322E00,Chhattisgarh,Surguja,DISTRICT,"Surguja, Chhattisgarh",Raipur,Raipur,SYNTHETIC_DEMO,FALSE
+LOC-C0370BDBCD,Chhattisgarh,Uttar Bastar Kanker,DISTRICT,"Uttar Bastar Kanker, Chhattisgarh",Raipur,Raipur,SYNTHETIC_DEMO,FALSE
+LOC-57CC0E10B5,Dadra and Nagar Haveli and Daman and Diu,Dadra And Nagar Haveli,DISTRICT,"Dadra And Nagar Haveli, Dadra and Nagar Haveli and Daman and Diu",Silvassa,Dadra And Nagar Haveli,SYNTHETIC_DEMO,FALSE
+LOC-B444AF5DE0,Dadra and Nagar Haveli and Daman and Diu,Daman,DISTRICT,"Daman, Dadra and Nagar Haveli and Daman and Diu",Silvassa,Dadra And Nagar Haveli,SYNTHETIC_DEMO,FALSE
+LOC-52AC92626C,Dadra and Nagar Haveli and Daman and Diu,Diu,DISTRICT,"Diu, Dadra and Nagar Haveli and Daman and Diu",Silvassa,Dadra And Nagar Haveli,SYNTHETIC_DEMO,FALSE
+LOC-68D60DF254,Delhi,Central,DISTRICT,"Central, Delhi",Delhi,New Delhi,SYNTHETIC_DEMO,FALSE
+LOC-64E146C459,Delhi,East,DISTRICT,"East, Delhi",Delhi,New Delhi,SYNTHETIC_DEMO,FALSE
+LOC-503AD28F21,Delhi,New Delhi,DISTRICT,"New Delhi, Delhi",Delhi,New Delhi,SYNTHETIC_DEMO,FALSE
+LOC-6AF782D511,Delhi,North,DISTRICT,"North, Delhi",Delhi,New Delhi,SYNTHETIC_DEMO,FALSE
+LOC-1C49D006F6,Delhi,North East,DISTRICT,"North East, Delhi",Delhi,New Delhi,SYNTHETIC_DEMO,FALSE
+LOC-9990B7B1FD,Delhi,North West,DISTRICT,"North West, Delhi",Delhi,New Delhi,SYNTHETIC_DEMO,FALSE
+LOC-2CEF692855,Delhi,Shahdara,DISTRICT,"Shahdara, Delhi",Delhi,New Delhi,SYNTHETIC_DEMO,FALSE
+LOC-B829B8B09C,Delhi,South,DISTRICT,"South, Delhi",Delhi,New Delhi,SYNTHETIC_DEMO,FALSE
+LOC-0816224D0F,Delhi,South East,DISTRICT,"South East, Delhi",Delhi,New Delhi,SYNTHETIC_DEMO,FALSE
+LOC-2527E1F43F,Delhi,South West,DISTRICT,"South West, Delhi",Delhi,New Delhi,SYNTHETIC_DEMO,FALSE
+LOC-17E3B8052D,Delhi,West,DISTRICT,"West, Delhi",Delhi,New Delhi,SYNTHETIC_DEMO,FALSE
+LOC-FBA70E4A42,Goa,Kushavati,DISTRICT,"Kushavati, Goa",Panaji,North Goa,SYNTHETIC_DEMO,FALSE
+LOC-75E875F65E,Goa,North Goa,DISTRICT,"North Goa, Goa",Panaji,North Goa,SYNTHETIC_DEMO,FALSE
+LOC-1321F7271A,Goa,South Goa,DISTRICT,"South Goa, Goa",Panaji,North Goa,SYNTHETIC_DEMO,FALSE
+LOC-537DE6D11C,Gujarat,Ahmedabad,DISTRICT,"Ahmedabad, Gujarat",Ahmedabad,Ahmedabad,SYNTHETIC_DEMO,FALSE
+LOC-F33223D5CA,Gujarat,Amreli,DISTRICT,"Amreli, Gujarat",Ahmedabad,Ahmedabad,SYNTHETIC_DEMO,FALSE
+LOC-DAEAB91299,Gujarat,Anand,DISTRICT,"Anand, Gujarat",Ahmedabad,Ahmedabad,SYNTHETIC_DEMO,FALSE
+LOC-F28DBEF1A4,Gujarat,Arvalli,DISTRICT,"Arvalli, Gujarat",Ahmedabad,Ahmedabad,SYNTHETIC_DEMO,FALSE
+LOC-B4FB4725FD,Gujarat,Banas Kantha,DISTRICT,"Banas Kantha, Gujarat",Ahmedabad,Ahmedabad,SYNTHETIC_DEMO,FALSE
+LOC-966C0B5897,Gujarat,Bharuch,DISTRICT,"Bharuch, Gujarat",Ahmedabad,Ahmedabad,SYNTHETIC_DEMO,FALSE
+LOC-94B32EEB1F,Gujarat,Bhavnagar,DISTRICT,"Bhavnagar, Gujarat",Ahmedabad,Ahmedabad,SYNTHETIC_DEMO,FALSE
+LOC-B850A75C03,Gujarat,Botad,DISTRICT,"Botad, Gujarat",Ahmedabad,Ahmedabad,SYNTHETIC_DEMO,FALSE
+LOC-2734E346AA,Gujarat,Chhotaudepur,DISTRICT,"Chhotaudepur, Gujarat",Ahmedabad,Ahmedabad,SYNTHETIC_DEMO,FALSE
+LOC-48787AD728,Gujarat,Dahod,DISTRICT,"Dahod, Gujarat",Ahmedabad,Ahmedabad,SYNTHETIC_DEMO,FALSE
+LOC-E02166BB7D,Gujarat,Dangs,DISTRICT,"Dangs, Gujarat",Ahmedabad,Ahmedabad,SYNTHETIC_DEMO,FALSE
+LOC-CD0450E6F7,Gujarat,Devbhumi Dwarka,DISTRICT,"Devbhumi Dwarka, Gujarat",Ahmedabad,Ahmedabad,SYNTHETIC_DEMO,FALSE
+LOC-E18544008B,Gujarat,Gandhinagar,DISTRICT,"Gandhinagar, Gujarat",Ahmedabad,Ahmedabad,SYNTHETIC_DEMO,FALSE
+LOC-39FA4B095C,Gujarat,Gir Somnath,DISTRICT,"Gir Somnath, Gujarat",Ahmedabad,Ahmedabad,SYNTHETIC_DEMO,FALSE
+LOC-002DC431E8,Gujarat,Jamnagar,DISTRICT,"Jamnagar, Gujarat",Ahmedabad,Ahmedabad,SYNTHETIC_DEMO,FALSE
+LOC-7A211B6E4B,Gujarat,Junagadh,DISTRICT,"Junagadh, Gujarat",Ahmedabad,Ahmedabad,SYNTHETIC_DEMO,FALSE
+LOC-2E054DDA34,Gujarat,Kachchh,DISTRICT,"Kachchh, Gujarat",Ahmedabad,Ahmedabad,SYNTHETIC_DEMO,FALSE
+LOC-C7BDA86A9D,Gujarat,Kheda,DISTRICT,"Kheda, Gujarat",Ahmedabad,Ahmedabad,SYNTHETIC_DEMO,FALSE
+LOC-F56DEC6ADA,Gujarat,Mahesana,DISTRICT,"Mahesana, Gujarat",Ahmedabad,Ahmedabad,SYNTHETIC_DEMO,FALSE
+LOC-0A3CA405E8,Gujarat,Mahisagar,DISTRICT,"Mahisagar, Gujarat",Ahmedabad,Ahmedabad,SYNTHETIC_DEMO,FALSE
+LOC-A406B317B4,Gujarat,Morbi,DISTRICT,"Morbi, Gujarat",Ahmedabad,Ahmedabad,SYNTHETIC_DEMO,FALSE
+LOC-D52599B2FF,Gujarat,Narmada,DISTRICT,"Narmada, Gujarat",Ahmedabad,Ahmedabad,SYNTHETIC_DEMO,FALSE
+LOC-B406A57CDD,Gujarat,Navsari,DISTRICT,"Navsari, Gujarat",Ahmedabad,Ahmedabad,SYNTHETIC_DEMO,FALSE
+LOC-2098E059C1,Gujarat,Panch Mahals,DISTRICT,"Panch Mahals, Gujarat",Ahmedabad,Ahmedabad,SYNTHETIC_DEMO,FALSE
+LOC-766C1DB36B,Gujarat,Patan,DISTRICT,"Patan, Gujarat",Ahmedabad,Ahmedabad,SYNTHETIC_DEMO,FALSE
+LOC-27C33365AC,Gujarat,Porbandar,DISTRICT,"Porbandar, Gujarat",Ahmedabad,Ahmedabad,SYNTHETIC_DEMO,FALSE
+LOC-5AC26FF013,Gujarat,Rajkot,DISTRICT,"Rajkot, Gujarat",Ahmedabad,Ahmedabad,SYNTHETIC_DEMO,FALSE
+LOC-8B2489A540,Gujarat,Sabarkantha,DISTRICT,"Sabarkantha, Gujarat",Ahmedabad,Ahmedabad,SYNTHETIC_DEMO,FALSE
+LOC-9F933ED133,Gujarat,Surat,DISTRICT,"Surat, Gujarat",Ahmedabad,Ahmedabad,SYNTHETIC_DEMO,FALSE
+LOC-0FBF914BD4,Gujarat,Surendranagar,DISTRICT,"Surendranagar, Gujarat",Ahmedabad,Ahmedabad,SYNTHETIC_DEMO,FALSE
+LOC-EA7CAD0AC6,Gujarat,Tapi,DISTRICT,"Tapi, Gujarat",Ahmedabad,Ahmedabad,SYNTHETIC_DEMO,FALSE
+LOC-112794D108,Gujarat,Vadodara,DISTRICT,"Vadodara, Gujarat",Ahmedabad,Ahmedabad,SYNTHETIC_DEMO,FALSE
+LOC-46EAC5C325,Gujarat,Valsad,DISTRICT,"Valsad, Gujarat",Ahmedabad,Ahmedabad,SYNTHETIC_DEMO,FALSE
+LOC-FDC53A175E,Gujarat,Vav-Tharad,DISTRICT,"Vav-Tharad, Gujarat",Ahmedabad,Ahmedabad,SYNTHETIC_DEMO,FALSE
+LOC-DAC165FAAE,Haryana,Ambala,DISTRICT,"Ambala, Haryana",Gurugram,Gurugram,SYNTHETIC_DEMO,FALSE
+LOC-3D603DA0C6,Haryana,Bhiwani,DISTRICT,"Bhiwani, Haryana",Gurugram,Gurugram,SYNTHETIC_DEMO,FALSE
+LOC-C741DC7023,Haryana,Charkhi Dadri,DISTRICT,"Charkhi Dadri, Haryana",Gurugram,Gurugram,SYNTHETIC_DEMO,FALSE
+LOC-4728827CCF,Haryana,Faridabad,DISTRICT,"Faridabad, Haryana",Gurugram,Gurugram,SYNTHETIC_DEMO,FALSE
+LOC-993D069D4A,Haryana,Fatehabad,DISTRICT,"Fatehabad, Haryana",Gurugram,Gurugram,SYNTHETIC_DEMO,FALSE
+LOC-CE8D12D793,Haryana,Gurugram,DISTRICT,"Gurugram, Haryana",Gurugram,Gurugram,SYNTHETIC_DEMO,FALSE
+LOC-79E560BFFF,Haryana,Hansi,DISTRICT,"Hansi, Haryana",Gurugram,Gurugram,SYNTHETIC_DEMO,FALSE
+LOC-64E025EBEE,Haryana,Hisar,DISTRICT,"Hisar, Haryana",Gurugram,Gurugram,SYNTHETIC_DEMO,FALSE
+LOC-A4F939839C,Haryana,Jhajjar,DISTRICT,"Jhajjar, Haryana",Gurugram,Gurugram,SYNTHETIC_DEMO,FALSE
+LOC-039E8EA44B,Haryana,Jind,DISTRICT,"Jind, Haryana",Gurugram,Gurugram,SYNTHETIC_DEMO,FALSE
+LOC-8C8AF365BE,Haryana,Kaithal,DISTRICT,"Kaithal, Haryana",Gurugram,Gurugram,SYNTHETIC_DEMO,FALSE
+LOC-983975E043,Haryana,Karnal,DISTRICT,"Karnal, Haryana",Gurugram,Gurugram,SYNTHETIC_DEMO,FALSE
+LOC-78D0386871,Haryana,Kurukshetra,DISTRICT,"Kurukshetra, Haryana",Gurugram,Gurugram,SYNTHETIC_DEMO,FALSE
+LOC-B32282E06B,Haryana,Mahendragarh,DISTRICT,"Mahendragarh, Haryana",Gurugram,Gurugram,SYNTHETIC_DEMO,FALSE
+LOC-DD694F030E,Haryana,Nuh,DISTRICT,"Nuh, Haryana",Gurugram,Gurugram,SYNTHETIC_DEMO,FALSE
+LOC-C94A6EA5E5,Haryana,Palwal,DISTRICT,"Palwal, Haryana",Gurugram,Gurugram,SYNTHETIC_DEMO,FALSE
+LOC-ED9195B8AF,Haryana,Panchkula,DISTRICT,"Panchkula, Haryana",Gurugram,Gurugram,SYNTHETIC_DEMO,FALSE
+LOC-538CE55B79,Haryana,Panipat,DISTRICT,"Panipat, Haryana",Gurugram,Gurugram,SYNTHETIC_DEMO,FALSE
+LOC-093B474689,Haryana,Rewari,DISTRICT,"Rewari, Haryana",Gurugram,Gurugram,SYNTHETIC_DEMO,FALSE
+LOC-94E74E8189,Haryana,Rohtak,DISTRICT,"Rohtak, Haryana",Gurugram,Gurugram,SYNTHETIC_DEMO,FALSE
+LOC-7B71E4E7CF,Haryana,Sirsa,DISTRICT,"Sirsa, Haryana",Gurugram,Gurugram,SYNTHETIC_DEMO,FALSE
+LOC-248109CB1B,Haryana,Sonipat,DISTRICT,"Sonipat, Haryana",Gurugram,Gurugram,SYNTHETIC_DEMO,FALSE
+LOC-1E0C3E3538,Haryana,Yamunanagar,DISTRICT,"Yamunanagar, Haryana",Gurugram,Gurugram,SYNTHETIC_DEMO,FALSE
+LOC-F25B0E33F3,Himachal Pradesh,Bilaspur,DISTRICT,"Bilaspur, Himachal Pradesh",Shimla,Shimla,SYNTHETIC_DEMO,FALSE
+LOC-4AA2DF7A42,Himachal Pradesh,Chamba,DISTRICT,"Chamba, Himachal Pradesh",Shimla,Shimla,SYNTHETIC_DEMO,FALSE
+LOC-5074C41FBA,Himachal Pradesh,Hamirpur,DISTRICT,"Hamirpur, Himachal Pradesh",Shimla,Shimla,SYNTHETIC_DEMO,FALSE
+LOC-C527EC6A74,Himachal Pradesh,Kangra,DISTRICT,"Kangra, Himachal Pradesh",Shimla,Shimla,SYNTHETIC_DEMO,FALSE
+LOC-3DB278A4D5,Himachal Pradesh,Kinnaur,DISTRICT,"Kinnaur, Himachal Pradesh",Shimla,Shimla,SYNTHETIC_DEMO,FALSE
+LOC-BDFA13FCE3,Himachal Pradesh,Kullu,DISTRICT,"Kullu, Himachal Pradesh",Shimla,Shimla,SYNTHETIC_DEMO,FALSE
+LOC-97EE01B9C5,Himachal Pradesh,Lahaul And Spiti,DISTRICT,"Lahaul And Spiti, Himachal Pradesh",Shimla,Shimla,SYNTHETIC_DEMO,FALSE
+LOC-6384BBFA1A,Himachal Pradesh,Mandi,DISTRICT,"Mandi, Himachal Pradesh",Shimla,Shimla,SYNTHETIC_DEMO,FALSE
+LOC-8F3EE981F7,Himachal Pradesh,Shimla,DISTRICT,"Shimla, Himachal Pradesh",Shimla,Shimla,SYNTHETIC_DEMO,FALSE
+LOC-9A439551F7,Himachal Pradesh,Sirmaur,DISTRICT,"Sirmaur, Himachal Pradesh",Shimla,Shimla,SYNTHETIC_DEMO,FALSE
+LOC-2139466C78,Himachal Pradesh,Solan,DISTRICT,"Solan, Himachal Pradesh",Shimla,Shimla,SYNTHETIC_DEMO,FALSE
+LOC-7E40A01190,Himachal Pradesh,Una,DISTRICT,"Una, Himachal Pradesh",Shimla,Shimla,SYNTHETIC_DEMO,FALSE
+LOC-59FD0CF40F,Jammu and Kashmir,Anantnag,DISTRICT,"Anantnag, Jammu and Kashmir",Jammu,Jammu,SYNTHETIC_DEMO,FALSE
+LOC-3CAC5BD9AA,Jammu and Kashmir,Bandipora,DISTRICT,"Bandipora, Jammu and Kashmir",Jammu,Jammu,SYNTHETIC_DEMO,FALSE
+LOC-9A829B0DCB,Jammu and Kashmir,Baramulla,DISTRICT,"Baramulla, Jammu and Kashmir",Jammu,Jammu,SYNTHETIC_DEMO,FALSE
+LOC-668FD8A108,Jammu and Kashmir,Budgam,DISTRICT,"Budgam, Jammu and Kashmir",Jammu,Jammu,SYNTHETIC_DEMO,FALSE
+LOC-7A6F27E5D5,Jammu and Kashmir,Doda,DISTRICT,"Doda, Jammu and Kashmir",Jammu,Jammu,SYNTHETIC_DEMO,FALSE
+LOC-241173CB68,Jammu and Kashmir,Ganderbal,DISTRICT,"Ganderbal, Jammu and Kashmir",Jammu,Jammu,SYNTHETIC_DEMO,FALSE
+LOC-A1E7D9088B,Jammu and Kashmir,Jammu,DISTRICT,"Jammu, Jammu and Kashmir",Jammu,Jammu,SYNTHETIC_DEMO,FALSE
+LOC-00B2DD9019,Jammu and Kashmir,Kathua,DISTRICT,"Kathua, Jammu and Kashmir",Jammu,Jammu,SYNTHETIC_DEMO,FALSE
+LOC-40CD9AFEB1,Jammu and Kashmir,Kishtwar,DISTRICT,"Kishtwar, Jammu and Kashmir",Jammu,Jammu,SYNTHETIC_DEMO,FALSE
+LOC-FCB3D9E07D,Jammu and Kashmir,Kulgam,DISTRICT,"Kulgam, Jammu and Kashmir",Jammu,Jammu,SYNTHETIC_DEMO,FALSE
+LOC-CF2E346808,Jammu and Kashmir,Kupwara,DISTRICT,"Kupwara, Jammu and Kashmir",Jammu,Jammu,SYNTHETIC_DEMO,FALSE
+LOC-A2D294BAA7,Jammu and Kashmir,Poonch,DISTRICT,"Poonch, Jammu and Kashmir",Jammu,Jammu,SYNTHETIC_DEMO,FALSE
+LOC-B8850E3DB5,Jammu and Kashmir,Pulwama,DISTRICT,"Pulwama, Jammu and Kashmir",Jammu,Jammu,SYNTHETIC_DEMO,FALSE
+LOC-76E7E9F6FE,Jammu and Kashmir,Rajouri,DISTRICT,"Rajouri, Jammu and Kashmir",Jammu,Jammu,SYNTHETIC_DEMO,FALSE
+LOC-4546393C8C,Jammu and Kashmir,Ramban,DISTRICT,"Ramban, Jammu and Kashmir",Jammu,Jammu,SYNTHETIC_DEMO,FALSE
+LOC-97F92301F4,Jammu and Kashmir,Reasi,DISTRICT,"Reasi, Jammu and Kashmir",Jammu,Jammu,SYNTHETIC_DEMO,FALSE
+LOC-47F78709BD,Jammu and Kashmir,Samba,DISTRICT,"Samba, Jammu and Kashmir",Jammu,Jammu,SYNTHETIC_DEMO,FALSE
+LOC-971DEC7C00,Jammu and Kashmir,Shopian,DISTRICT,"Shopian, Jammu and Kashmir",Jammu,Jammu,SYNTHETIC_DEMO,FALSE
+LOC-F591ABFB49,Jammu and Kashmir,Srinagar,DISTRICT,"Srinagar, Jammu and Kashmir",Jammu,Jammu,SYNTHETIC_DEMO,FALSE
+LOC-92D7A1F408,Jammu and Kashmir,Udhampur,DISTRICT,"Udhampur, Jammu and Kashmir",Jammu,Jammu,SYNTHETIC_DEMO,FALSE
+LOC-352324A4C4,Jharkhand,Bokaro,DISTRICT,"Bokaro, Jharkhand",Ranchi,Ranchi,SYNTHETIC_DEMO,FALSE
+LOC-69B480E848,Jharkhand,Chatra,DISTRICT,"Chatra, Jharkhand",Ranchi,Ranchi,SYNTHETIC_DEMO,FALSE
+LOC-AD940EDC40,Jharkhand,Deoghar,DISTRICT,"Deoghar, Jharkhand",Ranchi,Ranchi,SYNTHETIC_DEMO,FALSE
+LOC-9284CB722E,Jharkhand,Dhanbad,DISTRICT,"Dhanbad, Jharkhand",Ranchi,Ranchi,SYNTHETIC_DEMO,FALSE
+LOC-4E58E1BC59,Jharkhand,Dumka,DISTRICT,"Dumka, Jharkhand",Ranchi,Ranchi,SYNTHETIC_DEMO,FALSE
+LOC-2C5394E89A,Jharkhand,East Singhbum,DISTRICT,"East Singhbum, Jharkhand",Ranchi,Ranchi,SYNTHETIC_DEMO,FALSE
+LOC-E37AA11EB1,Jharkhand,Garhwa,DISTRICT,"Garhwa, Jharkhand",Ranchi,Ranchi,SYNTHETIC_DEMO,FALSE
+LOC-349E400756,Jharkhand,Giridih,DISTRICT,"Giridih, Jharkhand",Ranchi,Ranchi,SYNTHETIC_DEMO,FALSE
+LOC-D580B62307,Jharkhand,Godda,DISTRICT,"Godda, Jharkhand",Ranchi,Ranchi,SYNTHETIC_DEMO,FALSE
+LOC-63F2BC6E8B,Jharkhand,Gumla,DISTRICT,"Gumla, Jharkhand",Ranchi,Ranchi,SYNTHETIC_DEMO,FALSE
+LOC-DD457227D5,Jharkhand,Hazaribagh,DISTRICT,"Hazaribagh, Jharkhand",Ranchi,Ranchi,SYNTHETIC_DEMO,FALSE
+LOC-8BEA891F49,Jharkhand,Jamtara,DISTRICT,"Jamtara, Jharkhand",Ranchi,Ranchi,SYNTHETIC_DEMO,FALSE
+LOC-BEFB250F21,Jharkhand,Khunti,DISTRICT,"Khunti, Jharkhand",Ranchi,Ranchi,SYNTHETIC_DEMO,FALSE
+LOC-314AA12495,Jharkhand,Koderma,DISTRICT,"Koderma, Jharkhand",Ranchi,Ranchi,SYNTHETIC_DEMO,FALSE
+LOC-2ECD35AC3C,Jharkhand,Latehar,DISTRICT,"Latehar, Jharkhand",Ranchi,Ranchi,SYNTHETIC_DEMO,FALSE
+LOC-7B1F3778AA,Jharkhand,Lohardaga,DISTRICT,"Lohardaga, Jharkhand",Ranchi,Ranchi,SYNTHETIC_DEMO,FALSE
+LOC-89E2CE9196,Jharkhand,Pakur,DISTRICT,"Pakur, Jharkhand",Ranchi,Ranchi,SYNTHETIC_DEMO,FALSE
+LOC-D39DB298DE,Jharkhand,Palamu,DISTRICT,"Palamu, Jharkhand",Ranchi,Ranchi,SYNTHETIC_DEMO,FALSE
+LOC-022A5058B5,Jharkhand,Ramgarh,DISTRICT,"Ramgarh, Jharkhand",Ranchi,Ranchi,SYNTHETIC_DEMO,FALSE
+LOC-815C678053,Jharkhand,Ranchi,DISTRICT,"Ranchi, Jharkhand",Ranchi,Ranchi,SYNTHETIC_DEMO,FALSE
+LOC-913862CA0B,Jharkhand,Sahebganj,DISTRICT,"Sahebganj, Jharkhand",Ranchi,Ranchi,SYNTHETIC_DEMO,FALSE
+LOC-7CB7608157,Jharkhand,Saraikela Kharsawan,DISTRICT,"Saraikela Kharsawan, Jharkhand",Ranchi,Ranchi,SYNTHETIC_DEMO,FALSE
+LOC-0FD7303152,Jharkhand,Simdega,DISTRICT,"Simdega, Jharkhand",Ranchi,Ranchi,SYNTHETIC_DEMO,FALSE
+LOC-FE195B721E,Jharkhand,West Singhbhum,DISTRICT,"West Singhbhum, Jharkhand",Ranchi,Ranchi,SYNTHETIC_DEMO,FALSE
+LOC-105E367E91,Karnataka,Bagalkote,DISTRICT,"Bagalkote, Karnataka",Bengaluru,Bengaluru Urban,SYNTHETIC_DEMO,FALSE
+LOC-0A3587BB2E,Karnataka,Ballari,DISTRICT,"Ballari, Karnataka",Bengaluru,Bengaluru Urban,SYNTHETIC_DEMO,FALSE
+LOC-77CD97A115,Karnataka,Belagavi,DISTRICT,"Belagavi, Karnataka",Bengaluru,Bengaluru Urban,SYNTHETIC_DEMO,FALSE
+LOC-0E84682796,Karnataka,Bengaluru Rural,DISTRICT,"Bengaluru Rural, Karnataka",Bengaluru,Bengaluru Urban,SYNTHETIC_DEMO,FALSE
+LOC-60E2FC2254,Karnataka,Bengaluru South,DISTRICT,"Bengaluru South, Karnataka",Bengaluru,Bengaluru Urban,SYNTHETIC_DEMO,FALSE
+LOC-43EACD016E,Karnataka,Bengaluru Urban,DISTRICT,"Bengaluru Urban, Karnataka",Bengaluru,Bengaluru Urban,SYNTHETIC_DEMO,FALSE
+LOC-87CD79D25C,Karnataka,Bidar,DISTRICT,"Bidar, Karnataka",Bengaluru,Bengaluru Urban,SYNTHETIC_DEMO,FALSE
+LOC-8EB22DB85E,Karnataka,Chamarajanagar,DISTRICT,"Chamarajanagar, Karnataka",Bengaluru,Bengaluru Urban,SYNTHETIC_DEMO,FALSE
+LOC-3CDA0AA7F7,Karnataka,Chikkaballapura,DISTRICT,"Chikkaballapura, Karnataka",Bengaluru,Bengaluru Urban,SYNTHETIC_DEMO,FALSE
+LOC-85B7800C35,Karnataka,Chikkamagaluru,DISTRICT,"Chikkamagaluru, Karnataka",Bengaluru,Bengaluru Urban,SYNTHETIC_DEMO,FALSE
+LOC-79C20E7FBD,Karnataka,Chitradurga,DISTRICT,"Chitradurga, Karnataka",Bengaluru,Bengaluru Urban,SYNTHETIC_DEMO,FALSE
+LOC-67576C4EFB,Karnataka,Dakshina Kannada,DISTRICT,"Dakshina Kannada, Karnataka",Bengaluru,Bengaluru Urban,SYNTHETIC_DEMO,FALSE
+LOC-B370747027,Karnataka,Davanagere,DISTRICT,"Davanagere, Karnataka",Bengaluru,Bengaluru Urban,SYNTHETIC_DEMO,FALSE
+LOC-E18E0F8FAB,Karnataka,Dharwad,DISTRICT,"Dharwad, Karnataka",Bengaluru,Bengaluru Urban,SYNTHETIC_DEMO,FALSE
+LOC-B4ADB663C8,Karnataka,Gadag,DISTRICT,"Gadag, Karnataka",Bengaluru,Bengaluru Urban,SYNTHETIC_DEMO,FALSE
+LOC-53B08A414B,Karnataka,Hassan,DISTRICT,"Hassan, Karnataka",Bengaluru,Bengaluru Urban,SYNTHETIC_DEMO,FALSE
+LOC-D969F19735,Karnataka,Haveri,DISTRICT,"Haveri, Karnataka",Bengaluru,Bengaluru Urban,SYNTHETIC_DEMO,FALSE
+LOC-ADF2A10D21,Karnataka,Kalaburagi,DISTRICT,"Kalaburagi, Karnataka",Bengaluru,Bengaluru Urban,SYNTHETIC_DEMO,FALSE
+LOC-443D077077,Karnataka,Kodagu,DISTRICT,"Kodagu, Karnataka",Bengaluru,Bengaluru Urban,SYNTHETIC_DEMO,FALSE
+LOC-65F3C06017,Karnataka,Kolar,DISTRICT,"Kolar, Karnataka",Bengaluru,Bengaluru Urban,SYNTHETIC_DEMO,FALSE
+LOC-5A91966D45,Karnataka,Koppal,DISTRICT,"Koppal, Karnataka",Bengaluru,Bengaluru Urban,SYNTHETIC_DEMO,FALSE
+LOC-3631CA6E57,Karnataka,Mandya,DISTRICT,"Mandya, Karnataka",Bengaluru,Bengaluru Urban,SYNTHETIC_DEMO,FALSE
+LOC-66F1A39184,Karnataka,Mysuru,DISTRICT,"Mysuru, Karnataka",Bengaluru,Bengaluru Urban,SYNTHETIC_DEMO,FALSE
+LOC-EEBB3C9478,Karnataka,Raichur,DISTRICT,"Raichur, Karnataka",Bengaluru,Bengaluru Urban,SYNTHETIC_DEMO,FALSE
+LOC-BC9F1C6647,Karnataka,Shivamogga,DISTRICT,"Shivamogga, Karnataka",Bengaluru,Bengaluru Urban,SYNTHETIC_DEMO,FALSE
+LOC-E2A38368C0,Karnataka,Tumakuru,DISTRICT,"Tumakuru, Karnataka",Bengaluru,Bengaluru Urban,SYNTHETIC_DEMO,FALSE
+LOC-D8C9E8A741,Karnataka,Udupi,DISTRICT,"Udupi, Karnataka",Bengaluru,Bengaluru Urban,SYNTHETIC_DEMO,FALSE
+LOC-F5B516C119,Karnataka,Vijayapura,DISTRICT,"Vijayapura, Karnataka",Bengaluru,Bengaluru Urban,SYNTHETIC_DEMO,FALSE
+LOC-0D877BCB3E,Karnataka,Yadgir,DISTRICT,"Yadgir, Karnataka",Bengaluru,Bengaluru Urban,SYNTHETIC_DEMO,FALSE
+LOC-D4E55239F8,Kerala,Alappuzha,DISTRICT,"Alappuzha, Kerala",Kochi,Ernakulam,SYNTHETIC_DEMO,FALSE
+LOC-FFC840B47F,Kerala,Ernakulam,DISTRICT,"Ernakulam, Kerala",Kochi,Ernakulam,SYNTHETIC_DEMO,FALSE
+LOC-D29455B615,Kerala,Idukki,DISTRICT,"Idukki, Kerala",Kochi,Ernakulam,SYNTHETIC_DEMO,FALSE
+LOC-CF201DF533,Kerala,Kannur,DISTRICT,"Kannur, Kerala",Kochi,Ernakulam,SYNTHETIC_DEMO,FALSE
+LOC-BF447834DD,Kerala,Kasaragod,DISTRICT,"Kasaragod, Kerala",Kochi,Ernakulam,SYNTHETIC_DEMO,FALSE
+LOC-D58772B08E,Kerala,Kollam,DISTRICT,"Kollam, Kerala",Kochi,Ernakulam,SYNTHETIC_DEMO,FALSE
+LOC-530BD93861,Kerala,Kottayam,DISTRICT,"Kottayam, Kerala",Kochi,Ernakulam,SYNTHETIC_DEMO,FALSE
+LOC-BAD366DCEA,Kerala,Kozhikode,DISTRICT,"Kozhikode, Kerala",Kochi,Ernakulam,SYNTHETIC_DEMO,FALSE
+LOC-245372AB2F,Kerala,Malappuram,DISTRICT,"Malappuram, Kerala",Kochi,Ernakulam,SYNTHETIC_DEMO,FALSE
+LOC-837FC1D36A,Kerala,Palakkad,DISTRICT,"Palakkad, Kerala",Kochi,Ernakulam,SYNTHETIC_DEMO,FALSE
+LOC-7A49473D39,Kerala,Pathanamthitta,DISTRICT,"Pathanamthitta, Kerala",Kochi,Ernakulam,SYNTHETIC_DEMO,FALSE
+LOC-F15477CC43,Kerala,Thiruvananthapuram,DISTRICT,"Thiruvananthapuram, Kerala",Kochi,Ernakulam,SYNTHETIC_DEMO,FALSE
+LOC-CB1D8901C8,Kerala,Thrissur,DISTRICT,"Thrissur, Kerala",Kochi,Ernakulam,SYNTHETIC_DEMO,FALSE
+LOC-437C637BFF,Kerala,Wayanad,DISTRICT,"Wayanad, Kerala",Kochi,Ernakulam,SYNTHETIC_DEMO,FALSE
+LOC-8DF23A2205,Ladakh,Kargil,DISTRICT,"Kargil, Ladakh",Leh,Leh Ladakh,SYNTHETIC_DEMO,FALSE
+LOC-8CFE6AFC95,Ladakh,Leh Ladakh,DISTRICT,"Leh Ladakh, Ladakh",Leh,Leh Ladakh,SYNTHETIC_DEMO,FALSE
+LOC-ADD1E862EC,Lakshadweep,Lakshadweep District,DISTRICT,"Lakshadweep District, Lakshadweep",Kavaratti,Lakshadweep District,SYNTHETIC_DEMO,FALSE
+LOC-E427178CDA,Madhya Pradesh,Agar-Malwa,DISTRICT,"Agar-Malwa, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-D95E7224E0,Madhya Pradesh,Alirajpur,DISTRICT,"Alirajpur, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-51C4662468,Madhya Pradesh,Anuppur,DISTRICT,"Anuppur, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-FF22725390,Madhya Pradesh,Ashoknagar,DISTRICT,"Ashoknagar, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-CB11BF72AA,Madhya Pradesh,Balaghat,DISTRICT,"Balaghat, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-C102C54343,Madhya Pradesh,Barwani,DISTRICT,"Barwani, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-5C5C6ADDA2,Madhya Pradesh,Betul,DISTRICT,"Betul, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-C27EFCF574,Madhya Pradesh,Bhind,DISTRICT,"Bhind, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-12EC47D8C7,Madhya Pradesh,Bhopal,DISTRICT,"Bhopal, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-090C6BF39E,Madhya Pradesh,Burhanpur,DISTRICT,"Burhanpur, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-4F733D70DA,Madhya Pradesh,Chhatarpur,DISTRICT,"Chhatarpur, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-5F03BC861C,Madhya Pradesh,Chhindwara,DISTRICT,"Chhindwara, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-5DA1286909,Madhya Pradesh,Damoh,DISTRICT,"Damoh, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-568FC67F02,Madhya Pradesh,Datia,DISTRICT,"Datia, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-35E7A4D505,Madhya Pradesh,Dewas,DISTRICT,"Dewas, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-7805190412,Madhya Pradesh,Dhar,DISTRICT,"Dhar, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-B559FA6C74,Madhya Pradesh,Dindori,DISTRICT,"Dindori, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-7501D58C00,Madhya Pradesh,Guna,DISTRICT,"Guna, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-EEDBA869BE,Madhya Pradesh,Gwalior,DISTRICT,"Gwalior, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-70A7C1BBFE,Madhya Pradesh,Harda,DISTRICT,"Harda, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-9FE8777920,Madhya Pradesh,Indore,DISTRICT,"Indore, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-7A00C0CF9C,Madhya Pradesh,Jabalpur,DISTRICT,"Jabalpur, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-8160A22A6A,Madhya Pradesh,Jhabua,DISTRICT,"Jhabua, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-FBE4B881EE,Madhya Pradesh,Katni,DISTRICT,"Katni, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-9CFD5C33BD,Madhya Pradesh,Khandwa,DISTRICT,"Khandwa, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-A8B762A1C8,Madhya Pradesh,Khargone,DISTRICT,"Khargone, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-3BDF131D18,Madhya Pradesh,Mandla,DISTRICT,"Mandla, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-9026E5426E,Madhya Pradesh,Mandsaur,DISTRICT,"Mandsaur, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-3D7D9BF739,Madhya Pradesh,Morena,DISTRICT,"Morena, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-4DE084AA8A,Madhya Pradesh,Narmadapuram,DISTRICT,"Narmadapuram, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-33B707F132,Madhya Pradesh,Neemuch,DISTRICT,"Neemuch, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-7D563D9B69,Madhya Pradesh,Niwari,DISTRICT,"Niwari, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-FABC0E536A,Madhya Pradesh,Panna,DISTRICT,"Panna, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-3AF6966401,Madhya Pradesh,Raisen,DISTRICT,"Raisen, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-E1436DDFB8,Madhya Pradesh,Rajgarh,DISTRICT,"Rajgarh, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-57DC885B3A,Madhya Pradesh,Ratlam,DISTRICT,"Ratlam, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-A090DB586C,Madhya Pradesh,Rewa,DISTRICT,"Rewa, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-3B27B6DCBA,Madhya Pradesh,Sagar,DISTRICT,"Sagar, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-C9656ED427,Madhya Pradesh,Satna,DISTRICT,"Satna, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-087BCF5CF4,Madhya Pradesh,Sehore,DISTRICT,"Sehore, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-F91BEEC7E9,Madhya Pradesh,Seoni,DISTRICT,"Seoni, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-5EC610595D,Madhya Pradesh,Shahdol,DISTRICT,"Shahdol, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-56B98B2AD6,Madhya Pradesh,Shajapur,DISTRICT,"Shajapur, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-8026284EA8,Madhya Pradesh,Sheopur,DISTRICT,"Sheopur, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-A273B5C6BE,Madhya Pradesh,Shivpuri,DISTRICT,"Shivpuri, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-043235B5D9,Madhya Pradesh,Sidhi,DISTRICT,"Sidhi, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-FABB73984E,Madhya Pradesh,Singrauli,DISTRICT,"Singrauli, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-66A14769C1,Madhya Pradesh,Tikamgarh,DISTRICT,"Tikamgarh, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-43506F9842,Madhya Pradesh,Ujjain,DISTRICT,"Ujjain, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-481CF08061,Madhya Pradesh,Umaria,DISTRICT,"Umaria, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-411DAD0291,Madhya Pradesh,Vidisha,DISTRICT,"Vidisha, Madhya Pradesh",Indore,Indore,SYNTHETIC_DEMO,FALSE
+LOC-B436D68C43,Maharashtra,Ahilyanagar,DISTRICT,"Ahilyanagar, Maharashtra",Mumbai,Mumbai,SYNTHETIC_DEMO,FALSE
+LOC-BACA44B853,Maharashtra,Akola,DISTRICT,"Akola, Maharashtra",Mumbai,Mumbai,SYNTHETIC_DEMO,FALSE
+LOC-BB7A2ADD78,Maharashtra,Amravati,DISTRICT,"Amravati, Maharashtra",Mumbai,Mumbai,SYNTHETIC_DEMO,FALSE
+LOC-D7B6821936,Maharashtra,Beed,DISTRICT,"Beed, Maharashtra",Mumbai,Mumbai,SYNTHETIC_DEMO,FALSE
+LOC-BB79ACE8DA,Maharashtra,Bhandara,DISTRICT,"Bhandara, Maharashtra",Mumbai,Mumbai,SYNTHETIC_DEMO,FALSE
+LOC-57560560F2,Maharashtra,Buldhana,DISTRICT,"Buldhana, Maharashtra",Mumbai,Mumbai,SYNTHETIC_DEMO,FALSE
+LOC-F66AE735B5,Maharashtra,Chandrapur,DISTRICT,"Chandrapur, Maharashtra",Mumbai,Mumbai,SYNTHETIC_DEMO,FALSE
+LOC-197B8A323A,Maharashtra,Chhatrapati Sambhajinagar,DISTRICT,"Chhatrapati Sambhajinagar, Maharashtra",Mumbai,Mumbai,SYNTHETIC_DEMO,FALSE
+LOC-5876881FD0,Maharashtra,Dharashiv,DISTRICT,"Dharashiv, Maharashtra",Mumbai,Mumbai,SYNTHETIC_DEMO,FALSE
+LOC-C764A03E1D,Maharashtra,Dhule,DISTRICT,"Dhule, Maharashtra",Mumbai,Mumbai,SYNTHETIC_DEMO,FALSE
+LOC-15ABD1D919,Maharashtra,Gadchiroli,DISTRICT,"Gadchiroli, Maharashtra",Mumbai,Mumbai,SYNTHETIC_DEMO,FALSE
+LOC-7CCD2D6E61,Maharashtra,Gondia,DISTRICT,"Gondia, Maharashtra",Mumbai,Mumbai,SYNTHETIC_DEMO,FALSE
+LOC-F2C29B796D,Maharashtra,Hingoli,DISTRICT,"Hingoli, Maharashtra",Mumbai,Mumbai,SYNTHETIC_DEMO,FALSE
+LOC-9604BDB785,Maharashtra,Jalgaon,DISTRICT,"Jalgaon, Maharashtra",Mumbai,Mumbai,SYNTHETIC_DEMO,FALSE
+LOC-0F985F8319,Maharashtra,Jalna,DISTRICT,"Jalna, Maharashtra",Mumbai,Mumbai,SYNTHETIC_DEMO,FALSE
+LOC-AA41E89A9F,Maharashtra,Kolhapur,DISTRICT,"Kolhapur, Maharashtra",Mumbai,Mumbai,SYNTHETIC_DEMO,FALSE
+LOC-9A286ABF98,Maharashtra,Latur,DISTRICT,"Latur, Maharashtra",Mumbai,Mumbai,SYNTHETIC_DEMO,FALSE
+LOC-4B9FAF28FA,Maharashtra,Mumbai,DISTRICT,"Mumbai, Maharashtra",Mumbai,Mumbai,SYNTHETIC_DEMO,FALSE
+LOC-BD3E48FBD6,Maharashtra,Mumbai Suburban,DISTRICT,"Mumbai Suburban, Maharashtra",Mumbai,Mumbai,SYNTHETIC_DEMO,FALSE
+LOC-36E5643D5A,Maharashtra,Nagpur,DISTRICT,"Nagpur, Maharashtra",Mumbai,Mumbai,SYNTHETIC_DEMO,FALSE
+LOC-221C94B503,Maharashtra,Nanded,DISTRICT,"Nanded, Maharashtra",Mumbai,Mumbai,SYNTHETIC_DEMO,FALSE
+LOC-805D44A0C6,Maharashtra,Nandurbar,DISTRICT,"Nandurbar, Maharashtra",Mumbai,Mumbai,SYNTHETIC_DEMO,FALSE
+LOC-AD6B3F3A69,Maharashtra,Nashik,DISTRICT,"Nashik, Maharashtra",Mumbai,Mumbai,SYNTHETIC_DEMO,FALSE
+LOC-415561A95E,Maharashtra,Palghar,DISTRICT,"Palghar, Maharashtra",Mumbai,Mumbai,SYNTHETIC_DEMO,FALSE
+LOC-AE3B7B213B,Maharashtra,Parbhani,DISTRICT,"Parbhani, Maharashtra",Mumbai,Mumbai,SYNTHETIC_DEMO,FALSE
+LOC-B8F6DEFB70,Maharashtra,Pune,DISTRICT,"Pune, Maharashtra",Mumbai,Mumbai,SYNTHETIC_DEMO,FALSE
+LOC-B05265EA9B,Maharashtra,Raigad,DISTRICT,"Raigad, Maharashtra",Mumbai,Mumbai,SYNTHETIC_DEMO,FALSE
+LOC-F610EDA277,Maharashtra,Ratnagiri,DISTRICT,"Ratnagiri, Maharashtra",Mumbai,Mumbai,SYNTHETIC_DEMO,FALSE
+LOC-D33B8453EA,Maharashtra,Sangli,DISTRICT,"Sangli, Maharashtra",Mumbai,Mumbai,SYNTHETIC_DEMO,FALSE
+LOC-184D9E3568,Maharashtra,Satara,DISTRICT,"Satara, Maharashtra",Mumbai,Mumbai,SYNTHETIC_DEMO,FALSE
+LOC-35C08702A7,Maharashtra,Sindhudurg,DISTRICT,"Sindhudurg, Maharashtra",Mumbai,Mumbai,SYNTHETIC_DEMO,FALSE
+LOC-C40E73C170,Maharashtra,Solapur,DISTRICT,"Solapur, Maharashtra",Mumbai,Mumbai,SYNTHETIC_DEMO,FALSE
+LOC-3A20085469,Maharashtra,Thane,DISTRICT,"Thane, Maharashtra",Mumbai,Mumbai,SYNTHETIC_DEMO,FALSE
+LOC-6F9126A82D,Maharashtra,Wardha,DISTRICT,"Wardha, Maharashtra",Mumbai,Mumbai,SYNTHETIC_DEMO,FALSE
+LOC-FE111985C9,Maharashtra,Washim,DISTRICT,"Washim, Maharashtra",Mumbai,Mumbai,SYNTHETIC_DEMO,FALSE
+LOC-E478BF65F6,Maharashtra,Yavatmal,DISTRICT,"Yavatmal, Maharashtra",Mumbai,Mumbai,SYNTHETIC_DEMO,FALSE
+LOC-90CCF8D568,Manipur,Bishnupur,DISTRICT,"Bishnupur, Manipur",Imphal,Imphal West,SYNTHETIC_DEMO,FALSE
+LOC-647CD1A02B,Manipur,Chandel,DISTRICT,"Chandel, Manipur",Imphal,Imphal West,SYNTHETIC_DEMO,FALSE
+LOC-980CE396FA,Manipur,Churachandpur,DISTRICT,"Churachandpur, Manipur",Imphal,Imphal West,SYNTHETIC_DEMO,FALSE
+LOC-4D49CBF5F6,Manipur,Imphal East,DISTRICT,"Imphal East, Manipur",Imphal,Imphal West,SYNTHETIC_DEMO,FALSE
+LOC-075D47BA6A,Manipur,Imphal West,DISTRICT,"Imphal West, Manipur",Imphal,Imphal West,SYNTHETIC_DEMO,FALSE
+LOC-9D616C72DF,Manipur,Jiribam,DISTRICT,"Jiribam, Manipur",Imphal,Imphal West,SYNTHETIC_DEMO,FALSE
+LOC-E7B1881077,Manipur,Kakching,DISTRICT,"Kakching, Manipur",Imphal,Imphal West,SYNTHETIC_DEMO,FALSE
+LOC-544B8E9F89,Manipur,Kamjong,DISTRICT,"Kamjong, Manipur",Imphal,Imphal West,SYNTHETIC_DEMO,FALSE
+LOC-127896DDF7,Manipur,Kangpokpi,DISTRICT,"Kangpokpi, Manipur",Imphal,Imphal West,SYNTHETIC_DEMO,FALSE
+LOC-3E66DB0E2F,Manipur,Noney,DISTRICT,"Noney, Manipur",Imphal,Imphal West,SYNTHETIC_DEMO,FALSE
+LOC-2B15CB0921,Manipur,Pherzawl,DISTRICT,"Pherzawl, Manipur",Imphal,Imphal West,SYNTHETIC_DEMO,FALSE
+LOC-DC1616CC40,Manipur,Senapati,DISTRICT,"Senapati, Manipur",Imphal,Imphal West,SYNTHETIC_DEMO,FALSE
+LOC-F5B57228F1,Manipur,Tamenglong,DISTRICT,"Tamenglong, Manipur",Imphal,Imphal West,SYNTHETIC_DEMO,FALSE
+LOC-F1237321F2,Manipur,Tengnoupal,DISTRICT,"Tengnoupal, Manipur",Imphal,Imphal West,SYNTHETIC_DEMO,FALSE
+LOC-426D6CF32F,Manipur,Thoubal,DISTRICT,"Thoubal, Manipur",Imphal,Imphal West,SYNTHETIC_DEMO,FALSE
+LOC-405A142330,Manipur,Ukhrul,DISTRICT,"Ukhrul, Manipur",Imphal,Imphal West,SYNTHETIC_DEMO,FALSE
+LOC-D37E2EC8C6,Meghalaya,East Garo Hills,DISTRICT,"East Garo Hills, Meghalaya",Shillong,East Khasi Hills,SYNTHETIC_DEMO,FALSE
+LOC-761B347FA5,Meghalaya,East Jaintia Hills,DISTRICT,"East Jaintia Hills, Meghalaya",Shillong,East Khasi Hills,SYNTHETIC_DEMO,FALSE
+LOC-E49095DD26,Meghalaya,East Khasi Hills,DISTRICT,"East Khasi Hills, Meghalaya",Shillong,East Khasi Hills,SYNTHETIC_DEMO,FALSE
+LOC-9381A91728,Meghalaya,Eastern West Khasi Hills,DISTRICT,"Eastern West Khasi Hills, Meghalaya",Shillong,East Khasi Hills,SYNTHETIC_DEMO,FALSE
+LOC-BDB1FC5C20,Meghalaya,North Garo Hills,DISTRICT,"North Garo Hills, Meghalaya",Shillong,East Khasi Hills,SYNTHETIC_DEMO,FALSE
+LOC-56D08BAF9A,Meghalaya,Ri Bhoi,DISTRICT,"Ri Bhoi, Meghalaya",Shillong,East Khasi Hills,SYNTHETIC_DEMO,FALSE
+LOC-84F6902D22,Meghalaya,South Garo Hills,DISTRICT,"South Garo Hills, Meghalaya",Shillong,East Khasi Hills,SYNTHETIC_DEMO,FALSE
+LOC-6BB320A3F9,Meghalaya,South West Garo Hills,DISTRICT,"South West Garo Hills, Meghalaya",Shillong,East Khasi Hills,SYNTHETIC_DEMO,FALSE
+LOC-4319C8DD39,Meghalaya,South West Khasi Hills,DISTRICT,"South West Khasi Hills, Meghalaya",Shillong,East Khasi Hills,SYNTHETIC_DEMO,FALSE
+LOC-CA13D26E04,Meghalaya,West Garo Hills,DISTRICT,"West Garo Hills, Meghalaya",Shillong,East Khasi Hills,SYNTHETIC_DEMO,FALSE
+LOC-2FBB93AA2B,Meghalaya,West Jaintia Hills,DISTRICT,"West Jaintia Hills, Meghalaya",Shillong,East Khasi Hills,SYNTHETIC_DEMO,FALSE
+LOC-B3E9031E9E,Meghalaya,West Khasi Hills,DISTRICT,"West Khasi Hills, Meghalaya",Shillong,East Khasi Hills,SYNTHETIC_DEMO,FALSE
+LOC-F3D31B31CB,Mizoram,Aizawl,DISTRICT,"Aizawl, Mizoram",Aizawl,Aizawl,SYNTHETIC_DEMO,FALSE
+LOC-3F33A9E537,Mizoram,Champhai,DISTRICT,"Champhai, Mizoram",Aizawl,Aizawl,SYNTHETIC_DEMO,FALSE
+LOC-401586B6A5,Mizoram,Hnahthial,DISTRICT,"Hnahthial, Mizoram",Aizawl,Aizawl,SYNTHETIC_DEMO,FALSE
+LOC-53C8121A48,Mizoram,Khawzawl,DISTRICT,"Khawzawl, Mizoram",Aizawl,Aizawl,SYNTHETIC_DEMO,FALSE
+LOC-241F0C85D6,Mizoram,Kolasib,DISTRICT,"Kolasib, Mizoram",Aizawl,Aizawl,SYNTHETIC_DEMO,FALSE
+LOC-EACD74F516,Mizoram,Lawngtlai,DISTRICT,"Lawngtlai, Mizoram",Aizawl,Aizawl,SYNTHETIC_DEMO,FALSE
+LOC-B3F0AAAFD6,Mizoram,Lunglei,DISTRICT,"Lunglei, Mizoram",Aizawl,Aizawl,SYNTHETIC_DEMO,FALSE
+LOC-A45E72D9BF,Mizoram,Mamit,DISTRICT,"Mamit, Mizoram",Aizawl,Aizawl,SYNTHETIC_DEMO,FALSE
+LOC-71BD5D20DA,Mizoram,Saitual,DISTRICT,"Saitual, Mizoram",Aizawl,Aizawl,SYNTHETIC_DEMO,FALSE
+LOC-BE071F83B0,Mizoram,Serchhip,DISTRICT,"Serchhip, Mizoram",Aizawl,Aizawl,SYNTHETIC_DEMO,FALSE
+LOC-F9A3108485,Mizoram,Siaha,DISTRICT,"Siaha, Mizoram",Aizawl,Aizawl,SYNTHETIC_DEMO,FALSE
+LOC-C331F606CA,Nagaland,Chumoukedima,DISTRICT,"Chumoukedima, Nagaland",Dimapur,Dimapur,SYNTHETIC_DEMO,FALSE
+LOC-DC89EDA3A5,Nagaland,Dimapur,DISTRICT,"Dimapur, Nagaland",Dimapur,Dimapur,SYNTHETIC_DEMO,FALSE
+LOC-B83B3C3395,Nagaland,Kiphire,DISTRICT,"Kiphire, Nagaland",Dimapur,Dimapur,SYNTHETIC_DEMO,FALSE
+LOC-A54FAAD529,Nagaland,Kohima,DISTRICT,"Kohima, Nagaland",Dimapur,Dimapur,SYNTHETIC_DEMO,FALSE
+LOC-E6814A66E7,Nagaland,Longleng,DISTRICT,"Longleng, Nagaland",Dimapur,Dimapur,SYNTHETIC_DEMO,FALSE
+LOC-9575906BDE,Nagaland,Meluri,DISTRICT,"Meluri, Nagaland",Dimapur,Dimapur,SYNTHETIC_DEMO,FALSE
+LOC-B428091F2A,Nagaland,Mokokchung,DISTRICT,"Mokokchung, Nagaland",Dimapur,Dimapur,SYNTHETIC_DEMO,FALSE
+LOC-5C132FB11B,Nagaland,Mon,DISTRICT,"Mon, Nagaland",Dimapur,Dimapur,SYNTHETIC_DEMO,FALSE
+LOC-4F8DC3454F,Nagaland,Niuland,DISTRICT,"Niuland, Nagaland",Dimapur,Dimapur,SYNTHETIC_DEMO,FALSE
+LOC-3C440C4014,Nagaland,Noklak,DISTRICT,"Noklak, Nagaland",Dimapur,Dimapur,SYNTHETIC_DEMO,FALSE
+LOC-82B58A5146,Nagaland,Peren,DISTRICT,"Peren, Nagaland",Dimapur,Dimapur,SYNTHETIC_DEMO,FALSE
+LOC-A79826691A,Nagaland,Phek,DISTRICT,"Phek, Nagaland",Dimapur,Dimapur,SYNTHETIC_DEMO,FALSE
+LOC-63314CB8A6,Nagaland,Shamator,DISTRICT,"Shamator, Nagaland",Dimapur,Dimapur,SYNTHETIC_DEMO,FALSE
+LOC-842A198B0B,Nagaland,Tseminyu,DISTRICT,"Tseminyu, Nagaland",Dimapur,Dimapur,SYNTHETIC_DEMO,FALSE
+LOC-407FE46FEC,Nagaland,Tuensang,DISTRICT,"Tuensang, Nagaland",Dimapur,Dimapur,SYNTHETIC_DEMO,FALSE
+LOC-874A39E13B,Nagaland,Wokha,DISTRICT,"Wokha, Nagaland",Dimapur,Dimapur,SYNTHETIC_DEMO,FALSE
+LOC-35E4521AF6,Nagaland,Zunheboto,DISTRICT,"Zunheboto, Nagaland",Dimapur,Dimapur,SYNTHETIC_DEMO,FALSE
+LOC-A1C0E42AFC,Odisha,Angul,DISTRICT,"Angul, Odisha",Bhubaneswar,Khordha,SYNTHETIC_DEMO,FALSE
+LOC-1E8B046350,Odisha,Balangir,DISTRICT,"Balangir, Odisha",Bhubaneswar,Khordha,SYNTHETIC_DEMO,FALSE
+LOC-763AF73B12,Odisha,Balasore,DISTRICT,"Balasore, Odisha",Bhubaneswar,Khordha,SYNTHETIC_DEMO,FALSE
+LOC-F52D4408FD,Odisha,Bargarh,DISTRICT,"Bargarh, Odisha",Bhubaneswar,Khordha,SYNTHETIC_DEMO,FALSE
+LOC-10E71ABFDD,Odisha,Bhadrak,DISTRICT,"Bhadrak, Odisha",Bhubaneswar,Khordha,SYNTHETIC_DEMO,FALSE
+LOC-6A5108667A,Odisha,Boudh,DISTRICT,"Boudh, Odisha",Bhubaneswar,Khordha,SYNTHETIC_DEMO,FALSE
+LOC-C5899A8364,Odisha,Cuttack,DISTRICT,"Cuttack, Odisha",Bhubaneswar,Khordha,SYNTHETIC_DEMO,FALSE
+LOC-6126DBB8C1,Odisha,Deogarh,DISTRICT,"Deogarh, Odisha",Bhubaneswar,Khordha,SYNTHETIC_DEMO,FALSE
+LOC-D3F17B923C,Odisha,Dhenkanal,DISTRICT,"Dhenkanal, Odisha",Bhubaneswar,Khordha,SYNTHETIC_DEMO,FALSE
+LOC-4CC8FB81DD,Odisha,Gajapati,DISTRICT,"Gajapati, Odisha",Bhubaneswar,Khordha,SYNTHETIC_DEMO,FALSE
+LOC-1C9C0451CA,Odisha,Ganjam,DISTRICT,"Ganjam, Odisha",Bhubaneswar,Khordha,SYNTHETIC_DEMO,FALSE
+LOC-58179FAC3A,Odisha,Jagatsinghapur,DISTRICT,"Jagatsinghapur, Odisha",Bhubaneswar,Khordha,SYNTHETIC_DEMO,FALSE
+LOC-BE4483777C,Odisha,Jajpur,DISTRICT,"Jajpur, Odisha",Bhubaneswar,Khordha,SYNTHETIC_DEMO,FALSE
+LOC-2CAEBA1708,Odisha,Jharsuguda,DISTRICT,"Jharsuguda, Odisha",Bhubaneswar,Khordha,SYNTHETIC_DEMO,FALSE
+LOC-A277424419,Odisha,Kalahandi,DISTRICT,"Kalahandi, Odisha",Bhubaneswar,Khordha,SYNTHETIC_DEMO,FALSE
+LOC-19157D2505,Odisha,Kandhamal,DISTRICT,"Kandhamal, Odisha",Bhubaneswar,Khordha,SYNTHETIC_DEMO,FALSE
+LOC-AC3830BCAE,Odisha,Kendrapara,DISTRICT,"Kendrapara, Odisha",Bhubaneswar,Khordha,SYNTHETIC_DEMO,FALSE
+LOC-2AF8A2D2B0,Odisha,Keonjhar,DISTRICT,"Keonjhar, Odisha",Bhubaneswar,Khordha,SYNTHETIC_DEMO,FALSE
+LOC-FD0AA2560C,Odisha,Khordha,DISTRICT,"Khordha, Odisha",Bhubaneswar,Khordha,SYNTHETIC_DEMO,FALSE
+LOC-9AD6EB10F3,Odisha,Koraput,DISTRICT,"Koraput, Odisha",Bhubaneswar,Khordha,SYNTHETIC_DEMO,FALSE
+LOC-FC9F290252,Odisha,Malkangiri,DISTRICT,"Malkangiri, Odisha",Bhubaneswar,Khordha,SYNTHETIC_DEMO,FALSE
+LOC-2096151791,Odisha,Mayurbhanj,DISTRICT,"Mayurbhanj, Odisha",Bhubaneswar,Khordha,SYNTHETIC_DEMO,FALSE
+LOC-80F2265022,Odisha,Nabarangpur,DISTRICT,"Nabarangpur, Odisha",Bhubaneswar,Khordha,SYNTHETIC_DEMO,FALSE
+LOC-5C9B1AA022,Odisha,Nayagarh,DISTRICT,"Nayagarh, Odisha",Bhubaneswar,Khordha,SYNTHETIC_DEMO,FALSE
+LOC-6C16C3D33F,Odisha,Nuapada,DISTRICT,"Nuapada, Odisha",Bhubaneswar,Khordha,SYNTHETIC_DEMO,FALSE
+LOC-58DF2B0196,Odisha,Puri,DISTRICT,"Puri, Odisha",Bhubaneswar,Khordha,SYNTHETIC_DEMO,FALSE
+LOC-FF3F5D6A83,Odisha,Rayagada,DISTRICT,"Rayagada, Odisha",Bhubaneswar,Khordha,SYNTHETIC_DEMO,FALSE
+LOC-598B6F227F,Odisha,Sambalpur,DISTRICT,"Sambalpur, Odisha",Bhubaneswar,Khordha,SYNTHETIC_DEMO,FALSE
+LOC-95AF767D40,Odisha,Subarnapur,DISTRICT,"Subarnapur, Odisha",Bhubaneswar,Khordha,SYNTHETIC_DEMO,FALSE
+LOC-0191C49587,Odisha,Sundargarh,DISTRICT,"Sundargarh, Odisha",Bhubaneswar,Khordha,SYNTHETIC_DEMO,FALSE
+LOC-66CFF19F00,Puducherry,Karaikal,DISTRICT,"Karaikal, Puducherry",Puducherry,Puducherry,SYNTHETIC_DEMO,FALSE
+LOC-96829AA10C,Puducherry,Puducherry,DISTRICT,"Puducherry, Puducherry",Puducherry,Puducherry,SYNTHETIC_DEMO,FALSE
+LOC-2AD4EC345C,Punjab,Amritsar,DISTRICT,"Amritsar, Punjab",Ludhiana,Ludhiana,SYNTHETIC_DEMO,FALSE
+LOC-87179C9D85,Punjab,Barnala,DISTRICT,"Barnala, Punjab",Ludhiana,Ludhiana,SYNTHETIC_DEMO,FALSE
+LOC-D802757332,Punjab,Bathinda,DISTRICT,"Bathinda, Punjab",Ludhiana,Ludhiana,SYNTHETIC_DEMO,FALSE
+LOC-6F37221B66,Punjab,Faridkot,DISTRICT,"Faridkot, Punjab",Ludhiana,Ludhiana,SYNTHETIC_DEMO,FALSE
+LOC-AD8DDDE9E2,Punjab,Fatehgarh Sahib,DISTRICT,"Fatehgarh Sahib, Punjab",Ludhiana,Ludhiana,SYNTHETIC_DEMO,FALSE
+LOC-A699B811EB,Punjab,Fazilka,DISTRICT,"Fazilka, Punjab",Ludhiana,Ludhiana,SYNTHETIC_DEMO,FALSE
+LOC-49C0913A6B,Punjab,Ferozepur,DISTRICT,"Ferozepur, Punjab",Ludhiana,Ludhiana,SYNTHETIC_DEMO,FALSE
+LOC-A9F7835F13,Punjab,Gurdaspur,DISTRICT,"Gurdaspur, Punjab",Ludhiana,Ludhiana,SYNTHETIC_DEMO,FALSE
+LOC-E8E59CC205,Punjab,Hoshiarpur,DISTRICT,"Hoshiarpur, Punjab",Ludhiana,Ludhiana,SYNTHETIC_DEMO,FALSE
+LOC-853C5C1469,Punjab,Jalandhar,DISTRICT,"Jalandhar, Punjab",Ludhiana,Ludhiana,SYNTHETIC_DEMO,FALSE
+LOC-F3C8CB317E,Punjab,Kapurthala,DISTRICT,"Kapurthala, Punjab",Ludhiana,Ludhiana,SYNTHETIC_DEMO,FALSE
+LOC-123EC5F3A8,Punjab,Ludhiana,DISTRICT,"Ludhiana, Punjab",Ludhiana,Ludhiana,SYNTHETIC_DEMO,FALSE
+LOC-5088A16B6C,Punjab,Malerkotla,DISTRICT,"Malerkotla, Punjab",Ludhiana,Ludhiana,SYNTHETIC_DEMO,FALSE
+LOC-12531274EE,Punjab,Mansa,DISTRICT,"Mansa, Punjab",Ludhiana,Ludhiana,SYNTHETIC_DEMO,FALSE
+LOC-16A002BAD4,Punjab,Moga,DISTRICT,"Moga, Punjab",Ludhiana,Ludhiana,SYNTHETIC_DEMO,FALSE
+LOC-19F3B098BE,Punjab,Pathankot,DISTRICT,"Pathankot, Punjab",Ludhiana,Ludhiana,SYNTHETIC_DEMO,FALSE
+LOC-423014282A,Punjab,Patiala,DISTRICT,"Patiala, Punjab",Ludhiana,Ludhiana,SYNTHETIC_DEMO,FALSE
+LOC-197B291B09,Punjab,Rupnagar,DISTRICT,"Rupnagar, Punjab",Ludhiana,Ludhiana,SYNTHETIC_DEMO,FALSE
+LOC-9F1BC0D552,Punjab,S.A.S Nagar,DISTRICT,"S.A.S Nagar, Punjab",Ludhiana,Ludhiana,SYNTHETIC_DEMO,FALSE
+LOC-538B4BA915,Punjab,Sangrur,DISTRICT,"Sangrur, Punjab",Ludhiana,Ludhiana,SYNTHETIC_DEMO,FALSE
+LOC-A990B0630F,Punjab,Shahid Bhagat Singh Nagar,DISTRICT,"Shahid Bhagat Singh Nagar, Punjab",Ludhiana,Ludhiana,SYNTHETIC_DEMO,FALSE
+LOC-5B1F4C02AE,Punjab,Sri Muktsar Sahib,DISTRICT,"Sri Muktsar Sahib, Punjab",Ludhiana,Ludhiana,SYNTHETIC_DEMO,FALSE
+LOC-33FDBA507A,Punjab,Tarn Taran,DISTRICT,"Tarn Taran, Punjab",Ludhiana,Ludhiana,SYNTHETIC_DEMO,FALSE
+LOC-65BCE400D5,Rajasthan,Ajmer,DISTRICT,"Ajmer, Rajasthan",Jaipur,Jaipur,SYNTHETIC_DEMO,FALSE
+LOC-47F6BD70E2,Rajasthan,Alwar,DISTRICT,"Alwar, Rajasthan",Jaipur,Jaipur,SYNTHETIC_DEMO,FALSE
+LOC-30A4064283,Rajasthan,Balotra,DISTRICT,"Balotra, Rajasthan",Jaipur,Jaipur,SYNTHETIC_DEMO,FALSE
+LOC-B0BF11E472,Rajasthan,Banswara,DISTRICT,"Banswara, Rajasthan",Jaipur,Jaipur,SYNTHETIC_DEMO,FALSE
+LOC-9CD69F9D0C,Rajasthan,Baran,DISTRICT,"Baran, Rajasthan",Jaipur,Jaipur,SYNTHETIC_DEMO,FALSE
+LOC-CC09CE641F,Rajasthan,Barmer,DISTRICT,"Barmer, Rajasthan",Jaipur,Jaipur,SYNTHETIC_DEMO,FALSE
+LOC-A5EDA37160,Rajasthan,Beawar,DISTRICT,"Beawar, Rajasthan",Jaipur,Jaipur,SYNTHETIC_DEMO,FALSE
+LOC-8EE190FCED,Rajasthan,Bharatpur,DISTRICT,"Bharatpur, Rajasthan",Jaipur,Jaipur,SYNTHETIC_DEMO,FALSE
+LOC-B4C7D1876E,Rajasthan,Bhilwara,DISTRICT,"Bhilwara, Rajasthan",Jaipur,Jaipur,SYNTHETIC_DEMO,FALSE
+LOC-33AD36ACE4,Rajasthan,Bikaner,DISTRICT,"Bikaner, Rajasthan",Jaipur,Jaipur,SYNTHETIC_DEMO,FALSE
+LOC-CED89AEE42,Rajasthan,Bundi,DISTRICT,"Bundi, Rajasthan",Jaipur,Jaipur,SYNTHETIC_DEMO,FALSE
+LOC-77986112A6,Rajasthan,Chittorgarh,DISTRICT,"Chittorgarh, Rajasthan",Jaipur,Jaipur,SYNTHETIC_DEMO,FALSE
+LOC-7304590979,Rajasthan,Churu,DISTRICT,"Churu, Rajasthan",Jaipur,Jaipur,SYNTHETIC_DEMO,FALSE
+LOC-FB1524F4C2,Rajasthan,Dausa,DISTRICT,"Dausa, Rajasthan",Jaipur,Jaipur,SYNTHETIC_DEMO,FALSE
+LOC-377D373421,Rajasthan,Deeg,DISTRICT,"Deeg, Rajasthan",Jaipur,Jaipur,SYNTHETIC_DEMO,FALSE
+LOC-0343F725D4,Rajasthan,Dholpur,DISTRICT,"Dholpur, Rajasthan",Jaipur,Jaipur,SYNTHETIC_DEMO,FALSE
+LOC-13F811C40C,Rajasthan,Didwana-Kuchaman,DISTRICT,"Didwana-Kuchaman, Rajasthan",Jaipur,Jaipur,SYNTHETIC_DEMO,FALSE
+LOC-BEFE0B65F0,Rajasthan,Dungarpur,DISTRICT,"Dungarpur, Rajasthan",Jaipur,Jaipur,SYNTHETIC_DEMO,FALSE
+LOC-62227F8E74,Rajasthan,Ganganagar,DISTRICT,"Ganganagar, Rajasthan",Jaipur,Jaipur,SYNTHETIC_DEMO,FALSE
+LOC-786972972E,Rajasthan,Hanumangarh,DISTRICT,"Hanumangarh, Rajasthan",Jaipur,Jaipur,SYNTHETIC_DEMO,FALSE
+LOC-5343827DFB,Rajasthan,Jaipur,DISTRICT,"Jaipur, Rajasthan",Jaipur,Jaipur,SYNTHETIC_DEMO,FALSE
+LOC-32C95BE46B,Rajasthan,Jaisalmer,DISTRICT,"Jaisalmer, Rajasthan",Jaipur,Jaipur,SYNTHETIC_DEMO,FALSE
+LOC-1A40010719,Rajasthan,Jalore,DISTRICT,"Jalore, Rajasthan",Jaipur,Jaipur,SYNTHETIC_DEMO,FALSE
+LOC-FFCE112D64,Rajasthan,Jhalawar,DISTRICT,"Jhalawar, Rajasthan",Jaipur,Jaipur,SYNTHETIC_DEMO,FALSE
+LOC-67AEE373F8,Rajasthan,Jhunjhunu,DISTRICT,"Jhunjhunu, Rajasthan",Jaipur,Jaipur,SYNTHETIC_DEMO,FALSE
+LOC-30FB69842C,Rajasthan,Jodhpur,DISTRICT,"Jodhpur, Rajasthan",Jaipur,Jaipur,SYNTHETIC_DEMO,FALSE
+LOC-3A81EDD012,Rajasthan,Karauli,DISTRICT,"Karauli, Rajasthan",Jaipur,Jaipur,SYNTHETIC_DEMO,FALSE
+LOC-0F40347DF6,Rajasthan,Kota,DISTRICT,"Kota, Rajasthan",Jaipur,Jaipur,SYNTHETIC_DEMO,FALSE
+LOC-C02DF2B400,Rajasthan,Nagaur,DISTRICT,"Nagaur, Rajasthan",Jaipur,Jaipur,SYNTHETIC_DEMO,FALSE
+LOC-46A4889765,Rajasthan,Pali,DISTRICT,"Pali, Rajasthan",Jaipur,Jaipur,SYNTHETIC_DEMO,FALSE
+LOC-582696860C,Rajasthan,Pratapgarh,DISTRICT,"Pratapgarh, Rajasthan",Jaipur,Jaipur,SYNTHETIC_DEMO,FALSE
+LOC-DF92CE8700,Rajasthan,Rajsamand,DISTRICT,"Rajsamand, Rajasthan",Jaipur,Jaipur,SYNTHETIC_DEMO,FALSE
+LOC-7365680D88,Rajasthan,Sawai Madhopur,DISTRICT,"Sawai Madhopur, Rajasthan",Jaipur,Jaipur,SYNTHETIC_DEMO,FALSE
+LOC-36B3763FC6,Rajasthan,Sikar,DISTRICT,"Sikar, Rajasthan",Jaipur,Jaipur,SYNTHETIC_DEMO,FALSE
+LOC-D12A4D6CD6,Rajasthan,Sirohi,DISTRICT,"Sirohi, Rajasthan",Jaipur,Jaipur,SYNTHETIC_DEMO,FALSE
+LOC-F0CCE13D06,Rajasthan,Tonk,DISTRICT,"Tonk, Rajasthan",Jaipur,Jaipur,SYNTHETIC_DEMO,FALSE
+LOC-FC82B25FFB,Rajasthan,Udaipur,DISTRICT,"Udaipur, Rajasthan",Jaipur,Jaipur,SYNTHETIC_DEMO,FALSE
+LOC-ED712BB249,Sikkim,Gangtok,DISTRICT,"Gangtok, Sikkim",Gangtok,Gangtok,SYNTHETIC_DEMO,FALSE
+LOC-4E8952F20B,Sikkim,Gyalshing,DISTRICT,"Gyalshing, Sikkim",Gangtok,Gangtok,SYNTHETIC_DEMO,FALSE
+LOC-8F129DF5D9,Sikkim,Mangan,DISTRICT,"Mangan, Sikkim",Gangtok,Gangtok,SYNTHETIC_DEMO,FALSE
+LOC-48C351AFDE,Sikkim,Namchi,DISTRICT,"Namchi, Sikkim",Gangtok,Gangtok,SYNTHETIC_DEMO,FALSE
+LOC-07A6FDF0FF,Sikkim,Pakyong,DISTRICT,"Pakyong, Sikkim",Gangtok,Gangtok,SYNTHETIC_DEMO,FALSE
+LOC-DC33B7B632,Sikkim,Soreng,DISTRICT,"Soreng, Sikkim",Gangtok,Gangtok,SYNTHETIC_DEMO,FALSE
+LOC-1CE352C1A0,Tamil Nadu,Ariyalur,DISTRICT,"Ariyalur, Tamil Nadu",Chennai,Chennai,SYNTHETIC_DEMO,FALSE
+LOC-0333E6EFB7,Tamil Nadu,Chengalpattu,DISTRICT,"Chengalpattu, Tamil Nadu",Chennai,Chennai,SYNTHETIC_DEMO,FALSE
+LOC-25B0CF418F,Tamil Nadu,Chennai,DISTRICT,"Chennai, Tamil Nadu",Chennai,Chennai,SYNTHETIC_DEMO,FALSE
+LOC-A1221D57A7,Tamil Nadu,Coimbatore,DISTRICT,"Coimbatore, Tamil Nadu",Chennai,Chennai,SYNTHETIC_DEMO,FALSE
+LOC-CD97E847BF,Tamil Nadu,Cuddalore,DISTRICT,"Cuddalore, Tamil Nadu",Chennai,Chennai,SYNTHETIC_DEMO,FALSE
+LOC-D92F401FF0,Tamil Nadu,Dharmapuri,DISTRICT,"Dharmapuri, Tamil Nadu",Chennai,Chennai,SYNTHETIC_DEMO,FALSE
+LOC-6DD5DD9B32,Tamil Nadu,Dindigul,DISTRICT,"Dindigul, Tamil Nadu",Chennai,Chennai,SYNTHETIC_DEMO,FALSE
+LOC-9111DD3A9C,Tamil Nadu,Erode,DISTRICT,"Erode, Tamil Nadu",Chennai,Chennai,SYNTHETIC_DEMO,FALSE
+LOC-F4C2D805B7,Tamil Nadu,Kallakurichi,DISTRICT,"Kallakurichi, Tamil Nadu",Chennai,Chennai,SYNTHETIC_DEMO,FALSE
+LOC-746DEC858B,Tamil Nadu,Kancheepuram,DISTRICT,"Kancheepuram, Tamil Nadu",Chennai,Chennai,SYNTHETIC_DEMO,FALSE
+LOC-4EB7037A7D,Tamil Nadu,Kanniyakumari,DISTRICT,"Kanniyakumari, Tamil Nadu",Chennai,Chennai,SYNTHETIC_DEMO,FALSE
+LOC-1AABB756FD,Tamil Nadu,Karur,DISTRICT,"Karur, Tamil Nadu",Chennai,Chennai,SYNTHETIC_DEMO,FALSE
+LOC-7B3B9F585F,Tamil Nadu,Krishnagiri,DISTRICT,"Krishnagiri, Tamil Nadu",Chennai,Chennai,SYNTHETIC_DEMO,FALSE
+LOC-65DC8AB67C,Tamil Nadu,Madurai,DISTRICT,"Madurai, Tamil Nadu",Chennai,Chennai,SYNTHETIC_DEMO,FALSE
+LOC-37AE62EC90,Tamil Nadu,Mayiladuthurai,DISTRICT,"Mayiladuthurai, Tamil Nadu",Chennai,Chennai,SYNTHETIC_DEMO,FALSE
+LOC-2DBC5350B6,Tamil Nadu,Nagapattinam,DISTRICT,"Nagapattinam, Tamil Nadu",Chennai,Chennai,SYNTHETIC_DEMO,FALSE
+LOC-FFC0469257,Tamil Nadu,Namakkal,DISTRICT,"Namakkal, Tamil Nadu",Chennai,Chennai,SYNTHETIC_DEMO,FALSE
+LOC-177E978EAA,Tamil Nadu,Perambalur,DISTRICT,"Perambalur, Tamil Nadu",Chennai,Chennai,SYNTHETIC_DEMO,FALSE
+LOC-D3A2F8985E,Tamil Nadu,Pudukkottai,DISTRICT,"Pudukkottai, Tamil Nadu",Chennai,Chennai,SYNTHETIC_DEMO,FALSE
+LOC-87752ECBD7,Tamil Nadu,Ramanathapuram,DISTRICT,"Ramanathapuram, Tamil Nadu",Chennai,Chennai,SYNTHETIC_DEMO,FALSE
+LOC-1A3A4BD57B,Tamil Nadu,Ranipet,DISTRICT,"Ranipet, Tamil Nadu",Chennai,Chennai,SYNTHETIC_DEMO,FALSE
+LOC-45934CA7B8,Tamil Nadu,Salem,DISTRICT,"Salem, Tamil Nadu",Chennai,Chennai,SYNTHETIC_DEMO,FALSE
+LOC-9694E1CA2E,Tamil Nadu,Sivaganga,DISTRICT,"Sivaganga, Tamil Nadu",Chennai,Chennai,SYNTHETIC_DEMO,FALSE
+LOC-7C9B0AEDA3,Tamil Nadu,Tenkasi,DISTRICT,"Tenkasi, Tamil Nadu",Chennai,Chennai,SYNTHETIC_DEMO,FALSE
+LOC-D1D1784388,Tamil Nadu,Thanjavur,DISTRICT,"Thanjavur, Tamil Nadu",Chennai,Chennai,SYNTHETIC_DEMO,FALSE
+LOC-502A359851,Tamil Nadu,The Nilgiris,DISTRICT,"The Nilgiris, Tamil Nadu",Chennai,Chennai,SYNTHETIC_DEMO,FALSE
+LOC-771D8D6D63,Tamil Nadu,Theni,DISTRICT,"Theni, Tamil Nadu",Chennai,Chennai,SYNTHETIC_DEMO,FALSE
+LOC-9B8F88305E,Tamil Nadu,Thoothukudi,DISTRICT,"Thoothukudi, Tamil Nadu",Chennai,Chennai,SYNTHETIC_DEMO,FALSE
+LOC-DA153D7B60,Tamil Nadu,Tiruchirappalli,DISTRICT,"Tiruchirappalli, Tamil Nadu",Chennai,Chennai,SYNTHETIC_DEMO,FALSE
+LOC-C864130042,Tamil Nadu,Tirunelveli,DISTRICT,"Tirunelveli, Tamil Nadu",Chennai,Chennai,SYNTHETIC_DEMO,FALSE
+LOC-EAF0BF1C99,Tamil Nadu,Tirupathur,DISTRICT,"Tirupathur, Tamil Nadu",Chennai,Chennai,SYNTHETIC_DEMO,FALSE
+LOC-AE889E3269,Tamil Nadu,Tiruppur,DISTRICT,"Tiruppur, Tamil Nadu",Chennai,Chennai,SYNTHETIC_DEMO,FALSE
+LOC-55F14248D3,Tamil Nadu,Tiruvallur,DISTRICT,"Tiruvallur, Tamil Nadu",Chennai,Chennai,SYNTHETIC_DEMO,FALSE
+LOC-ACAB2D1816,Tamil Nadu,Tiruvarur,DISTRICT,"Tiruvarur, Tamil Nadu",Chennai,Chennai,SYNTHETIC_DEMO,FALSE
+LOC-45844C8E74,Tamil Nadu,Vellore,DISTRICT,"Vellore, Tamil Nadu",Chennai,Chennai,SYNTHETIC_DEMO,FALSE
+LOC-F2A2D59472,Tamil Nadu,Viluppuram,DISTRICT,"Viluppuram, Tamil Nadu",Chennai,Chennai,SYNTHETIC_DEMO,FALSE
+LOC-80A2019822,Tamil Nadu,Virudhunagar,DISTRICT,"Virudhunagar, Tamil Nadu",Chennai,Chennai,SYNTHETIC_DEMO,FALSE
+LOC-B4E76294C9,Telangana,Adilabad,DISTRICT,"Adilabad, Telangana",Hyderabad,Hyderabad,SYNTHETIC_DEMO,FALSE
+LOC-A3EC26E042,Telangana,Bhadradri Kothagudem,DISTRICT,"Bhadradri Kothagudem, Telangana",Hyderabad,Hyderabad,SYNTHETIC_DEMO,FALSE
+LOC-51F3214ED6,Telangana,Hanumakonda,DISTRICT,"Hanumakonda, Telangana",Hyderabad,Hyderabad,SYNTHETIC_DEMO,FALSE
+LOC-A3E1FDB7DB,Telangana,Hyderabad,DISTRICT,"Hyderabad, Telangana",Hyderabad,Hyderabad,SYNTHETIC_DEMO,FALSE
+LOC-401BC943AA,Telangana,Jagitial,DISTRICT,"Jagitial, Telangana",Hyderabad,Hyderabad,SYNTHETIC_DEMO,FALSE
+LOC-75B016EDB1,Telangana,Jangoan,DISTRICT,"Jangoan, Telangana",Hyderabad,Hyderabad,SYNTHETIC_DEMO,FALSE
+LOC-4EEE112DCA,Telangana,Jayashankar Bhupalapally,DISTRICT,"Jayashankar Bhupalapally, Telangana",Hyderabad,Hyderabad,SYNTHETIC_DEMO,FALSE
+LOC-7178BDECC5,Telangana,Jogulamba Gadwal,DISTRICT,"Jogulamba Gadwal, Telangana",Hyderabad,Hyderabad,SYNTHETIC_DEMO,FALSE
+LOC-56B5C38C03,Telangana,Kamareddy,DISTRICT,"Kamareddy, Telangana",Hyderabad,Hyderabad,SYNTHETIC_DEMO,FALSE
+LOC-8C30C2F4B9,Telangana,Karimnagar,DISTRICT,"Karimnagar, Telangana",Hyderabad,Hyderabad,SYNTHETIC_DEMO,FALSE
+LOC-474657F250,Telangana,Khammam,DISTRICT,"Khammam, Telangana",Hyderabad,Hyderabad,SYNTHETIC_DEMO,FALSE
+LOC-25B291B8AA,Telangana,Kumuram Bheem Asifabad,DISTRICT,"Kumuram Bheem Asifabad, Telangana",Hyderabad,Hyderabad,SYNTHETIC_DEMO,FALSE
+LOC-E8BC2748B0,Telangana,Mahabubabad,DISTRICT,"Mahabubabad, Telangana",Hyderabad,Hyderabad,SYNTHETIC_DEMO,FALSE
+LOC-0F52BF9028,Telangana,Mahabubnagar,DISTRICT,"Mahabubnagar, Telangana",Hyderabad,Hyderabad,SYNTHETIC_DEMO,FALSE
+LOC-4EFAA33DDE,Telangana,Mancherial,DISTRICT,"Mancherial, Telangana",Hyderabad,Hyderabad,SYNTHETIC_DEMO,FALSE
+LOC-4768E7A747,Telangana,Medak,DISTRICT,"Medak, Telangana",Hyderabad,Hyderabad,SYNTHETIC_DEMO,FALSE
+LOC-714F171F09,Telangana,Medchal Malkajgiri,DISTRICT,"Medchal Malkajgiri, Telangana",Hyderabad,Hyderabad,SYNTHETIC_DEMO,FALSE
+LOC-D869DE7DE4,Telangana,Mulugu,DISTRICT,"Mulugu, Telangana",Hyderabad,Hyderabad,SYNTHETIC_DEMO,FALSE
+LOC-9DC6777BEE,Telangana,Nagarkurnool,DISTRICT,"Nagarkurnool, Telangana",Hyderabad,Hyderabad,SYNTHETIC_DEMO,FALSE
+LOC-8B74C9C572,Telangana,Nalgonda,DISTRICT,"Nalgonda, Telangana",Hyderabad,Hyderabad,SYNTHETIC_DEMO,FALSE
+LOC-A25029B53B,Telangana,Narayanpet,DISTRICT,"Narayanpet, Telangana",Hyderabad,Hyderabad,SYNTHETIC_DEMO,FALSE
+LOC-F1FAAE5128,Telangana,Nirmal,DISTRICT,"Nirmal, Telangana",Hyderabad,Hyderabad,SYNTHETIC_DEMO,FALSE
+LOC-1D78E767D2,Telangana,Nizamabad,DISTRICT,"Nizamabad, Telangana",Hyderabad,Hyderabad,SYNTHETIC_DEMO,FALSE
+LOC-2335161FB7,Telangana,Peddapalli,DISTRICT,"Peddapalli, Telangana",Hyderabad,Hyderabad,SYNTHETIC_DEMO,FALSE
+LOC-5ECF20FB60,Telangana,Rajanna Sircilla,DISTRICT,"Rajanna Sircilla, Telangana",Hyderabad,Hyderabad,SYNTHETIC_DEMO,FALSE
+LOC-1590961D63,Telangana,Rangareddy,DISTRICT,"Rangareddy, Telangana",Hyderabad,Hyderabad,SYNTHETIC_DEMO,FALSE
+LOC-D4F764FC4E,Telangana,Sangareddy,DISTRICT,"Sangareddy, Telangana",Hyderabad,Hyderabad,SYNTHETIC_DEMO,FALSE
+LOC-C2172A405A,Telangana,Siddipet,DISTRICT,"Siddipet, Telangana",Hyderabad,Hyderabad,SYNTHETIC_DEMO,FALSE
+LOC-8ADB0BD112,Telangana,Suryapet,DISTRICT,"Suryapet, Telangana",Hyderabad,Hyderabad,SYNTHETIC_DEMO,FALSE
+LOC-EE643B7729,Telangana,Vikarabad,DISTRICT,"Vikarabad, Telangana",Hyderabad,Hyderabad,SYNTHETIC_DEMO,FALSE
+LOC-C6900559E7,Telangana,Wanaparthy,DISTRICT,"Wanaparthy, Telangana",Hyderabad,Hyderabad,SYNTHETIC_DEMO,FALSE
+LOC-23F939AC1A,Telangana,Warangal,DISTRICT,"Warangal, Telangana",Hyderabad,Hyderabad,SYNTHETIC_DEMO,FALSE
+LOC-E8DB0933C1,Telangana,Yadadri Bhuvanagiri,DISTRICT,"Yadadri Bhuvanagiri, Telangana",Hyderabad,Hyderabad,SYNTHETIC_DEMO,FALSE
+LOC-B1C3B6C4F8,Tripura,Dhalai,DISTRICT,"Dhalai, Tripura",Agartala,West Tripura,SYNTHETIC_DEMO,FALSE
+LOC-C0E60DCA1E,Tripura,Gomati,DISTRICT,"Gomati, Tripura",Agartala,West Tripura,SYNTHETIC_DEMO,FALSE
+LOC-8013E3F297,Tripura,Khowai,DISTRICT,"Khowai, Tripura",Agartala,West Tripura,SYNTHETIC_DEMO,FALSE
+LOC-322032EF55,Tripura,North Tripura,DISTRICT,"North Tripura, Tripura",Agartala,West Tripura,SYNTHETIC_DEMO,FALSE
+LOC-AD54C5E804,Tripura,Sepahijala,DISTRICT,"Sepahijala, Tripura",Agartala,West Tripura,SYNTHETIC_DEMO,FALSE
+LOC-B0D056DE4D,Tripura,South Tripura,DISTRICT,"South Tripura, Tripura",Agartala,West Tripura,SYNTHETIC_DEMO,FALSE
+LOC-4732FF4FD0,Tripura,Unakoti,DISTRICT,"Unakoti, Tripura",Agartala,West Tripura,SYNTHETIC_DEMO,FALSE
+LOC-A570E13395,Tripura,West Tripura,DISTRICT,"West Tripura, Tripura",Agartala,West Tripura,SYNTHETIC_DEMO,FALSE
+LOC-D90BDEEDDA,Uttar Pradesh,Agra,DISTRICT,"Agra, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-CE48232434,Uttar Pradesh,Aligarh,DISTRICT,"Aligarh, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-BCD98C9FD9,Uttar Pradesh,Ambedkar Nagar,DISTRICT,"Ambedkar Nagar, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-41A2C4BF5C,Uttar Pradesh,Amethi,DISTRICT,"Amethi, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-C806F252AA,Uttar Pradesh,Amroha,DISTRICT,"Amroha, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-36A059082E,Uttar Pradesh,Auraiya,DISTRICT,"Auraiya, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-7F3BDD3161,Uttar Pradesh,Ayodhya,DISTRICT,"Ayodhya, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-5D1FA78E9D,Uttar Pradesh,Azamgarh,DISTRICT,"Azamgarh, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-30EEB2CD3B,Uttar Pradesh,Baghpat,DISTRICT,"Baghpat, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-C1AFB2A4DD,Uttar Pradesh,Bahraich,DISTRICT,"Bahraich, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-522D8C0D65,Uttar Pradesh,Ballia,DISTRICT,"Ballia, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-6971A0CAE0,Uttar Pradesh,Balrampur,DISTRICT,"Balrampur, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-E8FD6181A7,Uttar Pradesh,Banda,DISTRICT,"Banda, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-AD290B9DF9,Uttar Pradesh,Barabanki,DISTRICT,"Barabanki, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-6831BD5981,Uttar Pradesh,Bareilly,DISTRICT,"Bareilly, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-F089E6B97A,Uttar Pradesh,Basti,DISTRICT,"Basti, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-40CEC84C63,Uttar Pradesh,Bhadohi,DISTRICT,"Bhadohi, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-7CC9F7D74E,Uttar Pradesh,Bijnor,DISTRICT,"Bijnor, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-0BAB688EFB,Uttar Pradesh,Budaun,DISTRICT,"Budaun, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-FFF2C39B16,Uttar Pradesh,Bulandshahr,DISTRICT,"Bulandshahr, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-B4B1787D58,Uttar Pradesh,Chandauli,DISTRICT,"Chandauli, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-CEB07A2AED,Uttar Pradesh,Chitrakoot,DISTRICT,"Chitrakoot, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-30090849C7,Uttar Pradesh,Deoria,DISTRICT,"Deoria, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-883E0E90EC,Uttar Pradesh,Etah,DISTRICT,"Etah, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-62D2613F0A,Uttar Pradesh,Etawah,DISTRICT,"Etawah, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-A67A4F969B,Uttar Pradesh,Farrukhabad,DISTRICT,"Farrukhabad, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-EE0A485AD2,Uttar Pradesh,Fatehpur,DISTRICT,"Fatehpur, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-6F6AA54F30,Uttar Pradesh,Firozabad,DISTRICT,"Firozabad, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-5DBC1960B8,Uttar Pradesh,Gautam Buddha Nagar,DISTRICT,"Gautam Buddha Nagar, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-474CDF1260,Uttar Pradesh,Ghaziabad,DISTRICT,"Ghaziabad, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-62AA7CA224,Uttar Pradesh,Ghazipur,DISTRICT,"Ghazipur, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-B5FDDA8CC9,Uttar Pradesh,Gonda,DISTRICT,"Gonda, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-22F1391CDD,Uttar Pradesh,Gorakhpur,DISTRICT,"Gorakhpur, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-AAA99597C5,Uttar Pradesh,Hapur,DISTRICT,"Hapur, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-800D1F2349,Uttar Pradesh,Hardoi,DISTRICT,"Hardoi, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-8AAC9F10EE,Uttar Pradesh,Hathras,DISTRICT,"Hathras, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-9519431673,Uttar Pradesh,Jalaun,DISTRICT,"Jalaun, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-75A98296F0,Uttar Pradesh,Jaunpur,DISTRICT,"Jaunpur, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-39C28D77F4,Uttar Pradesh,Jhansi,DISTRICT,"Jhansi, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-6EBCF5D96A,Uttar Pradesh,Kannauj,DISTRICT,"Kannauj, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-F72BACD1EF,Uttar Pradesh,Kanpur Dehat,DISTRICT,"Kanpur Dehat, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-D2B2DAEDC6,Uttar Pradesh,Kanpur Nagar,DISTRICT,"Kanpur Nagar, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-97C125E657,Uttar Pradesh,Kasganj,DISTRICT,"Kasganj, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-518D7A6536,Uttar Pradesh,Kaushambi,DISTRICT,"Kaushambi, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-16A9BDE164,Uttar Pradesh,Kheri,DISTRICT,"Kheri, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-9B5707360F,Uttar Pradesh,Kushinagar,DISTRICT,"Kushinagar, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-59205C4D6E,Uttar Pradesh,Lalitpur,DISTRICT,"Lalitpur, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-DC4ACED1FF,Uttar Pradesh,Lucknow,DISTRICT,"Lucknow, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-B07188788C,Uttar Pradesh,Maharajganj,DISTRICT,"Maharajganj, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-D6262297CF,Uttar Pradesh,Mainpuri,DISTRICT,"Mainpuri, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-E25B3067CE,Uttar Pradesh,Mathura,DISTRICT,"Mathura, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-8B31A12EE8,Uttar Pradesh,Mau,DISTRICT,"Mau, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-2C16300496,Uttar Pradesh,Meerut,DISTRICT,"Meerut, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-BC52D8580D,Uttar Pradesh,Mirzapur,DISTRICT,"Mirzapur, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-F253726F35,Uttar Pradesh,Moradabad,DISTRICT,"Moradabad, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-C830BA834D,Uttar Pradesh,Muzaffarnagar,DISTRICT,"Muzaffarnagar, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-A93C94C858,Uttar Pradesh,Pilibhit,DISTRICT,"Pilibhit, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-B7975ECBF7,Uttar Pradesh,Pratapgarh,DISTRICT,"Pratapgarh, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-459202F2C8,Uttar Pradesh,Prayagraj,DISTRICT,"Prayagraj, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-58EA63D864,Uttar Pradesh,Rae Bareli,DISTRICT,"Rae Bareli, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-6385A90548,Uttar Pradesh,Rampur,DISTRICT,"Rampur, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-DAEAFBEED8,Uttar Pradesh,Saharanpur,DISTRICT,"Saharanpur, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-529C814C65,Uttar Pradesh,Sambhal,DISTRICT,"Sambhal, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-71B89295CF,Uttar Pradesh,Sant Kabir Nagar,DISTRICT,"Sant Kabir Nagar, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-4ECB86E375,Uttar Pradesh,Sant Ravidas Nagar,DISTRICT,"Sant Ravidas Nagar, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-0A44262975,Uttar Pradesh,Shahjahanpur,DISTRICT,"Shahjahanpur, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-73FF2DC771,Uttar Pradesh,Shamli,DISTRICT,"Shamli, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-EAAC47E219,Uttar Pradesh,Shrawasti,DISTRICT,"Shrawasti, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-3C2C6FDE36,Uttar Pradesh,Siddharthnagar,DISTRICT,"Siddharthnagar, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-F5F3FD2938,Uttar Pradesh,Sitapur,DISTRICT,"Sitapur, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-58BA2187F8,Uttar Pradesh,Sonbhadra,DISTRICT,"Sonbhadra, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-6DDE512872,Uttar Pradesh,Sultanpur,DISTRICT,"Sultanpur, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-6C406ABDEF,Uttar Pradesh,Unnao,DISTRICT,"Unnao, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-3E890B3C1B,Uttar Pradesh,Varanasi,DISTRICT,"Varanasi, Uttar Pradesh",Lucknow,Lucknow,SYNTHETIC_DEMO,FALSE
+LOC-C8281FAC42,Uttarakhand,Almora,DISTRICT,"Almora, Uttarakhand",Dehradun,Dehradun,SYNTHETIC_DEMO,FALSE
+LOC-CAF516E2EF,Uttarakhand,Bageshwar,DISTRICT,"Bageshwar, Uttarakhand",Dehradun,Dehradun,SYNTHETIC_DEMO,FALSE
+LOC-84E8A2569A,Uttarakhand,Chamoli,DISTRICT,"Chamoli, Uttarakhand",Dehradun,Dehradun,SYNTHETIC_DEMO,FALSE
+LOC-AEE592E301,Uttarakhand,Champawat,DISTRICT,"Champawat, Uttarakhand",Dehradun,Dehradun,SYNTHETIC_DEMO,FALSE
+LOC-E9EA5D6ED0,Uttarakhand,Dehradun,DISTRICT,"Dehradun, Uttarakhand",Dehradun,Dehradun,SYNTHETIC_DEMO,FALSE
+LOC-0036077A7E,Uttarakhand,Haridwar,DISTRICT,"Haridwar, Uttarakhand",Dehradun,Dehradun,SYNTHETIC_DEMO,FALSE
+LOC-F204DCEC0E,Uttarakhand,Nainital,DISTRICT,"Nainital, Uttarakhand",Dehradun,Dehradun,SYNTHETIC_DEMO,FALSE
+LOC-72966EDFC2,Uttarakhand,Pauri Garhwal,DISTRICT,"Pauri Garhwal, Uttarakhand",Dehradun,Dehradun,SYNTHETIC_DEMO,FALSE
+LOC-CE3FB514C4,Uttarakhand,Pithoragarh,DISTRICT,"Pithoragarh, Uttarakhand",Dehradun,Dehradun,SYNTHETIC_DEMO,FALSE
+LOC-308B04DE40,Uttarakhand,Rudraprayag,DISTRICT,"Rudraprayag, Uttarakhand",Dehradun,Dehradun,SYNTHETIC_DEMO,FALSE
+LOC-87AA3C02CB,Uttarakhand,Tehri Garhwal,DISTRICT,"Tehri Garhwal, Uttarakhand",Dehradun,Dehradun,SYNTHETIC_DEMO,FALSE
+LOC-F92482C3E1,Uttarakhand,Udham Singh Nagar,DISTRICT,"Udham Singh Nagar, Uttarakhand",Dehradun,Dehradun,SYNTHETIC_DEMO,FALSE
+LOC-D0E3A22098,Uttarakhand,Uttarkashi,DISTRICT,"Uttarkashi, Uttarakhand",Dehradun,Dehradun,SYNTHETIC_DEMO,FALSE
+LOC-4B00C86F80,West Bengal,Alipurduar,DISTRICT,"Alipurduar, West Bengal",Kolkata,Kolkata,SYNTHETIC_DEMO,FALSE
+LOC-1FE2E8C219,West Bengal,Bankura,DISTRICT,"Bankura, West Bengal",Kolkata,Kolkata,SYNTHETIC_DEMO,FALSE
+LOC-889656289C,West Bengal,Birbhum,DISTRICT,"Birbhum, West Bengal",Kolkata,Kolkata,SYNTHETIC_DEMO,FALSE
+LOC-D669EE419C,West Bengal,Cooch Behar,DISTRICT,"Cooch Behar, West Bengal",Kolkata,Kolkata,SYNTHETIC_DEMO,FALSE
+LOC-56BC757727,West Bengal,Dakshin Dinajpur,DISTRICT,"Dakshin Dinajpur, West Bengal",Kolkata,Kolkata,SYNTHETIC_DEMO,FALSE
+LOC-44958D9A68,West Bengal,Darjeeling,DISTRICT,"Darjeeling, West Bengal",Kolkata,Kolkata,SYNTHETIC_DEMO,FALSE
+LOC-0E89468381,West Bengal,Hooghly,DISTRICT,"Hooghly, West Bengal",Kolkata,Kolkata,SYNTHETIC_DEMO,FALSE
+LOC-6AC9D403DB,West Bengal,Howrah,DISTRICT,"Howrah, West Bengal",Kolkata,Kolkata,SYNTHETIC_DEMO,FALSE
+LOC-787B141186,West Bengal,Jalpaiguri,DISTRICT,"Jalpaiguri, West Bengal",Kolkata,Kolkata,SYNTHETIC_DEMO,FALSE
+LOC-A959F88479,West Bengal,Jhargram,DISTRICT,"Jhargram, West Bengal",Kolkata,Kolkata,SYNTHETIC_DEMO,FALSE
+LOC-6EC79ACB8A,West Bengal,Kalimpong,DISTRICT,"Kalimpong, West Bengal",Kolkata,Kolkata,SYNTHETIC_DEMO,FALSE
+LOC-87340E1D62,West Bengal,Kolkata,DISTRICT,"Kolkata, West Bengal",Kolkata,Kolkata,SYNTHETIC_DEMO,FALSE
+LOC-4B5854CE87,West Bengal,Malda,DISTRICT,"Malda, West Bengal",Kolkata,Kolkata,SYNTHETIC_DEMO,FALSE
+LOC-D28CF3087C,West Bengal,Murshidabad,DISTRICT,"Murshidabad, West Bengal",Kolkata,Kolkata,SYNTHETIC_DEMO,FALSE
+LOC-759AD7A938,West Bengal,Nadia,DISTRICT,"Nadia, West Bengal",Kolkata,Kolkata,SYNTHETIC_DEMO,FALSE
+LOC-FEB4C33EE0,West Bengal,North 24 Parganas,DISTRICT,"North 24 Parganas, West Bengal",Kolkata,Kolkata,SYNTHETIC_DEMO,FALSE
+LOC-63DC933361,West Bengal,Paschim Bardhaman,DISTRICT,"Paschim Bardhaman, West Bengal",Kolkata,Kolkata,SYNTHETIC_DEMO,FALSE
+LOC-0CE41EBF95,West Bengal,Paschim Medinipur,DISTRICT,"Paschim Medinipur, West Bengal",Kolkata,Kolkata,SYNTHETIC_DEMO,FALSE
+LOC-1B2E7B4118,West Bengal,Purba Bardhaman,DISTRICT,"Purba Bardhaman, West Bengal",Kolkata,Kolkata,SYNTHETIC_DEMO,FALSE
+LOC-6895D349E0,West Bengal,Purba Medinipur,DISTRICT,"Purba Medinipur, West Bengal",Kolkata,Kolkata,SYNTHETIC_DEMO,FALSE
+LOC-7A82A9BE80,West Bengal,Purulia,DISTRICT,"Purulia, West Bengal",Kolkata,Kolkata,SYNTHETIC_DEMO,FALSE
+LOC-BA5176068F,West Bengal,South 24 Parganas,DISTRICT,"South 24 Parganas, West Bengal",Kolkata,Kolkata,SYNTHETIC_DEMO,FALSE
+LOC-7C0BAFE190,West Bengal,Uttar Dinajpur,DISTRICT,"Uttar Dinajpur, West Bengal",Kolkata,Kolkata,SYNTHETIC_DEMO,FALSE

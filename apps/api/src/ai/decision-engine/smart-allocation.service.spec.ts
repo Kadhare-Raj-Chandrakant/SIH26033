@@ -109,7 +109,7 @@ describe('SmartAllocationService', () => {
     expect(top.estimatedNetRealization).toBeGreaterThan(second.estimatedNetRealization);
 
     // Verify explainable rationale specifically highlights the logistics saving and straight-line distance
-    expect(result.recommendationRationale).toContain('HIGHER estimated net profit');
+    expect(result.recommendationRationale).toContain('HIGHER estimated net realization');
     expect(result.recommendationRationale).toContain('logistics savings');
     expect(result.recommendationRationale).toContain('straight-line distance');
 

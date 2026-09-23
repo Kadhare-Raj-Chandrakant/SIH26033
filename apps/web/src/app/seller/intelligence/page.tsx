@@ -7,15 +7,18 @@ import {
   Clock,
   MapPin,
   CheckCircle2,
-  XCircle,
   AlertTriangle,
   Info,
   Users,
   Store,
   Layers,
-  Sparkles,
-  CloudSun,
   Scale,
+  Building2,
+  TrendingUp,
+  ShieldCheck,
+  Check,
+  Edit3,
+  Loader2,
 } from 'lucide-react';
 import { MarketplaceNavbar } from '@/components/marketplace/marketplace-navbar';
 import { Button } from '@/components/ui/button';
@@ -23,16 +26,20 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import {
-  getMarketIntelligence,
+  fetchAddresses,
+  getFarmerMandiIntelligence,
+  getFpoBulkIntelligence,
   getSmartAllocation,
   getBestTimeToSell,
   matchBuyersForFarmer,
   SmartAllocationResult,
   BestTimeToSellResult,
-  CommodityMarketIntelligence,
+  FarmerMandiIntelligenceResult,
+  FpoBulkIntelligenceResult,
   BuyerMatchItem,
 } from '@/lib/api';
-
+import { fetchMyOrganization, fetchFpos } from '@/lib/api/fpo';
+import { useAuth } from '@/components/providers/auth-provider';
 import { RoleGuard } from '@/components/auth/role-guard';
 
 const COMMODITIES = [
@@ -41,161 +48,203 @@ const COMMODITIES = [
   'Potato',
   'Wheat',
   'Rice',
+  'Mustard',
+  'Soybean',
   'Cotton',
-  'Soyabean',
-  'Maize',
-];
-
-const CITIES = [
-  'Pune',
-  'Nashik',
-  'Mumbai',
-  'Nagpur',
-  'Ahmednagar',
-  'Kolhapur',
-  'Aurangabad',
-  'Indore',
-  'Bengaluru',
+  'Turmeric',
 ];
 
 export default function SellerIntelligencePage() {
   return (
-    <RoleGuard allowedRoles={['FARMER', 'FPO']}>
+    <RoleGuard allowedRoles={['FARMER', 'FPO', 'ADMIN']}>
       <SellerIntelligenceContent />
     </RoleGuard>
   );
 }
 
 function SellerIntelligenceContent() {
+  const { token, user } = useAuth();
+
   const [selectedCommodity, setSelectedCommodity] = useState<string>('Tomato');
   const [quantity, setQuantity] = useState<number>(50);
-  const [sellerCity, setSellerCity] = useState<string>('Pune');
-  const [minPrice, setMinPrice] = useState<number>(1800);
-  const [activeTab, setActiveTab] = useState<'allocation' | 'timing' | 'markets' | 'buyers'>('allocation');
+  const [minPrice, setMinPrice] = useState<number>(1400);
+  const [activeTab, setActiveTab] = useState<'mandi' | 'bulk_rfqs' | 'allocation' | 'timing' | 'buyers'>('mandi');
 
-  // Query 1: Smart Allocation
+  const [isEditingOrigin, setIsEditingOrigin] = useState<boolean>(false);
+  const [customDistrict, setCustomDistrict] = useState<string>('');
+  const [customState, setCustomState] = useState<string>('');
+
+  const { data: addressData } = useQuery({
+    queryKey: ['farmer-addresses', token],
+    queryFn: () => fetchAddresses(token || undefined),
+    enabled: !!token,
+  });
+
+  const defaultAddr = addressData?.data?.find((a) => a.isDefault) || addressData?.data?.[0];
+  const registeredDistrict = defaultAddr?.district || defaultAddr?.city || 'Nashik';
+  const registeredState = defaultAddr?.state || 'Maharashtra';
+
+  const effectiveDistrict = customDistrict.trim() || registeredDistrict;
+  const effectiveState = customState.trim() || registeredState;
+
+  const {
+    data: mandiData,
+    isLoading: isMandiLoading,
+    isError: isMandiError,
+    refetch: refetchMandi,
+  } = useQuery<FarmerMandiIntelligenceResult>({
+    queryKey: ['farmer-mandi-intelligence', selectedCommodity, quantity, effectiveState, effectiveDistrict, token],
+    queryFn: () =>
+      getFarmerMandiIntelligence(
+        {
+          commodity: selectedCommodity,
+          quantityQuintals: quantity,
+          state: effectiveState,
+          district: effectiveDistrict,
+        },
+        token || undefined,
+      ),
+    staleTime: 60000,
+  });
+
+  const { data: fposList } = useQuery({
+    queryKey: ['fpos-list-intelligence'],
+    queryFn: () => fetchFpos(),
+    staleTime: 60000,
+  });
+
+  const { data: myFpo } = useQuery({
+    queryKey: ['my-fpo-org', token],
+    queryFn: () => fetchMyOrganization(token || undefined),
+    enabled: !!token && (user?.role === 'FPO' || user?.role === 'ADMIN'),
+    retry: false,
+  });
+
+  const fpoId = myFpo?.id || fposList?.[0]?.id;
+
+  const {
+    data: bulkData,
+    isLoading: isBulkLoading,
+  } = useQuery<FpoBulkIntelligenceResult>({
+    queryKey: ['fpo-bulk-intelligence', fpoId, selectedCommodity, token],
+    queryFn: () =>
+      getFpoBulkIntelligence(fpoId!, selectedCommodity, token || undefined),
+    enabled: !!fpoId,
+    staleTime: 60000,
+  });
+
   const {
     data: allocationData,
     isLoading: isAllocationLoading,
     isError: isAllocationError,
     refetch: refetchAllocation,
   } = useQuery<SmartAllocationResult>({
-    queryKey: ['smart-allocation', selectedCommodity, quantity, sellerCity, minPrice],
+    queryKey: ['smart-allocation', selectedCommodity, quantity, effectiveDistrict, minPrice, token],
     queryFn: () =>
-      getSmartAllocation({
-        commodity: selectedCommodity,
-        quantity,
-        sellerLocation: { city: sellerCity },
-        minAcceptablePrice: minPrice || undefined,
-        includeMandis: true,
-        includeDirectBuyers: true,
-        includePlatformListing: true,
-      }),
+      getSmartAllocation(
+        {
+          commodity: selectedCommodity,
+          quantity,
+          sellerLocation: { city: effectiveDistrict, state: effectiveState },
+          minAcceptablePrice: minPrice || undefined,
+          includeMandis: true,
+          includeDirectBuyers: true,
+          includePlatformListing: true,
+        },
+        token || undefined,
+      ),
     staleTime: 60000,
   });
 
-  // Query 2: Market Intelligence
-  const {
-    data: marketData,
-    isLoading: isMarketLoading,
-  } = useQuery<CommodityMarketIntelligence>({
-    queryKey: ['market-intelligence', selectedCommodity, sellerCity],
-    queryFn: () =>
-      getMarketIntelligence(selectedCommodity, { city: sellerCity }),
-    staleTime: 60000,
-  });
-
-  // Query 3: Best Time to Sell
   const {
     data: timingData,
     isLoading: isTimingLoading,
   } = useQuery<BestTimeToSellResult>({
-    queryKey: ['best-time-to-sell', selectedCommodity, sellerCity],
+    queryKey: ['best-time-to-sell', selectedCommodity, effectiveDistrict],
     queryFn: () =>
       getBestTimeToSell({
         commodity: selectedCommodity,
-        market: `${sellerCity} APMC`,
+        market: `${effectiveDistrict} APMC`,
       }),
     staleTime: 60000,
   });
 
-  // Query 4: Matched Direct Buyers
   const {
     data: buyerMatches,
     isLoading: isBuyersLoading,
   } = useQuery<BuyerMatchItem[]>({
-    queryKey: ['matched-buyers', selectedCommodity, quantity, sellerCity],
+    queryKey: ['matched-buyers', selectedCommodity, quantity, effectiveDistrict, token],
     queryFn: () =>
-      matchBuyersForFarmer({
-        commodity: selectedCommodity,
-        quantity,
-        location: { city: sellerCity },
-      }),
+      matchBuyersForFarmer(
+        {
+          commodity: selectedCommodity,
+          quantity,
+          location: { city: effectiveDistrict, state: effectiveState },
+        },
+        token || undefined,
+      ),
     staleTime: 60000,
   });
 
   const recommendedOption = allocationData?.recommendedOption;
 
   return (
-    <div className="min-h-screen bg-zinc-50/50 dark:bg-zinc-950/50">
+    <div className="min-h-screen bg-[#F7F5EE] text-[#1E221B] flex flex-col font-sans">
       <MarketplaceNavbar />
 
-      <main className="container mx-auto px-4 py-8 sm:px-6 lg:px-8 space-y-8">
+      <main className="container mx-auto px-4 py-8 sm:px-6 lg:px-8 space-y-8 max-w-6xl flex-1">
         {/* Page Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border/80 pb-6">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#DFD8CB] pb-6">
           <div>
-            <div className="flex items-center gap-2 mb-1.5">
-              <span className="flex h-6 w-6 items-center justify-center rounded-md bg-emerald-600/10 text-emerald-600">
-                <Sparkles className="h-3.5 w-3.5" />
-              </span>
-              <span className="text-xs font-semibold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
-                SIH26033 Decision Intelligence
-              </span>
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#C8D9C8] bg-[#EDF3ED] px-3 py-1 text-xs font-semibold text-[#233D22] mb-2">
+              <Scale className="h-3.5 w-3.5 text-[#3B532B]" />
+              <span>Aroha Price Intelligence & Net Realization Engine</span>
             </div>
-            <h1 className="text-2xl font-black tracking-tight text-foreground sm:text-3xl">
-              Farmer Selling & Channel Optimization
+            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#1E221B] tracking-tight">
+              Producer Price & Market Arbitrage Advisory
             </h1>
-            <p className="mt-1 text-sm text-muted-foreground max-w-2xl">
-              Evaluate real channel economics, transparent logistics deductions, APMC mandi benchmarks, and verified buyer demand before listing or dispatching harvest.
+            <p className="mt-1 text-xs text-[#5D6352] max-w-2xl">
+              Transparent economic waterfalls evaluating farmgate origin, road logistics deductions, APMC candidate mandis, and institutional bulk buyer RFQs.
             </p>
           </div>
 
           <div className="flex items-center gap-3">
-            <Link href="/seller/orders">
-              <Button variant="outline" size="sm" className="text-xs">
-                View Fulfillment Orders
+            <Link href="/fpo/buy-requests">
+              <Button variant="outline" size="sm" className="text-xs gap-1.5 border-[#DFD8CB] bg-[#FCFAF6] text-[#1E221B] hover:bg-[#EBE7DC]">
+                <Building2 className="h-3.5 w-3.5 text-[#233D22]" />
+                <span>Bulk RFQs</span>
               </Button>
             </Link>
             <Link href="/marketplace">
-              <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs">
-                Go to Marketplace
+              <Button size="sm" className="bg-[#233D22] hover:bg-[#1a2d19] text-white text-xs rounded-md">
+                Marketplace
               </Button>
             </Link>
           </div>
         </div>
 
         {/* Input Parameters Bar */}
-        <div className="rounded-2xl border border-border/80 bg-card p-5 shadow-sm space-y-4">
+        <div className="rounded-lg border border-[#DFD8CB] bg-[#FCFAF6] p-5 space-y-4">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
-              <Layers className="h-3.5 w-3.5 text-emerald-600" />
-              Harvest & Origin Parameters
+            <span className="text-xs font-bold uppercase tracking-wider text-[#5D6352] flex items-center gap-1.5">
+              <Layers className="h-3.5 w-3.5 text-[#233D22]" />
+              Arbitrage Calculation Parameters
             </span>
-            <span className="text-[11px] text-muted-foreground">
-              Instant multi-channel optimization
+            <span className="text-[11px] text-[#233D22] font-semibold flex items-center gap-1">
+              <ShieldCheck className="h-3.5 w-3.5" />
+              Verified APMC Modal Rate Benchmarks
             </span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {/* Commodity */}
             <div>
-              <label className="block text-xs font-semibold text-foreground mb-1.5">
-                Commodity
+              <label className="block text-xs font-semibold text-[#1E221B] mb-1.5">
+                Target Commodity
               </label>
               <select
                 value={selectedCommodity}
                 onChange={(e) => setSelectedCommodity(e.target.value)}
-                className="w-full h-10 px-3 rounded-xl border border-border bg-background text-sm font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                className="w-full h-10 px-3 rounded-md border border-[#DFD8CB] bg-[#F7F5EE] text-sm font-medium text-[#1E221B] focus:outline-none"
               >
                 {COMMODITIES.map((c) => (
                   <option key={c} value={c}>
@@ -205,10 +254,9 @@ function SellerIntelligenceContent() {
               </select>
             </div>
 
-            {/* Quantity */}
             <div>
-              <label className="block text-xs font-semibold text-foreground mb-1.5">
-                Harvest Volume (Quintals)
+              <label className="block text-xs font-semibold text-[#1E221B] mb-1.5">
+                Batch Volume (Quintals)
               </label>
               <input
                 type="number"
@@ -216,31 +264,57 @@ function SellerIntelligenceContent() {
                 max={5000}
                 value={quantity}
                 onChange={(e) => setQuantity(Math.max(1, Number(e.target.value) || 1))}
-                className="w-full h-10 px-3 rounded-xl border border-border bg-background text-sm font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                className="w-full h-10 px-3 rounded-md border border-[#DFD8CB] bg-[#F7F5EE] text-sm font-medium text-[#1E221B] focus:outline-none"
               />
             </div>
 
-            {/* Origin Location */}
             <div>
-              <label className="block text-xs font-semibold text-foreground mb-1.5">
-                Farm Origin City
-              </label>
-              <select
-                value={sellerCity}
-                onChange={(e) => setSellerCity(e.target.value)}
-                className="w-full h-10 px-3 rounded-xl border border-border bg-background text-sm font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
-              >
-                {CITIES.map((city) => (
-                  <option key={city} value={city}>
-                    {city}
-                  </option>
-                ))}
-              </select>
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="block text-xs font-semibold text-[#1E221B]">
+                  Farmgate Origin
+                </label>
+                <button
+                  type="button"
+                  onClick={() => setIsEditingOrigin(!isEditingOrigin)}
+                  className="text-[11px] text-[#233D22] font-medium flex items-center gap-0.5 hover:underline"
+                >
+                  <Edit3 className="h-2.5 w-2.5" />
+                  <span>{isEditingOrigin ? 'Use Default' : 'Override'}</span>
+                </button>
+              </div>
+
+              {!isEditingOrigin ? (
+                <div className="h-10 px-3 rounded-md border border-[#DFD8CB] bg-[#F7F5EE] flex items-center justify-between text-xs font-medium text-[#1E221B]">
+                  <span className="flex items-center gap-1.5 truncate">
+                    <MapPin className="h-3.5 w-3.5 text-[#3B532B] shrink-0" />
+                    <span className="font-semibold">{effectiveDistrict}</span>, {effectiveState}
+                  </span>
+                  <Badge variant="outline" className="text-[10px] bg-[#FCFAF6] border-[#DFD8CB] text-[#5D6352]">
+                    {defaultAddr ? 'Registered' : 'Demo Hub'}
+                  </Badge>
+                </div>
+              ) : (
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="District"
+                    value={customDistrict}
+                    onChange={(e) => setCustomDistrict(e.target.value)}
+                    className="w-1/2 h-10 px-2 rounded-md border border-[#DFD8CB] bg-[#F7F5EE] text-xs font-medium text-[#1E221B]"
+                  />
+                  <input
+                    type="text"
+                    placeholder="State"
+                    value={customState}
+                    onChange={(e) => setCustomState(e.target.value)}
+                    className="w-1/2 h-10 px-2 rounded-md border border-[#DFD8CB] bg-[#F7F5EE] text-xs font-medium text-[#1E221B]"
+                  />
+                </div>
+              )}
             </div>
 
-            {/* Min Price */}
             <div>
-              <label className="block text-xs font-semibold text-foreground mb-1.5">
+              <label className="block text-xs font-semibold text-[#1E221B] mb-1.5">
                 Min Target Price (₹/q)
               </label>
               <input
@@ -248,80 +322,449 @@ function SellerIntelligenceContent() {
                 min={0}
                 value={minPrice}
                 onChange={(e) => setMinPrice(Number(e.target.value) || 0)}
-                className="w-full h-10 px-3 rounded-xl border border-border bg-background text-sm font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                className="w-full h-10 px-3 rounded-md border border-[#DFD8CB] bg-[#F7F5EE] text-sm font-medium text-[#1E221B] focus:outline-none"
               />
             </div>
           </div>
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex items-center gap-2 border-b border-border/60 pb-2 overflow-x-auto">
-          <button
-            onClick={() => setActiveTab('allocation')}
-            className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all flex items-center gap-2 whitespace-nowrap ${
-              activeTab === 'allocation'
-                ? 'bg-emerald-600 text-white shadow-sm'
-                : 'text-muted-foreground hover:bg-muted/60 hover:text-foreground'
-            }`}
-          >
-            <Scale className="h-3.5 w-3.5" />
-            Where Should I Sell? (Smart Allocation)
-          </button>
-          <button
-            onClick={() => setActiveTab('timing')}
-            className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all flex items-center gap-2 whitespace-nowrap ${
-              activeTab === 'timing'
-                ? 'bg-emerald-600 text-white shadow-sm'
-                : 'text-muted-foreground hover:bg-muted/60 hover:text-foreground'
-            }`}
-          >
-            <Clock className="h-3.5 w-3.5" />
-            When Should I Sell? (Sell Timing)
-          </button>
-          <button
-            onClick={() => setActiveTab('markets')}
-            className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all flex items-center gap-2 whitespace-nowrap ${
-              activeTab === 'markets'
-                ? 'bg-emerald-600 text-white shadow-sm'
-                : 'text-muted-foreground hover:bg-muted/60 hover:text-foreground'
-            }`}
-          >
-            <Store className="h-3.5 w-3.5" />
-            APMC Mandi Comparison
-          </button>
-          <button
-            onClick={() => setActiveTab('buyers')}
-            className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all flex items-center gap-2 whitespace-nowrap ${
-              activeTab === 'buyers'
-                ? 'bg-emerald-600 text-white shadow-sm'
-                : 'text-muted-foreground hover:bg-muted/60 hover:text-foreground'
-            }`}
-          >
-            <Users className="h-3.5 w-3.5" />
-            Matched Bulk Buyers ({buyerMatches?.length || 0})
-          </button>
+        <div className="flex items-center gap-2 border-b border-[#DFD8CB] pb-3 overflow-x-auto text-xs">
+          {[
+            { id: 'mandi', label: 'Local Mandi Intelligence' },
+            { id: 'bulk_rfqs', label: 'FPO Bulk Buyer RFQs' },
+            { id: 'allocation', label: 'Multi-Channel Allocation' },
+            { id: 'timing', label: 'Sell Timing Forecast' },
+            { id: 'buyers', label: `Matched Direct Buyers (${buyerMatches?.length || 0})` },
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id as any)}
+              className={`px-3.5 py-1.5 rounded-md font-medium transition-colors whitespace-nowrap border ${
+                activeTab === tab.id
+                  ? 'bg-[#233D22] text-white border-[#233D22]'
+                  : 'bg-[#FCFAF6] text-[#5D6352] border-[#DFD8CB] hover:text-[#1E221B] hover:bg-[#F2EFE8]'
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
         </div>
 
-        {/* ---------------- TAB 1: SMART ALLOCATION ---------------- */}
+        {/* TAB 1: LOCAL MANDI INTELLIGENCE */}
+        {activeTab === 'mandi' && (
+          <div className="space-y-6">
+            {isMandiLoading && (
+              <div className="p-12 text-center bg-[#FCFAF6] border border-[#DFD8CB] rounded-lg">
+                <Loader2 className="h-6 w-6 animate-spin text-[#3B532B] mx-auto mb-2" />
+                <p className="text-xs text-[#5D6352]">
+                  Evaluating local APMC candidate mandis in {effectiveDistrict} with road freight rates...
+                </p>
+              </div>
+            )}
+
+            {isMandiError && !isMandiLoading && (
+              <div className="p-8 text-center bg-[#FDF2F2] border border-[#D98282] rounded-lg">
+                <AlertTriangle className="h-8 w-8 text-[#8C2323] mx-auto mb-2" />
+                <h3 className="text-sm font-serif font-bold text-[#1E221B]">Mandi Intelligence Service Unavailable</h3>
+                <p className="text-xs text-[#5D6352] mt-1">Unable to connect to live mandi pricing service.</p>
+                <Button size="sm" onClick={() => refetchMandi()} className="mt-3 text-xs bg-[#233D22] hover:bg-[#1a2d19] text-white rounded-md">
+                  Retry Calculation
+                </Button>
+              </div>
+            )}
+
+            {mandiData && (
+              <>
+                {mandiData.candidates.length === 0 && (
+                  <div className="rounded-lg border border-dashed border-[#DFD8CB] bg-[#FCFAF6] p-10 text-center space-y-3">
+                    <Info className="h-8 w-8 text-[#9A6818] mx-auto" />
+                    <h3 className="text-base font-serif font-bold text-[#1E221B]">No Mandi Intelligence Available</h3>
+                    <p className="text-xs text-[#5D6352] max-w-lg mx-auto">
+                      {mandiData.recommendationRationale}
+                    </p>
+                  </div>
+                )}
+
+                {/* Hero Card: Recommended Mandi & Net Realization Waterfall */}
+                {mandiData.recommendedMandi && (
+                  <div className="rounded-lg border border-[#C8D9C8] bg-[#FCFAF6] p-6 space-y-5">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                      <div>
+                        <div className="flex items-center gap-2 mb-2">
+                          <Badge className="bg-[#233D22] text-white font-bold px-2.5 py-0.5 text-xs rounded">
+                            Recommended APMC Winner
+                          </Badge>
+                          <Badge variant="outline" className="text-xs bg-[#F7F5EE] border-[#DFD8CB] text-[#1E221B]">
+                            {mandiData.recommendedMandi.commodity} ({mandiData.recommendedMandi.variety})
+                          </Badge>
+                          <span className="text-xs text-[#5D6352]">
+                            Farm Origin: <strong className="text-[#1E221B]">{mandiData.farmerOrigin.district}, {mandiData.farmerOrigin.state}</strong>
+                          </span>
+                        </div>
+                        <h2 className="text-2xl font-serif font-bold text-[#1E221B]">
+                          {mandiData.recommendedMandi.marketName}
+                        </h2>
+                        <p className="text-xs text-[#5D6352] mt-1">
+                          {mandiData.recommendationRationale}
+                        </p>
+                      </div>
+
+                      <div className="text-right bg-[#EDF3ED] border border-[#C8D9C8] rounded-lg p-4">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-[#233D22] block">
+                          Net Realization
+                        </span>
+                        <div className="text-3xl font-serif font-bold text-[#233D22] mt-0.5">
+                          ₹{mandiData.recommendedMandi.estimatedNetRealizationPerQuintal.toLocaleString('en-IN')}/q
+                        </div>
+                        <span className="text-[11px] text-[#5D6352] mt-0.5 block">
+                          Total Net: ₹{mandiData.recommendedMandi.totalNetRealization.toLocaleString('en-IN')} ({mandiData.quantityQuintals} Quintals)
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Transparent Arithmetic Waterfall Breakdown */}
+                    <div className="rounded-lg border border-[#E0D9CB] bg-[#F4F0E6] p-4">
+                      <span className="text-xs font-bold uppercase tracking-wider text-[#1E221B] block mb-2">
+                        Transparent Arithmetic Net Realization Waterfall
+                      </span>
+                      <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 text-center">
+                        <div className="p-2.5 rounded bg-[#FCFAF6] border border-[#DFD8CB]">
+                          <span className="text-[10px] text-[#5D6352] block">Modal Price</span>
+                          <span className="text-sm font-bold text-[#1E221B] block mt-0.5">
+                            ₹{mandiData.recommendedMandi.modalPrice}/q
+                          </span>
+                        </div>
+                        <div className="p-2.5 rounded bg-[#FCFAF6] border border-[#DFD8CB]">
+                          <span className="text-[10px] text-[#8C2323] block">- Freight ({mandiData.recommendedMandi.roadDistanceKm} km)</span>
+                          <span className="text-sm font-bold text-[#8C2323] block mt-0.5">
+                            -₹{mandiData.recommendedMandi.freightPerQuintal}/q
+                          </span>
+                        </div>
+                        <div className="p-2.5 rounded bg-[#FCFAF6] border border-[#DFD8CB]">
+                          <span className="text-[10px] text-[#8C2323] block">- Handling Fee</span>
+                          <span className="text-sm font-bold text-[#8C2323] block mt-0.5">
+                            -₹{mandiData.recommendedMandi.handlingPerQuintal}/q
+                          </span>
+                        </div>
+                        <div className="p-2.5 rounded bg-[#FCFAF6] border border-[#DFD8CB]">
+                          <span className="text-[10px] text-[#8C2323] block">- Loading Fee</span>
+                          <span className="text-sm font-bold text-[#8C2323] block mt-0.5">
+                            -₹{mandiData.recommendedMandi.loadingPerQuintal}/q
+                          </span>
+                        </div>
+                        <div className="p-2.5 rounded bg-[#233D22] text-white font-bold col-span-2 sm:col-span-1">
+                          <span className="text-[10px] text-[#C8D9C8] block">= Net Realization</span>
+                          <span className="text-sm font-bold block mt-0.5">
+                            ₹{mandiData.recommendedMandi.estimatedNetRealizationPerQuintal}/q
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Side-by-Side Candidates Comparison */}
+                {mandiData.candidates.length > 0 && (
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="text-sm font-serif font-bold text-[#1E221B]">
+                        Evaluated Local APMC Candidates in {effectiveDistrict} ({mandiData.candidates.length})
+                      </h3>
+                      <span className="text-xs text-[#5D6352]">
+                        Formula: {mandiData.calculationFormula}
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                      {mandiData.candidates.map((candidate) => (
+                        <Card
+                          key={candidate.mandiId}
+                          className={`rounded-lg border transition-colors ${
+                            candidate.isRecommended
+                              ? 'border-[#233D22] bg-[#FCFAF6]'
+                              : 'border-[#DFD8CB] bg-[#FCFAF6]'
+                          }`}
+                        >
+                          <div className="p-5 space-y-4">
+                            <div className="flex items-start justify-between gap-2">
+                              <div>
+                                <div className="flex items-center gap-2">
+                                  <Badge
+                                    className={`text-xs font-bold px-2 py-0.5 rounded ${
+                                      candidate.isRecommended
+                                        ? 'bg-[#233D22] text-white'
+                                        : 'bg-[#F7F5EE] border border-[#DFD8CB] text-[#5D6352]'
+                                    }`}
+                                  >
+                                    Option {candidate.marketOption}
+                                  </Badge>
+                                  {candidate.isRecommended && (
+                                    <span className="text-[11px] font-semibold text-[#233D22] flex items-center gap-0.5">
+                                      <Check className="h-3 w-3" /> Winner
+                                    </span>
+                                  )}
+                                </div>
+                                <h4 className="font-serif font-bold text-[#1E221B] text-sm mt-1.5 leading-snug">
+                                  {candidate.marketName}
+                                </h4>
+                                <span className="text-[11px] text-[#5D6352] block mt-0.5">
+                                  {candidate.district}, {candidate.state} • {candidate.roadDistanceKm} km
+                                </span>
+                              </div>
+
+                              <div className="text-right">
+                                <span className="text-xs text-[#5D6352] block">Modal Rate</span>
+                                <span className="text-base font-bold text-[#1E221B]">
+                                  ₹{candidate.modalPrice}/q
+                                </span>
+                              </div>
+                            </div>
+
+                            <Separator className="bg-[#DFD8CB]" />
+
+                            <div className="space-y-2 text-xs">
+                              <div className="flex justify-between text-[#5D6352]">
+                                <span>Road Distance:</span>
+                                <span className="font-medium text-[#1E221B]">{candidate.roadDistanceKm} km</span>
+                              </div>
+                              <div className="flex justify-between text-[#5D6352]">
+                                <span>Freight Tariff:</span>
+                                <span className="font-medium text-[#8C2323]">-₹{candidate.freightPerQuintal}/q</span>
+                              </div>
+                              <div className="flex justify-between text-[#5D6352]">
+                                <span>Handling & Loading:</span>
+                                <span className="font-medium text-[#8C2323]">
+                                  -₹{candidate.handlingPerQuintal + candidate.loadingPerQuintal}/q
+                                </span>
+                              </div>
+                              <div className="flex justify-between text-[#5D6352] border-t border-[#DFD8CB] pt-1">
+                                <span>Total Deductions:</span>
+                                <span className="font-bold text-[#8C2323]">-₹{candidate.totalDeductionsPerQuintal}/q</span>
+                              </div>
+                              <div className="flex justify-between items-center bg-[#F7F5EE] border border-[#DFD8CB] p-2 rounded font-bold">
+                                <span className="text-[#1E221B]">Net Realization:</span>
+                                <span className="text-[#233D22] text-sm font-bold">
+                                  ₹{candidate.estimatedNetRealizationPerQuintal}/q
+                                </span>
+                              </div>
+                            </div>
+
+                            <div className="rounded border border-[#DFD8CB] bg-[#F7F5EE] p-3 text-xs">
+                              <span className="font-semibold text-[#1E221B] block mb-0.5">
+                                Economic Assessment:
+                              </span>
+                              <p className="text-[#5D6352] text-[11px] leading-relaxed">
+                                {candidate.economicTradeoff}
+                              </p>
+                            </div>
+                          </div>
+                        </Card>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        )}
+
+        {/* TAB 2: FPO BULK BUYER RFQ INTELLIGENCE */}
+        {activeTab === 'bulk_rfqs' && (
+          <div className="space-y-6">
+            {isBulkLoading && (
+              <div className="p-12 text-center bg-[#FCFAF6] border border-[#DFD8CB] rounded-lg">
+                <Loader2 className="h-6 w-6 animate-spin text-[#3B532B] mx-auto mb-2" />
+                <p className="text-xs text-[#5D6352]">
+                  Analyzing institutional RFQs against cooperative aggregated volume...
+                </p>
+              </div>
+            )}
+
+            {!fpoId && !isBulkLoading && (
+              <div className="rounded-lg border border-dashed border-[#DFD8CB] bg-[#FCFAF6] p-10 text-center space-y-3">
+                <Building2 className="h-8 w-8 text-[#233D22] mx-auto" />
+                <h3 className="text-base font-serif font-bold text-[#1E221B]">FPO Collective Access Required</h3>
+                <p className="text-xs text-[#5D6352] max-w-lg mx-auto">
+                  Bulk Buyer RFQ intelligence aggregates volume across accredited member cooperatives. You are currently not registered as an administrator of an approved FPO organization.
+                </p>
+                <div className="pt-2">
+                  <Link href="/fpo/buy-requests">
+                    <Button size="sm" className="bg-[#233D22] hover:bg-[#1a2d19] text-white text-xs rounded-md">
+                      Explore Institutional Buy Requests
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            )}
+
+            {bulkData && (
+              <>
+                <div className="rounded-lg border border-[#DFD8CB] bg-[#FCFAF6] p-6 space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <Badge className="bg-[#233D22] text-white font-bold text-xs rounded">
+                          FPO Aggregation Hub
+                        </Badge>
+                        <Badge variant="outline" className="text-xs bg-[#F7F5EE] border-[#DFD8CB] text-[#1E221B]">
+                          {bulkData.fpo.district}, {bulkData.fpo.state}
+                        </Badge>
+                      </div>
+                      <h2 className="text-xl font-serif font-bold text-[#1E221B]">
+                        {bulkData.fpo.name}
+                      </h2>
+                      <p className="text-xs text-[#5D6352] mt-0.5">
+                        Aggregated Available Capacity: <strong className="text-[#1E221B]">{bulkData.fpoCapacityQuintals} Quintals</strong> ({bulkData.commodity})
+                      </p>
+                    </div>
+
+                    <div className="bg-[#EDF3ED] border border-[#C8D9C8] rounded-lg p-4 sm:max-w-md">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-[#233D22] block mb-1">
+                        Procurement Advisory
+                      </span>
+                      <p className="text-xs text-[#1E221B] font-medium leading-relaxed">
+                        {bulkData.sideBySideComparisonSummary}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-sm font-serif font-bold text-[#1E221B] mb-4">
+                    Institutional RFQ Decision Matrix for {bulkData.commodity} ({bulkData.rfqs.length} Opportunities)
+                  </h3>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+                    {bulkData.rfqs.map((rfq) => (
+                      <Card
+                        key={rfq.rfqId}
+                        className={`flex flex-col justify-between overflow-hidden border rounded-lg ${
+                          rfq.isEconomicallyRecommended
+                            ? 'border-[#233D22] bg-[#FCFAF6]'
+                            : 'border-[#DFD8CB] bg-[#FCFAF6]'
+                        }`}
+                      >
+                        <div className="p-5 space-y-4">
+                          <div className="flex items-start justify-between gap-2">
+                            <div>
+                              <div className="flex items-center gap-1.5 mb-1">
+                                <Badge
+                                  className={`text-[10px] font-bold px-2 py-0.5 rounded ${
+                                    rfq.isEconomicallyRecommended
+                                      ? 'bg-[#233D22] text-white'
+                                      : 'bg-[#F7F5EE] border border-[#DFD8CB] text-[#5D6352]'
+                                  }`}
+                                >
+                                  Scenario {rfq.scenario}
+                                </Badge>
+                                {rfq.isEconomicallyRecommended && (
+                                  <Badge className="bg-[#233D22] text-white text-[9px] px-1.5 py-0 rounded">
+                                    Optimal
+                                  </Badge>
+                                )}
+                              </div>
+                              <h4 className="font-serif font-bold text-[#1E221B] text-sm leading-snug">
+                                {rfq.buyerName}
+                              </h4>
+                              <span className="text-[11px] text-[#5D6352] block">
+                                {rfq.buyerType}
+                              </span>
+                            </div>
+
+                            <Badge
+                              variant="outline"
+                              className={`text-[10px] font-bold rounded ${
+                                rfq.capacityStatus === 'FULLY_FULFILLABLE'
+                                  ? 'border-[#C8D9C8] bg-[#EDF3ED] text-[#233D22]'
+                                  : rfq.capacityStatus === 'PARTIALLY_FULFILLABLE'
+                                  ? 'border-[#E8DEC8] bg-[#FAF6EC] text-[#9A6818]'
+                                  : 'border-[#D98282] bg-[#FDF2F2] text-[#8C2323]'
+                              }`}
+                            >
+                              {rfq.capacityStatus === 'FULLY_FULFILLABLE'
+                                ? 'Fulfillable'
+                                : rfq.capacityStatus === 'PARTIALLY_FULFILLABLE'
+                                ? 'Partial'
+                                : 'Infeasible'}
+                            </Badge>
+                          </div>
+
+                          <Separator className="bg-[#DFD8CB]" />
+
+                          <div className="space-y-2 text-xs">
+                            <div className="flex justify-between">
+                              <span className="text-[#5D6352]">Volume Needed:</span>
+                              <span className="font-bold text-[#1E221B]">{rfq.requiredQuantity} Q</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-[#5D6352]">Target Budget:</span>
+                              <span className="font-bold text-[#1E221B]">₹{rfq.targetPriceInrPerQuintal}/q</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-[#5D6352]">Destination:</span>
+                              <span className="font-medium text-[#1E221B]">{rfq.deliveryCity}, {rfq.deliveryState}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-[#5D6352]">Road Distance:</span>
+                              <span className="font-medium text-[#1E221B]">{rfq.roadDistanceKm} km</span>
+                            </div>
+                            <div className="flex justify-between text-[#8C2323]">
+                              <span>Logistics Deductions:</span>
+                              <span className="font-semibold">-₹{rfq.estimatedLogisticsCostPerQuintal}/q</span>
+                            </div>
+                            <div className="flex justify-between items-center bg-[#F7F5EE] border border-[#DFD8CB] p-2 rounded font-bold">
+                              <span className="text-[#1E221B]">Net Realization:</span>
+                              <span className="text-[#233D22] text-sm font-bold">
+                                ₹{rfq.estimatedNetPerQuintal}/q
+                              </span>
+                            </div>
+                          </div>
+
+                          <div className="rounded border border-[#DFD8CB] bg-[#F7F5EE] p-3 text-xs">
+                            <span className="font-semibold text-[#1E221B] block mb-0.5 text-[11px]">
+                              Decision Rationale:
+                            </span>
+                            <p className="text-[#5D6352] text-[11px] leading-relaxed">
+                              {rfq.tradeoffExplanation}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="p-4 bg-[#F7F5EE] border-t border-[#DFD8CB]">
+                          <Link href={`/fpo/buy-requests`}>
+                            <Button size="sm" variant={rfq.isEconomicallyRecommended ? 'default' : 'outline'} className={`w-full text-xs rounded-md ${rfq.isEconomicallyRecommended ? 'bg-[#233D22] hover:bg-[#1a2d19] text-white' : 'border-[#DFD8CB] bg-[#FCFAF6] text-[#1E221B]'}`}>
+                              {rfq.capacityStatus === 'FULLY_FULFILLABLE' ? 'Review & Fulfill Contract' : 'View Capacity Options'}
+                            </Button>
+                          </Link>
+                        </div>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+        )}
+
+        {/* TAB 3: SMART ALLOCATION */}
         {activeTab === 'allocation' && (
           <div className="space-y-6">
             {isAllocationLoading && (
-              <div className="rounded-2xl border border-border bg-card p-12 text-center">
-                <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-emerald-600 border-r-transparent mb-3" />
-                <p className="text-sm font-semibold text-foreground">
-                  Evaluating Mandi rates, matched buyers, logistics tariffs, and net realization...
+              <div className="p-12 text-center bg-[#FCFAF6] border border-[#DFD8CB] rounded-lg">
+                <Loader2 className="h-6 w-6 animate-spin text-[#3B532B] mx-auto mb-2" />
+                <p className="text-xs text-[#5D6352]">
+                  Evaluating mandi rates, direct buyers, logistics tariffs, and net realization...
                 </p>
               </div>
             )}
 
             {isAllocationError && !isAllocationLoading && (
-              <div className="rounded-2xl border border-destructive/20 bg-destructive/5 p-6 text-center">
-                <AlertTriangle className="h-8 w-8 text-destructive mx-auto mb-2" />
-                <h3 className="text-sm font-bold text-foreground">Intelligence Service Offline</h3>
-                <p className="text-xs text-muted-foreground mt-1">
-                  Unable to connect to decision engine. Core marketplace listing remains operational.
-                </p>
-                <Button size="sm" onClick={() => refetchAllocation()} className="mt-3 text-xs">
+              <div className="p-8 text-center bg-[#FDF2F2] border border-[#D98282] rounded-lg">
+                <AlertTriangle className="h-8 w-8 text-[#8C2323] mx-auto mb-2" />
+                <h3 className="text-sm font-serif font-bold text-[#1E221B]">Intelligence Service Offline</h3>
+                <p className="text-xs text-[#5D6352] mt-1">Unable to connect to multi-channel allocation engine.</p>
+                <Button size="sm" onClick={() => refetchAllocation()} className="mt-3 text-xs bg-[#233D22] hover:bg-[#1a2d19] text-white rounded-md">
                   Retry Calculation
                 </Button>
               </div>
@@ -329,218 +772,76 @@ function SellerIntelligenceContent() {
 
             {allocationData && recommendedOption && (
               <>
-                {/* Highlighted Recommendation Banner */}
-                <div className="rounded-2xl border-2 border-emerald-500/30 bg-gradient-to-r from-emerald-500/10 via-emerald-500/5 to-transparent p-6 shadow-sm">
-                  <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                <div className="rounded-lg border border-[#DFD8CB] bg-[#FCFAF6] p-6 space-y-5">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
-                      <div className="flex items-center gap-2 mb-2">
-                        <Badge className="bg-emerald-600 text-white text-xs px-2.5 py-0.5 font-bold">
-                          TOP RECOMMENDED CHANNEL
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <Badge className="bg-[#233D22] text-white font-bold text-xs rounded">
+                          Optimal Channel
                         </Badge>
-                        <Badge variant="outline" className="text-xs font-medium">
-                          {recommendedOption.channelType === 'MANDI'
-                            ? 'Physical APMC Mandi'
-                            : recommendedOption.channelType === 'DIRECT_BUYER'
-                            ? 'Matched Direct Buyer'
-                            : 'Direct Marketplace Listing'}
+                        <Badge variant="outline" className="text-xs bg-[#F7F5EE] border-[#DFD8CB] text-[#1E221B]">
+                          {recommendedOption.channelType}
                         </Badge>
                       </div>
-                      <h2 className="text-xl font-black text-foreground">
-                        {recommendedOption.channelName} ({recommendedOption.destinationLocation})
+                      <h2 className="text-xl font-serif font-bold text-[#1E221B]">
+                        {recommendedOption.channelName}
                       </h2>
-                      <p className="mt-1 text-xs text-muted-foreground flex items-center gap-2">
-                        <MapPin className="h-3 w-3 text-emerald-600" />
-                        Distance: {recommendedOption.distanceKm} km from {sellerCity} • Settlement: {recommendedOption.settlementTimeline}
+                      <p className="text-xs text-[#5D6352] mt-0.5">
+                        Destination: {recommendedOption.destinationLocation}
                       </p>
                     </div>
 
-                    <div className="flex items-baseline lg:items-end flex-col bg-background/80 backdrop-blur rounded-xl p-4 border border-border/80">
-                      <span className="text-xs text-muted-foreground font-medium">
-                        Estimated Net Realization
-                      </span>
-                      <div className="text-2xl font-black text-emerald-600">
-                        ₹{recommendedOption.estimatedNetRealization.toLocaleString('en-IN')}
+                    <div className="text-right bg-[#EDF3ED] border border-[#C8D9C8] rounded-lg p-4">
+                      <span className="text-xs text-[#5D6352]">Estimated Net Realization</span>
+                      <div className="text-2xl font-serif font-bold text-[#233D22]">
+                        ₹{recommendedOption.perUnitNetRealization.toLocaleString('en-IN')}/q
                       </div>
-                      <span className="text-xs font-semibold text-foreground mt-0.5">
-                        ₹{recommendedOption.perUnitNetRealization.toLocaleString('en-IN')}/quintal
+                      <span className="text-[11px] text-[#5D6352]">
+                        Total Batch: ₹{recommendedOption.estimatedNetRealization.toLocaleString('en-IN')}
                       </span>
                     </div>
                   </div>
 
-                  <Separator className="my-4" />
+                  <Separator className="bg-[#DFD8CB]" />
 
-                  {/* Explainable Rationale */}
-                  <div className="rounded-xl bg-background/90 p-4 border border-border/60">
-                    <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400 block mb-1">
-                      Why this channel was chosen
-                    </span>
-                    <p className="text-xs text-foreground font-medium leading-relaxed">
-                      {allocationData.recommendationRationale}
-                    </p>
+                  <div className="rounded border border-[#DFD8CB] bg-[#F7F5EE] p-4 text-xs text-[#1E221B] leading-relaxed">
+                    <span className="font-bold block mb-1">Recommendation Summary:</span>
+                    {allocationData.recommendationRationale}
                   </div>
                 </div>
 
-                {/* Comparative Channel Cards */}
                 <div>
-                  <h3 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                    <span>Ranked Channel Comparison</span>
-                    <span className="text-xs font-normal text-muted-foreground">
-                      (Evaluated across gross price, estimated freight, fees & taxes)
-                    </span>
+                  <h3 className="text-sm font-serif font-bold text-[#1E221B] mb-4">
+                    Evaluated Channels ({allocationData.rankedOptions.length})
                   </h3>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                    {allocationData.rankedOptions.map((opt) => {
-                      const isTop = opt.rank === 1;
-                      return (
-                        <Card
-                          key={`${opt.channelType}-${opt.channelName}`}
-                          className={`relative overflow-hidden transition-all border ${
-                            isTop
-                              ? 'border-emerald-500 shadow-md ring-1 ring-emerald-500/20'
-                              : 'border-border/80 hover:border-border'
-                          }`}
-                        >
-                          <CardContent className="p-5 space-y-4">
-                            {/* Header */}
-                            <div className="flex items-start justify-between">
-                              <div>
-                                <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
-                                  Option #{opt.rank}
-                                </span>
-                                <h4 className="font-bold text-foreground text-base leading-snug">
-                                  {opt.channelName}
-                                </h4>
-                                <span className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
-                                  <MapPin className="h-3 w-3" />
-                                  {opt.destinationLocation} ({opt.distanceKm} km)
-                                </span>
-                              </div>
-                              <Badge
-                                variant={
-                                  opt.channelType === 'DIRECT_BUYER'
-                                    ? 'farmer'
-                                    : opt.channelType === 'PLATFORM_LISTING'
-                                    ? 'success'
-                                    : 'secondary'
-                                }
-                                className="text-[10px]"
-                              >
-                                {opt.channelType.replace('_', ' ')}
-                              </Badge>
-                            </div>
-
-                            <Separator />
-
-                            {/* Transparent Economics Waterfall */}
-                            <div className="space-y-1.5 text-xs">
-                              <div className="flex justify-between text-muted-foreground">
-                                <span>Gross Expected Price:</span>
-                                <span className="font-semibold text-foreground">
-                                  ₹{opt.expectedGrossPricePerUnit}/q
-                                </span>
-                              </div>
-                              <div className="flex justify-between text-muted-foreground">
-                                <span>Total Gross Value:</span>
-                                <span className="font-semibold text-foreground">
-                                  ₹{opt.grossSellingValue.toLocaleString('en-IN')}
-                                </span>
-                              </div>
-
-                              <div className="pt-2 space-y-1 text-muted-foreground border-t border-border/40">
-                                <div className="flex justify-between text-destructive">
-                                  <span>- Estimated Logistics ({opt.distanceKm} km):</span>
-                                  <span>-₹{opt.logisticsCost.toLocaleString('en-IN')}</span>
-                                </div>
-                                <div className="flex justify-between text-destructive">
-                                  <span>- Handling / Packaging:</span>
-                                  <span>-₹{opt.handlingCost.toLocaleString('en-IN')}</span>
-                                </div>
-                                  <div className="flex justify-between text-destructive">
-                                    <span>
-                                      {opt.channelType === 'MANDI' ? '- Mandi Cess / Tax:' : '- Platform Transaction Fee:'}
-                                    </span>
-                                    <span>-₹{opt.platformOrMandiFee.toLocaleString('en-IN')}</span>
-                                  </div>
-                              </div>
-
-                              <div className="pt-2 border-t border-border flex justify-between items-baseline font-bold text-sm">
-                                <span className="text-foreground">Estimated Net:</span>
-                                <span className="text-emerald-600 font-extrabold text-base">
-                                  ₹{opt.estimatedNetRealization.toLocaleString('en-IN')}
-                                </span>
-                              </div>
-                              <div className="flex justify-between text-[11px] text-muted-foreground font-medium">
-                                <span>Net Realization / Quintal:</span>
-                                <span className="text-foreground font-bold">
-                                  ₹{opt.perUnitNetRealization.toLocaleString('en-IN')}/q
-                                </span>
-                              </div>
-                            </div>
-
-                            <Separator />
-
-                            {/* Advantages & Disadvantages */}
-                            <div className="space-y-2 text-[11px]">
-                              {opt.advantages.slice(0, 2).map((adv, idx) => (
-                                <div key={idx} className="flex items-center gap-1.5 text-emerald-700 dark:text-emerald-400">
-                                  <CheckCircle2 className="h-3 w-3 shrink-0" />
-                                  <span>{adv}</span>
-                                </div>
-                              ))}
-                              {opt.disadvantages.slice(0, 1).map((dis, idx) => (
-                                <div key={idx} className="flex items-center gap-1.5 text-amber-700 dark:text-amber-400">
-                                  <AlertTriangle className="h-3 w-3 shrink-0" />
-                                  <span>{dis}</span>
-                                </div>
-                              ))}
-                            </div>
-                          </CardContent>
-                        </Card>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* Hard Constraints Eliminated Candidates */}
-                {allocationData.eliminatedCandidates && allocationData.eliminatedCandidates.length > 0 && (
-                  <div className="rounded-2xl border border-border/60 bg-muted/20 p-5">
-                    <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5 mb-3">
-                      <XCircle className="h-3.5 w-3.5 text-zinc-400" />
-                      Channels Eliminated by Hard Constraints ({allocationData.eliminatedCandidates.length})
-                    </span>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      {allocationData.eliminatedCandidates.map((elim, idx) => (
-                        <div
-                          key={idx}
-                          className="flex items-start gap-2.5 rounded-xl border border-border/40 bg-background/50 p-3 text-xs"
-                        >
-                          <XCircle className="h-4 w-4 text-zinc-400 shrink-0 mt-0.5" />
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {allocationData.rankedOptions.map((opt) => (
+                      <Card key={`${opt.channelName}-${opt.rank}`} className="border border-[#DFD8CB] bg-[#FCFAF6] p-4 space-y-3 rounded-lg">
+                        <div className="flex justify-between items-start">
                           <div>
-                            <span className="font-semibold text-foreground">
-                              {elim.candidateName}
-                            </span>{' '}
-                            <span className="text-[10px] text-muted-foreground">
-                              ({elim.channelType})
-                            </span>
-                            <p className="text-muted-foreground text-[11px] mt-0.5">
-                              Elimination reason: {elim.reason}
-                            </p>
+                            <span className="text-xs font-serif font-bold text-[#1E221B]">{opt.channelName}</span>
+                            <span className="text-[11px] text-[#5D6352] block">{opt.channelType}</span>
+                          </div>
+                          <Badge variant="outline" className={`text-[10px] rounded ${opt.rank === 1 ? 'bg-[#233D22] text-white border-[#233D22]' : 'bg-[#F7F5EE] border-[#DFD8CB] text-[#5D6352]'}`}>
+                            Rank #{opt.rank}
+                          </Badge>
+                        </div>
+                        <div className="space-y-1 text-xs">
+                          <div className="flex justify-between text-[#5D6352]">
+                            <span>Gross Offer:</span>
+                            <span className="font-medium text-[#1E221B]">₹{opt.expectedGrossPricePerUnit}/q</span>
+                          </div>
+                          <div className="flex justify-between text-[#5D6352]">
+                            <span>Logistics:</span>
+                            <span className="text-[#8C2323]">-₹{opt.logisticsCost}/q</span>
+                          </div>
+                          <div className="flex justify-between font-bold border-t border-[#DFD8CB] pt-1">
+                            <span>Net Realization:</span>
+                            <span className="text-[#233D22]">₹{opt.perUnitNetRealization}/q</span>
                           </div>
                         </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Mandatory Pre-Sale Settlement Distinction */}
-                <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 flex items-start gap-3 text-xs text-muted-foreground">
-                  <Info className="h-4 w-4 text-amber-600 shrink-0 mt-0.5" />
-                  <div>
-                    <span className="font-semibold text-foreground">
-                      Pre-Sale Estimation vs Actual Settlement Distinction:
-                    </span>{' '}
-                    {allocationData.settlementDistinctionNotice}
+                      </Card>
+                    ))}
                   </div>
                 </div>
               </>
@@ -548,315 +849,84 @@ function SellerIntelligenceContent() {
           </div>
         )}
 
-        {/* ---------------- TAB 2: BEST TIME TO SELL ---------------- */}
+        {/* TAB 4: BEST TIME TO SELL */}
         {activeTab === 'timing' && (
           <div className="space-y-6">
             {isTimingLoading && (
-              <div className="rounded-2xl border border-border bg-card p-12 text-center">
-                <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-emerald-600 border-r-transparent mb-3" />
-                <p className="text-sm font-semibold text-foreground">
-                  Analyzing 14-day APMC arrival velocity and price trajectory...
+              <div className="p-12 text-center bg-[#FCFAF6] border border-[#DFD8CB] rounded-lg">
+                <Loader2 className="h-6 w-6 animate-spin text-[#3B532B] mx-auto mb-2" />
+                <p className="text-xs text-[#5D6352]">
+                  Analyzing APMC arrival volume and 14-day price trajectory...
                 </p>
               </div>
             )}
 
             {timingData && (
-              <>
-                <div className="rounded-2xl border border-border bg-card p-6 shadow-sm space-y-6">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div>
-                      <div className="flex items-center gap-2 mb-1.5">
-                        <Badge
-                          variant={
-                            timingData.recommendation === 'Sell now'
-                              ? 'success'
-                              : timingData.recommendation === 'Consider selling soon'
-                              ? 'secondary'
-                              : 'outline'
-                          }
-                          className="text-xs px-2.5 py-1 font-bold"
-                        >
-                          Recommendation: {timingData.recommendation}
-                        </Badge>
-                        <Badge variant="outline" className="text-xs">
-                          Commodity: {timingData.commodity}
-                        </Badge>
-                      </div>
-                      <h2 className="text-xl font-bold text-foreground">
-                        {timingData.recommendationSummary}
-                      </h2>
-                    </div>
-
-                    <div className="text-right bg-muted/40 rounded-xl p-4 border border-border/60">
-                      <span className="text-xs text-muted-foreground">Current APMC Benchmark</span>
-                      <div className="text-2xl font-black text-foreground">
-                        ₹{timingData.currentPrice.toLocaleString('en-IN')}/q
-                      </div>
-                    </div>
-                  </div>
-
-                  <Separator />
-
-                  {/* 7-day and 14-day Horizon Projections */}
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div className="rounded-xl border border-border/60 bg-muted/20 p-4">
-                      <span className="text-xs text-muted-foreground block font-medium">
-                        Current Spot Modal Price
-                      </span>
-                      <span className="text-xl font-bold text-foreground mt-1 block">
-                        ₹{timingData.currentPrice}/quintal
-                      </span>
-                      <span className="text-[11px] text-muted-foreground mt-0.5 block">
-                        Observed APMC benchmark
-                      </span>
-                    </div>
-
-                    <div className="rounded-xl border border-border/60 bg-muted/20 p-4">
-                      <span className="text-xs text-muted-foreground block font-medium">
-                        +7 Days Forward Estimate
-                      </span>
-                      <span className="text-xl font-bold text-foreground mt-1 block">
-                        {timingData.forwardProjections.horizon7DaysPrice
-                          ? `₹${timingData.forwardProjections.horizon7DaysPrice}/quintal`
-                          : 'Insufficient Data'}
-                      </span>
-                      <span className="text-[11px] text-muted-foreground mt-0.5 block">
-                        Model projected trajectory
-                      </span>
-                    </div>
-
-                    <div className="rounded-xl border border-border/60 bg-muted/20 p-4">
-                      <span className="text-xs text-muted-foreground block font-medium">
-                        +14 Days Forward Estimate
-                      </span>
-                      <span className="text-xl font-bold text-foreground mt-1 block">
-                        {timingData.forwardProjections.horizon14DaysPrice
-                          ? `₹${timingData.forwardProjections.horizon14DaysPrice}/quintal`
-                          : 'Insufficient Data'}
-                      </span>
-                      <span className="text-[11px] text-muted-foreground mt-0.5 block">
-                        Longer horizon advisory
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Supporting Factors */}
+              <div className="rounded-lg border border-[#DFD8CB] bg-[#FCFAF6] p-6 space-y-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div>
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3">
-                      Factors Influencing This Sell-Timing Advisory
-                    </h4>
-                    <div className="space-y-2">
-                      {timingData.supportingFactors.map((factor, idx) => (
-                        <div
-                          key={idx}
-                          className="flex items-start gap-2.5 rounded-xl border border-border/40 bg-muted/10 p-3 text-xs"
-                        >
-                          <Info className="h-4 w-4 text-emerald-600 shrink-0 mt-0.5" />
-                          <span className="text-foreground font-medium">{factor}</span>
-                        </div>
-                      ))}
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <Badge className="text-xs px-2.5 py-1 font-bold bg-[#233D22] text-white rounded">
+                        Recommendation: {timingData.recommendation}
+                      </Badge>
+                      <Badge variant="outline" className="text-xs bg-[#F7F5EE] border-[#DFD8CB] text-[#1E221B]">
+                        Commodity: {timingData.commodity}
+                      </Badge>
                     </div>
+                    <h2 className="text-xl font-serif font-bold text-[#1E221B]">
+                      {timingData.recommendationSummary}
+                    </h2>
                   </div>
 
-                  {/* Perishability Risk Assessment */}
-                  <div className="rounded-xl border border-border/80 bg-background p-4 text-xs space-y-1">
-                    <span className="font-bold text-foreground block">
-                      Crop Perishability Risk Profile:
-                    </span>
-                    <p className="text-muted-foreground">
-                      {timingData.perishabilityRiskAssessment}
-                    </p>
-                  </div>
-
-                  {/* Model Limitations Notice */}
-                  <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 p-4 text-xs text-muted-foreground space-y-1">
-                    <span className="font-semibold text-foreground block">
-                      Model Limitations & Scope:
-                    </span>
-                    <ul className="list-disc pl-4 space-y-0.5">
-                      {timingData.limitations.map((lim, idx) => (
-                        <li key={idx}>{lim}</li>
-                      ))}
-                    </ul>
+                  <div className="text-right bg-[#F4F0E6] rounded border border-[#E0D9CB] p-4">
+                    <span className="text-xs text-[#5D6352]">Current Spot Benchmark</span>
+                    <div className="text-2xl font-serif font-bold text-[#1E221B]">
+                      ₹{timingData.currentPrice.toLocaleString('en-IN')}/q
+                    </div>
                   </div>
                 </div>
-              </>
-            )}
-          </div>
-        )}
 
-        {/* ---------------- TAB 3: APMC MANDI COMPARISON ---------------- */}
-        {activeTab === 'markets' && (
-          <div className="space-y-6">
-            {isMarketLoading && (
-              <div className="rounded-2xl border border-border bg-card p-12 text-center">
-                <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-emerald-600 border-r-transparent mb-3" />
-                <p className="text-sm font-semibold text-foreground">
-                  Gathering cross-market APMC arrivals and weather logs...
-                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="rounded border border-[#DFD8CB] bg-[#F7F5EE] p-4">
+                    <span className="text-xs text-[#5D6352] block font-medium">Spot Modal Rate</span>
+                    <span className="text-xl font-serif font-bold text-[#1E221B] mt-1 block">₹{timingData.currentPrice}/q</span>
+                  </div>
+                  <div className="rounded border border-[#DFD8CB] bg-[#F7F5EE] p-4">
+                    <span className="text-xs text-[#5D6352] block font-medium">+7 Days Forward Projection</span>
+                    <span className="text-xl font-serif font-bold text-[#1E221B] mt-1 block">
+                      {timingData.forwardProjections.horizon7DaysPrice ? `₹${timingData.forwardProjections.horizon7DaysPrice}/q` : 'Data Unavailable'}
+                    </span>
+                  </div>
+                  <div className="rounded border border-[#DFD8CB] bg-[#F7F5EE] p-4">
+                    <span className="text-xs text-[#5D6352] block font-medium">+14 Days Forward Projection</span>
+                    <span className="text-xl font-serif font-bold text-[#1E221B] mt-1 block">
+                      {timingData.forwardProjections.horizon14DaysPrice ? `₹${timingData.forwardProjections.horizon14DaysPrice}/q` : 'Data Unavailable'}
+                    </span>
+                  </div>
+                </div>
               </div>
             )}
-
-            {marketData && (
-              <>
-                {/* Stats Summary Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                  <div className="rounded-2xl border border-border/80 bg-card p-4 shadow-sm">
-                    <span className="text-xs text-muted-foreground font-medium">
-                      APMC Reporting Mandis
-                    </span>
-                    <div className="text-2xl font-black text-foreground mt-1">
-                      {marketData.totalMarketsReporting}
-                    </div>
-                    <span className="text-[11px] text-muted-foreground">
-                      Benchmark date: {marketData.reportingDate}
-                    </span>
-                  </div>
-
-                  <div className="rounded-2xl border border-border/80 bg-card p-4 shadow-sm">
-                    <span className="text-xs text-muted-foreground font-medium">
-                      Avg APMC Modal Price
-                    </span>
-                    <div className="text-2xl font-black text-emerald-600 mt-1">
-                      ₹{marketData.overallStats.avgModalPrice}/q
-                    </div>
-                    <span className="text-[11px] text-muted-foreground">
-                      Spread: ₹{marketData.overallStats.minModalPrice} – ₹{marketData.overallStats.maxModalPrice}
-                    </span>
-                  </div>
-
-                  <div className="rounded-2xl border border-border/80 bg-card p-4 shadow-sm">
-                    <span className="text-xs text-muted-foreground font-medium">
-                      Total Market Arrivals
-                    </span>
-                    <div className="text-2xl font-black text-foreground mt-1">
-                      {marketData.overallStats.totalArrivalsTonnes.toLocaleString()} T
-                    </div>
-                    <span className="text-[11px] text-muted-foreground font-medium text-amber-600">
-                      Wholesale Absorption Proxy
-                    </span>
-                  </div>
-
-                  <div className="rounded-2xl border border-border/80 bg-card p-4 shadow-sm">
-                    <span className="text-xs text-muted-foreground font-medium">
-                      Top Paying Mandi
-                    </span>
-                    <div className="text-lg font-bold text-foreground mt-1 truncate">
-                      {marketData.overallStats.topPayingMarket}
-                    </div>
-                    <span className="text-[11px] text-emerald-600 font-semibold">
-                      Max Price: ₹{marketData.overallStats.maxModalPrice}/q
-                    </span>
-                  </div>
-                </div>
-
-                {/* Mandi Table */}
-                <div className="rounded-2xl border border-border/80 bg-card overflow-hidden shadow-sm">
-                  <div className="p-4 border-b border-border/60 flex items-center justify-between">
-                    <div>
-                      <h3 className="font-bold text-foreground text-sm">
-                        Cross-Mandi Price & Transport Matrix for {selectedCommodity}
-                      </h3>
-                      <p className="text-xs text-muted-foreground">
-                        Modal rates evaluated against estimated freight (straight-line geographic distance) from {sellerCity}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-left text-xs">
-                      <thead className="bg-muted/40 border-b border-border text-muted-foreground font-semibold">
-                        <tr>
-                          <th className="p-3">Mandi / District</th>
-                          <th className="p-3 text-right">Modal Rate</th>
-                          <th className="p-3 text-right">Min / Max</th>
-                          <th className="p-3 text-right">Wholesale Arrivals</th>
-                          <th className="p-3 text-right">Distance</th>
-                          <th className="p-3 text-right">Est. Freight/q</th>
-                          <th className="p-3 text-right">Net After Freight</th>
-                          <th className="p-3 text-center">Agri-Weather</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-border/40">
-                        {marketData.markets.map((m) => (
-                          <tr key={`${m.market}-${m.district}`} className="hover:bg-muted/20">
-                            <td className="p-3 font-semibold text-foreground">
-                              {m.market}
-                              <span className="block text-[11px] font-normal text-muted-foreground">
-                                {m.district}, {m.state}
-                              </span>
-                            </td>
-                            <td className="p-3 text-right font-bold text-foreground">
-                              ₹{m.modalPrice}/q
-                            </td>
-                            <td className="p-3 text-right text-muted-foreground">
-                              ₹{m.minPrice} – ₹{m.maxPrice}
-                            </td>
-                            <td className="p-3 text-right text-foreground font-medium">
-                              {m.arrivals} Tonnes
-                            </td>
-                            <td className="p-3 text-right text-muted-foreground">
-                              {m.distanceKm !== undefined ? `${m.distanceKm} km` : '—'}
-                            </td>
-                            <td className="p-3 text-right text-destructive font-medium">
-                              {m.estimatedLogisticsCostPerUnit !== undefined
-                                ? `-₹${m.estimatedLogisticsCostPerUnit}/q`
-                                : '—'}
-                            </td>
-                            <td className="p-3 text-right font-bold text-emerald-600">
-                              {m.estimatedNetAfterLogistics !== undefined
-                                ? `₹${m.estimatedNetAfterLogistics}/q`
-                                : `₹${m.modalPrice}/q`}
-                            </td>
-                            <td className="p-3 text-center">
-                              {m.tempMean !== null ? (
-                                <span className="inline-flex items-center gap-1 text-[11px] text-muted-foreground">
-                                  <CloudSun className="h-3 w-3 text-amber-500" />
-                                  {m.tempMean}°C
-                                </span>
-                              ) : (
-                                <span className="text-zinc-400">—</span>
-                              )}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-
-                {/* Data Source Disclosures */}
-                <div className="rounded-xl border border-border/60 bg-muted/10 p-4 text-xs text-muted-foreground space-y-2">
-                  <span className="font-semibold text-foreground block">
-                    Transparent Data Source Disclosures:
-                  </span>
-                  <p>• <strong>APMC Mandi Data:</strong> {marketData.dataSourceDisclosures.apmcMandi}</p>
-                  <p>• <strong>Wholesale Arrival Distinction:</strong> {marketData.dataSourceDisclosures.wholesaleAbsorptionNotice}</p>
-                  <p>• <strong>Live Platform Catalog:</strong> {marketData.dataSourceDisclosures.platformMarketplace}</p>
-                </div>
-              </>
-            )}
           </div>
         )}
 
-        {/* ---------------- TAB 4: MATCHED BULK BUYERS ---------------- */}
+        {/* TAB 5: MATCHED DIRECT BUYERS */}
         {activeTab === 'buyers' && (
           <div className="space-y-6">
             {isBuyersLoading && (
-              <div className="rounded-2xl border border-border bg-card p-12 text-center">
-                <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-emerald-600 border-r-transparent mb-3" />
-                <p className="text-sm font-semibold text-foreground">
-                  Matching registered buyers by commodity demand, estimated geographic distance, and quantity...
+              <div className="p-12 text-center bg-[#FCFAF6] border border-[#DFD8CB] rounded-lg">
+                <Loader2 className="h-6 w-6 animate-spin text-[#3B532B] mx-auto mb-2" />
+                <p className="text-xs text-[#5D6352]">
+                  Matching verified institutional buyers by demand, transit distance, and volume...
                 </p>
               </div>
             )}
 
             {!isBuyersLoading && (!buyerMatches || buyerMatches.length === 0) && (
-              <div className="rounded-2xl border border-border bg-card p-12 text-center">
-                <Users className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
-                <h3 className="font-bold text-foreground text-sm">No Active Buyer Requirements Found</h3>
-                <p className="text-xs text-muted-foreground max-w-md mx-auto mt-1">
-                  There are currently no open procurement requirements for {selectedCommodity} within regional transit range. Check back soon or list directly on the marketplace.
+              <div className="rounded-lg border border-dashed border-[#DFD8CB] bg-[#FCFAF6] p-12 text-center">
+                <Users className="h-10 w-10 text-[#8C867A] mx-auto mb-3" />
+                <h3 className="font-serif font-bold text-[#1E221B] text-sm">No Active Buyer Requirements Found</h3>
+                <p className="text-xs text-[#5D6352] max-w-md mx-auto mt-1">
+                  There are currently no open procurement requirements for {selectedCommodity} within transit range.
                 </p>
               </div>
             )}
@@ -864,82 +934,50 @@ function SellerIntelligenceContent() {
             {buyerMatches && buyerMatches.length > 0 && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 {buyerMatches.map((match) => (
-                  <Card key={match.requirementId} className="border border-border/80 shadow-sm">
+                  <Card key={match.requirementId} className="border border-[#DFD8CB] bg-[#FCFAF6] rounded-lg">
                     <CardContent className="p-5 space-y-4">
                       <div className="flex items-start justify-between">
                         <div>
                           <div className="flex items-center gap-2">
-                            <span className="font-bold text-foreground text-base">
+                            <span className="font-serif font-bold text-[#1E221B] text-base">
                               {match.businessName || match.buyerName}
                             </span>
-                            <Badge variant="outline" className="text-[10px]">
+                            <Badge variant="outline" className="text-[10px] bg-[#F7F5EE] border-[#DFD8CB] text-[#5D6352]">
                               {match.buyerType}
                             </Badge>
                           </div>
-                          <span className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
-                            <MapPin className="h-3 w-3 text-emerald-600" />
-                            {match.deliveryLocation || 'Verified Hub'} ({match.distanceKm} km from {sellerCity})
+                          <span className="text-xs text-[#5D6352] flex items-center gap-1 mt-0.5">
+                            <MapPin className="h-3 w-3 text-[#3B532B]" />
+                            {match.deliveryLocation || 'Verified Destination'} ({match.distanceKm} km from {effectiveDistrict})
                           </span>
                         </div>
 
-                        <div className="flex flex-col items-end">
-                          <Badge
-                            className={`text-xs font-bold px-2 py-0.5 ${
-                              match.matchScore >= 80
-                                ? 'bg-emerald-600 text-white'
-                                : match.matchScore >= 60
-                                ? 'bg-amber-500 text-zinc-950'
-                                : 'bg-muted text-foreground'
-                            }`}
-                          >
-                            {match.matchScore}/100 Match
-                          </Badge>
-                        </div>
+                        <Badge className="bg-[#233D22] text-white text-xs font-bold px-2 py-0.5 rounded">
+                          {match.matchScore}/100 Match
+                        </Badge>
                       </div>
 
-                      <Separator />
+                      <Separator className="bg-[#DFD8CB]" />
 
                       <div className="grid grid-cols-2 gap-3 text-xs">
                         <div>
-                          <span className="text-muted-foreground block">Required Volume:</span>
-                          <span className="font-semibold text-foreground">
+                          <span className="text-[#5D6352] block">Required Volume:</span>
+                          <span className="font-semibold text-[#1E221B]">
                             {match.requiredQuantity} {match.unit}
                           </span>
                         </div>
                         <div>
-                          <span className="text-muted-foreground block">Target Budget:</span>
-                          <span className="font-semibold text-foreground">
+                          <span className="text-[#5D6352] block">Target Budget:</span>
+                          <span className="font-semibold text-[#1E221B]">
                             {match.targetPrice ? `₹${match.targetPrice}/${match.unit}` : 'Negotiable'}
                           </span>
                         </div>
                       </div>
 
-                      {/* Score Breakdown Pills */}
-                      <div className="space-y-1.5">
-                        <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground block">
-                          Compatibility Assessment:
-                        </span>
-                        <div className="flex flex-wrap gap-1.5 text-[11px]">
-                          <span className="rounded-md bg-muted px-2 py-0.5 text-muted-foreground">
-                            Commodity: {match.scoreBreakdown.commodityCompatibility}%
-                          </span>
-                          <span className="rounded-md bg-muted px-2 py-0.5 text-muted-foreground">
-                            Quantity: {match.scoreBreakdown.quantityCompatibility}%
-                          </span>
-                          <span className="rounded-md bg-muted px-2 py-0.5 text-muted-foreground">
-                            Distance: {match.scoreBreakdown.locationDistance}%
-                          </span>
-                          <span className="rounded-md bg-muted px-2 py-0.5 text-muted-foreground">
-                            Price: {match.scoreBreakdown.priceCompatibility}%
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* Explainable Reasons */}
-                      <div className="rounded-xl bg-muted/20 p-3 space-y-1">
+                      <div className="rounded border border-[#DFD8CB] bg-[#F7F5EE] p-3 space-y-1">
                         {match.reasons.map((reason, idx) => (
-                          <div key={idx} className="flex items-center gap-1.5 text-xs text-foreground">
-                            <CheckCircle2 className="h-3 w-3 text-emerald-600 shrink-0" />
+                          <div key={idx} className="flex items-center gap-1.5 text-xs text-[#1E221B]">
+                            <CheckCircle2 className="h-3 w-3 text-[#233D22] shrink-0" />
                             <span>{reason}</span>
                           </div>
                         ))}

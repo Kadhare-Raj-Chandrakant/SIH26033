@@ -4,8 +4,6 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { addToCart, MarketplaceProduct } from '@/lib/api';
-import { Button } from '@/components/ui/button';
-import { Minus, Plus, ShoppingCart, Check, AlertCircle, Tractor, LogIn } from 'lucide-react';
 import { useAuth } from '@/components/providers/auth-provider';
 
 interface AddToCartSectionProps {
@@ -80,15 +78,14 @@ export function AddToCartSection({ product }: AddToCartSectionProps) {
 
   if (isOutOfStock) {
     return (
-      <div className="rounded-2xl border border-destructive/20 bg-destructive/5 p-5 text-center space-y-2">
-        <div className="inline-flex items-center gap-1.5 text-xs font-bold text-destructive">
-          <AlertCircle className="h-4 w-4" />
-          <span>Out of Stock</span>
-        </div>
-        <p className="text-xs text-muted-foreground">
+      <div className="rounded-lg border border-[#DFD8CB] bg-[#FDF2F2] p-5 text-center space-y-2">
+        <span className="text-xs font-bold uppercase tracking-wider text-[#9B1C1C] block">
+          Produce Out of Stock
+        </span>
+        <p className="text-xs text-[#771D1D] leading-relaxed">
           {!hasValidPrice
-            ? 'This produce does not currently have pricing assigned and is out of stock. It cannot be added to cart.'
-            : 'This produce is currently out of stock or archived by the farmer. Check back soon for the next harvest batch.'}
+            ? 'This batch is currently pending APMC price verification or is archived. Please check back for subsequent harvest cycles.'
+            : 'This produce lot is currently committed or out of stock. Contact the producer collective for future contracts.'}
         </p>
       </div>
     );
@@ -99,14 +96,18 @@ export function AddToCartSection({ product }: AddToCartSectionProps) {
   // 1. Logged-out Visitor Experience
   if (!isAuthenticated) {
     return (
-      <div className="rounded-2xl border border-emerald-500/30 bg-card p-5 shadow-sm space-y-3.5 text-center">
-        <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">
-          <ShoppingCart className="h-5 w-5" />
+      <div className="rounded-lg border border-[#DFD8CB] bg-[#FCFAF6] p-6 text-center space-y-3.5">
+        <div className="w-10 h-10 mx-auto rounded-full bg-[#E2EDE2] flex items-center justify-center text-[#233D22]">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <circle cx="8" cy="21" r="1" />
+            <circle cx="19" cy="21" r="1" />
+            <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
+          </svg>
         </div>
-        <div className="space-y-1">
-          <h3 className="text-sm font-bold text-foreground">Sign In to Buy</h3>
-          <p className="text-xs text-muted-foreground leading-relaxed max-w-sm mx-auto">
-            Direct farmer sourcing, cart management, and order checkout require an active <strong>Buyer</strong> account.
+        <div>
+          <h3 className="text-sm font-serif font-bold text-[#1E221B]">Sign In to Procure</h3>
+          <p className="text-xs text-[#6B7260] leading-relaxed max-w-sm mx-auto mt-1">
+            Direct farmgate lot purchase, escrow reservation, and trade contract generation require an authenticated <strong>Buyer</strong> account.
           </p>
         </div>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 pt-1">
@@ -114,23 +115,19 @@ export function AddToCartSection({ product }: AddToCartSectionProps) {
             href={`/login?returnUrl=${encodeURIComponent(returnUrl)}`}
             className="w-full sm:w-auto"
           >
-            <Button size="sm" className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold h-9 px-5 gap-1.5 shadow-sm">
-              <LogIn className="h-3.5 w-3.5" />
-              <span>Sign In as Buyer</span>
-            </Button>
+            <button className="w-full sm:w-auto h-9 px-5 text-xs font-bold uppercase tracking-wider bg-[#233D22] hover:bg-[#1C321B] text-[#FAF8F2] rounded transition-colors">
+              Sign In as Buyer
+            </button>
           </Link>
           <Link
             href={`/register?role=BUYER&returnUrl=${encodeURIComponent(returnUrl)}`}
             className="w-full sm:w-auto"
           >
-            <Button size="sm" variant="outline" className="w-full sm:w-auto text-xs h-9 px-4 border-border/80">
+            <button className="w-full sm:w-auto h-9 px-4 text-xs font-bold uppercase tracking-wider border border-[#233D22] text-[#233D22] rounded hover:bg-[#EAE4D6] transition-colors">
               Create Buyer Account
-            </Button>
+            </button>
           </Link>
         </div>
-        <p className="text-[11px] text-muted-foreground pt-1">
-          Direct farmer listing • Purchase directly from verified producers
-        </p>
       </div>
     );
   }
@@ -138,29 +135,24 @@ export function AddToCartSection({ product }: AddToCartSectionProps) {
   // 2. Logged-in Farmer / Producer Experience
   if (isFarmer) {
     return (
-      <div className="rounded-2xl border border-amber-500/30 bg-amber-500/5 p-5 shadow-sm space-y-3 text-center">
-        <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/15 text-amber-600 border border-amber-500/30">
-          <Tractor className="h-5 w-5" />
-        </div>
-        <div className="space-y-1">
-          <h3 className="text-sm font-bold text-foreground">Buyer Account Required</h3>
-          <p className="text-xs text-muted-foreground leading-relaxed max-w-md mx-auto">
-            You are signed in with a <strong>Farmer/Producer</strong> account (<span className="font-mono text-foreground">{user?.email}</span>). Producer accounts list and fulfill produce and cannot make buyer purchases.
-          </p>
-        </div>
+      <div className="rounded-lg border border-[#DFD8CB] bg-[#F7F4EB] p-5 text-center space-y-3">
+        <h3 className="text-sm font-serif font-bold text-[#1E221B]">Producer Account Notice</h3>
+        <p className="text-xs text-[#6B7260] leading-relaxed max-w-md mx-auto">
+          You are signed in with a <strong>Producer/FPO</strong> account ({user?.email}). Producer accounts list and fulfill produce. Buyer procurement requires a registered buyer profile.
+        </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 pt-1">
           <Link
             href={`/login?returnUrl=${encodeURIComponent(returnUrl)}`}
             className="w-full sm:w-auto"
           >
-            <Button size="sm" className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold h-9 px-4">
-              Sign In with Buyer Account
-            </Button>
+            <button className="w-full sm:w-auto h-9 px-4 text-xs font-semibold uppercase tracking-wider bg-[#233D22] text-[#FAF8F2] rounded">
+              Switch to Buyer Account
+            </button>
           </Link>
           <Link href="/seller/orders" className="w-full sm:w-auto">
-            <Button size="sm" variant="outline" className="w-full sm:w-auto text-xs h-9 px-4 border-border/80">
-              Go to Producer Orders
-            </Button>
+            <button className="w-full sm:w-auto h-9 px-4 text-xs font-semibold uppercase tracking-wider border border-[#DFD8CB] bg-[#FFFFFF] rounded">
+              View Your Producer Orders
+            </button>
           </Link>
         </div>
       </div>
@@ -171,30 +163,27 @@ export function AddToCartSection({ product }: AddToCartSectionProps) {
   const lineTotal = product.price * quantity;
 
   return (
-    <div className="rounded-2xl border border-border/80 bg-card p-5 shadow-sm space-y-4">
+    <div className="rounded-lg border border-[#DFD8CB] bg-[#FCFAF6] p-5 space-y-4">
       <div className="flex items-center justify-between">
-        <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-          Select Quantity
+        <span className="text-xs font-bold uppercase tracking-wider text-[#52594B]">
+          Procurement Quantity
         </span>
-        <span className="text-xs text-muted-foreground">
-          Available: <strong className="text-foreground">{maxStock} {product.unit}</strong>
+        <span className="text-xs text-[#6B7260]">
+          Available Stock: <strong className="text-[#1E221B]">{maxStock} {product.unit}</strong>
         </span>
       </div>
 
-      {/* Quantity Selector */}
+      {/* Quantity Stepper */}
       <div className="flex items-center gap-3">
-        <div className="flex items-center rounded-xl border border-input bg-background p-1 shadow-inner">
-          <Button
+        <div className="flex items-center rounded border border-[#DFD8CB] bg-[#FFFFFF]">
+          <button
             type="button"
-            size="icon"
-            variant="ghost"
             onClick={handleDecrement}
             disabled={quantity <= 1 || mutation.isPending}
-            className="h-8 w-8 rounded-lg text-muted-foreground hover:text-foreground"
+            className="h-8 w-8 text-sm font-bold text-[#1E221B] hover:bg-[#F2EFE7] disabled:opacity-40"
           >
-            <Minus className="h-3.5 w-3.5" />
-          </Button>
-
+            -
+          </button>
           <input
             type="number"
             min={1}
@@ -202,71 +191,63 @@ export function AddToCartSection({ product }: AddToCartSectionProps) {
             value={quantity}
             onChange={handleQuantityChange}
             disabled={mutation.isPending}
-            className="w-14 text-center text-sm font-bold text-foreground bg-transparent focus:outline-none"
+            className="w-14 text-center text-xs font-bold text-[#1E221B] bg-transparent focus:outline-none"
           />
-
-          <Button
+          <button
             type="button"
-            size="icon"
-            variant="ghost"
             onClick={handleIncrement}
             disabled={quantity >= maxStock || mutation.isPending}
-            className="h-8 w-8 rounded-lg text-muted-foreground hover:text-foreground"
+            className="h-8 w-8 text-sm font-bold text-[#1E221B] hover:bg-[#F2EFE7] disabled:opacity-40"
           >
-            <Plus className="h-3.5 w-3.5" />
-          </Button>
+            +
+          </button>
         </div>
 
         <div className="flex-1 text-right">
-          <span className="text-[11px] text-muted-foreground block">Item Total</span>
-          <span className="text-base font-extrabold text-foreground">
-            ₹{lineTotal.toFixed(2)}
+          <span className="text-[10px] text-[#7A8070] uppercase tracking-wider font-semibold block">Batch Subtotal</span>
+          <span className="text-lg font-serif font-bold text-[#1E221B]">
+            ₹{lineTotal.toLocaleString('en-IN')}
           </span>
         </div>
       </div>
 
-      {/* Add To Cart CTA Button */}
-      <Button
-        onClick={handleAddToCart}
-        disabled={mutation.isPending}
-        className="w-full h-11 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold gap-2 shadow-md shadow-emerald-600/20"
-      >
-        {mutation.isPending ? (
-          <span>Adding to Cart...</span>
-        ) : successMessage ? (
-          <>
-            <Check className="h-4 w-4 text-white" />
-            <span>Added to Cart!</span>
-          </>
-        ) : (
-          <>
-            <ShoppingCart className="h-4 w-4" />
-            <span>Add to Cart</span>
-          </>
-        )}
-      </Button>
+      {/* Error or Success notification */}
+      {mutation.isError && (
+        <div className="p-2.5 rounded bg-[#FDF2F2] border border-[#F8B4B4] text-[#9B1C1C] text-xs">
+          {(mutation.error as Error)?.message || 'Failed to add batch to cart.'}
+        </div>
+      )}
 
-      {/* Quick View Cart link when added */}
       {successMessage && (
-        <div className="flex items-center justify-between rounded-xl bg-emerald-500/10 border border-emerald-500/20 px-3.5 py-2 text-xs text-emerald-800 dark:text-emerald-300">
-          <span>Item added to your basket</span>
-          <Link href="/cart" className="font-bold underline hover:text-emerald-900">
-            View Cart &rarr;
+        <div className="p-2.5 rounded bg-[#E8F1E5] border border-[#A5BFA0] text-[#284021] text-xs flex items-center justify-between">
+          <span>Batch added to your procurement cart.</span>
+          <Link href="/cart" className="font-bold underline">
+            View Cart
           </Link>
         </div>
       )}
 
-      {/* Mutation Error */}
-      {mutation.isError && (
-        <p className="text-xs text-destructive text-center">
-          {mutation.error?.message || 'Failed to add item to cart'}
-        </p>
-      )}
+      {/* Submit Action */}
+      <div className="pt-2 flex gap-2.5">
+        <button
+          type="button"
+          onClick={handleAddToCart}
+          disabled={mutation.isPending}
+          className="flex-1 h-11 bg-[#233D22] hover:bg-[#1C321B] text-[#FAF8F2] text-xs font-bold uppercase tracking-wider rounded transition-colors disabled:opacity-70"
+        >
+          {mutation.isPending ? 'Reserving...' : 'Add to Procurement Cart'}
+        </button>
+        <Link href="/cart">
+          <button className="h-11 px-4 text-xs font-bold uppercase tracking-wider border border-[#233D22] text-[#233D22] rounded hover:bg-[#EAE4D6]">
+            Go to Cart
+          </button>
+        </Link>
+      </div>
 
-      {/* Farmer Listing Assurance */}
-      <p className="text-[11px] text-center text-muted-foreground pt-0.5">
-        Direct farmer listing • Purchase directly from verified producers
-      </p>
+      <div className="pt-2 border-t border-[#ECE5D8] flex items-center justify-between text-[11px] text-[#6B7260]">
+        <span>Escrow funds held in banking trustee account</span>
+        <span className="font-semibold text-[#233D22]">100% Protected</span>
+      </div>
     </div>
   );
 }

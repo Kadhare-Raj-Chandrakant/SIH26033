@@ -12,6 +12,8 @@ import {
   ArrowUpRight,
   RefreshCw,
   Clock,
+  ShieldCheck,
+  Building2,
 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/components/providers/auth-provider';
@@ -37,275 +39,272 @@ export default function AdminDashboardPage() {
 
   if (isLoading) {
     return (
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div className="h-8 w-48 bg-slate-800 rounded animate-pulse" />
-          <div className="h-8 w-24 bg-slate-800 rounded animate-pulse" />
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {[1, 2, 3, 4, 5, 6].map((i) => (
-            <div key={i} className="h-36 bg-slate-900 border border-slate-800 rounded-xl p-5 animate-pulse" />
-          ))}
-        </div>
+      <div className="p-10 border border-[#DFD8CB] rounded-md bg-[#FCFAF6] text-center space-y-3">
+        <div className="inline-block h-6 w-6 border-2 border-[#233D22] border-t-transparent rounded-full animate-spin" />
+        <p className="text-xs font-semibold text-[#1E221B]">Loading operational metrics and database ledgers...</p>
       </div>
     );
   }
 
   if (isError || !data || !data.users) {
     return (
-      <div className="p-8 bg-slate-900 border border-slate-800 rounded-xl text-center max-w-lg mx-auto mt-12">
-        <AlertTriangle className="w-10 h-10 text-amber-400 mx-auto mb-3" />
-        <h2 className="text-lg font-bold text-slate-200 mb-2">Error Loading Dashboard</h2>
-        <p className="text-sm text-slate-400 mb-5">
-          {error instanceof Error ? error.message : 'Data could not be retrieved'}
+      <div className="p-8 bg-[#FCFAF6] border border-[#DFD8CB] rounded-md text-center max-w-lg mx-auto mt-12 space-y-3">
+        <AlertTriangle className="w-8 h-8 text-[#BD8728] mx-auto" />
+        <h2 className="text-base font-serif font-bold text-[#1E221B]">Error Retrieving Administrative Ledger</h2>
+        <p className="text-xs text-[#5D6352]">
+          {error instanceof Error ? error.message : 'Database metrics could not be aggregated.'}
         </p>
         <button
           onClick={() => refetch()}
-          className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold inline-flex items-center gap-2"
+          className="px-4 py-2 bg-[#233D22] hover:bg-[#1E331D] text-[#F7F5EE] rounded text-xs font-semibold inline-flex items-center gap-2"
         >
           <RefreshCw className="w-3.5 h-3.5" />
-          Retry
+          <span>Retry Connection</span>
         </button>
       </div>
     );
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 max-w-6xl">
       {/* Header with Refresh */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#DFD8CB] pb-4">
         <div>
-          <h1 className="text-xl font-bold text-slate-100">Operational Dashboard</h1>
-          <p className="text-xs text-slate-400">Live database aggregations & moderation queues</p>
+          <h1 className="text-2xl font-serif font-bold text-[#1E221B]">Operational Governance Console</h1>
+          <p className="text-xs text-[#5D6352] mt-0.5">Live database aggregations, liquidity tracking, and settlement audit logs</p>
         </div>
         <button
           onClick={() => refetch()}
           disabled={isFetching}
-          className="px-3.5 py-2 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 rounded-lg text-xs font-medium inline-flex items-center gap-2 transition-colors self-start sm:self-auto disabled:opacity-50"
+          className="px-3.5 py-1.5 bg-[#FCFAF6] hover:bg-[#EFE9DC] border border-[#DFD8CB] text-[#1E221B] rounded text-xs font-semibold inline-flex items-center gap-1.5 transition-colors self-start sm:self-auto disabled:opacity-50"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${isFetching ? 'animate-spin' : ''}`} />
-          {isFetching ? 'Refreshing...' : 'Refresh Metrics'}
+          <span>{isFetching ? 'Synchronizing...' : 'Refresh Metrics'}</span>
         </button>
       </div>
 
-      {/* KPI Cards Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      {/* KPI Cards Grid (4 columns layout avoiding 3-card AI slop) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Users KPI */}
-        <div className="p-5 bg-slate-900 border border-slate-800 rounded-xl hover:border-slate-700 transition-colors">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-medium text-slate-400 uppercase tracking-wider">Registered Users</span>
-            <div className="p-2 bg-blue-500/10 text-blue-400 rounded-lg border border-blue-500/20">
+        <div className="p-4 bg-[#FCFAF6] border border-[#DFD8CB] rounded-md">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#5D6352]">Registered Users</span>
+            <div className="p-1.5 bg-[#F4F0E6] text-[#233D22] rounded border border-[#DFD8CB]">
               <Users className="w-4 h-4" />
             </div>
           </div>
-          <div className="flex items-baseline gap-2 mb-3">
-            <span className="text-3xl font-extrabold text-slate-100">{data.users.total}</span>
-            <span className="text-xs text-emerald-400 font-medium">
+          <div className="flex items-baseline gap-2 mb-2">
+            <span className="text-2xl font-serif font-bold text-[#1E221B]">{data.users.total}</span>
+            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#233D22]/10 text-[#233D22]">
               {data.users.active} Active
             </span>
           </div>
-          <div className="grid grid-cols-3 gap-2 pt-3 border-t border-slate-800/80 text-[11px]">
+          <div className="grid grid-cols-3 gap-1 pt-2 border-t border-[#DFD8CB] text-[10px]">
             <div>
-              <span className="text-slate-500 block">Farmers</span>
-              <span className="font-semibold text-slate-300">{data.users.farmers}</span>
+              <span className="text-[#5D6352] block">Farmers</span>
+              <span className="font-bold text-[#1E221B]">{data.users.farmers}</span>
             </div>
             <div>
-              <span className="text-slate-500 block">FPOs</span>
-              <span className="font-semibold text-slate-300">{data.users.fpos}</span>
+              <span className="text-[#5D6352] block">FPOs</span>
+              <span className="font-bold text-[#1E221B]">{data.users.fpos}</span>
             </div>
             <div>
-              <span className="text-slate-500 block">Buyers</span>
-              <span className="font-semibold text-slate-300">{data.users.buyers}</span>
+              <span className="text-[#5D6352] block">Buyers</span>
+              <span className="font-bold text-[#1E221B]">{data.users.buyers}</span>
             </div>
           </div>
         </div>
 
-        {/* Marketplace Products KPI */}
-        <div className="p-5 bg-slate-900 border border-slate-800 rounded-xl hover:border-slate-700 transition-colors">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-medium text-slate-400 uppercase tracking-wider">Marketplace Listings</span>
-            <div className="p-2 bg-emerald-500/10 text-emerald-400 rounded-lg border border-emerald-500/20">
+        {/* Marketplace Listings KPI */}
+        <div className="p-4 bg-[#FCFAF6] border border-[#DFD8CB] rounded-md">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#5D6352]">Trade Listings</span>
+            <div className="p-1.5 bg-[#F4F0E6] text-[#233D22] rounded border border-[#DFD8CB]">
               <Package className="w-4 h-4" />
             </div>
           </div>
-          <div className="flex items-baseline gap-2 mb-3">
-            <span className="text-3xl font-extrabold text-slate-100">{data.marketplace.totalProducts}</span>
-            <span className="text-xs text-emerald-400 font-medium">{data.marketplace.active} Live</span>
+          <div className="flex items-baseline gap-2 mb-2">
+            <span className="text-2xl font-serif font-bold text-[#1E221B]">{data.marketplace.totalProducts}</span>
+            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#233D22]/10 text-[#233D22]">
+              {data.marketplace.active} Live
+            </span>
           </div>
-          <div className="grid grid-cols-3 gap-2 pt-3 border-t border-slate-800/80 text-[11px]">
+          <div className="grid grid-cols-3 gap-1 pt-2 border-t border-[#DFD8CB] text-[10px]">
             <div>
-              <span className="text-slate-500 block">Out of Stock</span>
-              <span className="font-semibold text-amber-400">{data.marketplace.outOfStock}</span>
+              <span className="text-[#5D6352] block">Out of Stock</span>
+              <span className="font-bold text-[#BD8728]">{data.marketplace.outOfStock}</span>
             </div>
             <div>
-              <span className="text-slate-500 block">Rejected</span>
-              <span className="font-semibold text-red-400">{data.marketplace.rejected}</span>
+              <span className="text-[#5D6352] block">Rejected</span>
+              <span className="font-bold text-[#9A3412]">{data.marketplace.rejected}</span>
             </div>
             <div>
-              <span className="text-slate-500 block">Verified Sellers</span>
-              <span className="font-semibold text-emerald-400">{data.marketplace.verifiedSellers}</span>
+              <span className="text-[#5D6352] block">Verified</span>
+              <span className="font-bold text-[#233D22]">{data.marketplace.verifiedSellers}</span>
             </div>
           </div>
         </div>
 
         {/* Orders & Volume KPI */}
-        <div className="p-5 bg-slate-900 border border-slate-800 rounded-xl hover:border-slate-700 transition-colors">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-medium text-slate-400 uppercase tracking-wider">Orders & Volume</span>
-            <div className="p-2 bg-indigo-500/10 text-indigo-400 rounded-lg border border-indigo-500/20">
+        <div className="p-4 bg-[#FCFAF6] border border-[#DFD8CB] rounded-md">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#5D6352]">Order Trade Volume</span>
+            <div className="p-1.5 bg-[#F4F0E6] text-[#233D22] rounded border border-[#DFD8CB]">
               <ShoppingCart className="w-4 h-4" />
             </div>
           </div>
-          <div className="flex items-baseline gap-2 mb-3">
-            <span className="text-3xl font-extrabold text-slate-100">{data.orders.total}</span>
-            <span className="text-xs text-slate-400">
+          <div className="flex items-baseline gap-2 mb-2">
+            <span className="text-2xl font-serif font-bold text-[#1E221B]">{data.orders.total}</span>
+            <span className="text-[11px] font-bold text-[#233D22]">
               ₹{data.orders.totalVolume.toLocaleString('en-IN')} GMV
             </span>
           </div>
-          <div className="grid grid-cols-3 gap-2 pt-3 border-t border-slate-800/80 text-[11px]">
+          <div className="grid grid-cols-3 gap-1 pt-2 border-t border-[#DFD8CB] text-[10px]">
             <div>
-              <span className="text-slate-500 block">Pending</span>
-              <span className="font-semibold text-amber-400">{data.orders.byStatus['PENDING'] || 0}</span>
+              <span className="text-[#5D6352] block">Pending</span>
+              <span className="font-bold text-[#BD8728]">{data.orders.byStatus['PENDING'] || 0}</span>
             </div>
             <div>
-              <span className="text-slate-500 block">Shipped</span>
-              <span className="font-semibold text-blue-400">{data.orders.byStatus['SHIPPED'] || 0}</span>
+              <span className="text-[#5D6352] block">Shipped</span>
+              <span className="font-bold text-[#1E221B]">{data.orders.byStatus['SHIPPED'] || 0}</span>
             </div>
             <div>
-              <span className="text-slate-500 block">Delivered</span>
-              <span className="font-semibold text-emerald-400">{data.orders.byStatus['DELIVERED'] || 0}</span>
+              <span className="text-[#5D6352] block">Delivered</span>
+              <span className="font-bold text-[#233D22]">{data.orders.byStatus['DELIVERED'] || 0}</span>
             </div>
           </div>
         </div>
 
         {/* Payments KPI */}
-        <div className="p-5 bg-slate-900 border border-slate-800 rounded-xl hover:border-slate-700 transition-colors">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-medium text-slate-400 uppercase tracking-wider">Settled Payments</span>
-            <div className="p-2 bg-purple-500/10 text-purple-400 rounded-lg border border-purple-500/20">
+        <div className="p-4 bg-[#FCFAF6] border border-[#DFD8CB] rounded-md">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#5D6352]">Settlement Escrow</span>
+            <div className="p-1.5 bg-[#F4F0E6] text-[#233D22] rounded border border-[#DFD8CB]">
               <CreditCard className="w-4 h-4" />
             </div>
           </div>
-          <div className="flex items-baseline gap-2 mb-3">
-            <span className="text-3xl font-extrabold text-slate-100">
+          <div className="flex items-baseline gap-2 mb-2">
+            <span className="text-2xl font-serif font-bold text-[#1E221B]">
               ₹{data.payments.totalSettledAmount.toLocaleString('en-IN')}
             </span>
-            <span className="text-xs text-slate-400">
-              {data.payments.byStatus['COMPLETED'] || 0} completed
+          </div>
+          <div className="grid grid-cols-3 gap-1 pt-2 border-t border-[#DFD8CB] text-[10px]">
+            <div>
+              <span className="text-[#5D6352] block">Completed</span>
+              <span className="font-bold text-[#233D22]">{data.payments.byStatus['COMPLETED'] || 0}</span>
+            </div>
+            <div>
+              <span className="text-[#5D6352] block">Pending</span>
+              <span className="font-bold text-[#BD8728]">{data.payments.byStatus['PENDING'] || 0}</span>
+            </div>
+            <div>
+              <span className="text-[#5D6352] block">Refunded</span>
+              <span className="font-bold text-[#5D6352]">{data.payments.byStatus['REFUNDED'] || 0}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Operations & Queue Panels (2 columns) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        {/* Logistics Panel */}
+        <div className="p-5 bg-[#FCFAF6] border border-[#DFD8CB] rounded-md space-y-3">
+          <div className="flex items-center justify-between border-b border-[#DFD8CB] pb-2.5">
+            <span className="text-xs font-serif font-bold text-[#1E221B] flex items-center gap-1.5">
+              <Truck className="w-4 h-4 text-[#233D22]" />
+              <span>Logistics & Freight Telematics</span>
+            </span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#5D6352]">
+              {data.logistics.totalShipments} Total Consignments
             </span>
           </div>
-          <div className="grid grid-cols-3 gap-2 pt-3 border-t border-slate-800/80 text-[11px]">
-            <div>
-              <span className="text-slate-500 block">Pending</span>
-              <span className="font-semibold text-amber-400">{data.payments.byStatus['PENDING'] || 0}</span>
+          <div className="grid grid-cols-4 gap-2 text-center text-xs">
+            <div className="p-2.5 rounded bg-[#F4F0E6] border border-[#DFD8CB]">
+              <span className="text-[10px] text-[#5D6352] uppercase font-bold block">Created</span>
+              <span className="text-base font-bold text-[#1E221B]">{data.logistics.byStatus['CREATED'] || 0}</span>
             </div>
-            <div>
-              <span className="text-slate-500 block">Failed</span>
-              <span className="font-semibold text-red-400">{data.payments.byStatus['FAILED'] || 0}</span>
+            <div className="p-2.5 rounded bg-[#F4F0E6] border border-[#DFD8CB]">
+              <span className="text-[10px] text-[#5D6352] uppercase font-bold block">In Transit</span>
+              <span className="text-base font-bold text-[#BD8728]">{data.logistics.byStatus['IN_TRANSIT'] || 0}</span>
             </div>
-            <div>
-              <span className="text-slate-500 block">Refunded</span>
-              <span className="font-semibold text-slate-400">{data.payments.byStatus['REFUNDED'] || 0}</span>
+            <div className="p-2.5 rounded bg-[#F4F0E6] border border-[#DFD8CB]">
+              <span className="text-[10px] text-[#5D6352] uppercase font-bold block">Delivered</span>
+              <span className="text-base font-bold text-[#233D22]">{data.logistics.byStatus['DELIVERED'] || 0}</span>
+            </div>
+            <div className="p-2.5 rounded bg-[#F4F0E6] border border-[#DFD8CB]">
+              <span className="text-[10px] text-[#5D6352] uppercase font-bold block">Exceptions</span>
+              <span className="text-base font-bold text-[#9A3412]">{data.logistics.byStatus['FAILED'] || 0}</span>
             </div>
           </div>
         </div>
 
-        {/* Logistics KPI */}
-        <div className="p-5 bg-slate-900 border border-slate-800 rounded-xl hover:border-slate-700 transition-colors">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-medium text-slate-400 uppercase tracking-wider">Current Logistics Status</span>
-            <div className="p-2 bg-teal-500/10 text-teal-400 rounded-lg border border-teal-500/20">
-              <Truck className="w-4 h-4" />
-            </div>
-          </div>
-          <div className="flex items-baseline gap-2 mb-3">
-            <span className="text-3xl font-extrabold text-slate-100">
-              {data.logistics.byStatus['IN_TRANSIT'] || 0}
-            </span>
-            <span className="text-xs text-slate-400">of {data.logistics.totalShipments} total</span>
-          </div>
-          <div className="grid grid-cols-3 gap-2 pt-3 border-t border-slate-800/80 text-[11px]">
-            <div>
-              <span className="text-slate-500 block">Created</span>
-              <span className="font-semibold text-slate-300">{data.logistics.byStatus['CREATED'] || 0}</span>
-            </div>
-            <div>
-              <span className="text-slate-500 block">Delivered</span>
-              <span className="font-semibold text-emerald-400">{data.logistics.byStatus['DELIVERED'] || 0}</span>
-            </div>
-            <div>
-              <span className="text-slate-500 block">Failed</span>
-              <span className="font-semibold text-red-400">{data.logistics.byStatus['FAILED'] || 0}</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Moderation Queue Alert KPI */}
-        <div className="p-5 bg-amber-950/20 border border-amber-800/40 rounded-xl hover:border-amber-700 transition-colors">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-medium text-amber-400 uppercase tracking-wider">Pending Moderation</span>
-            <div className="p-2 bg-amber-500/10 text-amber-400 rounded-lg border border-amber-500/20">
-              <AlertTriangle className="w-4 h-4" />
-            </div>
-          </div>
-          <div className="flex items-baseline gap-2 mb-3">
-            <span className="text-3xl font-extrabold text-amber-300">{data.moderation.pendingReports}</span>
-            <span className="text-xs text-amber-400 font-medium">reports require review</span>
-          </div>
-          <div className="flex items-center justify-between pt-3 border-t border-amber-900/40 text-[11px]">
-            <span className="text-amber-200/80">
-              {data.moderation.rejectedProducts} rejected listings
+        {/* Moderation Queue Alert Panel */}
+        <div className="p-5 bg-[#FCFAF6] border border-[#DFD8CB] rounded-md space-y-3">
+          <div className="flex items-center justify-between border-b border-[#DFD8CB] pb-2.5">
+            <span className="text-xs font-serif font-bold text-[#1E221B] flex items-center gap-1.5">
+              <AlertTriangle className="w-4 h-4 text-[#BD8728]" />
+              <span>Moderation & Dispute Queue</span>
             </span>
             <Link
               href="/admin/reports"
-              className="inline-flex items-center gap-1 text-amber-400 hover:text-amber-300 font-semibold"
+              className="text-[11px] font-bold text-[#233D22] hover:underline inline-flex items-center gap-1"
             >
-              Open Queue
-              <ArrowUpRight className="w-3.5 h-3.5" />
+              <span>Open Queue</span>
+              <ArrowUpRight className="w-3 h-3" />
             </Link>
+          </div>
+          <div className="grid grid-cols-2 gap-3 text-xs">
+            <div className="p-3 rounded bg-[#F4F0E6] border border-[#DFD8CB]">
+              <span className="text-[10px] text-[#5D6352] uppercase font-bold block">Pending Buyer Reports</span>
+              <span className="text-lg font-bold text-[#BD8728]">{data.moderation.pendingReports}</span>
+            </div>
+            <div className="p-3 rounded bg-[#F4F0E6] border border-[#DFD8CB]">
+              <span className="text-[10px] text-[#5D6352] uppercase font-bold block">Rejected Lot Filings</span>
+              <span className="text-lg font-bold text-[#9A3412]">{data.moderation.rejectedProducts}</span>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Recent Administrative Audit Activity */}
-      <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
-        <div className="p-5 border-b border-slate-800 flex items-center justify-between">
+      <div className="bg-[#FCFAF6] border border-[#DFD8CB] rounded-md overflow-hidden">
+        <div className="p-4 border-b border-[#DFD8CB] flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Clock className="w-4 h-4 text-emerald-400" />
-            <h2 className="text-sm font-bold text-slate-200">Recent Privileged Activity</h2>
+            <Clock className="w-4 h-4 text-[#233D22]" />
+            <h2 className="text-xs font-serif font-bold text-[#1E221B]">Privileged Governance Ledger</h2>
           </div>
           <Link
             href="/admin/audit-logs"
-            className="text-xs font-medium text-emerald-400 hover:text-emerald-300 inline-flex items-center gap-1"
+            className="text-xs font-bold text-[#233D22] hover:underline inline-flex items-center gap-1"
           >
-            View Full Audit Trail
+            <span>Full Audit Trail</span>
             <ArrowUpRight className="w-3.5 h-3.5" />
           </Link>
         </div>
-        <div className="divide-y divide-slate-800/80">
+        <div className="divide-y divide-[#DFD8CB]">
           {data.recentActivity && data.recentActivity.length > 0 ? (
             data.recentActivity.map((log) => (
-              <div key={log.id} className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-slate-800/30 transition-colors">
+              <div key={log.id} className="p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 hover:bg-[#F4F0E6]/50 transition-colors">
                 <div className="flex items-center gap-3">
-                  <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-300 border border-slate-700">
+                  <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-[#F4F0E6] text-[#233D22] border border-[#DFD8CB]">
                     {log.action}
                   </span>
                   <div>
-                    <span className="text-xs font-medium text-slate-200">
+                    <span className="text-xs font-semibold text-[#1E221B]">
                       {log.entityType} ID: {log.entityId}
                     </span>
-                    <span className="block text-[11px] text-slate-500">
-                      Actor: {log.actor?.email || log.actorUserId || 'Admin'}
+                    <span className="block text-[11px] text-[#5D6352]">
+                      Actor: {log.actor?.email || log.actorUserId || 'Administrator'}
                     </span>
                   </div>
                 </div>
-                <div className="text-[11px] text-slate-400 shrink-0">
+                <div className="text-[11px] text-[#5D6352] shrink-0 font-mono">
                   {new Date(log.createdAt).toLocaleString('en-IN')}
                 </div>
               </div>
             ))
           ) : (
-            <div className="p-8 text-center text-xs text-slate-500">No recent administrative mutations logged.</div>
+            <div className="p-6 text-center text-xs text-[#5D6352]">No recent administrative mutations recorded.</div>
           )}
         </div>
       </div>

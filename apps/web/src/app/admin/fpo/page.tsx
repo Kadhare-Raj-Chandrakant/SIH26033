@@ -4,22 +4,14 @@ import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { fetchAllFposForAdmin, verifyFpoByAdmin, FpoOrganization } from '@/lib/api/fpo';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Skeleton } from '@/components/ui/skeleton';
 import {
   Building2,
   CheckCircle2,
   XCircle,
-  Clock,
   MapPin,
-  Phone,
-  Mail,
-  ShieldCheck,
   Search,
   AlertCircle,
-  Landmark,
 } from 'lucide-react';
 import { useAuth } from '@/components/providers/auth-provider';
 
@@ -74,52 +66,52 @@ export default function AdminFpoVerificationPage() {
   });
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight text-slate-100 flex items-center gap-2">
-          <Building2 className="h-6 w-6 text-emerald-500" />
+    <div className="space-y-6 max-w-6xl">
+      <div className="border-b border-[#DFD8CB] pb-4">
+        <h1 className="text-2xl font-serif font-bold text-[#1E221B] flex items-center gap-2">
+          <Building2 className="h-5 w-5 text-[#233D22]" />
           <span>FPO Accreditation & Verification</span>
         </h1>
-        <p className="text-xs text-slate-400 mt-1">
-          Review legal registration documents, bank accounts, and geographic coverage to approve or decline cooperative accreditation.
+        <p className="text-xs text-[#5D6352] mt-0.5">
+          Review legal incorporation certificates, registered bank accounts, and geographic districts to approve institutional trading credentials.
         </p>
       </div>
 
       {actionError && (
-        <div className="p-3 bg-red-500/10 border border-red-500/20 text-red-400 text-xs rounded-xl flex items-center gap-2">
+        <div className="p-3 bg-[#9A3412]/10 border border-[#9A3412]/20 text-[#9A3412] text-xs rounded flex items-center gap-2">
           <AlertCircle className="h-4 w-4 shrink-0" />
           <span>{actionError}</span>
         </div>
       )}
 
       {actionSuccess && (
-        <div className="p-3 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs rounded-xl flex items-center gap-2">
+        <div className="p-3 bg-[#233D22]/10 border border-[#233D22]/20 text-[#233D22] text-xs rounded flex items-center gap-2">
           <CheckCircle2 className="h-4 w-4 shrink-0" />
           <span>{actionSuccess}</span>
         </div>
       )}
 
       {/* Toolbar */}
-      <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col md:flex-row gap-3 items-center justify-between">
-        <div className="flex items-center gap-1.5 p-1 bg-slate-950 rounded-lg border border-slate-800 text-xs">
+      <div className="bg-[#FCFAF6] border border-[#DFD8CB] rounded-md p-3.5 flex flex-col md:flex-row gap-3 items-center justify-between">
+        <div className="flex items-center gap-1.5 p-1 bg-[#F7F5EE] rounded border border-[#DFD8CB] text-xs">
           <button
             type="button"
             onClick={() => setStatusFilter('PENDING_VERIFICATION')}
-            className={`px-3 py-1.5 rounded-md font-semibold transition-all ${
+            className={`px-3 py-1 rounded text-xs font-semibold transition-colors ${
               statusFilter === 'PENDING_VERIFICATION'
-                ? 'bg-amber-500/10 text-amber-400 border border-amber-500/30'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-[#BD8728] text-[#F7F5EE]'
+                : 'text-[#5D6352] hover:text-[#1E221B]'
             }`}
           >
-            Pending Verification
+            Pending Review
           </button>
           <button
             type="button"
             onClick={() => setStatusFilter('ACTIVE')}
-            className={`px-3 py-1.5 rounded-md font-semibold transition-all ${
+            className={`px-3 py-1 rounded text-xs font-semibold transition-colors ${
               statusFilter === 'ACTIVE'
-                ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-[#233D22] text-[#F7F5EE]'
+                : 'text-[#5D6352] hover:text-[#1E221B]'
             }`}
           >
             Active & Verified
@@ -127,105 +119,98 @@ export default function AdminFpoVerificationPage() {
           <button
             type="button"
             onClick={() => setStatusFilter('ALL')}
-            className={`px-3 py-1.5 rounded-md font-semibold transition-all ${
+            className={`px-3 py-1 rounded text-xs font-semibold transition-colors ${
               statusFilter === 'ALL'
-                ? 'bg-slate-800 text-slate-100'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-[#F4F0E6] text-[#1E221B] font-bold border border-[#DFD8CB]'
+                : 'text-[#5D6352] hover:text-[#1E221B]'
             }`}
           >
-            All FPOs
+            All Collectives
           </button>
         </div>
 
         <div className="relative w-full md:w-72">
-          <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-500" />
+          <Search className="absolute left-3 top-2.5 h-4 w-4 text-[#5D6352]" />
           <Input
             placeholder="Search by name, reg no, district..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="pl-9 h-9 text-xs bg-slate-950 border-slate-800 text-slate-200"
+            className="pl-9 h-9 text-xs bg-[#F7F5EE] border-[#DFD8CB] text-[#1E221B] rounded focus:border-[#233D22]"
           />
         </div>
       </div>
 
       {/* Table */}
       {isLoading ? (
-        <div className="space-y-3">
-          {[1, 2, 3].map((i) => (
-            <Skeleton key={i} className="h-16 w-full rounded-xl bg-slate-900" />
-          ))}
+        <div className="p-10 border border-[#DFD8CB] rounded-md bg-[#FCFAF6] text-center text-xs text-[#5D6352]">
+          Loading cooperative accreditation records...
         </div>
       ) : filteredFpos.length === 0 ? (
-        <Card className="p-8 text-center border-slate-800 bg-slate-900/60 rounded-xl">
-          <Building2 className="mx-auto h-10 w-10 text-slate-700 mb-2" />
-          <p className="text-sm font-semibold text-slate-200">No FPOs found</p>
-          <p className="text-xs text-slate-500 mt-1">
-            No records match the current verification status filter.
-          </p>
-        </Card>
+        <div className="p-8 text-center border border-[#DFD8CB] bg-[#FCFAF6] rounded-md">
+          <Building2 className="mx-auto h-8 w-8 text-[#5D6352]/40 mb-2" />
+          <p className="text-xs font-semibold text-[#1E221B]">No FPO organizations found matching filter</p>
+        </div>
       ) : (
-        <div className="overflow-x-auto rounded-xl border border-slate-800 bg-slate-900 shadow-sm">
+        <div className="overflow-x-auto rounded-md border border-[#DFD8CB] bg-[#FCFAF6]">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
-              <tr className="border-b border-slate-800 bg-slate-950/60 font-semibold text-slate-300">
-                <th className="p-3.5">FPO Organization</th>
-                <th className="p-3.5">Reg Number</th>
-                <th className="p-3.5">Legal Model</th>
-                <th className="p-3.5">Location</th>
-                <th className="p-3.5">Contact</th>
-                <th className="p-3.5">Escrow Bank</th>
-                <th className="p-3.5">Status</th>
-                <th className="p-3.5 text-right">Moderation Actions</th>
+              <tr className="border-b border-[#DFD8CB] bg-[#F4F0E6] font-bold text-[10px] text-[#5D6352] uppercase tracking-wider">
+                <th className="p-3">FPO Organization</th>
+                <th className="p-3">Reg Number</th>
+                <th className="p-3">Legal Model</th>
+                <th className="p-3">District & State</th>
+                <th className="p-3">Official Contact</th>
+                <th className="p-3">Escrow Bank</th>
+                <th className="p-3">Status</th>
+                <th className="p-3 text-right">Moderation Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/60 text-slate-400">
+            <tbody className="divide-y divide-[#DFD8CB] text-[#1E221B]">
               {filteredFpos.map((fpo) => (
-                <tr key={fpo.id} className="hover:bg-slate-800/30 transition-colors">
-                  <td className="p-3.5 font-bold text-slate-100">
+                <tr key={fpo.id} className="hover:bg-[#F4F0E6]/50 transition-colors">
+                  <td className="p-3 font-semibold text-[#1E221B]">
                     {fpo.name}
                   </td>
-                  <td className="p-3.5 font-mono text-slate-300">
+                  <td className="p-3 font-mono text-[#5D6352]">
                     {fpo.registrationNumber}
                   </td>
-                  <td className="p-3.5 capitalize">
+                  <td className="p-3 capitalize text-[#5D6352]">
                     {fpo.legalStructure.replace(/_/g, ' ').toLowerCase()}
                   </td>
-                  <td className="p-3.5">
-                    <span className="flex items-center gap-1">
-                      <MapPin className="h-3 w-3 text-emerald-500 shrink-0" />
+                  <td className="p-3">
+                    <span className="flex items-center gap-1 text-[#1E221B]">
+                      <MapPin className="h-3 w-3 text-[#233D22] shrink-0" />
                       <span>{fpo.district}, {fpo.state}</span>
                     </span>
                   </td>
-                  <td className="p-3.5">
-                    <span className="block truncate max-w-[120px]">{fpo.contactEmail}</span>
-                    <span className="font-mono text-[11px] text-slate-500">{fpo.contactPhone}</span>
+                  <td className="p-3">
+                    <span className="block truncate max-w-[120px] text-[#1E221B]">{fpo.contactEmail}</span>
+                    <span className="font-mono text-[11px] text-[#5D6352]">{fpo.contactPhone}</span>
                   </td>
-                  <td className="p-3.5 font-mono text-[11px]">
+                  <td className="p-3 font-mono text-[11px] text-[#5D6352]">
                     {fpo.bankName ? (
                       <span>{fpo.bankName} ({fpo.ifscCode || 'IFSC'})</span>
                     ) : (
-                      <span className="text-slate-600">Pending</span>
+                      <span className="text-[#8A8E82]">Pending</span>
                     )}
                   </td>
-                  <td className="p-3.5">
-                    <Badge
-                      variant="outline"
-                      className={
+                  <td className="p-3">
+                    <span
+                      className={`inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${
                         fpo.status === 'ACTIVE'
-                          ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-400'
+                          ? 'border-[#233D22]/30 bg-[#233D22]/10 text-[#233D22]'
                           : fpo.status === 'PENDING_VERIFICATION'
-                            ? 'border-amber-500/30 bg-amber-500/10 text-amber-400'
-                            : 'border-red-500/30 bg-red-500/10 text-red-400'
-                      }
+                          ? 'border-[#BD8728]/30 bg-[#BD8728]/10 text-[#BD8728]'
+                          : 'border-[#9A3412]/30 bg-[#9A3412]/10 text-[#9A3412]'
+                      }`}
                     >
                       {fpo.status.replace(/_/g, ' ')}
-                    </Badge>
+                    </span>
                   </td>
-                  <td className="p-3.5 text-right">
+                  <td className="p-3 text-right">
                     <div className="flex items-center justify-end gap-1.5">
                       {fpo.status !== 'ACTIVE' && (
-                        <Button
-                          size="sm"
+                        <button
                           disabled={verifyMutation.isPending}
                           onClick={() =>
                             verifyMutation.mutate({
@@ -234,23 +219,21 @@ export default function AdminFpoVerificationPage() {
                               reason: 'Registration documents approved by administrator',
                             })
                           }
-                          className="h-7 text-xs bg-emerald-600 hover:bg-emerald-700 text-white font-semibold"
+                          className="px-2 py-1 bg-[#233D22] hover:bg-[#1E331D] text-[#F7F5EE] text-[11px] font-semibold rounded inline-flex items-center gap-1 transition-colors"
                         >
-                          <CheckCircle2 className="h-3.5 w-3.5 mr-1" />
-                          <span>Activate</span>
-                        </Button>
+                          <CheckCircle2 className="h-3 w-3" />
+                          <span>Approve</span>
+                        </button>
                       )}
                       {fpo.status !== 'REJECTED' && (
-                        <Button
-                          size="sm"
-                          variant="outline"
+                        <button
                           disabled={verifyMutation.isPending}
                           onClick={() => setRejectionModalFpoId(fpo.id)}
-                          className="h-7 text-xs border-red-500/30 text-red-400 hover:bg-red-500/10"
+                          className="px-2 py-1 bg-[#F4F0E6] hover:bg-[#EFE9DC] text-[#9A3412] border border-[#DFD8CB] text-[11px] font-semibold rounded inline-flex items-center gap-1 transition-colors"
                         >
-                          <XCircle className="h-3.5 w-3.5 mr-1" />
-                          <span>Reject</span>
-                        </Button>
+                          <XCircle className="h-3 w-3" />
+                          <span>Decline</span>
+                        </button>
                       )}
                     </div>
                   </td>
@@ -263,30 +246,28 @@ export default function AdminFpoVerificationPage() {
 
       {/* Reject Modal */}
       {rejectionModalFpoId && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
-            <h3 className="text-base font-bold text-slate-100">Reject FPO Application</h3>
-            <p className="text-xs text-slate-400">
-              Provide a rationale for why this organization accreditation is being declined.
+        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+          <div className="bg-[#FCFAF6] border border-[#DFD8CB] rounded-md max-w-md w-full p-6 space-y-4">
+            <h3 className="text-base font-serif font-bold text-[#1E221B]">Decline Cooperative Accreditation</h3>
+            <p className="text-xs text-[#5D6352]">
+              Provide an official rationale explaining why this collective accreditation is being declined.
             </p>
             <Input
               placeholder="e.g. Invalid CIN / Registration number not found on ROC portal"
               value={rejectionReason}
               onChange={(e) => setRejectionReason(e.target.value)}
-              className="h-9 text-xs bg-slate-950 border-slate-800 text-slate-200"
+              className="h-9 text-xs bg-[#F7F5EE] border-[#DFD8CB] text-[#1E221B] rounded focus:border-[#233D22]"
             />
-            <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
-              <Button
-                variant="ghost"
-                size="sm"
+            <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#DFD8CB]">
+              <button
+                type="button"
                 onClick={() => setRejectionModalFpoId(null)}
-                className="text-xs text-slate-400"
+                className="px-3.5 py-1.5 bg-[#F4F0E6] hover:bg-[#EFE9DC] text-[#1E221B] border border-[#DFD8CB] text-xs font-semibold rounded transition-colors"
               >
                 Cancel
-              </Button>
-              <Button
-                size="sm"
-                variant="destructive"
+              </button>
+              <button
+                type="button"
                 disabled={verifyMutation.isPending}
                 onClick={() =>
                   verifyMutation.mutate({
@@ -295,10 +276,10 @@ export default function AdminFpoVerificationPage() {
                     reason: rejectionReason || 'Failed verification checks',
                   })
                 }
-                className="text-xs"
+                className="px-4 py-1.5 bg-[#9A3412] hover:bg-[#7c2d12] text-white text-xs font-semibold rounded transition-colors"
               >
-                Confirm Rejection
-              </Button>
+                Confirm Decline
+              </button>
             </div>
           </div>
         </div>

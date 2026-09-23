@@ -5,18 +5,6 @@ import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
 import { fetchBuyerOrders } from '@/lib/api';
 import { MarketplaceNavbar } from '@/components/marketplace/marketplace-navbar';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
-import {
-  Package,
-  Calendar,
-  Building2,
-  ChevronRight,
-  AlertCircle,
-  ShoppingBag,
-} from 'lucide-react';
 import { useAuth } from '@/components/providers/auth-provider';
 import { useIsMounted } from '@/lib/use-is-mounted';
 import { RoleGuard } from '@/components/auth/role-guard';
@@ -52,171 +40,174 @@ function OrdersPageContent() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'PENDING':
-        return <Badge variant="secondary" className="bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300">Pending</Badge>;
+        return (
+          <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-[#FBF4E6] text-[#7A5B18] border border-[#E8DCBF]">
+            Escrow Pending
+          </span>
+        );
       case 'CONFIRMED':
-        return <Badge variant="success" className="bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">Confirmed</Badge>;
+        return (
+          <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-[#E8F0E2] text-[#233D22] border border-[#CCDBCB]">
+            Confirmed & Funded
+          </span>
+        );
       case 'CANCELLED':
-        return <Badge variant="outline" className="text-zinc-500 border-zinc-300">Cancelled</Badge>;
+        return (
+          <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-[#FDF2F2] text-[#9B1C1C] border border-[#E5B5B5]">
+            Cancelled
+          </span>
+        );
       default:
-        return <Badge variant="secondary">{status}</Badge>;
+        return (
+          <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-[#F7F5EE] text-[#4E5446] border border-[#DFD8CB]">
+            {status}
+          </span>
+        );
     }
   };
 
   return (
-    <div className="min-h-screen bg-zinc-50/50 dark:bg-zinc-950/50">
+    <div className="min-h-screen flex flex-col bg-[#F7F5EE] text-[#1E221B]">
       <MarketplaceNavbar />
 
-      <main className="container mx-auto px-4 py-8 sm:px-6 lg:px-8 max-w-5xl">
-        <div className="mb-8">
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground flex items-center gap-2.5">
-            <Package className="h-7 w-7 text-emerald-600" />
-            My Orders
+      <main className="flex-1 max-w-5xl mx-auto w-full px-4 py-8 sm:px-6 lg:px-8">
+        <div className="mb-8 pb-4 border-b border-[#DFD8CB]">
+          <span className="text-[10px] font-bold uppercase tracking-wider text-[#556448] block mb-1">
+            Commercial Transactions
+          </span>
+          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#1E221B]">
+            Buyer Trade Ledger & Purchase Contracts
           </h1>
-          <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-            Track and view historical records of your direct farm produce purchases.
+          <p className="text-xs text-[#6B7260] mt-1">
+            Track farmgate dispatches, weighbridge assay verification status, and historical procurement contracts.
           </p>
         </div>
 
-        {/* Loading state */}
+        {/* Loading */}
         {(!mounted || authLoading || ordersLoading) && (
-          <div className="space-y-4">
-            <Skeleton className="h-28 w-full rounded-2xl" />
-            <Skeleton className="h-28 w-full rounded-2xl" />
-            <Skeleton className="h-28 w-full rounded-2xl" />
-          </div>
-        )}
-
-        {/* Error state */}
-        {isError && !ordersLoading && (
-          <div className="rounded-2xl border border-destructive/20 bg-card p-10 text-center space-y-3">
-            <AlertCircle className="h-10 w-10 text-destructive mx-auto" />
-            <h3 className="text-base font-bold text-foreground">Failed to Load Orders</h3>
-            <p className="text-xs text-muted-foreground">{(error as Error)?.message}</p>
-          </div>
-        )}
-
-        {/* Empty orders state */}
-        {!ordersLoading && !isError && orders.length === 0 && (
-          <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border bg-card p-12 text-center shadow-sm">
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-600 mb-4">
-              <ShoppingBag className="h-8 w-8" />
-            </div>
-            <h2 className="text-lg font-bold text-foreground">No Orders Placed Yet</h2>
-            <p className="mt-1.5 max-w-sm text-xs text-muted-foreground">
-              You have not placed any orders yet. Discover high quality harvest produce sourced directly from farmers.
+          <div className="p-12 text-center border border-[#DFD8CB] rounded-lg bg-[#FCFAF6]">
+            <p className="text-sm font-serif font-bold text-[#1E221B]">
+              Loading Purchase Contracts & Trade Ledger...
             </p>
-            <Link href="/marketplace" className="mt-6">
-              <Button className="bg-emerald-600 hover:bg-emerald-700 text-white gap-2 text-xs font-semibold h-10 px-5">
-                Explore Marketplace
-              </Button>
+          </div>
+        )}
+
+        {/* Error */}
+        {isError && !ordersLoading && (
+          <div className="p-8 text-center border border-[#E5B5B5] rounded-lg bg-[#FDF2F2]">
+            <h3 className="font-serif font-bold text-base text-[#9B1C1C]">Failed to Load Orders</h3>
+            <p className="text-xs text-[#771D1D] mt-1">{(error as Error)?.message}</p>
+          </div>
+        )}
+
+        {/* Empty */}
+        {!ordersLoading && !isError && orders.length === 0 && (
+          <div className="p-12 text-center border border-[#DFD8CB] rounded-lg bg-[#FCFAF6]">
+            <h2 className="text-xl font-serif font-bold text-[#1E221B]">No Trade Contracts Found</h2>
+            <p className="mt-2 text-xs text-[#6B7260] max-w-sm mx-auto leading-relaxed">
+              You have not confirmed any agricultural trade contracts yet. Browse the live marketplace to reserve crop batches directly.
+            </p>
+            <Link href="/marketplace" className="inline-block mt-5">
+              <button className="h-10 px-5 text-xs font-bold uppercase tracking-wider bg-[#233D22] text-[#FAF8F2] rounded">
+                Browse Marketplace Listings
+              </button>
             </Link>
           </div>
         )}
 
-        {/* Orders list */}
+        {/* Orders List */}
         {!ordersLoading && !isError && orders.length > 0 && (
           <div className="space-y-4">
             {orders.map((order) => (
-              <Card
+              <div
                 key={order.id}
-                className="overflow-hidden border border-border/80 bg-card hover:border-border transition-all shadow-sm"
+                className="rounded-lg border border-[#DFD8CB] bg-[#FCFAF6] p-5 sm:p-6"
               >
-                <CardContent className="p-5 sm:p-6">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    {/* Order summary info */}
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-3">
-                        <span className="font-extrabold text-sm sm:text-base text-foreground">
-                          {order.orderNumber}
-                        </span>
-                        {getStatusBadge(order.status)}
-                      </div>
-
-                      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
-                        <span className="flex items-center gap-1">
-                          <Calendar className="h-3.5 w-3.5 text-muted-foreground" />
-                          {new Date(order.createdAt).toLocaleDateString(undefined, {
-                            year: 'numeric',
-                            month: 'short',
-                            day: 'numeric',
-                          })}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Building2 className="h-3.5 w-3.5 text-muted-foreground" />
-                          {order.seller?.businessName || 'Direct Producer'}
-                        </span>
-                        <span>• {order.itemCount || order.items?.length || 1} item(s)</span>
-                      </div>
-
-                      {/* Items preview */}
-                      <div className="pt-1 flex flex-wrap gap-2 text-xs text-muted-foreground">
-                        {order.items?.map((item) => (
-                          <span
-                            key={item.id}
-                            className="inline-flex items-center rounded-md bg-muted px-2 py-0.5 font-medium text-foreground text-[11px]"
-                          >
-                            {item.productName} ({item.quantity} {item.unit})
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Order total and view button */}
-                    <div className="flex items-center justify-between sm:flex-col sm:items-end gap-3 border-t sm:border-t-0 pt-3 sm:pt-0 border-border/40">
-                      <div className="sm:text-right">
-                        <span className="text-[11px] text-muted-foreground block">Order Total</span>
-                        <span className="text-base sm:text-lg font-extrabold text-foreground">
-                          ₹{order.totalAmount.toFixed(2)}
-                        </span>
-                      </div>
-
-                      <Link href={`/orders/${order.id}`}>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="gap-1 text-xs h-8 hover:bg-emerald-50 hover:text-emerald-700 dark:hover:bg-emerald-950/50"
-                        >
-                          <span>View Details</span>
-                          <ChevronRight className="h-3.5 w-3.5" />
-                        </Button>
-                      </Link>
-                    </div>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#ECE5D8]">
+                  <div className="space-y-0.5">
+                    <span className="text-[10px] font-mono uppercase text-[#7A8070]">
+                      Contract Ref: {order.orderNumber || order.id}
+                    </span>
+                    <p className="text-xs text-[#5D6352]">
+                      Date: {new Date(order.createdAt).toLocaleDateString('en-IN', {
+                        day: 'numeric',
+                        month: 'short',
+                        year: 'numeric',
+                      })}
+                    </p>
                   </div>
-                </CardContent>
-              </Card>
+                  <div className="flex items-center gap-3">
+                    {getStatusBadge(order.status)}
+                    <span className="text-base font-serif font-bold text-[#1E221B]">
+                      ₹{order.totalAmount.toLocaleString('en-IN')}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Items in order */}
+                <div className="py-3 divide-y divide-[#ECE5D8] text-xs">
+                  {order.items?.map((item, idx) => (
+                    <div key={idx} className="py-2 flex items-center justify-between">
+                      <div>
+                        <span className="font-bold text-[#1E221B]">
+                          {item.productName || 'Produce Lot'}
+                        </span>
+                        <span className="text-[#6B7260] block text-[11px]">
+                          {item.quantity} {item.unit?.toLowerCase() || 'qtl'} @ ₹{item.unitPrice}/unit
+                        </span>
+                      </div>
+                      <span className="font-semibold text-[#1E221B]">
+                        ₹{item.totalPrice.toLocaleString('en-IN')}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="pt-3 border-t border-[#ECE5D8] flex items-center justify-between text-xs">
+                  <span className="text-[#6B7260]">
+                    Destination: {order.shippingAddressSnapshot?.city || 'Regional Hub'}, {order.shippingAddressSnapshot?.state || 'India'}
+                  </span>
+                  <Link href={`/orders/${order.id}`}>
+                    <button className="px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider border border-[#233D22] text-[#233D22] rounded hover:bg-[#EAE4D6]">
+                      View Contract Details →
+                    </button>
+                  </Link>
+                </div>
+              </div>
             ))}
 
-            {/* Pagination Controls */}
+            {/* Pagination */}
             {meta && meta.totalPages > 1 && (
-              <div className="flex items-center justify-between pt-4 text-xs text-muted-foreground">
-                <span>
-                  Page {meta.page} of {meta.totalPages} ({meta.total} orders)
-                </span>
+              <div className="flex justify-between items-center pt-4 text-xs text-[#6B7260]">
+                <span>Page {page} of {meta.totalPages}</span>
                 <div className="flex gap-2">
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => setPage((p) => Math.max(1, p - 1))}
-                    disabled={meta.page <= 1}
-                    className="h-8 text-xs"
+                  <button
+                    onClick={() => setPage((p) => Math.max(p - 1, 1))}
+                    disabled={page <= 1}
+                    className="px-3 py-1 border border-[#DFD8CB] bg-[#FFFFFF] rounded disabled:opacity-50"
                   >
                     Previous
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => setPage((p) => Math.min(meta.totalPages, p + 1))}
-                    disabled={meta.page >= meta.totalPages}
-                    className="h-8 text-xs"
+                  </button>
+                  <button
+                    onClick={() => setPage((p) => Math.min(p + 1, meta.totalPages))}
+                    disabled={page >= meta.totalPages}
+                    className="px-3 py-1 border border-[#DFD8CB] bg-[#FFFFFF] rounded disabled:opacity-50"
                   >
                     Next
-                  </Button>
+                  </button>
                 </div>
               </div>
             )}
           </div>
         )}
       </main>
+
+      {/* Footer */}
+      <footer className="border-t border-[#DFD8CB] bg-[#FAF8F2] py-8 text-center text-xs text-[#6B7260]">
+        <div className="max-w-7xl mx-auto px-4">
+          <p>Aroha Agricultural Marketplace Buyer Trade Ledger & Escrow Contracts</p>
+        </div>
+      </footer>
     </div>
   );
 }

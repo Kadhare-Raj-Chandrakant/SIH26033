@@ -375,7 +375,7 @@ export class SmartAllocationService {
           isValidNum(second.expectedGrossPricePerUnit) &&
           top.expectedGrossPricePerUnit < second.expectedGrossPricePerUnit
         ) {
-          rationale = `Recommended: ${top.channelName}. Although ${second.channelName} offers a higher gross price (₹${second.expectedGrossPricePerUnit} vs ₹${top.expectedGrossPricePerUnit}/${unit}), ${top.channelName} produces ₹${netDiff.toLocaleString()} HIGHER estimated net profit after factoring in logistics savings (estimated ${top.distanceKm} km vs ${second.distanceKm} km straight-line distance) and statutory deductions.`;
+          rationale = `Recommended: ${top.channelName}. Although ${second.channelName} offers a higher gross price (₹${second.expectedGrossPricePerUnit} vs ₹${top.expectedGrossPricePerUnit}/${unit}), ${top.channelName} produces ₹${netDiff.toLocaleString()} HIGHER estimated net realization after factoring in logistics savings (estimated ${top.distanceKm} km vs ${second.distanceKm} km straight-line distance) and statutory deductions.`;
         } else if (
           isValidNum(top.logisticsCost) &&
           isValidNum(second.logisticsCost) &&
@@ -397,7 +397,7 @@ export class SmartAllocationService {
       }
     } else {
       if (isValidNum(top.estimatedNetRealization)) {
-        rationale = `Recommended: ${top.channelName}. Best available single channel yielding ₹${top.estimatedNetRealization.toLocaleString()} net profit.`;
+        rationale = `Recommended: ${top.channelName}. Best available single channel yielding ₹${top.estimatedNetRealization.toLocaleString()} estimated net realization.`;
       } else {
         rationale = `Recommended: ${top.channelName}. Best available single channel based on geographic proximity and market liquidity.`;
       }

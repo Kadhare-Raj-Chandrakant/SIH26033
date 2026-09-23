@@ -11,21 +11,6 @@ import {
   clearCart,
 } from '@/lib/api';
 import { MarketplaceNavbar } from '@/components/marketplace/marketplace-navbar';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
-import { Skeleton } from '@/components/ui/skeleton';
-import {
-  ShoppingCart,
-  Trash2,
-  Minus,
-  Plus,
-  ArrowRight,
-  ShieldCheck,
-  AlertCircle,
-  Package,
-} from 'lucide-react';
 import { useAuth } from '@/components/providers/auth-provider';
 import { useIsMounted } from '@/lib/use-is-mounted';
 import { RoleGuard } from '@/components/auth/role-guard';
@@ -94,95 +79,75 @@ function CartPageContent() {
   const hasUnavailableItems = items.some((item) => !item.isAvailable);
 
   return (
-    <div className="min-h-screen bg-zinc-50/50 dark:bg-zinc-950/50">
+    <div className="min-h-screen flex flex-col bg-[#F7F5EE] text-[#1E221B]">
       <MarketplaceNavbar />
 
-      <main className="container mx-auto px-4 py-8 sm:px-6 lg:px-8 max-w-6xl">
+      <main className="flex-1 max-w-7xl mx-auto w-full px-4 py-8 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-4 border-b border-[#DFD8CB]">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground flex items-center gap-2.5">
-              <ShoppingCart className="h-7 w-7 text-emerald-600" />
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#556448] block mb-1">
+              Procurement Management
+            </span>
+            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#1E221B]">
               Direct Sourcing Cart
             </h1>
-            <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-              Review selected produce, quantities, and direct producer pricing before checkout.
+            <p className="text-xs text-[#6B7260] mt-1">
+              Review reserved crop batches, quantities, and direct producer settlement rates before contract checkout.
             </p>
           </div>
 
           {mounted && items.length > 0 && isBuyer && (
-            <Button
-              variant="outline"
-              size="sm"
+            <button
               onClick={() => clearCartMutation.mutate()}
               disabled={clearCartMutation.isPending}
-              className="text-xs text-destructive hover:bg-destructive/10 hover:text-destructive border-destructive/30 gap-1.5 self-start sm:self-auto"
+              className="h-8 px-3 text-xs font-semibold uppercase tracking-wider text-[#8B4513] border border-[#D5CEBF] bg-[#FFFFFF] rounded hover:bg-[#F2EFE7] disabled:opacity-50"
             >
-              <Trash2 className="h-3.5 w-3.5" />
-              <span>Clear Cart</span>
-            </Button>
+              Clear Cart
+            </button>
           )}
         </div>
 
         {/* Loading State */}
         {(!mounted || authLoading || (cartLoading && isBuyer)) && (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            <div className="lg:col-span-8 space-y-4">
-              <Skeleton className="h-28 w-full rounded-2xl" />
-              <Skeleton className="h-28 w-full rounded-2xl" />
-              <Skeleton className="h-28 w-full rounded-2xl" />
-            </div>
-            <div className="lg:col-span-4">
-              <Skeleton className="h-64 w-full rounded-2xl" />
-            </div>
+          <div className="p-12 text-center border border-[#DFD8CB] rounded-lg bg-[#FCFAF6]">
+            <p className="text-sm font-serif font-bold text-[#1E221B]">
+              Loading Sourcing Cart & Reserved Lots...
+            </p>
           </div>
         )}
 
-
-
         {/* Error State */}
-        {mounted && isError && !cartLoading && (() => {
-          const errMsg = (error as Error)?.message || '';
-          const isRateLimited =
-            errMsg.toLowerCase().includes('too many') ||
-            errMsg.toLowerCase().includes('throttler') ||
-            errMsg.toLowerCase().includes('quickly');
-
-          return (
-            <div className="rounded-2xl border border-destructive/20 bg-card p-10 text-center space-y-3 max-w-lg mx-auto my-6 shadow-sm">
-              <AlertCircle className="h-10 w-10 text-destructive mx-auto" />
-              <h3 className="text-base font-bold text-foreground">
-                {isRateLimited ? 'Too Many Rapid Clicks' : 'Failed to Load Cart'}
-              </h3>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                {isRateLimited
-                  ? 'We noticed multiple quick clicks. Please pause for a brief moment and click Retry to reload your cart.'
-                  : errMsg}
-              </p>
-              <div className="flex justify-center gap-3 pt-2">
-                <Button size="sm" onClick={() => refetch()} className="bg-emerald-600 hover:bg-emerald-700 text-white">
-                  Retry Loading Cart
-                </Button>
-              </div>
-            </div>
-          );
-        })()}
-
-        {/* Empty Cart State */}
-        {mounted && !cartLoading && !isError && isBuyer && items.length === 0 && (
-          <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border bg-card p-12 text-center shadow-sm">
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-600 mb-4">
-              <ShoppingCart className="h-8 w-8" />
-            </div>
-            <h2 className="text-lg font-bold text-foreground">Your Cart is Empty</h2>
-            <p className="mt-1.5 max-w-sm text-xs text-muted-foreground">
-              You haven&apos;t added any agricultural produce to your cart yet. Explore our marketplace to connect directly with local farmers.
+        {mounted && isError && !cartLoading && (
+          <div className="rounded-lg border border-[#E5B5B5] bg-[#FDF2F2] p-8 text-center space-y-3 max-w-lg mx-auto my-6">
+            <h3 className="font-serif font-bold text-base text-[#9B1C1C]">
+              Unable to Load Cart
+            </h3>
+            <p className="text-xs text-[#771D1D]">
+              {(error as Error)?.message || 'An error occurred while fetching your procurement cart.'}
             </p>
-            <Link href="/marketplace" className="mt-6">
-              <Button className="bg-emerald-600 hover:bg-emerald-700 text-white gap-2 text-xs font-semibold h-10 px-5">
-                <Package className="h-4 w-4" />
-                <span>Explore Produce Catalog</span>
-              </Button>
+            <button
+              onClick={() => refetch()}
+              className="px-4 py-2 text-xs font-bold uppercase tracking-wider bg-[#233D22] text-[#FAF8F2] rounded"
+            >
+              Retry
+            </button>
+          </div>
+        )}
+
+        {/* Empty Cart */}
+        {mounted && !cartLoading && !isError && isBuyer && items.length === 0 && (
+          <div className="p-12 text-center border border-[#DFD8CB] rounded-lg bg-[#FCFAF6]">
+            <h2 className="text-xl font-serif font-bold text-[#1E221B]">
+              Your Sourcing Cart is Empty
+            </h2>
+            <p className="mt-2 text-xs text-[#6B7260] max-w-sm mx-auto leading-relaxed">
+              You have not added any harvest batches to your procurement sheet yet. Explore the marketplace to connect directly with verified producers.
+            </p>
+            <Link href="/marketplace" className="inline-block mt-6">
+              <button className="h-10 px-6 text-xs font-bold uppercase tracking-wider bg-[#233D22] hover:bg-[#1C321B] text-[#FAF8F2] rounded transition-colors">
+                Browse Marketplace Listings
+              </button>
             </Link>
           </div>
         )}
@@ -190,222 +155,168 @@ function CartPageContent() {
         {/* Cart Contents */}
         {mounted && !cartLoading && !isError && isBuyer && items.length > 0 && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            {/* Items List */}
+            {/* Items Column */}
             <div className="lg:col-span-8 space-y-4">
               {hasUnavailableItems && (
-                <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-3.5 text-xs text-amber-900 dark:text-amber-200 flex items-center gap-2">
-                  <AlertCircle className="h-4 w-4 text-amber-600 shrink-0" />
-                  <span>Some items in your cart have exceeded available harvest stock. Please adjust quantities before checkout.</span>
+                <div className="rounded border border-[#CCD8C4] bg-[#F0F5EC] p-3 text-xs text-[#284021]">
+                  Some items in your cart have exceeded available harvest stock. Please adjust quantities before proceeding.
                 </div>
               )}
 
               {items.map((item) => {
-                const isItemOutOfStock = !item.isAvailable;
+                const isUpdating = updatingItemId === item.productId;
 
                 return (
-                  <Card
+                  <div
                     key={item.id}
-                    className={`overflow-hidden border transition-all ${
-                      isItemOutOfStock
-                        ? 'border-amber-500/40 bg-amber-50/20 dark:bg-amber-950/10'
-                        : 'border-border/80 bg-card hover:border-border'
-                    }`}
+                    className="rounded-lg border border-[#DFD8CB] bg-[#FCFAF6] p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
                   >
-                    <CardContent className="p-4 sm:p-5">
-                      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                        {/* Product Image & Info */}
-                        <div className="flex items-center gap-4 flex-1 min-w-0">
-                          <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-muted border border-border/40">
-                            {item.image ? (
-                              <Image
-                                src={item.image}
-                                alt={item.productName}
-                                fill
-                                unoptimized
-                                className="object-cover"
-                              />
-                            ) : (
-                              <div className="flex h-full w-full items-center justify-center text-xs font-semibold text-muted-foreground">
-                                Produce
-                              </div>
-                            )}
+                    {/* Item Thumbnail & Info */}
+                    <div className="flex items-center gap-4 flex-1 min-w-0">
+                      <div className="relative h-20 w-20 shrink-0 rounded bg-[#EAE4D6] border border-[#DFD8CB] overflow-hidden">
+                        {item.image ? (
+                          <Image
+                            src={item.image}
+                            alt={item.productName}
+                            fill
+                            className="object-cover"
+                          />
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center text-[10px] text-[#7A8070]">
+                            Batch Photo
                           </div>
-
-                          <div className="min-w-0 flex-1 space-y-1">
-                            <div className="flex items-center gap-2">
-                              <Link
-                                href={`/marketplace/products/${item.productId}`}
-                                className="font-bold text-foreground text-sm sm:text-base hover:text-emerald-600 transition-colors truncate"
-                              >
-                                {item.productName}
-                              </Link>
-                              <Badge
-                                variant={item.seller.sellerType === 'FPO' ? 'fpo' : 'farmer'}
-                                className="text-[10px] px-1.5 py-0"
-                              >
-                                {item.seller.sellerType}
-                              </Badge>
-                            </div>
-
-                            <p className="text-xs text-muted-foreground flex items-center gap-1.5 truncate">
-                              <ShieldCheck className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
-                              <span>{item.seller.businessName || 'Verified Producer'}</span>
-                              {item.seller.farmLocation && (
-                                <span className="text-muted-foreground/60">• {item.seller.farmLocation}</span>
-                              )}
-                            </p>
-
-                            <div className="flex items-baseline gap-2 pt-0.5">
-                              <span className="text-sm font-extrabold text-foreground">
-                                ₹{item.unitPrice.toFixed(2)}
-                              </span>
-                              <span className="text-xs text-muted-foreground">
-                                / {item.unit}
-                              </span>
-                            </div>
-
-                            {isItemOutOfStock && (
-                              <span className="text-[11px] font-semibold text-amber-600 dark:text-amber-400 block">
-                                Available stock: {item.availableStock} {item.unit}
-                              </span>
-                            )}
-                          </div>
-                        </div>
-
-                        {/* Controls & Line Total */}
-                        <div className="flex items-center justify-between sm:justify-end gap-5 w-full sm:w-auto border-t sm:border-t-0 pt-3 sm:pt-0 border-border/40">
-                          {/* Quantity selector */}
-                          <div className="flex items-center rounded-xl border border-input bg-background p-1 shadow-inner">
-                            <Button
-                              type="button"
-                              size="icon"
-                              variant="ghost"
-                              onClick={() =>
-                                updateQuantityMutation.mutate({
-                                  productId: item.productId,
-                                  quantity: Math.max(1, item.quantity - 1),
-                                })
-                              }
-                              disabled={
-                                item.quantity <= 1 ||
-                                updateQuantityMutation.isPending ||
-                                updatingItemId === item.productId
-                              }
-                              className="h-7 w-7 text-muted-foreground hover:text-foreground"
-                            >
-                              <Minus className="h-3 w-3" />
-                            </Button>
-
-                            <span className="w-10 text-center text-xs font-bold text-foreground">
-                              {updatingItemId === item.productId ? (
-                                <span className="animate-pulse">...</span>
-                              ) : (
-                                item.quantity
-                              )}
-                            </span>
-
-                            <Button
-                              type="button"
-                              size="icon"
-                              variant="ghost"
-                              onClick={() =>
-                                updateQuantityMutation.mutate({
-                                  productId: item.productId,
-                                  quantity: item.quantity + 1,
-                                })
-                              }
-                              disabled={
-                                item.quantity >= item.availableStock ||
-                                updateQuantityMutation.isPending ||
-                                updatingItemId === item.productId
-                              }
-                              className="h-7 w-7 text-muted-foreground hover:text-foreground"
-                            >
-                              <Plus className="h-3 w-3" />
-                            </Button>
-                          </div>
-
-                          {/* Line Total */}
-                          <div className="text-right min-w-20">
-                            <span className="text-base font-extrabold text-foreground block">
-                              ₹{item.lineTotal.toFixed(2)}
-                            </span>
-                            <span className="text-[10px] text-muted-foreground">Line Total</span>
-                          </div>
-
-                          {/* Delete Item Button */}
-                          <Button
-                            type="button"
-                            size="icon"
-                            variant="ghost"
-                            onClick={() => removeItemMutation.mutate(item.productId)}
-                            disabled={removeItemMutation.isPending}
-                            className="h-8 w-8 text-muted-foreground hover:text-destructive transition-colors"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </div>
+                        )}
                       </div>
-                    </CardContent>
-                  </Card>
+
+                      <div className="min-w-0 flex-1">
+                        <Link href={`/marketplace/products/${item.productId}`}>
+                          <h3 className="font-serif font-bold text-base text-[#1E221B] hover:text-[#233D22] truncate">
+                            {item.productName}
+                          </h3>
+                        </Link>
+                        <p className="text-xs text-[#6B7260] mt-0.5">
+                          Producer: {item.seller?.businessName || 'Verified Collective'}
+                        </p>
+                        <p className="text-xs text-[#6B7260]">
+                          Mandi: {item.seller?.farmLocation || 'India'}
+                        </p>
+                        <p className="text-xs font-serif font-bold text-[#1E221B] mt-1">
+                          ₹{item.unitPrice.toLocaleString('en-IN')} / {item.unit.toLowerCase()}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Quantity & Actions */}
+                    <div className="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto gap-3">
+                      <div className="flex items-center rounded border border-[#DFD8CB] bg-[#FFFFFF]">
+                        <button
+                          type="button"
+                          onClick={() =>
+                            updateQuantityMutation.mutate({
+                              productId: item.productId,
+                              quantity: item.quantity - 1,
+                            })
+                          }
+                          disabled={item.quantity <= 1 || isUpdating}
+                          className="h-7 w-7 text-xs font-bold text-[#1E221B] hover:bg-[#F2EFE7] disabled:opacity-40"
+                        >
+                          -
+                        </button>
+                        <span className="w-10 text-center text-xs font-bold text-[#1E221B]">
+                          {item.quantity}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            updateQuantityMutation.mutate({
+                              productId: item.productId,
+                              quantity: item.quantity + 1,
+                            })
+                          }
+                          disabled={item.quantity >= item.availableStock || isUpdating}
+                          className="h-7 w-7 text-xs font-bold text-[#1E221B] hover:bg-[#F2EFE7] disabled:opacity-40"
+                        >
+                          +
+                        </button>
+                      </div>
+
+                      <div className="text-right">
+                        <span className="text-xs font-serif font-bold text-[#1E221B] block">
+                          ₹{(item.unitPrice * item.quantity).toLocaleString('en-IN')}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => removeItemMutation.mutate(item.productId)}
+                          disabled={removeItemMutation.isPending}
+                          className="text-[11px] font-semibold text-[#8B4513] hover:underline"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 );
               })}
             </div>
 
-            {/* Order Summary Sidebar */}
+            {/* Order Summary Column */}
             <div className="lg:col-span-4">
-              <Card className="rounded-2xl border border-border/80 bg-card p-6 shadow-sm space-y-5 sticky top-24">
-                <h2 className="text-base font-bold text-foreground">Order Summary</h2>
+              <div className="rounded-lg border border-[#DFD8CB] bg-[#FCFAF6] p-6 space-y-4">
+                <h2 className="font-serif font-bold text-lg text-[#1E221B]">
+                  Procurement Summary
+                </h2>
 
-                <div className="space-y-3 text-xs">
-                  <div className="flex justify-between text-muted-foreground">
-                    <span>Total Produce Items:</span>
-                    <span className="font-semibold text-foreground">{itemCount} items</span>
+                <div className="space-y-2 text-xs text-[#5D6352] pt-3 border-t border-[#ECE5D8]">
+                  <div className="flex justify-between">
+                    <span>Reserved Batches</span>
+                    <span className="font-semibold text-[#1E221B]">{itemCount} items</span>
                   </div>
-
-                  <div className="flex justify-between text-muted-foreground">
-                    <span>Produce Subtotal:</span>
-                    <span className="font-bold text-foreground">₹{subtotal.toFixed(2)}</span>
+                  <div className="flex justify-between">
+                    <span>Farmgate Subtotal</span>
+                    <span className="font-semibold text-[#1E221B]">₹{subtotal.toLocaleString('en-IN')}</span>
                   </div>
-
-                  <div className="flex justify-between text-muted-foreground">
-                    <span>Direct Platform Margin:</span>
-                    <span className="font-medium text-emerald-600">₹0.00 (Zero Intermediary)</span>
+                  <div className="flex justify-between">
+                    <span>Freight Tariff</span>
+                    <span className="text-[#233D22] font-semibold">Calculated at Checkout</span>
                   </div>
-                </div>
-
-                <Separator />
-
-                <div className="flex items-baseline justify-between">
-                  <span className="text-sm font-bold text-foreground">Grand Subtotal</span>
-                  <div className="text-right">
-                    <span className="text-2xl font-extrabold text-foreground">
-                      ₹{subtotal.toFixed(2)}
-                    </span>
-                    <span className="text-[10px] text-muted-foreground block">
-                      Taxes calculated at dispatch
-                    </span>
+                  <div className="flex justify-between">
+                    <span>Escrow Service Fee</span>
+                    <span className="text-[#233D22] font-semibold">0% (Platform Subsidized)</span>
                   </div>
                 </div>
 
-                <Link href="/checkout" className="block w-full">
-                  <Button
-                    disabled={hasUnavailableItems || items.length === 0}
-                    className="w-full h-11 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold gap-2 shadow-md shadow-emerald-600/20"
+                <div className="pt-3 border-t border-[#ECE5D8] flex justify-between items-baseline">
+                  <span className="font-bold text-xs uppercase tracking-wider text-[#1E221B]">Estimated Total</span>
+                  <span className="text-xl font-serif font-bold text-[#1E221B]">
+                    ₹{subtotal.toLocaleString('en-IN')}
+                  </span>
+                </div>
+
+                <Link href="/checkout" className="block pt-2">
+                  <button
+                    disabled={hasUnavailableItems}
+                    className="w-full h-11 bg-[#233D22] hover:bg-[#1C321B] text-[#FAF8F2] text-xs font-bold uppercase tracking-wider rounded transition-colors disabled:opacity-50"
                   >
-                    <span>Proceed to Review & Order</span>
-                    <ArrowRight className="h-4 w-4" />
-                  </Button>
+                    Proceed to Trade Checkout →
+                  </button>
                 </Link>
 
-                <p className="text-[11px] text-center text-muted-foreground">
-                  Purchases are placed directly with verified local farmers & cooperatives.
-                </p>
-              </Card>
+                <div className="pt-2 border-t border-[#ECE5D8] text-[10px] text-[#6B7260] space-y-1">
+                  <p>• 100% Escrow deposit held until weighbridge receipt validation</p>
+                  <p>• Automated GST e-Way bills generated upon dispatch</p>
+                </div>
+              </div>
             </div>
           </div>
         )}
       </main>
+
+      {/* Footer */}
+      <footer className="border-t border-[#DFD8CB] bg-[#FAF8F2] py-8 text-center text-xs text-[#6B7260]">
+        <div className="max-w-7xl mx-auto px-4">
+          <p>Aroha Agricultural Marketplace Direct Sourcing Cart</p>
+        </div>
+      </footer>
     </div>
   );
 }

@@ -1,21 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import {
-  Search,
-  SlidersHorizontal,
-  RotateCcw,
-  MapPin,
-  IndianRupee,
-  Building,
-  X,
-} from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import type { Category, MarketplaceQueryParams, FilterOptionsData } from '@/lib/api';
 
-// Dataset states and their corresponding producing districts
 const DATASET_STATES_AND_DISTRICTS: Record<string, string[]> = {
   'Andhra Pradesh': ['Annamayya', 'Chittor', 'Dr.B.R.A.Konaseema', 'Guntur'],
   'Gujarat': ['Mehsana', 'Morbi'],
@@ -51,7 +38,6 @@ export function FilterSidebar({
   const [minPriceInput, setMinPriceInput] = useState(filters.minPrice?.toString() || '');
   const [maxPriceInput, setMaxPriceInput] = useState(filters.maxPrice?.toString() || '');
 
-  // Keep local inputs synchronized with URL query params
   useEffect(() => {
     setSearchInput(filters.search || '');
   }, [filters.search]);
@@ -68,7 +54,6 @@ export function FilterSidebar({
     ? filterOptions.states
     : ALL_DATASET_STATES;
 
-  // Available districts based on selected state
   const availableDistricts = filters.state
     ? filterOptions?.districtsByState?.[filters.state] ||
       DATASET_STATES_AND_DISTRICTS[filters.state] ||
@@ -87,7 +72,7 @@ export function FilterSidebar({
   const handleStateChange = (selectedState: string) => {
     onFilterChange({
       state: selectedState || undefined,
-      district: undefined, // Reset district when state changes
+      district: undefined,
       page: 1,
     });
   };
@@ -136,45 +121,45 @@ export function FilterSidebar({
   );
 
   return (
-    <div className="space-y-6 rounded-2xl border border-border/70 bg-card p-5 shadow-sm">
-      {/* Header with Reset */}
-      <div className="flex items-center justify-between border-b border-border/50 pb-3.5">
-        <div className="flex items-center gap-2 font-semibold text-foreground">
-          <SlidersHorizontal className="h-4 w-4 text-emerald-600" />
+    <div className="space-y-6 rounded-lg border border-[#DFD8CB] bg-[#FCFAF6] p-5">
+      {/* Header */}
+      <div className="flex items-center justify-between border-b border-[#ECE5D8] pb-3.5">
+        <div className="flex items-center gap-2 font-bold text-xs uppercase tracking-wider text-[#1E221B]">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-[#233D22]">
+            <line x1="4" x2="20" y1="21" y2="21" />
+            <line x1="4" x2="20" y1="14" y2="14" />
+            <line x1="4" x2="20" y1="7" y2="7" />
+            <circle cx="14" cy="7" r="2" />
+            <circle cx="8" cy="14" r="2" />
+            <circle cx="16" cy="21" r="2" />
+          </svg>
           <span>Filters</span>
         </div>
         {hasActiveFilters && (
-          <Button
-            variant="ghost"
-            size="xs"
+          <button
             onClick={handleReset}
             disabled={isLoading}
-            className="text-xs text-muted-foreground hover:text-foreground"
+            className="text-[11px] font-semibold text-[#8B4513] hover:underline"
           >
-            <RotateCcw className="mr-1 h-3 w-3" />
             Reset All
-          </Button>
+          </button>
         )}
       </div>
 
       {/* Search Input */}
       <div>
-        <label className="mb-2 block text-xs font-semibold text-foreground flex items-center justify-between">
-          <span>Search Produce</span>
-          {filters.search && (
-            <span className="text-[11px] font-normal text-emerald-600">Active</span>
-          )}
+        <label className="mb-1.5 block text-[11px] font-bold uppercase tracking-wider text-[#52594B]">
+          Search Crops
         </label>
         <form onSubmit={handleSearchSubmit} className="space-y-2">
-          <div className="relative flex items-center">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground pointer-events-none" />
-            <Input
+          <div className="relative">
+            <input
               type="text"
               id="marketplace-search-input"
-              placeholder="Search rice, wheat, farmer..."
+              placeholder="Wheat, rice, mandi..."
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              className="pl-9 pr-8 text-xs h-9"
+              className="w-full h-9 pl-3 pr-8 text-xs bg-[#F7F5EE] border border-[#DFD8CB] rounded text-[#1E221B] placeholder-[#8A9082] focus:outline-none focus:border-[#233D22] focus:bg-[#FFFFFF]"
             />
             {searchInput && (
               <button
@@ -183,37 +168,33 @@ export function FilterSidebar({
                   setSearchInput('');
                   onFilterChange({ search: undefined, page: 1 });
                 }}
-                className="absolute right-2 text-muted-foreground hover:text-foreground p-1 rounded-full hover:bg-muted"
-                aria-label="Clear search"
-                title="Clear search"
+                className="absolute right-2.5 top-2.5 text-[#7A8070] hover:text-[#1E221B]"
+                title="Clear"
               >
-                <X className="h-3.5 w-3.5" />
+                ✕
               </button>
             )}
           </div>
-          <Button
+          <button
             type="submit"
             id="marketplace-search-button"
-            size="sm"
             disabled={isLoading}
-            className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs h-8 gap-1.5 shadow-sm shadow-emerald-600/20"
+            className="w-full h-8 bg-[#233D22] hover:bg-[#1C321B] text-[#FAF8F2] text-xs font-bold uppercase tracking-wider rounded"
           >
-            <Search className="h-3.5 w-3.5" />
-            <span>Search Produce</span>
-          </Button>
+            Search
+          </button>
         </form>
       </div>
 
-      {/* State Filter Dropdown */}
+      {/* State Filter */}
       <div>
-        <label className="mb-2 block text-xs font-semibold text-foreground flex items-center gap-1.5">
-          <MapPin className="h-3.5 w-3.5 text-emerald-600" />
-          <span>Filter by State</span>
+        <label className="mb-1.5 block text-[11px] font-bold uppercase tracking-wider text-[#52594B]">
+          Filter by State
         </label>
         <select
           value={filters.state || ''}
           onChange={(e) => handleStateChange(e.target.value)}
-          className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-xs shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="w-full h-9 px-3 text-xs bg-[#F7F5EE] border border-[#DFD8CB] rounded text-[#1E221B] focus:outline-none focus:border-[#233D22] focus:bg-[#FFFFFF]"
         >
           <option value="">All States ({availableStates.length})</option>
           {availableStates.map((stateName) => (
@@ -224,16 +205,15 @@ export function FilterSidebar({
         </select>
       </div>
 
-      {/* District Filter Dropdown */}
+      {/* District Filter */}
       <div>
-        <label className="mb-2 block text-xs font-semibold text-foreground flex items-center gap-1.5">
-          <Building className="h-3.5 w-3.5 text-emerald-600" />
-          <span>Filter by District</span>
+        <label className="mb-1.5 block text-[11px] font-bold uppercase tracking-wider text-[#52594B]">
+          Filter by District
         </label>
         <select
           value={filters.district || ''}
           onChange={(e) => handleDistrictChange(e.target.value)}
-          className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-xs shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="w-full h-9 px-3 text-xs bg-[#F7F5EE] border border-[#DFD8CB] rounded text-[#1E221B] focus:outline-none focus:border-[#233D22] focus:bg-[#FFFFFF]"
         >
           <option value="">
             {filters.state ? `All Districts in ${filters.state}` : 'All Districts'}
@@ -246,80 +226,77 @@ export function FilterSidebar({
         </select>
       </div>
 
-      {/* Categories Filter */}
+      {/* Categories */}
       <div>
-        <label className="mb-2 block text-xs font-semibold text-foreground">
-          Categories ({categories.length})
+        <label className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-[#52594B]">
+          Commodity Category
         </label>
         <div className="flex flex-wrap gap-1.5">
-          <Badge
-            variant={!filters.categoryId ? 'default' : 'outline'}
-            className="cursor-pointer text-xs py-1 transition-all"
+          <button
+            type="button"
             onClick={() => handleCategoryClick(undefined)}
+            className={`px-2.5 py-1 text-xs font-semibold rounded border transition-colors ${
+              !filters.categoryId
+                ? 'bg-[#233D22] text-[#FAF8F2] border-[#233D22]'
+                : 'bg-[#F7F5EE] text-[#484E40] border-[#DFD8CB] hover:bg-[#EAE4D6]'
+            }`}
           >
             All Produce
-          </Badge>
+          </button>
           {categories.map((cat) => (
-            <Badge
+            <button
               key={cat.id}
-              variant={filters.categoryId === cat.id ? 'default' : 'outline'}
-              className={`cursor-pointer text-xs py-1 transition-all ${
-                filters.categoryId === cat.id
-                  ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
-                  : 'hover:border-emerald-500/50'
-              }`}
+              type="button"
               onClick={() => handleCategoryClick(cat.id)}
+              className={`px-2.5 py-1 text-xs font-semibold rounded border transition-colors ${
+                filters.categoryId === cat.id
+                  ? 'bg-[#233D22] text-[#FAF8F2] border-[#233D22]'
+                  : 'bg-[#F7F5EE] text-[#484E40] border-[#DFD8CB] hover:bg-[#EAE4D6]'
+              }`}
             >
               {cat.name}
-            </Badge>
+            </button>
           ))}
         </div>
       </div>
 
       {/* Price Range */}
       <div>
-        <label className="mb-2 block text-xs font-semibold text-foreground">
+        <label className="mb-1.5 block text-[11px] font-bold uppercase tracking-wider text-[#52594B]">
           Price Range (₹ / Quintal)
         </label>
         <div className="flex items-center gap-2">
-          <div className="relative flex-1">
-            <IndianRupee className="absolute left-2.5 top-2.5 h-3 w-3 text-muted-foreground" />
-            <Input
-              type="number"
-              placeholder="Min"
-              min="0"
-              value={minPriceInput}
-              onChange={(e) => setMinPriceInput(e.target.value)}
-              className="pl-7 text-xs"
-            />
-          </div>
-          <span className="text-muted-foreground text-xs">—</span>
-          <div className="relative flex-1">
-            <IndianRupee className="absolute left-2.5 top-2.5 h-3 w-3 text-muted-foreground" />
-            <Input
-              type="number"
-              placeholder="Max"
-              min="0"
-              value={maxPriceInput}
-              onChange={(e) => setMaxPriceInput(e.target.value)}
-              className="pl-7 text-xs"
-            />
-          </div>
+          <input
+            type="number"
+            placeholder="Min"
+            min="0"
+            value={minPriceInput}
+            onChange={(e) => setMinPriceInput(e.target.value)}
+            className="w-full h-8 px-2.5 text-xs bg-[#F7F5EE] border border-[#DFD8CB] rounded text-[#1E221B] focus:outline-none focus:border-[#233D22]"
+          />
+          <span className="text-xs text-[#7A8070]">to</span>
+          <input
+            type="number"
+            placeholder="Max"
+            min="0"
+            value={maxPriceInput}
+            onChange={(e) => setMaxPriceInput(e.target.value)}
+            className="w-full h-8 px-2.5 text-xs bg-[#F7F5EE] border border-[#DFD8CB] rounded text-[#1E221B] focus:outline-none focus:border-[#233D22]"
+          />
         </div>
-        <Button
-          variant="outline"
-          size="sm"
+        <button
+          type="button"
           onClick={handlePriceApply}
           disabled={isLoading}
-          className="mt-2.5 w-full text-xs"
+          className="mt-2 w-full h-8 text-xs font-semibold uppercase tracking-wider border border-[#C8C0AF] bg-[#FFFFFF] hover:bg-[#EAE4D6] rounded text-[#233D22]"
         >
           Apply Price
-        </Button>
+        </button>
       </div>
 
-      {/* Sort Selector */}
+      {/* Sort Order */}
       <div>
-        <label className="mb-2 block text-xs font-semibold text-foreground">
+        <label className="mb-1.5 block text-[11px] font-bold uppercase tracking-wider text-[#52594B]">
           Sort Order
         </label>
         <select
@@ -330,7 +307,7 @@ export function FilterSidebar({
               page: 1,
             })
           }
-          className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-xs shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="w-full h-9 px-3 text-xs bg-[#F7F5EE] border border-[#DFD8CB] rounded text-[#1E221B] focus:outline-none focus:border-[#233D22] focus:bg-[#FFFFFF]"
         >
           <option value="newest">Newest Arrivals</option>
           <option value="price_asc">Price: Low to High</option>

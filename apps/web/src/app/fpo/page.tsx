@@ -9,7 +9,6 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Skeleton } from '@/components/ui/skeleton';
 import {
   Users,
   Building2,
@@ -18,12 +17,9 @@ import {
   CheckCircle2,
   Clock,
   ArrowRight,
-  Sparkles,
-  Layers,
   Phone,
-  Mail,
   PlusCircle,
-  Filter,
+  Loader2,
 } from 'lucide-react';
 import { useAuth } from '@/components/providers/auth-provider';
 
@@ -50,30 +46,31 @@ function FpoDirectoryContent() {
 
   const isFpoAdmin = isAuthenticated && user?.role === 'FPO';
   const isFarmer = isAuthenticated && user?.role === 'FARMER';
+  const isBuyer = isAuthenticated && user?.role === 'BUYER';
 
   return (
-    <div className="min-h-screen flex flex-col bg-background selection:bg-emerald-500 selection:text-white">
+    <div className="min-h-screen flex flex-col bg-[#F7F5EE] text-[#1E221B] font-sans">
       <MarketplaceNavbar />
 
-      <main className="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-6xl">
         {/* Header Hero Banner */}
-        <div className="relative overflow-hidden rounded-2xl border border-emerald-500/20 bg-gradient-to-br from-emerald-500/10 via-background to-emerald-500/5 p-6 sm:p-8 mb-8 shadow-sm">
+        <div className="rounded-lg border border-[#DFD8CB] bg-[#FCFAF6] p-6 sm:p-8 mb-8">
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-700 dark:text-emerald-300 mb-3">
-              <Sparkles className="h-3.5 w-3.5" />
-              <span>Collective Agricultural Marketing</span>
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#C8D9C8] bg-[#EDF3ED] px-3 py-1 text-xs font-semibold text-[#233D22] mb-3">
+              <Building2 className="h-3.5 w-3.5 text-[#3B532B]" />
+              <span>Collective Agricultural Marketing & Aggregation</span>
             </div>
-            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
+            <h1 className="text-3xl sm:text-4xl font-serif font-bold tracking-tight text-[#1E221B]">
               Farmer Producer Organisations (FPO) Directory
             </h1>
-            <p className="mt-2 text-sm sm:text-base text-muted-foreground leading-relaxed">
+            <p className="mt-2 text-xs sm:text-sm text-[#5D6352] leading-relaxed">
               Connect with accredited cooperatives and producer companies across India. Smallholders pool harvests for institutional scale, transparent grading, and guaranteed direct payments.
             </p>
 
             <div className="mt-5 flex flex-wrap items-center gap-3">
               {isFpoAdmin && (
                 <Link href="/fpo/dashboard">
-                  <Button className="bg-emerald-600 hover:bg-emerald-700 text-white gap-2 text-sm shadow-sm shadow-emerald-600/20">
+                  <Button className="bg-[#233D22] hover:bg-[#1a2d19] text-white gap-2 text-xs rounded-md h-9">
                     <Building2 className="h-4 w-4" />
                     <span>My FPO Dashboard</span>
                   </Button>
@@ -81,22 +78,27 @@ function FpoDirectoryContent() {
               )}
               {isFarmer && (
                 <Link href="/fpo/join">
-                  <Button className="bg-emerald-600 hover:bg-emerald-700 text-white gap-2 text-sm shadow-sm shadow-emerald-600/20">
+                  <Button className="bg-[#233D22] hover:bg-[#1a2d19] text-white gap-2 text-xs rounded-md h-9">
                     <Users className="h-4 w-4" />
-                    <span>Join an FPO</span>
+                    <span>Join an FPO Collective</span>
                   </Button>
                 </Link>
               )}
-              <Link href="/fpo/register">
-                <Button variant="outline" className="border-border/80 gap-2 text-sm hover:bg-muted">
-                  <PlusCircle className="h-4 w-4 text-emerald-600" />
-                  <span>Register New FPO</span>
-                </Button>
-              </Link>
+              {!isBuyer && (
+                <Link href="/fpo/register">
+                  <Button variant="outline" className="border-[#DFD8CB] bg-[#F7F5EE] text-[#1E221B] gap-2 text-xs hover:bg-[#EBE7DC] rounded-md h-9">
+                    <PlusCircle className="h-4 w-4 text-[#233D22]" />
+                    <span>Register New FPO</span>
+                  </Button>
+                </Link>
+              )}
               <Link href="/fpo/buy-requests">
-                <Button variant="ghost" className="text-sm text-muted-foreground hover:text-foreground gap-1.5">
+                <Button
+                  variant="outline"
+                  className="border-[#DFD8CB] bg-[#F7F5EE] text-[#1E221B] hover:bg-[#EBE7DC] text-xs gap-1.5 rounded-md h-9"
+                >
                   <span>Buyer Bulk Sourcing</span>
-                  <ArrowRight className="h-4 w-4" />
+                  <ArrowRight className="h-3.5 w-3.5" />
                 </Button>
               </Link>
             </div>
@@ -104,14 +106,14 @@ function FpoDirectoryContent() {
         </div>
 
         {/* Filter Toolbar */}
-        <div className="bg-card border border-border/70 rounded-xl p-4 mb-6 shadow-sm flex flex-col md:flex-row gap-3 items-center justify-between">
+        <div className="bg-[#FCFAF6] border border-[#DFD8CB] rounded-lg p-4 mb-6 flex flex-col md:flex-row gap-3 items-center justify-between">
           <div className="relative w-full md:w-80">
-            <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-3 top-3 h-4 w-4 text-[#5D6352]" />
             <Input
               placeholder="Search FPO by name or registration number..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="pl-9 h-10 text-sm"
+              className="pl-9 h-10 text-xs bg-[#F7F5EE] border-[#DFD8CB]"
             />
           </div>
 
@@ -120,13 +122,13 @@ function FpoDirectoryContent() {
               placeholder="Filter by State..."
               value={stateFilter}
               onChange={(e) => setStateFilter(e.target.value)}
-              className="w-1/2 md:w-44 h-10 text-sm"
+              className="w-1/2 md:w-44 h-10 text-xs bg-[#F7F5EE] border-[#DFD8CB]"
             />
             <Input
               placeholder="Filter by District..."
               value={districtFilter}
               onChange={(e) => setDistrictFilter(e.target.value)}
-              className="w-1/2 md:w-44 h-10 text-sm"
+              className="w-1/2 md:w-44 h-10 text-xs bg-[#F7F5EE] border-[#DFD8CB]"
             />
             {(search || stateFilter || districtFilter) && (
               <Button
@@ -137,7 +139,7 @@ function FpoDirectoryContent() {
                   setStateFilter('');
                   setDistrictFilter('');
                 }}
-                className="text-xs text-muted-foreground hover:text-foreground"
+                className="text-xs text-[#5D6352] hover:text-[#1E221B]"
               >
                 Reset
               </Button>
@@ -147,58 +149,60 @@ function FpoDirectoryContent() {
 
         {/* Content Area */}
         {isLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <Card key={i} className="p-5 space-y-4">
-                <Skeleton className="h-6 w-3/4" />
-                <Skeleton className="h-4 w-1/2" />
-                <Skeleton className="h-16 w-full" />
-                <Skeleton className="h-9 w-full" />
-              </Card>
-            ))}
+          <div className="p-12 text-center bg-[#FCFAF6] border border-[#DFD8CB] rounded-lg">
+            <Loader2 className="h-6 w-6 animate-spin text-[#3B532B] mx-auto mb-2" />
+            <p className="text-xs text-[#5D6352]">Loading accredited FPO directory...</p>
           </div>
         ) : isError ? (
-          <div className="text-center py-16 bg-destructive/5 border border-destructive/20 rounded-2xl p-8">
-            <p className="text-destructive font-semibold">Failed to load FPO directory</p>
-            <p className="text-xs text-muted-foreground mt-1">{(error as Error)?.message}</p>
+          <div className="text-center py-12 bg-[#FDF2F2] border border-[#D98282] rounded-lg p-8">
+            <p className="text-[#8C2323] font-semibold text-sm">Failed to load FPO directory</p>
+            <p className="text-xs text-[#5D6352] mt-1">{(error as Error)?.message}</p>
           </div>
         ) : !Array.isArray(fpos) || fpos.length === 0 ? (
-          <div className="text-center py-16 bg-card border border-border/70 rounded-2xl p-8">
-            <Building2 className="mx-auto h-12 w-12 text-muted-foreground/40 mb-3" />
-            <h3 className="text-lg font-bold text-foreground">No active FPOs found</h3>
-            <p className="text-xs text-muted-foreground mt-1 max-w-sm mx-auto">
-              No Farmer Producer Organisations match your current filters. Be the first to register an FPO in this region.
+          <div className="text-center py-16 bg-[#FCFAF6] border border-[#DFD8CB] rounded-lg p-8">
+            <Building2 className="mx-auto h-12 w-12 text-[#8C867A] mb-3" />
+            <h3 className="text-base font-serif font-bold text-[#1E221B]">No active FPOs found</h3>
+            <p className="text-xs text-[#5D6352] mt-1 max-w-sm mx-auto">
+              No Farmer Producer Organisations match your current filters. Register an accredited FPO to participate in bulk aggregation.
             </p>
-            <Link href="/fpo/register" className="inline-block mt-4">
-              <Button className="bg-emerald-600 hover:bg-emerald-700 text-white text-sm">
-                Register an FPO
-              </Button>
-            </Link>
+            {!isBuyer ? (
+              <Link href="/fpo/register" className="inline-block mt-4">
+                <Button className="bg-[#233D22] hover:bg-[#1a2d19] text-white text-xs rounded-md">
+                  Register an FPO
+                </Button>
+              </Link>
+            ) : (
+              <Link href="/marketplace/sourcing" className="inline-block mt-4">
+                <Button className="bg-[#233D22] hover:bg-[#1a2d19] text-white text-xs rounded-md">
+                  Explore Bulk Sourcing
+                </Button>
+              </Link>
+            )}
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {Array.isArray(fpos) && fpos.map((fpo) => (
               <Card
                 key={fpo.id}
-                className="border-border/80 bg-card hover:border-emerald-500/50 hover:shadow-md transition-all rounded-xl flex flex-col justify-between"
+                className="border border-[#DFD8CB] bg-[#FCFAF6] rounded-lg flex flex-col justify-between"
               >
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between gap-2">
                     <div className="space-y-1">
-                      <CardTitle className="text-lg font-bold text-foreground line-clamp-1">
+                      <CardTitle className="text-base font-serif font-bold text-[#1E221B] line-clamp-1">
                         {fpo.name}
                       </CardTitle>
-                      <p className="text-xs text-muted-foreground flex items-center gap-1">
-                        <span className="font-mono">{fpo.registrationNumber}</span>
+                      <p className="text-[11px] text-[#5D6352] font-mono">
+                        Reg: {fpo.registrationNumber}
                       </p>
                     </div>
                     <Badge
                       variant="outline"
-                      className={
+                      className={`text-[10px] rounded ${
                         fpo.status === 'ACTIVE'
-                          ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300'
-                          : 'border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300'
-                      }
+                          ? 'border-[#C8D9C8] bg-[#EDF3ED] text-[#233D22]'
+                          : 'border-[#E8DEC8] bg-[#FAF6EC] text-[#9A6818]'
+                      }`}
                     >
                       {fpo.status === 'ACTIVE' ? (
                         <CheckCircle2 className="h-3 w-3 mr-1" />
@@ -208,44 +212,44 @@ function FpoDirectoryContent() {
                       <span>{fpo.status.replace('_', ' ')}</span>
                     </Badge>
                   </div>
-                  <CardDescription className="text-xs flex items-center gap-1.5 text-muted-foreground pt-1">
-                    <MapPin className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
+                  <CardDescription className="text-xs flex items-center gap-1.5 text-[#5D6352] pt-1">
+                    <MapPin className="h-3.5 w-3.5 text-[#3B532B] shrink-0" />
                     <span>{fpo.district}, {fpo.state}</span>
                   </CardDescription>
                 </CardHeader>
 
                 <CardContent className="space-y-4 text-xs">
-                  <p className="text-muted-foreground line-clamp-2 leading-relaxed">
-                    {fpo.description || 'Verified agricultural cooperative enabling bulk aggregation, collective warehousing, and direct institutional buyer access.'}
+                  <p className="text-[#5D6352] line-clamp-2 leading-relaxed">
+                    {fpo.description || 'Accredited agricultural cooperative enabling bulk harvest aggregation, collective warehousing, and direct institutional buyer contracts.'}
                   </p>
 
-                  <div className="grid grid-cols-2 gap-2 p-2.5 rounded-lg bg-muted/50 border border-border/40">
+                  <div className="grid grid-cols-2 gap-2 p-2.5 rounded bg-[#F4F0E6] border border-[#E0D9CB]">
                     <div>
-                      <span className="text-[11px] text-muted-foreground block">Legal Model</span>
-                      <span className="font-semibold text-foreground capitalize">
+                      <span className="text-[10px] text-[#5D6352] block uppercase tracking-wider">Legal Entity</span>
+                      <span className="font-semibold text-[#1E221B] capitalize">
                         {fpo.legalStructure.replace(/_/g, ' ').toLowerCase()}
                       </span>
                     </div>
                     <div>
-                      <span className="text-[11px] text-muted-foreground block">Approved Members</span>
-                      <span className="font-semibold text-emerald-600">
-                        {fpo.memberCount || 0} Farmers
+                      <span className="text-[10px] text-[#5D6352] block uppercase tracking-wider">Member Farmers</span>
+                      <span className="font-bold text-[#233D22]">
+                        {fpo.memberCount || 0} Members
                       </span>
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between pt-2 border-t border-border/60">
-                    <div className="flex items-center gap-3 text-muted-foreground">
+                  <div className="flex items-center justify-between pt-2 border-t border-[#DFD8CB]">
+                    <div className="flex items-center gap-2 text-[#5D6352] text-[11px]">
                       {fpo.contactPhone && (
                         <span className="flex items-center gap-1">
-                          <Phone className="h-3 w-3 text-emerald-600" />
+                          <Phone className="h-3 w-3 text-[#3B532B]" />
                           <span>{fpo.contactPhone}</span>
                         </span>
                       )}
                     </div>
                     <Link href={`/fpo/${fpo.id}`}>
-                      <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700 text-white gap-1 text-xs">
-                        <span>View Profile</span>
+                      <Button size="sm" className="bg-[#233D22] hover:bg-[#1a2d19] text-white gap-1 text-xs rounded-md h-8">
+                        <span>Cooperative Profile</span>
                         <ArrowRight className="h-3 w-3" />
                       </Button>
                     </Link>
@@ -262,7 +266,7 @@ function FpoDirectoryContent() {
 
 export default function FpoDirectoryPage() {
   return (
-    <Suspense fallback={<div className="p-8 text-center text-sm">Loading FPO directory...</div>}>
+    <Suspense fallback={<div className="p-8 text-center text-xs text-[#5D6352] bg-[#F7F5EE]">Loading FPO directory...</div>}>
       <FpoDirectoryContent />
     </Suspense>
   );

@@ -17,20 +17,15 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Skeleton } from '@/components/ui/skeleton';
 import {
-  DollarSign,
   CheckCircle2,
   Clock,
-  ArrowRight,
   AlertCircle,
   Truck,
   Landmark,
-  Package,
-  Users,
-  Sparkles,
   Calculator,
-  Building2,
+  Coins,
+  Loader2,
 } from 'lucide-react';
 import { useAuth } from '@/components/providers/auth-provider';
 import { RoleGuard } from '@/components/auth/role-guard';
@@ -61,7 +56,6 @@ function FpoSettlementsContent() {
     enabled: !!token,
   });
 
-  // 1. Fetch Settlements
   const { data: rawSettlements = [], isLoading: loadingSettlements } = useQuery({
     queryKey: ['fpo-settlements', myFpo?.id, token],
     queryFn: () => fetchFpoSettlements(myFpo!.id, token || undefined),
@@ -73,8 +67,7 @@ function FpoSettlementsContent() {
     ? (rawSettlements as any).data
     : [];
 
-  // 2. Fetch Batches (to find dispatched batches ready for settlement)
-  const { data: rawBatches = [], isLoading: loadingBatches } = useQuery({
+  const { data: rawBatches = [] } = useQuery({
     queryKey: ['fpo-batches', myFpo?.id, token],
     queryFn: () => fetchFpoBatches(myFpo!.id, undefined, token || undefined),
     enabled: !!myFpo?.id && !!token,
@@ -85,7 +78,6 @@ function FpoSettlementsContent() {
     ? (rawBatches as any).data
     : [];
 
-  // Batches eligible for settlement: DISPATCHED or COMPLETED with an orderId and no existing settlement
   const safeSettlements = Array.isArray(settlements) ? settlements : [];
   const safeBatches = Array.isArray(batches) ? batches : [];
   const settledOrderIds = safeSettlements.map((s) => s.orderId);
@@ -111,7 +103,6 @@ function FpoSettlementsContent() {
   const netDistributable = Math.max(0, estimatedGross - totalDeductions);
   const ratePerQuintal = batchTotalQty > 0 ? netDistributable / batchTotalQty : 0;
 
-  // Mutation: Create Settlement
   const createMutation = useMutation({
     mutationFn: () => {
       if (!selectedBatchId) throw new Error('Please select an eligible batch to settle');
@@ -128,7 +119,7 @@ function FpoSettlementsContent() {
     },
     onSuccess: () => {
       setActionError(null);
-      setActionSuccess('Settlement statement generated successfully!');
+      setActionSuccess('Settlement statement generated successfully.');
       queryClient.invalidateQueries({ queryKey: ['fpo-settlements'] });
       queryClient.invalidateQueries({ queryKey: ['fpo-batches'] });
       queryClient.invalidateQueries({ queryKey: ['fpo-dashboard-stats'] });
@@ -139,12 +130,11 @@ function FpoSettlementsContent() {
     },
   });
 
-  // Mutation: Distribute Payments
   const distributeMutation = useMutation({
     mutationFn: (settlementId: string) => distributeFpoPayments(settlementId, token || undefined),
     onSuccess: () => {
       setActionError(null);
-      setActionSuccess('Payments successfully distributed to all member farmers!');
+      setActionSuccess('Payments successfully distributed to all member farmers.');
       queryClient.invalidateQueries({ queryKey: ['fpo-settlements'] });
       queryClient.invalidateQueries({ queryKey: ['fpo-batches'] });
       queryClient.invalidateQueries({ queryKey: ['fpo-dashboard-stats'] });
@@ -157,11 +147,11 @@ function FpoSettlementsContent() {
 
   if (loadingFpo) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-[#F7F5EE] text-[#1E221B]">
         <MarketplaceNavbar />
-        <div className="container mx-auto px-4 py-12 max-w-6xl space-y-4">
-          <Skeleton className="h-10 w-48" />
-          <Skeleton className="h-64 w-full rounded-2xl" />
+        <div className="container mx-auto px-4 py-16 text-center max-w-6xl">
+          <Loader2 className="h-6 w-6 animate-spin text-[#3B532B] mx-auto mb-2" />
+          <p className="text-xs text-[#5D6352]">Loading cooperative financial accounts...</p>
         </div>
       </div>
     );
@@ -169,12 +159,12 @@ function FpoSettlementsContent() {
 
   if (!myFpo) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-[#F7F5EE] text-[#1E221B] flex flex-col font-sans">
         <MarketplaceNavbar />
-        <div className="container mx-auto px-4 py-16 text-center space-y-4">
-          <p className="text-muted-foreground text-sm">Please register your FPO first.</p>
+        <div className="container mx-auto px-4 py-16 text-center space-y-4 max-w-md flex-1">
+          <p className="text-xs text-[#5D6352]">Please register your FPO organization first.</p>
           <Link href="/fpo/register">
-            <Button className="bg-emerald-600 text-white">Register FPO</Button>
+            <Button className="bg-[#233D22] hover:bg-[#1a2d19] text-white text-xs rounded-md">Register FPO</Button>
           </Link>
         </div>
       </div>
@@ -182,29 +172,29 @@ function FpoSettlementsContent() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-background selection:bg-emerald-500 selection:text-white">
+    <div className="min-h-screen flex flex-col bg-[#F7F5EE] text-[#1E221B] font-sans">
       <MarketplaceNavbar />
 
       <main className="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-6xl space-y-8">
         <div>
           <Link
             href="/fpo/dashboard"
-            className="text-xs font-semibold text-emerald-600 hover:text-emerald-700 inline-flex items-center gap-1 mb-2"
+            className="text-xs font-semibold text-[#233D22] hover:underline inline-flex items-center gap-1 mb-2"
           >
             ← Back to FPO Dashboard
           </Link>
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#DFD8CB]">
             <div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
-                Post-Delivery Settlement & Farmer Distribution
+              <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#1E221B] tracking-tight">
+                Post-Delivery Settlement & Member Distribution
               </h1>
-              <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-                {myFpo.name} — Configure operational deductions and disburse net proceeds proportionally to member farmers.
+              <p className="text-xs sm:text-sm text-[#5D6352] mt-1">
+                {myFpo.name}: Configure operational deductions and disburse net proceeds proportionally to member farmers.
               </p>
             </div>
             <Link href="/seller/orders">
-              <Button variant="outline" size="sm" className="text-xs gap-1.5 border-border/80">
-                <Truck className="h-3.5 w-3.5 text-emerald-600" />
+              <Button variant="outline" size="sm" className="text-xs gap-1.5 border-[#DFD8CB] bg-[#FCFAF6] text-[#1E221B] rounded-md h-9">
+                <Truck className="h-3.5 w-3.5 text-[#233D22]" />
                 <span>Track Fulfillment Orders</span>
               </Button>
             </Link>
@@ -212,51 +202,51 @@ function FpoSettlementsContent() {
         </div>
 
         {actionError && (
-          <div className="p-3 bg-destructive/10 border border-destructive/20 text-destructive text-xs rounded-xl flex items-center gap-2">
+          <div className="p-3 bg-[#FDF2F2] border border-[#D98282] text-[#8C2323] text-xs rounded flex items-center gap-2">
             <AlertCircle className="h-4 w-4 shrink-0" />
             <span>{actionError}</span>
           </div>
         )}
 
         {actionSuccess && (
-          <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-800 dark:text-emerald-200 text-xs flex items-center gap-2.5 shadow-sm">
-            <CheckCircle2 className="h-5 w-5 text-emerald-600 shrink-0" />
+          <div className="p-4 rounded-lg bg-[#EDF3ED] border border-[#C8D9C8] text-[#233D22] text-xs flex items-center gap-2.5">
+            <CheckCircle2 className="h-5 w-5 text-[#233D22] shrink-0" />
             <span className="font-semibold">{actionSuccess}</span>
           </div>
         )}
 
         {/* Section 1: Settlement Generation Engine */}
         {eligibleBatches.length > 0 ? (
-          <Card className="border-border/80 bg-card rounded-2xl shadow-sm">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base font-bold text-foreground flex items-center gap-2">
-                <Calculator className="h-5 w-5 text-emerald-600" />
-                <span>Create New Settlement Statement</span>
+          <Card className="border border-[#DFD8CB] bg-[#FCFAF6] rounded-lg">
+            <CardHeader className="pb-3 border-b border-[#DFD8CB]">
+              <CardTitle className="text-base font-serif font-bold text-[#1E221B] flex items-center gap-2">
+                <Calculator className="h-5 w-5 text-[#233D22]" />
+                <span>Create Settlement Statement</span>
               </CardTitle>
-              <CardDescription className="text-xs">
+              <CardDescription className="text-xs text-[#5D6352]">
                 Select a dispatched wholesale batch, define operational deductions, and generate proportional member payouts.
               </CardDescription>
             </CardHeader>
 
-            <CardContent className="space-y-6 text-xs">
+            <CardContent className="pt-4 space-y-6 text-xs">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="font-semibold text-foreground">Select Dispatched Batch *</label>
+                  <label className="font-semibold text-[#1E221B]">Select Dispatched Batch *</label>
                   <select
                     value={selectedBatchId}
                     onChange={(e) => setSelectedBatchId(e.target.value)}
-                    className="w-full h-9 rounded-md border border-input bg-background px-3 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                    className="w-full h-9 rounded-md border border-[#DFD8CB] bg-[#F7F5EE] px-3 text-xs text-[#1E221B] focus:outline-none"
                   >
                     {eligibleBatches.map((b) => (
                       <option key={b.id} value={b.id}>
-                        {b.batchNumber} — {b.commodity} ({b.totalQuantity} Q)
+                        {b.batchNumber}: {b.commodity} ({b.totalQuantity} Q)
                       </option>
                     ))}
                   </select>
                 </div>
 
                 <div className="space-y-1">
-                  <label className="font-semibold text-foreground">FPO Administrative Commission (%)</label>
+                  <label className="font-semibold text-[#1E221B]">FPO Administrative Commission (%)</label>
                   <Input
                     type="number"
                     step="0.5"
@@ -264,75 +254,75 @@ function FpoSettlementsContent() {
                     max="100"
                     value={commissionPercent}
                     onChange={(e) => setCommissionPercent(Number(e.target.value))}
-                    className="h-9 text-xs"
+                    className="h-9 text-xs bg-[#F7F5EE] border-[#DFD8CB]"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="space-y-1">
-                  <label className="font-semibold text-foreground">Logistics / Freight Cost (₹)</label>
+                  <label className="font-semibold text-[#1E221B]">Logistics / Freight Tariff (₹)</label>
                   <Input
                     type="number"
                     min="0"
                     value={transportCost}
                     onChange={(e) => setTransportCost(Number(e.target.value))}
-                    className="h-9 text-xs"
+                    className="h-9 text-xs bg-[#F7F5EE] border-[#DFD8CB]"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="font-semibold text-foreground">Grading & Handling Cost (₹)</label>
+                  <label className="font-semibold text-[#1E221B]">Assaying & Handling Cost (₹)</label>
                   <Input
                     type="number"
                     min="0"
                     value={handlingCost}
                     onChange={(e) => setHandlingCost(Number(e.target.value))}
-                    className="h-9 text-xs"
+                    className="h-9 text-xs bg-[#F7F5EE] border-[#DFD8CB]"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="font-semibold text-foreground">Other Deductions (₹)</label>
+                  <label className="font-semibold text-[#1E221B]">Other Deductions (₹)</label>
                   <Input
                     type="number"
                     min="0"
                     value={otherDeductions}
                     onChange={(e) => setOtherDeductions(Number(e.target.value))}
-                    className="h-9 text-xs"
+                    className="h-9 text-xs bg-[#F7F5EE] border-[#DFD8CB]"
                   />
                 </div>
               </div>
 
               {/* Financial Calculations Preview */}
-              <div className="p-4 rounded-xl bg-muted/40 border border-border/50 grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <div className="p-4 rounded bg-[#F4F0E6] border border-[#E0D9CB] grid grid-cols-2 sm:grid-cols-4 gap-4">
                 <div>
-                  <span className="text-muted-foreground block text-[11px]">Gross Lot Revenue</span>
-                  <span className="text-base font-bold text-foreground">₹{estimatedGross.toLocaleString()}</span>
+                  <span className="text-[#5D6352] block text-[10px] uppercase tracking-wider">Gross Lot Value</span>
+                  <span className="text-base font-serif font-bold text-[#1E221B]">₹{estimatedGross.toLocaleString('en-IN')}</span>
                 </div>
                 <div>
-                  <span className="text-muted-foreground block text-[11px]">Total Deductions</span>
-                  <span className="text-base font-bold text-amber-600">₹{totalDeductions.toLocaleString()}</span>
+                  <span className="text-[#5D6352] block text-[10px] uppercase tracking-wider">Total Deductions</span>
+                  <span className="text-base font-serif font-bold text-[#9A6818]">₹{totalDeductions.toLocaleString('en-IN')}</span>
                 </div>
                 <div>
-                  <span className="text-muted-foreground block text-[11px]">Net Distributable Pool</span>
-                  <span className="text-base font-black text-emerald-600">₹{netDistributable.toLocaleString()}</span>
+                  <span className="text-[#5D6352] block text-[10px] uppercase tracking-wider">Net Distributable Pool</span>
+                  <span className="text-base font-serif font-bold text-[#233D22]">₹{netDistributable.toLocaleString('en-IN')}</span>
                 </div>
                 <div>
-                  <span className="text-muted-foreground block text-[11px]">Proportional Payout Rate</span>
-                  <span className="text-base font-black text-foreground font-mono">₹{ratePerQuintal.toFixed(2)} / Q</span>
+                  <span className="text-[#5D6352] block text-[10px] uppercase tracking-wider">Proportional Payout Rate</span>
+                  <span className="text-base font-serif font-bold text-[#1E221B] font-mono">₹{ratePerQuintal.toFixed(2)} / Q</span>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between pt-2 border-t border-border/50">
-                <span className="text-muted-foreground text-[11px]">
-                  Payment records will be generated for all {selectedBatch?.listings?.length || 0} participating member farmers.
+              <div className="flex items-center justify-between pt-2 border-t border-[#DFD8CB]">
+                <span className="text-[#5D6352] text-[11px]">
+                  Payment disbursements will be scheduled for all {selectedBatch?.listings?.length || 0} participating member farmers.
                 </span>
                 <Button
                   size="sm"
                   disabled={createMutation.isPending}
                   onClick={() => createMutation.mutate()}
-                  className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs h-9 gap-1.5 shadow-sm"
+                  className="bg-[#233D22] hover:bg-[#1a2d19] text-white font-semibold text-xs h-9 gap-1.5 rounded-md"
                 >
                   {createMutation.isPending ? 'Generating Statement...' : 'Generate Settlement Statement →'}
                 </Button>
@@ -340,10 +330,10 @@ function FpoSettlementsContent() {
             </CardContent>
           </Card>
         ) : (
-          <Card className="p-6 border-dashed border-border/80 bg-card/60 text-center rounded-xl">
-            <DollarSign className="mx-auto h-8 w-8 text-muted-foreground/30 mb-2" />
-            <p className="text-xs font-semibold text-foreground">No batches awaiting settlement</p>
-            <p className="text-[11px] text-muted-foreground mt-0.5">
+          <Card className="p-6 border-dashed border-[#DFD8CB] bg-[#FCFAF6] text-center rounded-lg">
+            <Coins className="mx-auto h-8 w-8 text-[#8C867A] mb-2" />
+            <p className="text-xs font-semibold text-[#1E221B]">No batches awaiting settlement</p>
+            <p className="text-[11px] text-[#5D6352] mt-0.5">
               When batches are matched to buyer orders and dispatched, they will appear here for post-delivery settlement.
             </p>
           </Card>
@@ -351,42 +341,41 @@ function FpoSettlementsContent() {
 
         {/* Section 2: Historical Settlement Statements & Farmer Payouts */}
         <div className="space-y-6">
-          <h2 className="text-base font-bold text-foreground">
+          <h2 className="text-sm uppercase tracking-wider font-bold text-[#1E221B]">
             Settlement Statements & Member Distributions ({settlements.length})
           </h2>
 
           {loadingSettlements ? (
-            <div className="space-y-3">
-              {[1, 2].map((i) => (
-                <Skeleton key={i} className="h-44 w-full rounded-2xl" />
-              ))}
+            <div className="p-8 text-center bg-[#FCFAF6] border border-[#DFD8CB] rounded-lg">
+              <Loader2 className="h-6 w-6 animate-spin text-[#3B532B] mx-auto mb-2" />
+              <p className="text-xs text-[#5D6352]">Loading settlement statements...</p>
             </div>
           ) : settlements.length === 0 ? (
-            <Card className="p-8 text-center border-border/70 rounded-xl">
-              <Landmark className="mx-auto h-10 w-10 text-muted-foreground/30 mb-2" />
-              <p className="text-sm font-semibold text-foreground">No settlements recorded yet</p>
-              <p className="text-xs text-muted-foreground mt-1">
+            <Card className="p-8 text-center border border-[#DFD8CB] bg-[#FCFAF6] rounded-lg">
+              <Landmark className="mx-auto h-10 w-10 text-[#8C867A] mb-2" />
+              <p className="text-sm font-serif font-bold text-[#1E221B]">No settlements recorded yet</p>
+              <p className="text-xs text-[#5D6352] mt-1">
                 Completed wholesale lot disbursements will be archived here.
               </p>
             </Card>
           ) : (
             <div className="space-y-6">
               {Array.isArray(settlements) && settlements.map((s) => (
-                <Card key={s.id} className="border-border/80 bg-card rounded-xl shadow-sm overflow-hidden">
-                  <CardHeader className="bg-muted/30 pb-4 border-b border-border/60">
+                <Card key={s.id} className="border border-[#DFD8CB] bg-[#FCFAF6] rounded-lg overflow-hidden">
+                  <CardHeader className="bg-[#F7F5EE] pb-4 border-b border-[#DFD8CB]">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className="font-mono text-sm font-bold text-foreground">
+                          <span className="font-mono text-sm font-bold text-[#1E221B]">
                             Batch: {s.batch?.batchNumber || 'Wholesale Lot'}
                           </span>
                           <Badge
                             variant="outline"
-                            className={
+                            className={`text-[10px] rounded ${
                               s.status === 'DISTRIBUTED'
-                                ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300'
-                                : 'border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300'
-                            }
+                                ? 'border-[#C8D9C8] bg-[#EDF3ED] text-[#233D22]'
+                                : 'border-[#E8DEC8] bg-[#FAF6EC] text-[#9A6818]'
+                            }`}
                           >
                             {s.status === 'DISTRIBUTED' ? (
                               <CheckCircle2 className="h-3 w-3 mr-1" />
@@ -396,8 +385,8 @@ function FpoSettlementsContent() {
                             <span>{s.status}</span>
                           </Badge>
                         </div>
-                        <span className="text-xs text-muted-foreground">
-                          Order Ref: {s.orderId} · Created {new Date(s.createdAt).toLocaleDateString()}
+                        <span className="text-xs text-[#5D6352]">
+                          Order Ref: {s.orderId} · Created {new Date(s.createdAt).toLocaleDateString('en-IN')}
                         </span>
                       </div>
 
@@ -406,37 +395,36 @@ function FpoSettlementsContent() {
                           size="sm"
                           disabled={distributeMutation.isPending}
                           onClick={() => distributeMutation.mutate(s.id)}
-                          className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs h-8 font-semibold gap-1.5 shadow-sm shadow-emerald-600/20"
+                          className="bg-[#233D22] hover:bg-[#1a2d19] text-white text-xs h-8 font-semibold gap-1.5 rounded-md"
                         >
-                          <DollarSign className="h-3.5 w-3.5" />
+                          <Coins className="h-3.5 w-3.5" />
                           <span>Distribute Payments to Farmers</span>
                         </Button>
                       )}
                     </div>
 
-                    {/* Breakdown Strip */}
                     <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 pt-3 text-xs">
                       <div>
-                        <span className="text-[11px] text-muted-foreground block">Gross Revenue</span>
-                        <span className="font-bold text-foreground">₹{Number(s.grossAmount).toLocaleString()}</span>
+                        <span className="text-[10px] text-[#5D6352] block uppercase tracking-wider">Gross Revenue</span>
+                        <span className="font-serif font-bold text-[#1E221B]">₹{Number(s.grossAmount).toLocaleString('en-IN')}</span>
                       </div>
                       <div>
-                        <span className="text-[11px] text-muted-foreground block">FPO Commission</span>
-                        <span className="font-medium text-foreground">₹{Number(s.fpoCommission).toLocaleString()}</span>
+                        <span className="text-[10px] text-[#5D6352] block uppercase tracking-wider">FPO Commission</span>
+                        <span className="font-medium text-[#1E221B]">₹{Number(s.fpoCommission).toLocaleString('en-IN')}</span>
                       </div>
                       <div>
-                        <span className="text-[11px] text-muted-foreground block">Logistics & Handling</span>
-                        <span className="font-medium text-foreground">
-                          ₹{(Number(s.transportCost) + Number(s.handlingCost)).toLocaleString()}
+                        <span className="text-[10px] text-[#5D6352] block uppercase tracking-wider">Logistics & Handling</span>
+                        <span className="font-medium text-[#1E221B]">
+                          ₹{(Number(s.transportCost) + Number(s.handlingCost)).toLocaleString('en-IN')}
                         </span>
                       </div>
                       <div>
-                        <span className="text-[11px] text-muted-foreground block">Net Distributable</span>
-                        <span className="font-black text-emerald-600">₹{Number(s.netDistributable).toLocaleString()}</span>
+                        <span className="text-[10px] text-[#5D6352] block uppercase tracking-wider">Net Distributable</span>
+                        <span className="font-serif font-bold text-[#233D22]">₹{Number(s.netDistributable).toLocaleString('en-IN')}</span>
                       </div>
                       <div>
-                        <span className="text-[11px] text-muted-foreground block">Farmers Paid</span>
-                        <span className="font-bold text-foreground">{s.farmerPayments?.length || 0} Members</span>
+                        <span className="text-[10px] text-[#5D6352] block uppercase tracking-wider">Farmers Paid</span>
+                        <span className="font-bold text-[#1E221B]">{s.farmerPayments?.length || 0} Members</span>
                       </div>
                     </div>
                   </CardHeader>
@@ -445,7 +433,7 @@ function FpoSettlementsContent() {
                     <div className="overflow-x-auto">
                       <table className="w-full text-left text-xs border-collapse">
                         <thead>
-                          <tr className="border-b border-border/50 bg-muted/20 font-semibold text-muted-foreground text-[11px]">
+                          <tr className="border-b border-[#DFD8CB] bg-[#F7F5EE] font-semibold text-[#5D6352] text-[11px]">
                             <th className="p-3">Farmer Email</th>
                             <th className="p-3">Contributed Qty</th>
                             <th className="p-3">Rate / Q</th>
@@ -456,42 +444,42 @@ function FpoSettlementsContent() {
                             <th className="p-3 text-right">Status</th>
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-border/40 text-muted-foreground">
+                        <tbody className="divide-y divide-[#DFD8CB] text-[#5D6352]">
                           {s.farmerPayments?.map((p) => (
-                            <tr key={p.id} className="hover:bg-muted/10 transition-colors">
-                              <td className="p-3 font-medium text-foreground">
+                            <tr key={p.id} className="hover:bg-[#F7F5EE] transition-colors">
+                              <td className="p-3 font-medium text-[#1E221B]">
                                 {p.farmer?.email || 'Member Farmer'}
                               </td>
-                              <td className="p-3 font-bold text-foreground">
+                              <td className="p-3 font-bold text-[#1E221B]">
                                 {p.quantity} Q
                               </td>
                               <td className="p-3 font-mono">
                                 ₹{Number(p.ratePerQuintal).toFixed(2)}
                               </td>
                               <td className="p-3 font-mono">
-                                ₹{Number(p.grossAmount).toLocaleString()}
+                                ₹{Number(p.grossAmount).toLocaleString('en-IN')}
                               </td>
-                              <td className="p-3 font-mono text-amber-600">
-                                -₹{Number(p.deductions).toLocaleString()}
+                              <td className="p-3 font-mono text-[#9A6818]">
+                                -₹{Number(p.deductions).toLocaleString('en-IN')}
                               </td>
-                              <td className="p-3 font-mono font-black text-emerald-600">
-                                ₹{Number(p.netAmount).toLocaleString()}
+                              <td className="p-3 font-mono font-bold text-[#233D22]">
+                                ₹{Number(p.netAmount).toLocaleString('en-IN')}
                               </td>
                               <td className="p-3 font-mono text-[10px]">
                                 {p.transactionId ? (
-                                  <span className="text-foreground">{p.transactionId}</span>
+                                  <span className="text-[#1E221B]">{p.transactionId}</span>
                                 ) : (
-                                  <span className="text-muted-foreground/50 italic">Queued</span>
+                                  <span className="text-[#8C867A] italic">Queued</span>
                                 )}
                               </td>
                               <td className="p-3 text-right">
                                 <Badge
                                   variant="outline"
-                                  className={
+                                  className={`text-[10px] rounded ${
                                     p.status === 'DISTRIBUTED'
-                                      ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300'
-                                      : 'border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300'
-                                  }
+                                      ? 'border-[#C8D9C8] bg-[#EDF3ED] text-[#233D22]'
+                                      : 'border-[#E8DEC8] bg-[#FAF6EC] text-[#9A6818]'
+                                  }`}
                                 >
                                   {p.status}
                                 </Badge>

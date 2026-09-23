@@ -92,33 +92,33 @@ export default function AdminSellersPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="space-y-6 max-w-6xl">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#DFD8CB] pb-4">
         <div>
-          <h1 className="text-xl font-bold text-slate-100 flex items-center gap-2">
-            <Store className="w-5 h-5 text-emerald-400" />
-            Seller & FPO Oversight
+          <h1 className="text-2xl font-serif font-bold text-[#1E221B] flex items-center gap-2">
+            <Store className="w-5 h-5 text-[#233D22]" />
+            <span>Producer & Collective Oversight</span>
           </h1>
-          <p className="text-xs text-slate-400">Manage farmer and FPO verification, compliance, and listings</p>
+          <p className="text-xs text-[#5D6352] mt-0.5">Manage farmer and FPO accreditation, compliance documents, and active inventory</p>
         </div>
       </div>
 
       {/* Filter Bar */}
-      <div className="p-4 bg-slate-900 border border-slate-800 rounded-xl flex flex-col md:flex-row items-center gap-3">
+      <div className="p-3.5 bg-[#FCFAF6] border border-[#DFD8CB] rounded-md flex flex-col md:flex-row items-center gap-3">
         <form onSubmit={handleSearchSubmit} className="flex-1 w-full flex items-center gap-2">
           <div className="relative flex-1">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-[#5D6352] absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               placeholder="Search farm name, location, email..."
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              className="w-full pl-9 pr-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+              className="w-full pl-9 pr-3 py-2 bg-[#F7F5EE] border border-[#DFD8CB] rounded text-xs text-[#1E221B] placeholder-[#8A8E82] focus:outline-none focus:border-[#233D22]"
             />
           </div>
           <button
             type="submit"
-            className="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium rounded-lg transition-colors shrink-0"
+            className="px-3.5 py-2 bg-[#233D22] hover:bg-[#1E331D] text-[#F7F5EE] text-xs font-semibold rounded transition-colors shrink-0"
           >
             Search
           </button>
@@ -131,7 +131,7 @@ export default function AdminSellersPage() {
               setSellerType(e.target.value);
               setPage(1);
             }}
-            className="px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-300 focus:outline-none focus:border-emerald-500"
+            className="px-3 py-2 bg-[#F7F5EE] border border-[#DFD8CB] rounded text-xs text-[#1E221B] focus:outline-none focus:border-[#233D22]"
           >
             <option value="">All Types (Farmer & FPO)</option>
             <option value="FARMER">Farmer</option>
@@ -144,7 +144,7 @@ export default function AdminSellersPage() {
               setVerificationStatus(e.target.value);
               setPage(1);
             }}
-            className="px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-300 focus:outline-none focus:border-emerald-500"
+            className="px-3 py-2 bg-[#F7F5EE] border border-[#DFD8CB] rounded text-xs text-[#1E221B] focus:outline-none focus:border-[#233D22]"
           >
             <option value="">All Verification States</option>
             <option value="VERIFIED">VERIFIED</option>
@@ -155,60 +155,60 @@ export default function AdminSellersPage() {
       </div>
 
       {/* Sellers Table */}
-      <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-sm">
+      <div className="bg-[#FCFAF6] border border-[#DFD8CB] rounded-md overflow-hidden">
         {isLoading ? (
-          <div className="p-12 text-center text-xs text-slate-400">Loading sellers directory...</div>
+          <div className="p-10 text-center text-xs text-[#5D6352]">Loading producer directory...</div>
         ) : isError ? (
-          <div className="p-8 text-center text-xs text-red-400">
+          <div className="p-8 text-center text-xs text-[#9A3412]">
             {error instanceof Error ? error.message : 'Failed to load sellers'}
           </div>
         ) : sellers.length === 0 ? (
-          <div className="p-12 text-center text-xs text-slate-500">No sellers found matching criteria.</div>
+          <div className="p-10 text-center text-xs text-[#5D6352]">No producers found matching criteria.</div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-slate-300">
-              <thead className="bg-slate-950/70 border-b border-slate-800 text-[11px] text-slate-400 uppercase tracking-wider font-semibold">
+            <table className="w-full text-left text-xs border-collapse">
+              <thead className="bg-[#F4F0E6] border-b border-[#DFD8CB] text-[10px] text-[#5D6352] uppercase tracking-wider font-bold">
                 <tr>
-                  <th className="py-3.5 px-4">Seller / Business</th>
-                  <th className="py-3.5 px-4">Type</th>
-                  <th className="py-3.5 px-4">Location</th>
-                  <th className="py-3.5 px-4">Verification Status</th>
-                  <th className="py-3.5 px-4">Activity</th>
-                  <th className="py-3.5 px-4 text-right">Actions</th>
+                  <th className="py-3 px-4">Producer / Business</th>
+                  <th className="py-3 px-4">Type</th>
+                  <th className="py-3 px-4">Location</th>
+                  <th className="py-3 px-4">Accreditation</th>
+                  <th className="py-3 px-4">Trading Activity</th>
+                  <th className="py-3 px-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/80">
+              <tbody className="divide-y divide-[#DFD8CB] text-[#1E221B]">
                 {sellers.map((s) => (
-                  <tr key={s.id} className="hover:bg-slate-800/40 transition-colors">
-                    <td className="py-3.5 px-4">
-                      <div className="font-semibold text-slate-100">{s.businessName || 'Unnamed Farm/FPO'}</div>
-                      <div className="text-[11px] text-slate-500">{s.user.email}</div>
+                  <tr key={s.id} className="hover:bg-[#F4F0E6]/50 transition-colors">
+                    <td className="py-3 px-4">
+                      <div className="font-semibold text-[#1E221B]">{s.businessName || 'Unnamed Farm/FPO'}</div>
+                      <div className="text-[11px] text-[#5D6352]">{s.user.email}</div>
                     </td>
-                    <td className="py-3.5 px-4">
+                    <td className="py-3 px-4">
                       <span
-                        className={`inline-block px-2 py-0.5 rounded text-[10px] font-bold ${
+                        className={`inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${
                           s.sellerType === 'FPO'
-                            ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20'
-                            : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+                            ? 'bg-[#BD8728]/10 text-[#BD8728] border-[#BD8728]/20'
+                            : 'bg-[#233D22]/10 text-[#233D22] border-[#233D22]/20'
                         }`}
                       >
                         {s.sellerType}
                       </span>
                     </td>
-                    <td className="py-3.5 px-4 text-slate-400 text-[11px]">
+                    <td className="py-3 px-4 text-[#5D6352] text-[11px]">
                       <span className="inline-flex items-center gap-1">
-                        <MapPin className="w-3 h-3 text-slate-500" />
+                        <MapPin className="w-3 h-3 text-[#233D22]" />
                         {s.farmLocation || 'Unspecified'}
                       </span>
                     </td>
-                    <td className="py-3.5 px-4">
+                    <td className="py-3 px-4">
                       <span
-                        className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold ${
+                        className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${
                           s.verificationStatus === 'VERIFIED'
-                            ? 'bg-emerald-500/10 text-emerald-400'
+                            ? 'bg-[#233D22]/10 text-[#233D22] border-[#233D22]/20'
                             : s.verificationStatus === 'PENDING'
-                              ? 'bg-amber-500/10 text-amber-400'
-                              : 'bg-red-500/10 text-red-400'
+                            ? 'bg-[#BD8728]/10 text-[#BD8728] border-[#BD8728]/20'
+                            : 'bg-[#9A3412]/10 text-[#9A3412] border-[#9A3412]/20'
                         }`}
                       >
                         {s.verificationStatus === 'VERIFIED' && <CheckCircle className="w-2.5 h-2.5" />}
@@ -217,25 +217,25 @@ export default function AdminSellersPage() {
                         {s.verificationStatus}
                       </span>
                     </td>
-                    <td className="py-3.5 px-4 text-[11px] text-slate-400">
+                    <td className="py-3 px-4 text-[11px] text-[#5D6352]">
                       <div className="flex items-center gap-3">
                         <span className="inline-flex items-center gap-1" title="Active Products">
-                          <Package className="w-3 h-3 text-slate-500" />
-                          {s._count?.products || 0}
+                          <Package className="w-3 h-3 text-[#233D22]" />
+                          <span>{s._count?.products || 0} listings</span>
                         </span>
                         <span className="inline-flex items-center gap-1" title="Orders Received">
-                          <ShoppingBag className="w-3 h-3 text-slate-500" />
-                          {s._count?.ordersReceived || 0}
+                          <ShoppingBag className="w-3 h-3 text-[#5D6352]" />
+                          <span>{s._count?.ordersReceived || 0} orders</span>
                         </span>
                       </div>
                     </td>
-                    <td className="py-3.5 px-4 text-right">
+                    <td className="py-3 px-4 text-right">
                       <button
                         onClick={() => handleOpenVerifyModal(s)}
-                        className="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] rounded transition-colors inline-flex items-center gap-1.5"
+                        className="px-2.5 py-1 bg-[#F4F0E6] hover:bg-[#EFE9DC] text-[#1E221B] border border-[#DFD8CB] text-[11px] font-semibold rounded transition-colors inline-flex items-center gap-1.5"
                       >
-                        <ShieldCheck className="w-3 h-3 text-emerald-400" />
-                        Verify Seller
+                        <ShieldCheck className="w-3 h-3 text-[#233D22]" />
+                        <span>Accreditation</span>
                       </button>
                     </td>
                   </tr>
@@ -246,26 +246,26 @@ export default function AdminSellersPage() {
         )}
 
         {/* Pagination Footer */}
-        <div className="p-4 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+        <div className="p-3.5 border-t border-[#DFD8CB] bg-[#F4F0E6]/50 flex items-center justify-between text-xs text-[#5D6352]">
           <div>
-            Showing <span className="font-semibold text-slate-200">{sellers.length}</span> of{' '}
-            <span className="font-semibold text-slate-200">{meta.total}</span> sellers
+            Showing <span className="font-bold text-[#1E221B]">{sellers.length}</span> of{' '}
+            <span className="font-bold text-[#1E221B]">{meta.total}</span> producers
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
             <button
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page <= 1}
-              className="p-1.5 bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed text-slate-300 rounded transition-colors"
+              className="p-1 bg-[#FCFAF6] hover:bg-[#EFE9DC] border border-[#DFD8CB] disabled:opacity-40 disabled:cursor-not-allowed text-[#1E221B] rounded transition-colors"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
-            <span className="px-2 font-medium text-slate-300">
+            <span className="px-2 font-semibold text-[#1E221B] text-xs">
               Page {meta.page} of {meta.totalPages}
             </span>
             <button
               onClick={() => setPage((p) => Math.min(meta.totalPages, p + 1))}
               disabled={page >= meta.totalPages}
-              className="p-1.5 bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed text-slate-300 rounded transition-colors"
+              className="p-1 bg-[#FCFAF6] hover:bg-[#EFE9DC] border border-[#DFD8CB] disabled:opacity-40 disabled:cursor-not-allowed text-[#1E221B] rounded transition-colors"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
@@ -275,36 +275,36 @@ export default function AdminSellersPage() {
 
       {/* Verification Modal */}
       {selectedSeller && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 max-w-md w-full shadow-2xl">
-            <h2 className="text-base font-bold text-slate-100 mb-1">Seller Verification Review</h2>
-            <p className="text-xs text-slate-400 mb-4">
-              Entity: <span className="text-slate-200 font-medium">{selectedSeller.businessName || selectedSeller.user.email}</span>
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+          <div className="bg-[#FCFAF6] border border-[#DFD8CB] rounded-md p-6 max-w-md w-full">
+            <h2 className="text-base font-serif font-bold text-[#1E221B] mb-1">Producer Accreditation Review</h2>
+            <p className="text-xs text-[#5D6352] mb-4">
+              Entity: <span className="text-[#1E221B] font-semibold">{selectedSeller.businessName || selectedSeller.user.email}</span>
             </p>
 
             {updateError && (
-              <div className="mb-4 p-3 bg-red-950/50 border border-red-800/50 rounded-lg text-xs text-red-300">
+              <div className="mb-4 p-3 bg-[#9A3412]/10 border border-[#9A3412]/20 rounded text-xs text-[#9A3412]">
                 {updateError}
               </div>
             )}
 
             <form onSubmit={handleUpdateVerification} className="space-y-4">
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1.5">Verification Decision</label>
+                <label className="block text-xs font-semibold text-[#1E221B] mb-1">Accreditation Decision</label>
                 <select
                   value={newStatus}
                   onChange={(e) => setNewStatus(e.target.value as 'VERIFIED' | 'REJECTED' | 'PENDING')}
-                  className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-200 focus:outline-none focus:border-emerald-500"
+                  className="w-full px-3 py-2 bg-[#F7F5EE] border border-[#DFD8CB] rounded text-xs text-[#1E221B] focus:outline-none focus:border-[#233D22]"
                 >
                   <option value="VERIFIED">VERIFIED (Approved for direct trade)</option>
                   <option value="PENDING">PENDING (Requires additional documentation)</option>
-                  <option value="REJECTED">REJECTED (Verification Rejected)</option>
+                  <option value="REJECTED">REJECTED (Accreditation Denied)</option>
                 </select>
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1.5">
-                  Audit Rationale / Mandi Record Reference <span className="text-red-400">*</span>
+                <label className="block text-xs font-semibold text-[#1E221B] mb-1">
+                  Audit Rationale / Mandi Record Reference <span className="text-[#9A3412]">*</span>
                 </label>
                 <textarea
                   required
@@ -312,24 +312,24 @@ export default function AdminSellersPage() {
                   value={reason}
                   onChange={(e) => setReason(e.target.value)}
                   placeholder="Record document reference numbers, 7/12 land extract validation, or reason for rejection..."
-                  className="w-full px-3.5 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                  className="w-full px-3 py-2 bg-[#F7F5EE] border border-[#DFD8CB] rounded text-xs text-[#1E221B] placeholder-[#8A8E82] focus:outline-none focus:border-[#233D22]"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2">
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#DFD8CB]">
                 <button
                   type="button"
                   onClick={() => setSelectedSeller(null)}
-                  className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs rounded-lg transition-colors"
+                  className="px-3.5 py-1.5 bg-[#F4F0E6] hover:bg-[#EFE9DC] text-[#1E221B] border border-[#DFD8CB] text-xs font-semibold rounded transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isUpdating}
-                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white text-xs font-semibold rounded-lg transition-colors"
+                  className="px-4 py-1.5 bg-[#233D22] hover:bg-[#1E331D] disabled:opacity-50 text-[#F7F5EE] text-xs font-semibold rounded transition-colors"
                 >
-                  {isUpdating ? 'Recording Decision...' : 'Save Verification'}
+                  {isUpdating ? 'Recording Decision...' : 'Save Decision'}
                 </button>
               </div>
             </form>

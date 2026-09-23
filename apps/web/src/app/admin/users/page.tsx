@@ -89,33 +89,33 @@ export default function AdminUsersPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="space-y-6 max-w-6xl">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#DFD8CB] pb-4">
         <div>
-          <h1 className="text-xl font-bold text-slate-100 flex items-center gap-2">
-            <Users className="w-5 h-5 text-emerald-400" />
-            User Management
+          <h1 className="text-2xl font-serif font-bold text-[#1E221B] flex items-center gap-2">
+            <Users className="w-5 h-5 text-[#233D22]" />
+            <span>User Account Governance</span>
           </h1>
-          <p className="text-xs text-slate-400">Search, filter, and moderate platform buyer & seller accounts</p>
+          <p className="text-xs text-[#5D6352] mt-0.5">Filter, audit, and moderate participant buyer, farmer, and FPO accounts</p>
         </div>
       </div>
 
       {/* Filter Bar */}
-      <div className="p-4 bg-slate-900 border border-slate-800 rounded-xl flex flex-col md:flex-row items-center gap-3">
+      <div className="p-3.5 bg-[#FCFAF6] border border-[#DFD8CB] rounded-md flex flex-col md:flex-row items-center gap-3">
         <form onSubmit={handleSearchSubmit} className="flex-1 w-full flex items-center gap-2">
           <div className="relative flex-1">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-[#5D6352] absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               placeholder="Search by email or mobile..."
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              className="w-full pl-9 pr-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+              className="w-full pl-9 pr-3 py-2 bg-[#F7F5EE] border border-[#DFD8CB] rounded text-xs text-[#1E221B] placeholder-[#8A8E82] focus:outline-none focus:border-[#233D22]"
             />
           </div>
           <button
             type="submit"
-            className="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium rounded-lg transition-colors shrink-0"
+            className="px-3.5 py-2 bg-[#233D22] hover:bg-[#1E331D] text-[#F7F5EE] text-xs font-semibold rounded transition-colors shrink-0"
           >
             Search
           </button>
@@ -128,7 +128,7 @@ export default function AdminUsersPage() {
               setRole(e.target.value);
               setPage(1);
             }}
-            className="px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-300 focus:outline-none focus:border-emerald-500"
+            className="px-3 py-2 bg-[#F7F5EE] border border-[#DFD8CB] rounded text-xs text-[#1E221B] focus:outline-none focus:border-[#233D22]"
           >
             <option value="">All Roles</option>
             <option value="FARMER">Farmer</option>
@@ -143,7 +143,7 @@ export default function AdminUsersPage() {
               setStatus(e.target.value);
               setPage(1);
             }}
-            className="px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-300 focus:outline-none focus:border-emerald-500"
+            className="px-3 py-2 bg-[#F7F5EE] border border-[#DFD8CB] rounded text-xs text-[#1E221B] focus:outline-none focus:border-[#233D22]"
           >
             <option value="">All Statuses</option>
             <option value="ACTIVE">Active</option>
@@ -154,60 +154,60 @@ export default function AdminUsersPage() {
       </div>
 
       {/* Users Table */}
-      <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-sm">
+      <div className="bg-[#FCFAF6] border border-[#DFD8CB] rounded-md overflow-hidden">
         {isLoading ? (
-          <div className="p-12 text-center text-xs text-slate-400">Loading platform users...</div>
+          <div className="p-10 text-center text-xs text-[#5D6352]">Loading participant accounts...</div>
         ) : isError ? (
-          <div className="p-8 text-center text-xs text-red-400">
+          <div className="p-8 text-center text-xs text-[#9A3412]">
             {error instanceof Error ? error.message : 'Error loading users'}
           </div>
         ) : users.length === 0 ? (
-          <div className="p-12 text-center text-xs text-slate-500">No users found matching query criteria.</div>
+          <div className="p-10 text-center text-xs text-[#5D6352]">No participant accounts match query criteria.</div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-slate-300">
-              <thead className="bg-slate-950/70 border-b border-slate-800 text-[11px] text-slate-400 uppercase tracking-wider font-semibold">
+            <table className="w-full text-left text-xs border-collapse">
+              <thead className="bg-[#F4F0E6] border-b border-[#DFD8CB] text-[10px] text-[#5D6352] uppercase tracking-wider font-bold">
                 <tr>
-                  <th className="py-3.5 px-4">User</th>
-                  <th className="py-3.5 px-4">Role</th>
-                  <th className="py-3.5 px-4">Account Status</th>
-                  <th className="py-3.5 px-4">Profiles</th>
-                  <th className="py-3.5 px-4">Joined Date</th>
-                  <th className="py-3.5 px-4 text-right">Actions</th>
+                  <th className="py-3 px-4">User</th>
+                  <th className="py-3 px-4">Role</th>
+                  <th className="py-3 px-4">Account Status</th>
+                  <th className="py-3 px-4">Profiles</th>
+                  <th className="py-3 px-4">Registered Date</th>
+                  <th className="py-3 px-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/80">
+              <tbody className="divide-y divide-[#DFD8CB] text-[#1E221B]">
                 {users.map((u) => {
                   const isCurrentAdmin = u.id === currentAdmin?.id;
                   return (
-                    <tr key={u.id} className="hover:bg-slate-800/40 transition-colors">
-                      <td className="py-3.5 px-4">
-                        <div className="font-medium text-slate-200">{u.email}</div>
-                        <div className="text-[11px] text-slate-500">{u.mobile || 'No mobile linked'}</div>
+                    <tr key={u.id} className="hover:bg-[#F4F0E6]/50 transition-colors">
+                      <td className="py-3 px-4">
+                        <div className="font-semibold text-[#1E221B]">{u.email}</div>
+                        <div className="text-[11px] text-[#5D6352]">{u.mobile || 'No mobile linked'}</div>
                       </td>
-                      <td className="py-3.5 px-4">
+                      <td className="py-3 px-4">
                         <span
-                          className={`inline-block px-2 py-0.5 rounded text-[10px] font-bold ${
+                          className={`inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${
                             u.role === 'ADMIN'
-                              ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20'
+                              ? 'bg-[#233D22] text-[#F7F5EE] border-[#233D22]'
                               : u.role === 'FARMER'
-                                ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
-                                : u.role === 'FPO'
-                                  ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20'
-                                  : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
+                              ? 'bg-[#233D22]/10 text-[#233D22] border-[#233D22]/20'
+                              : u.role === 'FPO'
+                              ? 'bg-[#BD8728]/10 text-[#BD8728] border-[#BD8728]/20'
+                              : 'bg-[#F4F0E6] text-[#5D6352] border-[#DFD8CB]'
                           }`}
                         >
                           {u.role}
                         </span>
                       </td>
-                      <td className="py-3.5 px-4">
+                      <td className="py-3 px-4">
                         <span
-                          className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold ${
+                          className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${
                             u.status === 'ACTIVE'
-                              ? 'bg-emerald-500/10 text-emerald-400'
+                              ? 'bg-[#233D22]/10 text-[#233D22] border-[#233D22]/20'
                               : u.status === 'SUSPENDED'
-                                ? 'bg-amber-500/10 text-amber-400'
-                                : 'bg-red-500/10 text-red-400'
+                              ? 'bg-[#BD8728]/10 text-[#BD8728] border-[#BD8728]/20'
+                              : 'bg-[#9A3412]/10 text-[#9A3412] border-[#9A3412]/20'
                           }`}
                         >
                           {u.status === 'ACTIVE' && <CheckCircle className="w-2.5 h-2.5" />}
@@ -216,35 +216,35 @@ export default function AdminUsersPage() {
                           {u.status}
                         </span>
                       </td>
-                      <td className="py-3.5 px-4 text-slate-400 text-[11px]">
+                      <td className="py-3 px-4 text-[#5D6352] text-[11px]">
                         {u.sellerProfile ? (
-                          <div className="text-slate-200">
+                          <div className="text-[#1E221B]">
                             {u.sellerProfile.businessName || 'Seller Profile'}
-                            <span className="text-slate-500 block text-[10px]">
+                            <span className="text-[#5D6352] block text-[10px]">
                               {u.sellerProfile.sellerType} • {u.sellerProfile.verificationStatus}
                             </span>
                           </div>
                         ) : u.buyerProfile ? (
-                          <div className="text-slate-200">
+                          <div className="text-[#1E221B]">
                             {u.buyerProfile.businessName || 'Buyer Profile'}
-                            <span className="text-slate-500 block text-[10px]">{u.buyerProfile.buyerType}</span>
+                            <span className="text-[#5D6352] block text-[10px]">{u.buyerProfile.buyerType}</span>
                           </div>
                         ) : (
-                          <span className="text-slate-600">No profile</span>
+                          <span className="text-[#8A8E82]">Unlinked</span>
                         )}
                       </td>
-                      <td className="py-3.5 px-4 text-slate-400 text-[11px]">
+                      <td className="py-3 px-4 text-[#5D6352] text-[11px] font-mono">
                         {new Date(u.createdAt).toLocaleDateString('en-IN')}
                       </td>
-                      <td className="py-3.5 px-4 text-right">
+                      <td className="py-3 px-4 text-right">
                         <button
                           onClick={() => handleOpenStatusModal(u)}
                           disabled={isCurrentAdmin}
-                          className="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed text-slate-300 text-[11px] rounded transition-colors inline-flex items-center gap-1.5"
+                          className="px-2.5 py-1 bg-[#F4F0E6] hover:bg-[#EFE9DC] disabled:opacity-40 disabled:cursor-not-allowed text-[#1E221B] border border-[#DFD8CB] text-[11px] font-semibold rounded transition-colors inline-flex items-center gap-1.5"
                           title={isCurrentAdmin ? 'Self-status modification restricted' : 'Modify account status'}
                         >
                           <Edit3 className="w-3 h-3" />
-                          Moderate Status
+                          <span>Status</span>
                         </button>
                       </td>
                     </tr>
@@ -256,26 +256,26 @@ export default function AdminUsersPage() {
         )}
 
         {/* Pagination Footer */}
-        <div className="p-4 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+        <div className="p-3.5 border-t border-[#DFD8CB] bg-[#F4F0E6]/50 flex items-center justify-between text-xs text-[#5D6352]">
           <div>
-            Showing <span className="font-semibold text-slate-200">{users.length}</span> of{' '}
-            <span className="font-semibold text-slate-200">{meta.total}</span> users
+            Showing <span className="font-bold text-[#1E221B]">{users.length}</span> of{' '}
+            <span className="font-bold text-[#1E221B]">{meta.total}</span> participants
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
             <button
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page <= 1}
-              className="p-1.5 bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed text-slate-300 rounded transition-colors"
+              className="p-1 bg-[#FCFAF6] hover:bg-[#EFE9DC] border border-[#DFD8CB] disabled:opacity-40 disabled:cursor-not-allowed text-[#1E221B] rounded transition-colors"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
-            <span className="px-2 font-medium text-slate-300">
+            <span className="px-2 font-semibold text-[#1E221B] text-xs">
               Page {meta.page} of {meta.totalPages}
             </span>
             <button
               onClick={() => setPage((p) => Math.min(meta.totalPages, p + 1))}
               disabled={page >= meta.totalPages}
-              className="p-1.5 bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed text-slate-300 rounded transition-colors"
+              className="p-1 bg-[#FCFAF6] hover:bg-[#EFE9DC] border border-[#DFD8CB] disabled:opacity-40 disabled:cursor-not-allowed text-[#1E221B] rounded transition-colors"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
@@ -285,26 +285,26 @@ export default function AdminUsersPage() {
 
       {/* Moderation Status Modal */}
       {selectedUser && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 max-w-md w-full shadow-2xl">
-            <h2 className="text-base font-bold text-slate-100 mb-1">Modify Account Status</h2>
-            <p className="text-xs text-slate-400 mb-4">
-              Target User: <span className="text-slate-200 font-medium">{selectedUser.email}</span>
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+          <div className="bg-[#FCFAF6] border border-[#DFD8CB] rounded-md p-6 max-w-md w-full">
+            <h2 className="text-base font-serif font-bold text-[#1E221B] mb-1">Modify Account Status</h2>
+            <p className="text-xs text-[#5D6352] mb-4">
+              Target User: <span className="text-[#1E221B] font-semibold">{selectedUser.email}</span>
             </p>
 
             {updateError && (
-              <div className="mb-4 p-3 bg-red-950/50 border border-red-800/50 rounded-lg text-xs text-red-300">
+              <div className="mb-4 p-3 bg-[#9A3412]/10 border border-[#9A3412]/20 rounded text-xs text-[#9A3412]">
                 {updateError}
               </div>
             )}
 
             <form onSubmit={handleUpdateStatus} className="space-y-4">
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1.5">New Account Status</label>
+                <label className="block text-xs font-semibold text-[#1E221B] mb-1">New Account Status</label>
                 <select
                   value={newStatus}
                   onChange={(e) => setNewStatus(e.target.value as 'ACTIVE' | 'SUSPENDED' | 'DEACTIVATED')}
-                  className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-200 focus:outline-none focus:border-emerald-500"
+                  className="w-full px-3 py-2 bg-[#F7F5EE] border border-[#DFD8CB] rounded text-xs text-[#1E221B] focus:outline-none focus:border-[#233D22]"
                 >
                   <option value="ACTIVE">ACTIVE (Full access)</option>
                   <option value="SUSPENDED">SUSPENDED (Temporary restriction)</option>
@@ -313,8 +313,8 @@ export default function AdminUsersPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1.5">
-                  Administrative Reason / Audit Note <span className="text-red-400">*</span>
+                <label className="block text-xs font-semibold text-[#1E221B] mb-1">
+                  Administrative Reason / Audit Note <span className="text-[#9A3412]">*</span>
                 </label>
                 <textarea
                   required
@@ -322,22 +322,22 @@ export default function AdminUsersPage() {
                   value={reason}
                   onChange={(e) => setReason(e.target.value)}
                   placeholder="Provide detailed rationale for audit trail compliance..."
-                  className="w-full px-3.5 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                  className="w-full px-3 py-2 bg-[#F7F5EE] border border-[#DFD8CB] rounded text-xs text-[#1E221B] placeholder-[#8A8E82] focus:outline-none focus:border-[#233D22]"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2">
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#DFD8CB]">
                 <button
                   type="button"
                   onClick={() => setSelectedUser(null)}
-                  className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs rounded-lg transition-colors"
+                  className="px-3.5 py-1.5 bg-[#F4F0E6] hover:bg-[#EFE9DC] text-[#1E221B] border border-[#DFD8CB] text-xs font-semibold rounded transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isUpdating}
-                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white text-xs font-semibold rounded-lg transition-colors"
+                  className="px-4 py-1.5 bg-[#233D22] hover:bg-[#1E331D] disabled:opacity-50 text-[#F7F5EE] text-xs font-semibold rounded transition-colors"
                 >
                   {isUpdating ? 'Recording Audit...' : 'Confirm Status Change'}
                 </button>

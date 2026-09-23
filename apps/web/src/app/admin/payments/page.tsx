@@ -55,33 +55,33 @@ export default function AdminPaymentsPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="space-y-6 max-w-6xl">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#DFD8CB] pb-4">
         <div>
-          <h1 className="text-xl font-bold text-slate-100 flex items-center gap-2">
-            <CreditCard className="w-5 h-5 text-emerald-400" />
-            Payment Settlements & Audit
+          <h1 className="text-2xl font-serif font-bold text-[#1E221B] flex items-center gap-2">
+            <CreditCard className="w-5 h-5 text-[#233D22]" />
+            <span>Escrow & Payment Settlements</span>
           </h1>
-          <p className="text-xs text-slate-400">Safe, read-only transaction ledger with provider reference auditing</p>
+          <p className="text-xs text-[#5D6352] mt-0.5">Read-only transaction ledger with banking gateway audit tokens</p>
         </div>
       </div>
 
       {/* Filter Bar */}
-      <div className="p-4 bg-slate-900 border border-slate-800 rounded-xl flex flex-col md:flex-row items-center gap-3">
+      <div className="p-3.5 bg-[#FCFAF6] border border-[#DFD8CB] rounded-md flex flex-col md:flex-row items-center gap-3">
         <form onSubmit={handleSearchSubmit} className="flex-1 w-full flex items-center gap-2">
           <div className="relative flex-1">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-[#5D6352] absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
-              placeholder="Search by provider transaction reference..."
+              placeholder="Search by gateway transaction reference..."
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              className="w-full pl-9 pr-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+              className="w-full pl-9 pr-3 py-2 bg-[#F7F5EE] border border-[#DFD8CB] rounded text-xs text-[#1E221B] placeholder-[#8A8E82] focus:outline-none focus:border-[#233D22]"
             />
           </div>
           <button
             type="submit"
-            className="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium rounded-lg transition-colors shrink-0"
+            className="px-3.5 py-2 bg-[#233D22] hover:bg-[#1E331D] text-[#F7F5EE] text-xs font-semibold rounded transition-colors shrink-0"
           >
             Search
           </button>
@@ -94,9 +94,9 @@ export default function AdminPaymentsPage() {
               setStatus(e.target.value);
               setPage(1);
             }}
-            className="px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-300 focus:outline-none focus:border-emerald-500"
+            className="px-3 py-2 bg-[#F7F5EE] border border-[#DFD8CB] rounded text-xs text-[#1E221B] focus:outline-none focus:border-[#233D22]"
           >
-            <option value="">All Payment Statuses</option>
+            <option value="">All Settlement States</option>
             <option value="COMPLETED">COMPLETED</option>
             <option value="PENDING">PENDING</option>
             <option value="FAILED">FAILED</option>
@@ -106,64 +106,61 @@ export default function AdminPaymentsPage() {
       </div>
 
       {/* Payments Table */}
-      <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-sm">
+      <div className="bg-[#FCFAF6] border border-[#DFD8CB] rounded-md overflow-hidden">
         {isLoading ? (
-          <div className="p-12 text-center text-xs text-slate-400">Loading payment ledger...</div>
+          <div className="p-10 text-center text-xs text-[#5D6352]">Loading escrow transactions...</div>
         ) : isError ? (
-          <div className="p-8 text-center text-xs text-red-400">
+          <div className="p-8 text-center text-xs text-[#9A3412]">
             {error instanceof Error ? error.message : 'Failed to load payments'}
           </div>
         ) : payments.length === 0 ? (
-          <div className="p-12 text-center text-xs text-slate-500">No payment records found matching criteria.</div>
+          <div className="p-10 text-center text-xs text-[#5D6352]">No settlement records found matching criteria.</div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-slate-300">
-              <thead className="bg-slate-950/70 border-b border-slate-800 text-[11px] text-slate-400 uppercase tracking-wider font-semibold">
+            <table className="w-full text-left text-xs border-collapse">
+              <thead className="bg-[#F4F0E6] border-b border-[#DFD8CB] text-[10px] text-[#5D6352] uppercase tracking-wider font-bold">
                 <tr>
-                  <th className="py-3.5 px-4">Payment ID</th>
-                  <th className="py-3.5 px-4">Order Reference</th>
-                  <th className="py-3.5 px-4">Amount</th>
-                  <th className="py-3.5 px-4">Status</th>
-                  <th className="py-3.5 px-4">Provider Reference</th>
-                  <th className="py-3.5 px-4 text-right">Settled Date</th>
+                  <th className="py-3 px-4">Payment Identifier</th>
+                  <th className="py-3 px-4">Trade Order Reference</th>
+                  <th className="py-3 px-4">Settled Amount</th>
+                  <th className="py-3 px-4">Settlement State</th>
+                  <th className="py-3 px-4">Gateway Reference</th>
+                  <th className="py-3 px-4 text-right">Timestamp</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/80">
+              <tbody className="divide-y divide-[#DFD8CB] text-[#1E221B]">
                 {payments.map((p) => (
-                  <tr key={p.id} className="hover:bg-slate-800/40 transition-colors">
-                    <td className="py-3.5 px-4 font-mono text-slate-300 text-[11px]">
+                  <tr key={p.id} className="hover:bg-[#F4F0E6]/50 transition-colors">
+                    <td className="py-3 px-4 font-mono text-[#5D6352] text-[11px]">
                       {p.id.substring(0, 8)}...
                     </td>
-                    <td className="py-3.5 px-4">
-                      <span className="font-semibold text-slate-200">
-                        {p.order?.orderNumber || 'Direct Settlement'}
+                    <td className="py-3 px-4">
+                      <span className="font-semibold text-[#1E221B] font-mono">
+                        {p.order?.orderNumber || 'Direct Escrow'}
                       </span>
                     </td>
-                    <td className="py-3.5 px-4 font-bold text-slate-100">
+                    <td className="py-3 px-4 font-bold text-[#1E221B]">
                       ₹{Number(p.amount).toLocaleString('en-IN')}
                     </td>
-                    <td className="py-3.5 px-4">
+                    <td className="py-3 px-4">
                       <span
-                        className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold ${
+                        className={`inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${
                           p.status === 'COMPLETED'
-                            ? 'bg-emerald-500/10 text-emerald-400'
+                            ? 'bg-[#233D22]/10 text-[#233D22] border-[#233D22]/20'
                             : p.status === 'PENDING'
-                              ? 'bg-amber-500/10 text-amber-400'
-                              : p.status === 'FAILED'
-                                ? 'bg-red-500/10 text-red-400'
-                                : 'bg-slate-800 text-slate-400'
+                            ? 'bg-[#BD8728]/10 text-[#BD8728] border-[#BD8728]/20'
+                            : p.status === 'FAILED'
+                            ? 'bg-[#9A3412]/10 text-[#9A3412] border-[#9A3412]/20'
+                            : 'bg-[#F4F0E6] text-[#5D6352] border-[#DFD8CB]'
                         }`}
                       >
-                        {p.status === 'COMPLETED' && <CheckCircle className="w-2.5 h-2.5" />}
-                        {p.status === 'PENDING' && <AlertTriangle className="w-2.5 h-2.5" />}
-                        {p.status === 'FAILED' && <XCircle className="w-2.5 h-2.5" />}
                         {p.status}
                       </span>
                     </td>
-                    <td className="py-3.5 px-4 font-mono text-slate-400 text-[11px]">
-                      {p.providerReference || 'Pending Provider ID'}
+                    <td className="py-3 px-4 font-mono text-[#5D6352] text-[11px]">
+                      {p.providerReference || 'Pending Gateway ID'}
                     </td>
-                    <td className="py-3.5 px-4 text-slate-400 text-[11px] text-right">
+                    <td className="py-3 px-4 text-[#5D6352] text-[11px] text-right font-mono">
                       {new Date(p.createdAt).toLocaleString('en-IN')}
                     </td>
                   </tr>
@@ -174,26 +171,26 @@ export default function AdminPaymentsPage() {
         )}
 
         {/* Pagination Footer */}
-        <div className="p-4 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+        <div className="p-3.5 border-t border-[#DFD8CB] bg-[#F4F0E6]/50 flex items-center justify-between text-xs text-[#5D6352]">
           <div>
-            Showing <span className="font-semibold text-slate-200">{payments.length}</span> of{' '}
-            <span className="font-semibold text-slate-200">{meta.total}</span> payments
+            Showing <span className="font-bold text-[#1E221B]">{payments.length}</span> of{' '}
+            <span className="font-bold text-[#1E221B]">{meta.total}</span> settlements
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
             <button
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page <= 1}
-              className="p-1.5 bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed text-slate-300 rounded transition-colors"
+              className="p-1 bg-[#FCFAF6] hover:bg-[#EFE9DC] border border-[#DFD8CB] disabled:opacity-40 disabled:cursor-not-allowed text-[#1E221B] rounded transition-colors"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
-            <span className="px-2 font-medium text-slate-300">
+            <span className="px-2 font-semibold text-[#1E221B] text-xs">
               Page {meta.page} of {meta.totalPages}
             </span>
             <button
               onClick={() => setPage((p) => Math.min(meta.totalPages, p + 1))}
               disabled={page >= meta.totalPages}
-              className="p-1.5 bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed text-slate-300 rounded transition-colors"
+              className="p-1 bg-[#FCFAF6] hover:bg-[#EFE9DC] border border-[#DFD8CB] disabled:opacity-40 disabled:cursor-not-allowed text-[#1E221B] rounded transition-colors"
             >
               <ChevronRight className="w-4 h-4" />
             </button>

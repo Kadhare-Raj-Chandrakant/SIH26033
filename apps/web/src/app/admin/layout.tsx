@@ -17,6 +17,7 @@ import {
   ExternalLink,
   Lock,
   CheckCircle,
+  Sprout,
 } from 'lucide-react';
 import { useAuth } from '@/components/providers/auth-provider';
 import { useIsMounted } from '@/lib/use-is-mounted';
@@ -83,71 +84,71 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   };
 
   if (!mounted) {
-    return <div className="min-h-screen bg-slate-950 flex items-center justify-center text-slate-400">Loading...</div>;
+    return <div className="min-h-screen bg-[#F7F5EE] flex items-center justify-center text-xs text-[#5D6352]">Loading administrative environment...</div>;
   }
 
   const isAdmin = token && user?.role === 'ADMIN';
 
   if (!isAdmin) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4">
-        <div className="max-w-md w-full bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-2xl">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="p-3 bg-amber-500/10 text-amber-400 rounded-xl border border-amber-500/20">
-              <Lock className="w-6 h-6" />
+      <div className="min-h-screen bg-[#F7F5EE] flex items-center justify-center p-4">
+        <div className="max-w-md w-full bg-[#FCFAF6] border border-[#DFD8CB] rounded-md p-8">
+          <div className="flex items-center gap-3 mb-6 border-b border-[#DFD8CB] pb-5">
+            <div className="p-2.5 bg-[#233D22]/10 text-[#233D22] rounded border border-[#233D22]/20">
+              <Lock className="w-5 h-5" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-slate-100">Administrator Portal</h1>
-              <p className="text-xs text-slate-400">Secure sign-in with verified ADMIN credentials</p>
+              <h1 className="text-lg font-serif font-bold text-[#1E221B]">Administrator Portal</h1>
+              <p className="text-xs text-[#5D6352]">Secure sign-in with verified ADMIN credentials</p>
             </div>
           </div>
 
           {authError && (
-            <div className="mb-6 p-3.5 bg-red-950/50 border border-red-800/50 rounded-xl text-xs text-red-300 flex items-start gap-2.5">
-              <AlertTriangle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+            <div className="mb-5 p-3 bg-[#9A3412]/10 border border-[#9A3412]/20 rounded text-xs text-[#9A3412] flex items-start gap-2">
+              <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
               <span>{authError}</span>
             </div>
           )}
 
           <form onSubmit={handleAdminLogin} className="space-y-4">
             <div>
-              <label className="block text-xs font-medium text-slate-300 mb-1.5">Admin Email</label>
+              <label className="block text-xs font-semibold text-[#1E221B] mb-1">Admin Email</label>
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-lg text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                className="w-full px-3 py-2 bg-[#F7F5EE] border border-[#DFD8CB] rounded text-xs text-[#1E221B] placeholder-[#8A8E82] focus:outline-none focus:border-[#233D22]"
                 placeholder="admin@market.gov.in"
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-slate-300 mb-1.5">Password</label>
+              <label className="block text-xs font-semibold text-[#1E221B] mb-1">Password</label>
               <input
                 type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-lg text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                className="w-full px-3 py-2 bg-[#F7F5EE] border border-[#DFD8CB] rounded text-xs text-[#1E221B] placeholder-[#8A8E82] focus:outline-none focus:border-[#233D22]"
                 placeholder="••••••••"
               />
             </div>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-medium text-sm rounded-lg transition-colors flex items-center justify-center gap-2"
+              className="w-full py-2.5 px-4 bg-[#233D22] hover:bg-[#1E331D] disabled:opacity-50 text-[#F7F5EE] font-semibold text-xs rounded transition-colors flex items-center justify-center gap-2"
             >
               {isSubmitting ? 'Authenticating...' : 'Sign in as Administrator'}
             </button>
           </form>
 
-          <div className="mt-6 pt-6 border-t border-slate-800/60 text-center">
+          <div className="mt-6 pt-5 border-t border-[#DFD8CB] text-center">
             <Link
               href="/marketplace"
-              className="text-xs text-slate-400 hover:text-slate-200 inline-flex items-center gap-1.5 transition-colors"
+              className="text-xs text-[#5D6352] hover:text-[#1E221B] inline-flex items-center gap-1.5 transition-colors"
             >
               <ExternalLink className="w-3.5 h-3.5" />
-              Return to Marketplace
+              <span>Return to Public Marketplace</span>
             </Link>
           </div>
         </div>
@@ -156,17 +157,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col md:flex-row">
+    <div className="min-h-screen bg-[#F7F5EE] text-[#1E221B] flex flex-col md:flex-row">
       {/* Sidebar */}
-      <aside className="w-full md:w-64 bg-slate-900 border-r border-slate-800 flex flex-col shrink-0">
-        <div className="p-5 border-b border-slate-800 flex items-center justify-between">
+      <aside className="w-full md:w-64 bg-[#1E331D] border-r border-[#2A4428] text-[#F7F5EE] flex flex-col shrink-0">
+        <div className="p-5 border-b border-[#2A4428] flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 bg-emerald-500/10 text-emerald-400 rounded-lg border border-emerald-500/20">
-              <Shield className="w-5 h-5" />
+            <div className="p-1.5 bg-[#BD8728] text-[#1E331D] rounded">
+              <Sprout className="w-5 h-5" />
             </div>
             <div>
-              <span className="font-bold text-sm tracking-wide text-slate-100">SIH26033 ADMIN</span>
-              <span className="block text-[10px] text-emerald-400 font-medium">Marketplace Governance</span>
+              <span className="font-serif font-bold text-sm tracking-wide text-[#F7F5EE]">Aroha Governance</span>
+              <span className="block text-[10px] text-[#A8B5A5] font-semibold uppercase tracking-wider">Exchange Administration</span>
             </div>
           </div>
         </div>
@@ -180,10 +181,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-medium transition-all ${
+                className={`flex items-center gap-3 px-3.5 py-2.5 rounded text-xs font-semibold transition-colors ${
                   isActive
-                    ? 'bg-emerald-600 text-white shadow-sm font-semibold'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                    ? 'bg-[#2A4428] text-[#F7F5EE]'
+                    : 'text-[#A8B5A5] hover:text-[#F7F5EE] hover:bg-[#253D23]'
                 }`}
               >
                 <Icon className="w-4 h-4 shrink-0" />
@@ -194,14 +195,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </nav>
 
         {/* User Info & Sign Out */}
-        <div className="p-4 border-t border-slate-800 bg-slate-900/50">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-xs font-bold text-emerald-400">
+        <div className="p-4 border-t border-[#2A4428] bg-[#172816]">
+          <div className="flex items-center gap-2.5 mb-3">
+            <div className="w-7 h-7 rounded bg-[#2A4428] border border-[#3E5C3B] flex items-center justify-center text-xs font-bold text-[#F7F5EE]">
               AD
             </div>
             <div className="overflow-hidden">
-              <p className="text-xs font-medium text-slate-200 truncate">{user?.email}</p>
-              <span className="inline-flex items-center gap-1 text-[10px] text-emerald-400 font-semibold">
+              <p className="text-xs font-medium text-[#F7F5EE] truncate">{user?.email}</p>
+              <span className="inline-flex items-center gap-1 text-[9px] uppercase tracking-wider text-[#BD8728] font-bold">
                 <CheckCircle className="w-2.5 h-2.5" />
                 ADMIN ROLE
               </span>
@@ -210,37 +211,37 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <div className="flex items-center gap-2">
             <Link
               href="/marketplace"
-              className="flex-1 py-1.5 px-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] rounded text-center transition-colors inline-flex items-center justify-center gap-1"
+              className="flex-1 py-1 px-2 bg-[#253D23] hover:bg-[#2A4428] text-[#F7F5EE] text-[11px] rounded text-center transition-colors inline-flex items-center justify-center gap-1 border border-[#3E5C3B]"
             >
               <ExternalLink className="w-3 h-3" />
-              Marketplace
+              <span>Public View</span>
             </Link>
             <button
               onClick={logout}
-              className="py-1.5 px-2 bg-red-950/40 hover:bg-red-900/60 text-red-300 text-[11px] rounded transition-colors inline-flex items-center gap-1 border border-red-800/40"
+              className="py-1 px-2 bg-[#9A3412]/30 hover:bg-[#9A3412]/50 text-[#F7F5EE] text-[11px] rounded transition-colors inline-flex items-center gap-1 border border-[#9A3412]/40"
               title="Sign Out"
             >
               <LogOut className="w-3 h-3" />
-              Logout
+              <span>Logout</span>
             </button>
           </div>
         </div>
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 min-w-0 flex flex-col bg-slate-950 overflow-x-hidden">
-        <header className="h-16 border-b border-slate-800 bg-slate-900/40 px-6 flex items-center justify-between">
+      <main className="flex-1 min-w-0 flex flex-col bg-[#F7F5EE] overflow-x-hidden">
+        <header className="h-14 border-b border-[#DFD8CB] bg-[#FCFAF6] px-6 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#5D6352]">
               {pathname === '/admin'
-                ? 'Dashboard Overview'
+                ? 'Overview & KPIs'
                 : pathname.replace('/admin/', '').replace('-', ' ').toUpperCase()}
             </span>
           </div>
-          <div className="flex items-center gap-3">
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              Live Backend
+          <div className="flex items-center gap-2">
+            <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-[#233D22]/10 text-[#233D22] border border-[#233D22]/20">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#233D22]" />
+              Production Backend Connected
             </span>
           </div>
         </header>

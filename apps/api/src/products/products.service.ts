@@ -20,16 +20,34 @@ export class ProductsService {
    * Internal helper to resolve seller profile from user ID
    */
   private async getSellerProfileId(userId: string): Promise<string> {
-    const profile = await this.prisma.sellerProfile.findUnique({
+    let profile = await this.prisma.sellerProfile.findUnique({
       where: { userId },
     });
     if (!profile) {
-      throw new ForbiddenException('Only sellers can perform this action. Seller profile not found.');
+      const user = await this.prisma.user.findUnique({ where: { id: userId } });
+      if (user && (user.role === 'FARMER' || user.role === 'FPO')) {
+        profile = await this.prisma.sellerProfile.create({
+          data: {
+            userId,
+            sellerType: user.role === 'FPO' ? 'FPO' : 'FARMER',
+            businessName: user.role === 'FPO' ? 'Registered FPO' : 'Farmer Farm',
+          },
+        });
+      } else {
+        throw new ForbiddenException('Only sellers can perform this action. Seller profile not found.');
+      }
     }
     return profile.id;
   }
 
   async create(userId: string, createProductDto: CreateProductDto) {
+    if (createProductDto.initialQuantity <= 0) {
+      throw new BadRequestException('Initial available quantity must be greater than 0');
+    }
+    if (createProductDto.price <= 0) {
+      throw new BadRequestException('Price must be greater than 0');
+    }
+
     const sellerId = await this.getSellerProfileId(userId);
 
     // Verify category exists
@@ -40,21 +58,73 @@ export class ProductsService {
       throw new BadRequestException('Invalid category ID');
     }
 
-    // Use transaction to create product and inventory together
+    // Resolve seller's authentic registered address and profile
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      include: {
+        addresses: {
+          orderBy: [{ isDefault: 'desc' }, { createdAt: 'desc' }],
+        },
+        sellerProfile: true,
+      },
+    });
+
+    const defaultAddr = user?.addresses?.[0];
+    const originState = defaultAddr?.state || 'Maharashtra';
+    const originDistrict = defaultAddr?.district || defaultAddr?.city || 'Nashik';
+    const resolvedLocation = defaultAddr
+      ? `${originDistrict}, ${originState}`
+      : (createProductDto.location || user?.sellerProfile?.farmLocation || `${originDistrict}, ${originState}`);
+    const resolvedFarmerName = user?.sellerProfile?.businessName || 'Verified Producer';
+    const resolvedFarmName = user?.sellerProfile?.businessName || 'Producer Farm';
+
+    // Compute pricePerQuintal for illustrative reference in landed-cost intelligence
+    let pricePerQuintal = Number(createProductDto.price);
+    if (createProductDto.unit === 'KG') {
+      pricePerQuintal = pricePerQuintal * 100;
+    } else if (createProductDto.unit === 'TONNE') {
+      pricePerQuintal = pricePerQuintal / 10;
+    }
+
+    // Use transaction to create product, inventory, and optional initial image together
     return this.prisma.$transaction(async (tx) => {
       const product = await tx.product.create({
         data: {
           sellerId,
           categoryId: createProductDto.categoryId,
-          name: createProductDto.name,
-          description: createProductDto.description,
+          name: createProductDto.name.trim(),
+          description: createProductDto.description.trim(),
           price: new Prisma.Decimal(createProductDto.price),
           unit: createProductDto.unit,
-          location: createProductDto.location,
+          location: resolvedLocation,
+          state: originState,
+          district: originDistrict,
+          farmerName: resolvedFarmerName,
+          farmName: resolvedFarmName,
+          varietyType: createProductDto.varietyType?.trim() || null,
+          notes: createProductDto.notes?.trim() || null,
+          primaryImage: createProductDto.primaryImage?.trim() || null,
+          sellingUnit: 'Rs./Quintal',
+          illustrativeFarmerListingReferenceInr: new Prisma.Decimal(pricePerQuintal),
         },
       });
 
-      await this.inventoryService.initializeInventory(product.id, new Prisma.Decimal(createProductDto.initialQuantity), tx);
+      await this.inventoryService.initializeInventory(
+        product.id,
+        new Prisma.Decimal(createProductDto.initialQuantity),
+        tx,
+      );
+
+      if (createProductDto.primaryImage?.trim()) {
+        await tx.productImage.create({
+          data: {
+            productId: product.id,
+            cloudinaryId: `prod-img-${Date.now()}`,
+            url: createProductDto.primaryImage.trim(),
+            isPrimary: true,
+          },
+        });
+      }
 
       return product;
     });
@@ -149,11 +219,27 @@ export class ProductsService {
       }
     }
 
+    let refPrice: Prisma.Decimal | undefined = undefined;
+    if (updateProductDto.price !== undefined) {
+      if (updateProductDto.price <= 0) {
+        throw new BadRequestException('Price must be greater than 0');
+      }
+      const activeUnit = updateProductDto.unit || product.unit;
+      let pricePerQuintal = Number(updateProductDto.price);
+      if (activeUnit === 'KG') {
+        pricePerQuintal = pricePerQuintal * 100;
+      } else if (activeUnit === 'TONNE') {
+        pricePerQuintal = pricePerQuintal / 10;
+      }
+      refPrice = new Prisma.Decimal(pricePerQuintal);
+    }
+
     return this.prisma.product.update({
       where: { id },
       data: {
         ...updateProductDto,
         price: updateProductDto.price ? new Prisma.Decimal(updateProductDto.price) : undefined,
+        illustrativeFarmerListingReferenceInr: refPrice,
       },
     });
   }

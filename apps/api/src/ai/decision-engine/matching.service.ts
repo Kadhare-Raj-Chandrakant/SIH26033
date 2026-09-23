@@ -1,5 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service.js';
+import { LogisticsService } from '../../logistics/logistics.service.js';
+import { MockLogisticsProvider } from '../../logistics/providers/mock-logistics.provider.js';
 import { MatchBuyersDto } from '../dto/match-buyers.dto.js';
 import { MatchSellersDto } from '../dto/match-sellers.dto.js';
 import { LocationDto } from '../dto/smart-allocation.dto.js';
@@ -53,9 +55,12 @@ export interface SellerMatchItem {
 
 @Injectable()
 export class MatchingService {
-  private readonly logger = new Logger(MatchingService.name);
+  private readonly defaultLogistics = new MockLogisticsProvider();
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly logisticsService?: LogisticsService,
+  ) {}
 
   /**
    * Farmer-Side Matching: Finds relevant buyers and open buyer sourcing requirements
@@ -331,55 +336,6 @@ export class MatchingService {
   }
 
   private calculateDistance(origin: LocationDto, dest: LocationDto): number {
-    const coordsOrigin = this.resolveCoordinates(origin);
-    const coordsDest = this.resolveCoordinates(dest);
-
-    if (coordsOrigin && coordsDest) {
-      const R = 6371;
-      const dLat = ((coordsDest.lat - coordsOrigin.lat) * Math.PI) / 180;
-      const dLon = ((coordsDest.lon - coordsOrigin.lon) * Math.PI) / 180;
-      const a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos((coordsOrigin.lat * Math.PI) / 180) *
-          Math.cos((coordsDest.lat * Math.PI) / 180) *
-          Math.sin(dLon / 2) *
-          Math.sin(dLon / 2);
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-      return Math.max(15, Math.round(R * c));
-    }
-
-    if (origin.city && dest.city && origin.city.toLowerCase() === dest.city.toLowerCase()) {
-      return 25;
-    }
-    if (origin.state && dest.state && origin.state.toLowerCase() === dest.state.toLowerCase()) {
-      return 110;
-    }
-    return 350;
-  }
-
-  private resolveCoordinates(loc: LocationDto): { lat: number; lon: number } | null {
-    if (loc.latitude !== undefined && loc.longitude !== undefined && loc.latitude !== null && loc.longitude !== null) {
-      return { lat: loc.latitude, lon: loc.longitude };
-    }
-
-    const city = (loc.city || '').trim().toLowerCase();
-    const cityMap: Record<string, { lat: number; lon: number }> = {
-      lasalgaon: { lat: 20.147, lon: 74.226 },
-      nashik: { lat: 19.997, lon: 73.789 },
-      pune: { lat: 18.52, lon: 73.856 },
-      mumbai: { lat: 19.076, lon: 72.877 },
-      agra: { lat: 27.176, lon: 78.008 },
-      hubballi: { lat: 15.364, lon: 75.124 },
-      hubli: { lat: 15.364, lon: 75.124 },
-      dharwad: { lat: 15.458, lon: 75.007 },
-      ludhiana: { lat: 30.901, lon: 75.857 },
-      khanna: { lat: 30.707, lon: 76.217 },
-      kolar: { lat: 13.136, lon: 78.129 },
-      bengaluru: { lat: 12.971, lon: 77.594 },
-      delhi: { lat: 28.704, lon: 77.102 },
-      azadpur: { lat: 28.715, lon: 77.181 },
-    };
-
-    return cityMap[city] || null;
+    return this.defaultLogistics.calculateDistance(origin, dest);
   }
 }
