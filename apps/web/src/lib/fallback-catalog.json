@@ -1,0 +1,4123 @@
+{
+  "categories": [
+    {
+      "id": "1bdd5f17-a079-4306-b6bf-27aa67f2479d",
+      "name": "Cash & Fibre Crops",
+      "slug": "cash-fibre-crops",
+      "description": "High-value commercial fibre and industrial crops including raw cotton, jute, and sugarcane.",
+      "createdAt": "2026-09-23T20:52:53.379Z",
+      "updatedAt": "2026-09-23T20:52:53.379Z"
+    },
+    {
+      "id": "cb135f1e-8fef-497c-a021-aaf91ebda0eb",
+      "name": "Cereals & Grains",
+      "slug": "cereals-grains",
+      "description": "Staple grains including wheat, paddy rice, maize, barley, and nutritious millets.",
+      "createdAt": "2026-09-23T20:52:53.299Z",
+      "updatedAt": "2026-09-23T20:52:53.299Z"
+    },
+    {
+      "id": "0f8a7281-d75a-40b8-8f6f-830ff3094c6a",
+      "name": "Flowers & Medicinal Plants",
+      "slug": "flowers-medicinal-plants",
+      "description": "Commercial floriculture and therapeutic herbs including marigold, rose, jasmine, tulsi, ashwagandha, and aloe vera.",
+      "createdAt": "2026-09-23T20:52:53.410Z",
+      "updatedAt": "2026-09-23T20:52:53.410Z"
+    },
+    {
+      "id": "3038baf6-4c57-495c-9f8c-28507bd1e8ea",
+      "name": "Fodder Crops",
+      "slug": "fodder-crops",
+      "description": "Nutritious livestock forage and dairy cattle feeds including berseem, lucerne (alfalfa), sorghum fodder, and silage.",
+      "createdAt": "2026-09-23T20:52:53.391Z",
+      "updatedAt": "2026-09-23T20:52:53.391Z"
+    },
+    {
+      "id": "7a811698-8298-4cbd-a452-c7d6a2dfe911",
+      "name": "Fruits",
+      "slug": "fruits",
+      "description": "Fresh orchard and horticultural fruits including mangoes, bananas, apples, oranges, and seasonal berries.",
+      "createdAt": "2026-09-23T20:52:53.359Z",
+      "updatedAt": "2026-09-23T20:52:53.359Z"
+    },
+    {
+      "id": "01fcd22a-e47d-485b-a2d3-0dced5cd6234",
+      "name": "Oilseeds",
+      "slug": "oilseeds",
+      "description": "Quality edible and commercial oilseeds including mustard, soybean, groundnut, sunflower, and sesame.",
+      "createdAt": "2026-09-23T20:52:53.364Z",
+      "updatedAt": "2026-09-23T20:52:53.364Z"
+    },
+    {
+      "id": "35e3e77c-e340-4683-82b6-b2ba8eb91ac5",
+      "name": "Plantation & Beverage Crops",
+      "slug": "plantation-beverage-crops",
+      "description": "Estate plantation commodities including tea, coffee, coconut, arecanut, and natural rubber.",
+      "createdAt": "2026-09-23T20:52:53.385Z",
+      "updatedAt": "2026-09-23T20:52:53.385Z"
+    },
+    {
+      "id": "5912189f-704f-46dc-89aa-254967d9679c",
+      "name": "Pulses & Legumes",
+      "slug": "pulses-legumes",
+      "description": "High-protein pulses including chickpeas (chana), pigeon peas (arhar/tur), green gram (moong), and lentils.",
+      "createdAt": "2026-09-23T20:52:53.347Z",
+      "updatedAt": "2026-09-23T20:52:53.347Z"
+    },
+    {
+      "id": "952be96c-5e3c-491a-b3a0-28751d43fe48",
+      "name": "Spices & Condiments",
+      "slug": "spices-condiments",
+      "description": "Aromatic culinary spices including turmeric, red chili, cumin (jeera), coriander, and black pepper.",
+      "createdAt": "2026-09-23T20:52:53.369Z",
+      "updatedAt": "2026-09-23T20:52:53.369Z"
+    },
+    {
+      "id": "ccf711cf-9bb0-4a56-962c-0c50f3d6e4c6",
+      "name": "Vegetables",
+      "slug": "vegetables",
+      "description": "Farm-fresh harvest vegetables including tomatoes, onions, potatoes, green vegetables, and root crops.",
+      "createdAt": "2026-09-23T20:52:53.354Z",
+      "updatedAt": "2026-09-23T20:52:53.354Z"
+    }
+  ],
+  "filterOptions": {
+    "states": [
+      "Andhra Pradesh",
+      "Gujarat",
+      "Haryana",
+      "Himachal Pradesh",
+      "Karnataka",
+      "Madhya Pradesh",
+      "Rajasthan",
+      "Uttar Pradesh",
+      "West Bengal"
+    ],
+    "districtsByState": {
+      "Andhra Pradesh": [
+        "Annamayya",
+        "Chittor",
+        "Dr.B.R.A.Konaseema",
+        "Guntur"
+      ],
+      "Gujarat": [
+        "Mehsana",
+        "Morbi"
+      ],
+      "Haryana": [
+        "Ambala"
+      ],
+      "Himachal Pradesh": [
+        "Shimla"
+      ],
+      "Karnataka": [
+        "Chikkaballapur",
+        "Mandya"
+      ],
+      "Madhya Pradesh": [
+        "Balaghat",
+        "Chhatarpur",
+        "Indore",
+        "Khargone",
+        "Mandsaur",
+        "Neemuch"
+      ],
+      "Rajasthan": [
+        "Baran",
+        "Ganganagar"
+      ],
+      "Uttar Pradesh": [
+        "Agra"
+      ],
+      "West Bengal": [
+        "Coochbehar",
+        "Darjeeling"
+      ]
+    },
+    "allDistricts": [
+      "Agra",
+      "Ambala",
+      "Annamayya",
+      "Balaghat",
+      "Baran",
+      "Chhatarpur",
+      "Chikkaballapur",
+      "Chittor",
+      "Coochbehar",
+      "Darjeeling",
+      "Dr.B.R.A.Konaseema",
+      "Ganganagar",
+      "Guntur",
+      "Indore",
+      "Khargone",
+      "Mandsaur",
+      "Mandya",
+      "Mehsana",
+      "Morbi",
+      "Neemuch",
+      "Shimla"
+    ]
+  },
+  "products": [
+    {
+      "id": "37f65647-28e8-4229-a3b4-6e273d4990de",
+      "name": "Ashwagandha",
+      "description": "Variety: Ashwagandha. Harvested and supplied by Meera Verma (Farm 3). Benchmarked against Neemuch APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #90]",
+      "price": 12260,
+      "unit": "KG",
+      "location": "Neemuch, Madhya Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Meera Verma",
+      "farmName": "Farm 3",
+      "state": "Madhya Pradesh",
+      "district": "Neemuch",
+      "marketMandi": "Neemuch APMC",
+      "varietyType": "Ashwagandha",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 13000,
+      "illustrativeFarmerListingReferenceInr": 12260,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 168,
+      "category": {
+        "id": "0f8a7281-d75a-40b8-8f6f-830ff3094c6a",
+        "name": "Flowers & Medicinal Plants",
+        "slug": "flowers-medicinal-plants",
+        "description": "Commercial floriculture and therapeutic herbs including marigold, rose, jasmine, tulsi, ashwagandha, and aloe vera."
+      },
+      "primaryImage": "/images/products/ashwagandha-3.jpg",
+      "images": [
+        {
+          "id": "27411b44-c001-4e04-bf0a-9bc681a9dc6a",
+          "url": "/images/products/ashwagandha-3.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.960Z",
+      "updatedAt": "2026-09-23T20:53:13.960Z"
+    },
+    {
+      "id": "2069c50f-3a2d-453f-8e00-0c6f300cd4ee",
+      "name": "Ashwagandha",
+      "description": "Variety: Ashwagandha. Harvested and supplied by Meera Nair (Farm 2). Benchmarked against Neemuch APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #89]",
+      "price": 11960,
+      "unit": "KG",
+      "location": "Neemuch, Madhya Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Meera Nair",
+      "farmName": "Farm 2",
+      "state": "Madhya Pradesh",
+      "district": "Neemuch",
+      "marketMandi": "Neemuch APMC",
+      "varietyType": "Ashwagandha",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 13000,
+      "illustrativeFarmerListingReferenceInr": 11960,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 400,
+      "category": {
+        "id": "0f8a7281-d75a-40b8-8f6f-830ff3094c6a",
+        "name": "Flowers & Medicinal Plants",
+        "slug": "flowers-medicinal-plants",
+        "description": "Commercial floriculture and therapeutic herbs including marigold, rose, jasmine, tulsi, ashwagandha, and aloe vera."
+      },
+      "primaryImage": "/images/products/ashwagandha-2.jpg",
+      "images": [
+        {
+          "id": "71f70eb4-d3e7-4e32-a56c-c3d9d2b6bb01",
+          "url": "/images/products/ashwagandha-2.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.946Z",
+      "updatedAt": "2026-09-23T20:53:13.946Z"
+    },
+    {
+      "id": "9626f9af-0ffc-4764-9922-675556b23dd1",
+      "name": "Ashwagandha",
+      "description": "Variety: Ashwagandha. Harvested and supplied by Meera Das (Farm 1). Benchmarked against Neemuch APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #88]",
+      "price": 11660,
+      "unit": "KG",
+      "location": "Neemuch, Madhya Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Meera Das",
+      "farmName": "Farm 1",
+      "state": "Madhya Pradesh",
+      "district": "Neemuch",
+      "marketMandi": "Neemuch APMC",
+      "varietyType": "Ashwagandha",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 13000,
+      "illustrativeFarmerListingReferenceInr": 11660,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 250,
+      "category": {
+        "id": "0f8a7281-d75a-40b8-8f6f-830ff3094c6a",
+        "name": "Flowers & Medicinal Plants",
+        "slug": "flowers-medicinal-plants",
+        "description": "Commercial floriculture and therapeutic herbs including marigold, rose, jasmine, tulsi, ashwagandha, and aloe vera."
+      },
+      "primaryImage": "/images/products/ashwagandha-1.jpg",
+      "images": [
+        {
+          "id": "83cf13cb-b96d-437f-a8e3-6f39f2dbfb53",
+          "url": "/images/products/ashwagandha-1.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.934Z",
+      "updatedAt": "2026-09-23T20:53:13.934Z"
+    },
+    {
+      "id": "2999f451-46fa-483b-b78d-db9ec8f8f6c7",
+      "name": "Rose",
+      "description": "Variety: Other. Harvested and supplied by Meera Kaur (Farm 3). Benchmarked against Chickkaballapura APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #87]",
+      "price": 12260,
+      "unit": "KG",
+      "location": "Chikkaballapur, Karnataka",
+      "status": "ACTIVE",
+      "farmerName": "Meera Kaur",
+      "farmName": "Farm 3",
+      "state": "Karnataka",
+      "district": "Chikkaballapur",
+      "marketMandi": "Chickkaballapura APMC",
+      "varietyType": "Other",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 13000,
+      "illustrativeFarmerListingReferenceInr": 12260,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 100,
+      "category": {
+        "id": "0f8a7281-d75a-40b8-8f6f-830ff3094c6a",
+        "name": "Flowers & Medicinal Plants",
+        "slug": "flowers-medicinal-plants",
+        "description": "Commercial floriculture and therapeutic herbs including marigold, rose, jasmine, tulsi, ashwagandha, and aloe vera."
+      },
+      "primaryImage": "/images/products/rose-3.jpg",
+      "images": [
+        {
+          "id": "a79ab2c5-d3d8-42c3-8e14-c0b5e7502514",
+          "url": "/images/products/rose-3.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.923Z",
+      "updatedAt": "2026-09-23T20:53:13.923Z"
+    },
+    {
+      "id": "c3ddfd17-901a-4fab-a9da-41dcd3012152",
+      "name": "Rose",
+      "description": "Variety: Other. Harvested and supplied by Meera Yadav (Farm 2). Benchmarked against Chickkaballapura APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #86]",
+      "price": 11960,
+      "unit": "KG",
+      "location": "Chikkaballapur, Karnataka",
+      "status": "ACTIVE",
+      "farmerName": "Meera Yadav",
+      "farmName": "Farm 2",
+      "state": "Karnataka",
+      "district": "Chikkaballapur",
+      "marketMandi": "Chickkaballapura APMC",
+      "varietyType": "Other",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 13000,
+      "illustrativeFarmerListingReferenceInr": 11960,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 250,
+      "category": {
+        "id": "0f8a7281-d75a-40b8-8f6f-830ff3094c6a",
+        "name": "Flowers & Medicinal Plants",
+        "slug": "flowers-medicinal-plants",
+        "description": "Commercial floriculture and therapeutic herbs including marigold, rose, jasmine, tulsi, ashwagandha, and aloe vera."
+      },
+      "primaryImage": "/images/products/rose-2.jpg",
+      "images": [
+        {
+          "id": "61af4ccf-9d3b-4028-90cf-f52ffc6207e5",
+          "url": "/images/products/rose-2.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.910Z",
+      "updatedAt": "2026-09-23T20:53:13.910Z"
+    },
+    {
+      "id": "3221ace6-69e4-4d30-a1b8-0c295805dafc",
+      "name": "Rose",
+      "description": "Variety: Other. Harvested and supplied by Meera Sharma (Farm 1). Benchmarked against Chickkaballapura APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #85]",
+      "price": 11660,
+      "unit": "KG",
+      "location": "Chikkaballapur, Karnataka",
+      "status": "ACTIVE",
+      "farmerName": "Meera Sharma",
+      "farmName": "Farm 1",
+      "state": "Karnataka",
+      "district": "Chikkaballapur",
+      "marketMandi": "Chickkaballapura APMC",
+      "varietyType": "Other",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 13000,
+      "illustrativeFarmerListingReferenceInr": 11660,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 145,
+      "category": {
+        "id": "0f8a7281-d75a-40b8-8f6f-830ff3094c6a",
+        "name": "Flowers & Medicinal Plants",
+        "slug": "flowers-medicinal-plants",
+        "description": "Commercial floriculture and therapeutic herbs including marigold, rose, jasmine, tulsi, ashwagandha, and aloe vera."
+      },
+      "primaryImage": "/images/products/rose-1.jpg",
+      "images": [
+        {
+          "id": "dfd35a00-970e-4b51-a357-47c98596390d",
+          "url": "/images/products/rose-1.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.899Z",
+      "updatedAt": "2026-09-23T20:53:13.899Z"
+    },
+    {
+      "id": "a463411b-7ee5-4dea-9061-c720cb5e457c",
+      "name": "Marigold",
+      "description": "Harvested and supplied by Meera Reddy (Farm 3). Notes: No record found in requested state set; price intentionally blank. [SIH26033-DATASET-LISTING #84]",
+      "price": 0,
+      "unit": "KG",
+      "location": "Local Mandi Hub",
+      "status": "OUT_OF_STOCK",
+      "farmerName": "Meera Reddy",
+      "farmName": "Farm 3",
+      "state": null,
+      "district": null,
+      "marketMandi": null,
+      "varietyType": null,
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": null,
+      "illustrativeFarmerListingReferenceInr": null,
+      "officialPriceDate": "2026-09-11",
+      "notes": "No record found in requested state set; price intentionally blank.",
+      "availableQuantity": 200,
+      "category": {
+        "id": "0f8a7281-d75a-40b8-8f6f-830ff3094c6a",
+        "name": "Flowers & Medicinal Plants",
+        "slug": "flowers-medicinal-plants",
+        "description": "Commercial floriculture and therapeutic herbs including marigold, rose, jasmine, tulsi, ashwagandha, and aloe vera."
+      },
+      "primaryImage": "/images/products/marigold-3.jpg",
+      "images": [
+        {
+          "id": "2f374b2f-a110-4201-8180-9a1b112345ad",
+          "url": "/images/products/marigold-3.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.888Z",
+      "updatedAt": "2026-09-23T20:53:13.888Z"
+    },
+    {
+      "id": "c7862cea-4f09-4d25-96e6-1c3a24c88317",
+      "name": "Marigold",
+      "description": "Harvested and supplied by Meera Singh (Farm 2). Notes: No record found in requested state set; price intentionally blank. [SIH26033-DATASET-LISTING #83]",
+      "price": 0,
+      "unit": "KG",
+      "location": "Local Mandi Hub",
+      "status": "OUT_OF_STOCK",
+      "farmerName": "Meera Singh",
+      "farmName": "Farm 2",
+      "state": null,
+      "district": null,
+      "marketMandi": null,
+      "varietyType": null,
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": null,
+      "illustrativeFarmerListingReferenceInr": null,
+      "officialPriceDate": "2026-09-11",
+      "notes": "No record found in requested state set; price intentionally blank.",
+      "availableQuantity": 500,
+      "category": {
+        "id": "0f8a7281-d75a-40b8-8f6f-830ff3094c6a",
+        "name": "Flowers & Medicinal Plants",
+        "slug": "flowers-medicinal-plants",
+        "description": "Commercial floriculture and therapeutic herbs including marigold, rose, jasmine, tulsi, ashwagandha, and aloe vera."
+      },
+      "primaryImage": "/images/products/marigold-2.jpg",
+      "images": [
+        {
+          "id": "0356289e-8bcc-483a-8cd5-705631fd92af",
+          "url": "/images/products/marigold-2.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.876Z",
+      "updatedAt": "2026-09-23T20:53:13.876Z"
+    },
+    {
+      "id": "9f46ec27-dc15-4311-8fa5-0e524f073a46",
+      "name": "Marigold",
+      "description": "Harvested and supplied by Meera Patel (Farm 1). Notes: No record found in requested state set; price intentionally blank. [SIH26033-DATASET-LISTING #82]",
+      "price": 0,
+      "unit": "KG",
+      "location": "Local Mandi Hub",
+      "status": "OUT_OF_STOCK",
+      "farmerName": "Meera Patel",
+      "farmName": "Farm 1",
+      "state": null,
+      "district": null,
+      "marketMandi": null,
+      "varietyType": null,
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": null,
+      "illustrativeFarmerListingReferenceInr": null,
+      "officialPriceDate": "2026-09-11",
+      "notes": "No record found in requested state set; price intentionally blank.",
+      "availableQuantity": 300,
+      "category": {
+        "id": "0f8a7281-d75a-40b8-8f6f-830ff3094c6a",
+        "name": "Flowers & Medicinal Plants",
+        "slug": "flowers-medicinal-plants",
+        "description": "Commercial floriculture and therapeutic herbs including marigold, rose, jasmine, tulsi, ashwagandha, and aloe vera."
+      },
+      "primaryImage": "/images/products/marigold-1.jpg",
+      "images": [
+        {
+          "id": "65d993f6-a406-42a4-a3b8-c134a989bdfc",
+          "url": "/images/products/marigold-1.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.865Z",
+      "updatedAt": "2026-09-23T20:53:13.865Z"
+    },
+    {
+      "id": "f7008950-3dc1-4326-b791-c7919db4d149",
+      "name": "Fodder Maize",
+      "description": "Variety: Local. Harvested and supplied by Krishna Verma (Farm 3). Benchmarked against Varaseoni APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #81]",
+      "price": 2520,
+      "unit": "QUINTAL",
+      "location": "Balaghat, Madhya Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Krishna Verma",
+      "farmName": "Farm 3",
+      "state": "Madhya Pradesh",
+      "district": "Balaghat",
+      "marketMandi": "Varaseoni APMC",
+      "varietyType": "Local",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 2670,
+      "illustrativeFarmerListingReferenceInr": 2520,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 45,
+      "category": {
+        "id": "3038baf6-4c57-495c-9f8c-28507bd1e8ea",
+        "name": "Fodder Crops",
+        "slug": "fodder-crops",
+        "description": "Nutritious livestock forage and dairy cattle feeds including berseem, lucerne (alfalfa), sorghum fodder, and silage."
+      },
+      "primaryImage": "/images/products/fodder-maize-3.jpg",
+      "images": [
+        {
+          "id": "0472328f-5db1-4c9f-baab-961004bf306f",
+          "url": "/images/products/fodder-maize-3.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.854Z",
+      "updatedAt": "2026-09-23T20:53:13.854Z"
+    },
+    {
+      "id": "9c602db0-41f8-477f-b36c-d3a4ed8b90b3",
+      "name": "Fodder Maize",
+      "description": "Variety: Local. Harvested and supplied by Krishna Nair (Farm 2). Benchmarked against Varaseoni APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #80]",
+      "price": 2460,
+      "unit": "QUINTAL",
+      "location": "Balaghat, Madhya Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Krishna Nair",
+      "farmName": "Farm 2",
+      "state": "Madhya Pradesh",
+      "district": "Balaghat",
+      "marketMandi": "Varaseoni APMC",
+      "varietyType": "Local",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 2670,
+      "illustrativeFarmerListingReferenceInr": 2460,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 85,
+      "category": {
+        "id": "3038baf6-4c57-495c-9f8c-28507bd1e8ea",
+        "name": "Fodder Crops",
+        "slug": "fodder-crops",
+        "description": "Nutritious livestock forage and dairy cattle feeds including berseem, lucerne (alfalfa), sorghum fodder, and silage."
+      },
+      "primaryImage": "/images/products/fodder-maize-2.jpg",
+      "images": [
+        {
+          "id": "4f10d12d-b1a3-4c45-be5b-7657db5aa2ad",
+          "url": "/images/products/fodder-maize-2.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.843Z",
+      "updatedAt": "2026-09-23T20:53:13.843Z"
+    },
+    {
+      "id": "5c2f4659-2fcc-428f-8c78-9a4c38d6d6f2",
+      "name": "Fodder Maize",
+      "description": "Variety: Local. Harvested and supplied by Krishna Das (Farm 1). Benchmarked against Varaseoni APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #79]",
+      "price": 2390,
+      "unit": "QUINTAL",
+      "location": "Balaghat, Madhya Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Krishna Das",
+      "farmName": "Farm 1",
+      "state": "Madhya Pradesh",
+      "district": "Balaghat",
+      "marketMandi": "Varaseoni APMC",
+      "varietyType": "Local",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 2670,
+      "illustrativeFarmerListingReferenceInr": 2390,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 55,
+      "category": {
+        "id": "3038baf6-4c57-495c-9f8c-28507bd1e8ea",
+        "name": "Fodder Crops",
+        "slug": "fodder-crops",
+        "description": "Nutritious livestock forage and dairy cattle feeds including berseem, lucerne (alfalfa), sorghum fodder, and silage."
+      },
+      "primaryImage": "/images/products/fodder-maize-1.jpg",
+      "images": [
+        {
+          "id": "6986a904-9769-47b9-82f5-5eb1d5bdd2f1",
+          "url": "/images/products/fodder-maize-1.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.832Z",
+      "updatedAt": "2026-09-23T20:53:13.832Z"
+    },
+    {
+      "id": "b1401b98-26ce-4cfd-8964-0da92577b73b",
+      "name": "Lucerne",
+      "description": "Harvested and supplied by Krishna Kaur (Farm 3). Notes: No record found in requested state set; price intentionally blank. [SIH26033-DATASET-LISTING #78]",
+      "price": 0,
+      "unit": "QUINTAL",
+      "location": "Local Mandi Hub",
+      "status": "OUT_OF_STOCK",
+      "farmerName": "Krishna Kaur",
+      "farmName": "Farm 3",
+      "state": null,
+      "district": null,
+      "marketMandi": null,
+      "varietyType": null,
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": null,
+      "illustrativeFarmerListingReferenceInr": null,
+      "officialPriceDate": "2026-09-11",
+      "notes": "No record found in requested state set; price intentionally blank.",
+      "availableQuantity": 30,
+      "category": {
+        "id": "3038baf6-4c57-495c-9f8c-28507bd1e8ea",
+        "name": "Fodder Crops",
+        "slug": "fodder-crops",
+        "description": "Nutritious livestock forage and dairy cattle feeds including berseem, lucerne (alfalfa), sorghum fodder, and silage."
+      },
+      "primaryImage": "/images/products/lucerne-3.jpg",
+      "images": [
+        {
+          "id": "f4dc308b-9c3b-4a56-8eed-4aa335d0743a",
+          "url": "/images/products/lucerne-3.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.820Z",
+      "updatedAt": "2026-09-23T20:53:13.820Z"
+    },
+    {
+      "id": "2890438c-7523-413e-a65a-40146fd20142",
+      "name": "Lucerne",
+      "description": "Harvested and supplied by Krishna Yadav (Farm 2). Notes: No record found in requested state set; price intentionally blank. [SIH26033-DATASET-LISTING #77]",
+      "price": 0,
+      "unit": "QUINTAL",
+      "location": "Local Mandi Hub",
+      "status": "OUT_OF_STOCK",
+      "farmerName": "Krishna Yadav",
+      "farmName": "Farm 2",
+      "state": null,
+      "district": null,
+      "marketMandi": null,
+      "varietyType": null,
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": null,
+      "illustrativeFarmerListingReferenceInr": null,
+      "officialPriceDate": "2026-09-11",
+      "notes": "No record found in requested state set; price intentionally blank.",
+      "availableQuantity": 60,
+      "category": {
+        "id": "3038baf6-4c57-495c-9f8c-28507bd1e8ea",
+        "name": "Fodder Crops",
+        "slug": "fodder-crops",
+        "description": "Nutritious livestock forage and dairy cattle feeds including berseem, lucerne (alfalfa), sorghum fodder, and silage."
+      },
+      "primaryImage": "/images/products/lucerne-2.jpg",
+      "images": [
+        {
+          "id": "27f9a6e3-736e-4d09-97f9-083259394dcb",
+          "url": "/images/products/lucerne-2.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.807Z",
+      "updatedAt": "2026-09-23T20:53:13.807Z"
+    },
+    {
+      "id": "a46b3c81-1555-4ef5-996b-1e3bfa6db1f4",
+      "name": "Lucerne",
+      "description": "Harvested and supplied by Krishna Sharma (Farm 1). Notes: No record found in requested state set; price intentionally blank. [SIH26033-DATASET-LISTING #76]",
+      "price": 0,
+      "unit": "QUINTAL",
+      "location": "Local Mandi Hub",
+      "status": "OUT_OF_STOCK",
+      "farmerName": "Krishna Sharma",
+      "farmName": "Farm 1",
+      "state": null,
+      "district": null,
+      "marketMandi": null,
+      "varietyType": null,
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": null,
+      "illustrativeFarmerListingReferenceInr": null,
+      "officialPriceDate": "2026-09-11",
+      "notes": "No record found in requested state set; price intentionally blank.",
+      "availableQuantity": 40,
+      "category": {
+        "id": "3038baf6-4c57-495c-9f8c-28507bd1e8ea",
+        "name": "Fodder Crops",
+        "slug": "fodder-crops",
+        "description": "Nutritious livestock forage and dairy cattle feeds including berseem, lucerne (alfalfa), sorghum fodder, and silage."
+      },
+      "primaryImage": "/images/products/lucerne-1.jpg",
+      "images": [
+        {
+          "id": "9ba4f911-8329-4eee-9c73-c40718556318",
+          "url": "/images/products/lucerne-1.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.796Z",
+      "updatedAt": "2026-09-23T20:53:13.796Z"
+    },
+    {
+      "id": "5445406c-5c62-4442-9099-8ce4fda726d9",
+      "name": "Berseem",
+      "description": "Variety: Green Fodder. Harvested and supplied by Krishna Reddy (Farm 3). Benchmarked against Ambala Cantt. APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #75]",
+      "price": 200,
+      "unit": "QUINTAL",
+      "location": "Ambala, Haryana",
+      "status": "ACTIVE",
+      "farmerName": "Krishna Reddy",
+      "farmName": "Farm 3",
+      "state": "Haryana",
+      "district": "Ambala",
+      "marketMandi": "Ambala Cantt. APMC",
+      "varietyType": "Green Fodder",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 210,
+      "illustrativeFarmerListingReferenceInr": 200,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 34,
+      "category": {
+        "id": "3038baf6-4c57-495c-9f8c-28507bd1e8ea",
+        "name": "Fodder Crops",
+        "slug": "fodder-crops",
+        "description": "Nutritious livestock forage and dairy cattle feeds including berseem, lucerne (alfalfa), sorghum fodder, and silage."
+      },
+      "primaryImage": "/images/products/berseem-3.jpg",
+      "images": [
+        {
+          "id": "a2f728fc-9abd-4a8e-98da-b4fd03cd5445",
+          "url": "/images/products/berseem-3.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.783Z",
+      "updatedAt": "2026-09-23T20:53:13.783Z"
+    },
+    {
+      "id": "797467a9-2aa2-4a4e-9a65-7f11820a83b9",
+      "name": "Berseem",
+      "description": "Variety: Green Fodder. Harvested and supplied by Krishna Singh (Farm 2). Benchmarked against Ambala Cantt. APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #74]",
+      "price": 195,
+      "unit": "QUINTAL",
+      "location": "Ambala, Haryana",
+      "status": "ACTIVE",
+      "farmerName": "Krishna Singh",
+      "farmName": "Farm 2",
+      "state": "Haryana",
+      "district": "Ambala",
+      "marketMandi": "Ambala Cantt. APMC",
+      "varietyType": "Green Fodder",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 210,
+      "illustrativeFarmerListingReferenceInr": 195,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 70,
+      "category": {
+        "id": "3038baf6-4c57-495c-9f8c-28507bd1e8ea",
+        "name": "Fodder Crops",
+        "slug": "fodder-crops",
+        "description": "Nutritious livestock forage and dairy cattle feeds including berseem, lucerne (alfalfa), sorghum fodder, and silage."
+      },
+      "primaryImage": "/images/products/berseem-2.jpg",
+      "images": [
+        {
+          "id": "be36bda4-aa8a-4006-aa1c-5d104aac57a0",
+          "url": "/images/products/berseem-2.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.772Z",
+      "updatedAt": "2026-09-23T20:53:13.772Z"
+    },
+    {
+      "id": "43a7e9da-baba-4d85-868d-f86187767a4b",
+      "name": "Berseem",
+      "description": "Variety: Green Fodder. Harvested and supplied by Krishna Patel (Farm 1). Benchmarked against Ambala Cantt. APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #73]",
+      "price": 190,
+      "unit": "QUINTAL",
+      "location": "Ambala, Haryana",
+      "status": "ACTIVE",
+      "farmerName": "Krishna Patel",
+      "farmName": "Farm 1",
+      "state": "Haryana",
+      "district": "Ambala",
+      "marketMandi": "Ambala Cantt. APMC",
+      "varietyType": "Green Fodder",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 210,
+      "illustrativeFarmerListingReferenceInr": 190,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 43,
+      "category": {
+        "id": "3038baf6-4c57-495c-9f8c-28507bd1e8ea",
+        "name": "Fodder Crops",
+        "slug": "fodder-crops",
+        "description": "Nutritious livestock forage and dairy cattle feeds including berseem, lucerne (alfalfa), sorghum fodder, and silage."
+      },
+      "primaryImage": "/images/products/berseem-1.jpg",
+      "images": [
+        {
+          "id": "0506d7b3-fcc7-4227-83cf-7b741c6c6252",
+          "url": "/images/products/berseem-1.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.759Z",
+      "updatedAt": "2026-09-23T20:53:13.759Z"
+    },
+    {
+      "id": "5fa0fa61-33a8-467e-a5d3-a95bd54c70bd",
+      "name": "Coconut",
+      "description": "Variety: Small. Harvested and supplied by Kavya Verma (Farm 3). Benchmarked against K.R. Pet APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #72]",
+      "price": 23580,
+      "unit": "PIECE",
+      "location": "Mandya, Karnataka",
+      "status": "ACTIVE",
+      "farmerName": "Kavya Verma",
+      "farmName": "Farm 3",
+      "state": "Karnataka",
+      "district": "Mandya",
+      "marketMandi": "K.R. Pet APMC",
+      "varietyType": "Small",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 25000,
+      "illustrativeFarmerListingReferenceInr": 23580,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 1500,
+      "category": {
+        "id": "35e3e77c-e340-4683-82b6-b2ba8eb91ac5",
+        "name": "Plantation & Beverage Crops",
+        "slug": "plantation-beverage-crops",
+        "description": "Estate plantation commodities including tea, coffee, coconut, arecanut, and natural rubber."
+      },
+      "primaryImage": "/images/products/coconut-3.jpg",
+      "images": [
+        {
+          "id": "d581fd4e-0f86-42a3-97ac-c478b3aded41",
+          "url": "/images/products/coconut-3.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.748Z",
+      "updatedAt": "2026-09-23T20:53:13.748Z"
+    },
+    {
+      "id": "08fa64be-d870-47c0-ad1c-4489fde54e4e",
+      "name": "Coconut",
+      "description": "Variety: Small. Harvested and supplied by Kavya Nair (Farm 2). Benchmarked against K.R. Pet APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #71]",
+      "price": 23000,
+      "unit": "PIECE",
+      "location": "Mandya, Karnataka",
+      "status": "ACTIVE",
+      "farmerName": "Kavya Nair",
+      "farmName": "Farm 2",
+      "state": "Karnataka",
+      "district": "Mandya",
+      "marketMandi": "K.R. Pet APMC",
+      "varietyType": "Small",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 25000,
+      "illustrativeFarmerListingReferenceInr": 23000,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 3500,
+      "category": {
+        "id": "35e3e77c-e340-4683-82b6-b2ba8eb91ac5",
+        "name": "Plantation & Beverage Crops",
+        "slug": "plantation-beverage-crops",
+        "description": "Estate plantation commodities including tea, coffee, coconut, arecanut, and natural rubber."
+      },
+      "primaryImage": "/images/products/coconut-2.jpg",
+      "images": [
+        {
+          "id": "4d3eddc0-e8e9-4827-8c6b-422efeb17608",
+          "url": "/images/products/coconut-2.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.736Z",
+      "updatedAt": "2026-09-23T20:53:13.736Z"
+    },
+    {
+      "id": "d09b7987-07ce-4b1e-9f4f-3e824b2cdb33",
+      "name": "Coconut",
+      "description": "Variety: Small. Harvested and supplied by Kavya Das (Farm 1). Benchmarked against K.R. Pet APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #70]",
+      "price": 22420,
+      "unit": "PIECE",
+      "location": "Mandya, Karnataka",
+      "status": "ACTIVE",
+      "farmerName": "Kavya Das",
+      "farmName": "Farm 1",
+      "state": "Karnataka",
+      "district": "Mandya",
+      "marketMandi": "K.R. Pet APMC",
+      "varietyType": "Small",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 25000,
+      "illustrativeFarmerListingReferenceInr": 22420,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 2000,
+      "category": {
+        "id": "35e3e77c-e340-4683-82b6-b2ba8eb91ac5",
+        "name": "Plantation & Beverage Crops",
+        "slug": "plantation-beverage-crops",
+        "description": "Estate plantation commodities including tea, coffee, coconut, arecanut, and natural rubber."
+      },
+      "primaryImage": "/images/products/coconut-1.jpg",
+      "images": [
+        {
+          "id": "8358baf1-3cd5-44df-a1a7-2b95ca4291b6",
+          "url": "/images/products/coconut-1.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.723Z",
+      "updatedAt": "2026-09-23T20:53:13.723Z"
+    },
+    {
+      "id": "de459521-4226-49ca-b931-dcbb47b3b84e",
+      "name": "Coffee",
+      "description": "Harvested and supplied by Kavya Kaur (Farm 3). Notes: No record found in requested state set; price intentionally blank. [SIH26033-DATASET-LISTING #69]",
+      "price": 0,
+      "unit": "KG",
+      "location": "Local Mandi Hub",
+      "status": "OUT_OF_STOCK",
+      "farmerName": "Kavya Kaur",
+      "farmName": "Farm 3",
+      "state": null,
+      "district": null,
+      "marketMandi": null,
+      "varietyType": null,
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": null,
+      "illustrativeFarmerListingReferenceInr": null,
+      "officialPriceDate": "2026-09-11",
+      "notes": "No record found in requested state set; price intentionally blank.",
+      "availableQuantity": 250,
+      "category": {
+        "id": "35e3e77c-e340-4683-82b6-b2ba8eb91ac5",
+        "name": "Plantation & Beverage Crops",
+        "slug": "plantation-beverage-crops",
+        "description": "Estate plantation commodities including tea, coffee, coconut, arecanut, and natural rubber."
+      },
+      "primaryImage": "/images/products/coffee-3.jpg",
+      "images": [
+        {
+          "id": "2aa3be54-20e1-4756-b7b5-9c902135b92a",
+          "url": "/images/products/coffee-3.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.712Z",
+      "updatedAt": "2026-09-23T20:53:13.712Z"
+    },
+    {
+      "id": "2b3faf0e-84c3-4d35-937a-10b283bb1ad3",
+      "name": "Coffee",
+      "description": "Harvested and supplied by Kavya Yadav (Farm 2). Notes: No record found in requested state set; price intentionally blank. [SIH26033-DATASET-LISTING #68]",
+      "price": 0,
+      "unit": "KG",
+      "location": "Local Mandi Hub",
+      "status": "OUT_OF_STOCK",
+      "farmerName": "Kavya Yadav",
+      "farmName": "Farm 2",
+      "state": null,
+      "district": null,
+      "marketMandi": null,
+      "varietyType": null,
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": null,
+      "illustrativeFarmerListingReferenceInr": null,
+      "officialPriceDate": "2026-09-11",
+      "notes": "No record found in requested state set; price intentionally blank.",
+      "availableQuantity": 550,
+      "category": {
+        "id": "35e3e77c-e340-4683-82b6-b2ba8eb91ac5",
+        "name": "Plantation & Beverage Crops",
+        "slug": "plantation-beverage-crops",
+        "description": "Estate plantation commodities including tea, coffee, coconut, arecanut, and natural rubber."
+      },
+      "primaryImage": "/images/products/coffee-2.jpg",
+      "images": [
+        {
+          "id": "9455909f-e5bd-4a90-ba60-1769a5e545dd",
+          "url": "/images/products/coffee-2.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.700Z",
+      "updatedAt": "2026-09-23T20:53:13.700Z"
+    },
+    {
+      "id": "3cabf681-e4b6-46bf-a5fa-1bde8e1c959c",
+      "name": "Coffee",
+      "description": "Harvested and supplied by Kavya Sharma (Farm 1). Notes: No record found in requested state set; price intentionally blank. [SIH26033-DATASET-LISTING #67]",
+      "price": 0,
+      "unit": "KG",
+      "location": "Local Mandi Hub",
+      "status": "OUT_OF_STOCK",
+      "farmerName": "Kavya Sharma",
+      "farmName": "Farm 1",
+      "state": null,
+      "district": null,
+      "marketMandi": null,
+      "varietyType": null,
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": null,
+      "illustrativeFarmerListingReferenceInr": null,
+      "officialPriceDate": "2026-09-11",
+      "notes": "No record found in requested state set; price intentionally blank.",
+      "availableQuantity": 350,
+      "category": {
+        "id": "35e3e77c-e340-4683-82b6-b2ba8eb91ac5",
+        "name": "Plantation & Beverage Crops",
+        "slug": "plantation-beverage-crops",
+        "description": "Estate plantation commodities including tea, coffee, coconut, arecanut, and natural rubber."
+      },
+      "primaryImage": "/images/products/coffee-1.jpg",
+      "images": [
+        {
+          "id": "5fadecbc-5551-4845-9501-7180d90703dc",
+          "url": "/images/products/coffee-1.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.688Z",
+      "updatedAt": "2026-09-23T20:53:13.688Z"
+    },
+    {
+      "id": "55268f5a-6529-4b71-9628-f2c5e3fb14a9",
+      "name": "Tea Leaves",
+      "description": "Harvested and supplied by Kavya Reddy (Farm 3). Notes: No record found in requested state set; price intentionally blank. [SIH26033-DATASET-LISTING #66]",
+      "price": 0,
+      "unit": "KG",
+      "location": "Local Mandi Hub",
+      "status": "OUT_OF_STOCK",
+      "farmerName": "Kavya Reddy",
+      "farmName": "Farm 3",
+      "state": null,
+      "district": null,
+      "marketMandi": null,
+      "varietyType": null,
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": null,
+      "illustrativeFarmerListingReferenceInr": null,
+      "officialPriceDate": "2026-09-11",
+      "notes": "No record found in requested state set; price intentionally blank.",
+      "availableQuantity": 300,
+      "category": {
+        "id": "35e3e77c-e340-4683-82b6-b2ba8eb91ac5",
+        "name": "Plantation & Beverage Crops",
+        "slug": "plantation-beverage-crops",
+        "description": "Estate plantation commodities including tea, coffee, coconut, arecanut, and natural rubber."
+      },
+      "primaryImage": "/images/products/tea-leaves-3.jpg",
+      "images": [
+        {
+          "id": "b608d3ec-c6c3-4615-b682-04e673776038",
+          "url": "/images/products/tea-leaves-3.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.674Z",
+      "updatedAt": "2026-09-23T20:53:13.674Z"
+    },
+    {
+      "id": "9a92c524-a0ee-47f7-9214-ec827e52bb4b",
+      "name": "Tea Leaves",
+      "description": "Harvested and supplied by Kavya Singh (Farm 2). Notes: No record found in requested state set; price intentionally blank. [SIH26033-DATASET-LISTING #65]",
+      "price": 0,
+      "unit": "KG",
+      "location": "Local Mandi Hub",
+      "status": "OUT_OF_STOCK",
+      "farmerName": "Kavya Singh",
+      "farmName": "Farm 2",
+      "state": null,
+      "district": null,
+      "marketMandi": null,
+      "varietyType": null,
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": null,
+      "illustrativeFarmerListingReferenceInr": null,
+      "officialPriceDate": "2026-09-11",
+      "notes": "No record found in requested state set; price intentionally blank.",
+      "availableQuantity": 650,
+      "category": {
+        "id": "35e3e77c-e340-4683-82b6-b2ba8eb91ac5",
+        "name": "Plantation & Beverage Crops",
+        "slug": "plantation-beverage-crops",
+        "description": "Estate plantation commodities including tea, coffee, coconut, arecanut, and natural rubber."
+      },
+      "primaryImage": "/images/products/tea-leaves-2.jpg",
+      "images": [
+        {
+          "id": "f5a62dbc-e10b-4fe2-8290-f4a4f6ed68ab",
+          "url": "/images/products/tea-leaves-2.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.658Z",
+      "updatedAt": "2026-09-23T20:53:13.658Z"
+    },
+    {
+      "id": "b5ed44cc-e6a8-4d0d-805e-be6cbf2bd9da",
+      "name": "Tea Leaves",
+      "description": "Harvested and supplied by Kavya Patel (Farm 1). Notes: No record found in requested state set; price intentionally blank. [SIH26033-DATASET-LISTING #64]",
+      "price": 0,
+      "unit": "KG",
+      "location": "Local Mandi Hub",
+      "status": "OUT_OF_STOCK",
+      "farmerName": "Kavya Patel",
+      "farmName": "Farm 1",
+      "state": null,
+      "district": null,
+      "marketMandi": null,
+      "varietyType": null,
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": null,
+      "illustrativeFarmerListingReferenceInr": null,
+      "officialPriceDate": "2026-09-11",
+      "notes": "No record found in requested state set; price intentionally blank.",
+      "availableQuantity": 400,
+      "category": {
+        "id": "35e3e77c-e340-4683-82b6-b2ba8eb91ac5",
+        "name": "Plantation & Beverage Crops",
+        "slug": "plantation-beverage-crops",
+        "description": "Estate plantation commodities including tea, coffee, coconut, arecanut, and natural rubber."
+      },
+      "primaryImage": "/images/products/tea-leaves-1.jpg",
+      "images": [
+        {
+          "id": "821973e8-dfc9-4112-8197-de49877e02de",
+          "url": "/images/products/tea-leaves-1.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.643Z",
+      "updatedAt": "2026-09-23T20:53:13.643Z"
+    },
+    {
+      "id": "1e9df117-0649-482f-a0c4-5d89994549a6",
+      "name": "Jute",
+      "description": "Variety: Other. Harvested and supplied by Ishaan Verma (Farm 3). Benchmarked against Baxirhat APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #63]",
+      "price": 12580,
+      "unit": "QUINTAL",
+      "location": "Coochbehar, West Bengal",
+      "status": "ACTIVE",
+      "farmerName": "Ishaan Verma",
+      "farmName": "Farm 3",
+      "state": "West Bengal",
+      "district": "Coochbehar",
+      "marketMandi": "Baxirhat APMC",
+      "varietyType": "Other",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 13350,
+      "illustrativeFarmerListingReferenceInr": 12580,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 25,
+      "category": {
+        "id": "1bdd5f17-a079-4306-b6bf-27aa67f2479d",
+        "name": "Cash & Fibre Crops",
+        "slug": "cash-fibre-crops",
+        "description": "High-value commercial fibre and industrial crops including raw cotton, jute, and sugarcane."
+      },
+      "primaryImage": "/images/products/jute-3.jpg",
+      "images": [
+        {
+          "id": "7a0f73a7-3a89-4599-84a5-e15c0465a515",
+          "url": "/images/products/jute-3.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.627Z",
+      "updatedAt": "2026-09-23T20:53:13.627Z"
+    },
+    {
+      "id": "13008bef-6dad-4028-adf8-5d68069c63b9",
+      "name": "Jute",
+      "description": "Variety: Other. Harvested and supplied by Ishaan Nair (Farm 2). Benchmarked against Baxirhat APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #62]",
+      "price": 12280,
+      "unit": "QUINTAL",
+      "location": "Coochbehar, West Bengal",
+      "status": "ACTIVE",
+      "farmerName": "Ishaan Nair",
+      "farmName": "Farm 2",
+      "state": "West Bengal",
+      "district": "Coochbehar",
+      "marketMandi": "Baxirhat APMC",
+      "varietyType": "Other",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 13350,
+      "illustrativeFarmerListingReferenceInr": 12280,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 45,
+      "category": {
+        "id": "1bdd5f17-a079-4306-b6bf-27aa67f2479d",
+        "name": "Cash & Fibre Crops",
+        "slug": "cash-fibre-crops",
+        "description": "High-value commercial fibre and industrial crops including raw cotton, jute, and sugarcane."
+      },
+      "primaryImage": "/images/products/jute-2.jpg",
+      "images": [
+        {
+          "id": "5093a000-39d7-45a3-88f8-c9a1517121ec",
+          "url": "/images/products/jute-2.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.611Z",
+      "updatedAt": "2026-09-23T20:53:13.611Z"
+    },
+    {
+      "id": "ef48c270-77ed-4d4e-8fa9-dad3a4e0d2bc",
+      "name": "Jute",
+      "description": "Variety: Other. Harvested and supplied by Ishaan Das (Farm 1). Benchmarked against Baxirhat APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #61]",
+      "price": 11980,
+      "unit": "QUINTAL",
+      "location": "Coochbehar, West Bengal",
+      "status": "ACTIVE",
+      "farmerName": "Ishaan Das",
+      "farmName": "Farm 1",
+      "state": "West Bengal",
+      "district": "Coochbehar",
+      "marketMandi": "Baxirhat APMC",
+      "varietyType": "Other",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 13350,
+      "illustrativeFarmerListingReferenceInr": 11980,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 30,
+      "category": {
+        "id": "1bdd5f17-a079-4306-b6bf-27aa67f2479d",
+        "name": "Cash & Fibre Crops",
+        "slug": "cash-fibre-crops",
+        "description": "High-value commercial fibre and industrial crops including raw cotton, jute, and sugarcane."
+      },
+      "primaryImage": "/images/products/jute-1.jpg",
+      "images": [
+        {
+          "id": "8bee4e9c-7053-4b65-8268-2d59fa055166",
+          "url": "/images/products/jute-1.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.595Z",
+      "updatedAt": "2026-09-23T20:53:13.595Z"
+    },
+    {
+      "id": "55262905-8825-479e-8c73-a63a53ec944c",
+      "name": "Sugarcane",
+      "description": "Harvested and supplied by Ishaan Kaur (Farm 3). Notes: No record found in requested state set; price intentionally blank. [SIH26033-DATASET-LISTING #60]",
+      "price": 0,
+      "unit": "TONNE",
+      "location": "Local Mandi Hub",
+      "status": "OUT_OF_STOCK",
+      "farmerName": "Ishaan Kaur",
+      "farmName": "Farm 3",
+      "state": null,
+      "district": null,
+      "marketMandi": null,
+      "varietyType": null,
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": null,
+      "illustrativeFarmerListingReferenceInr": null,
+      "officialPriceDate": "2026-09-11",
+      "notes": "No record found in requested state set; price intentionally blank.",
+      "availableQuantity": 65,
+      "category": {
+        "id": "1bdd5f17-a079-4306-b6bf-27aa67f2479d",
+        "name": "Cash & Fibre Crops",
+        "slug": "cash-fibre-crops",
+        "description": "High-value commercial fibre and industrial crops including raw cotton, jute, and sugarcane."
+      },
+      "primaryImage": "/images/products/sugarcane-3.jpg",
+      "images": [
+        {
+          "id": "2d51b025-6aa8-4509-abd1-121d86977087",
+          "url": "/images/products/sugarcane-3.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.580Z",
+      "updatedAt": "2026-09-23T20:53:13.580Z"
+    },
+    {
+      "id": "e9c8b56c-5980-4b15-bbd8-ece2551cac21",
+      "name": "Sugarcane",
+      "description": "Harvested and supplied by Ishaan Yadav (Farm 2). Notes: No record found in requested state set; price intentionally blank. [SIH26033-DATASET-LISTING #59]",
+      "price": 0,
+      "unit": "TONNE",
+      "location": "Local Mandi Hub",
+      "status": "OUT_OF_STOCK",
+      "farmerName": "Ishaan Yadav",
+      "farmName": "Farm 2",
+      "state": null,
+      "district": null,
+      "marketMandi": null,
+      "varietyType": null,
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": null,
+      "illustrativeFarmerListingReferenceInr": null,
+      "officialPriceDate": "2026-09-11",
+      "notes": "No record found in requested state set; price intentionally blank.",
+      "availableQuantity": 80,
+      "category": {
+        "id": "1bdd5f17-a079-4306-b6bf-27aa67f2479d",
+        "name": "Cash & Fibre Crops",
+        "slug": "cash-fibre-crops",
+        "description": "High-value commercial fibre and industrial crops including raw cotton, jute, and sugarcane."
+      },
+      "primaryImage": "/images/products/sugarcane-2.jpg",
+      "images": [
+        {
+          "id": "73d90feb-399e-48de-940e-274882112b7f",
+          "url": "/images/products/sugarcane-2.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.566Z",
+      "updatedAt": "2026-09-23T20:53:13.566Z"
+    },
+    {
+      "id": "762d5717-a6aa-4da0-924a-a22ce71ede37",
+      "name": "Sugarcane",
+      "description": "Harvested and supplied by Ishaan Sharma (Farm 1). Notes: No record found in requested state set; price intentionally blank. [SIH26033-DATASET-LISTING #58]",
+      "price": 0,
+      "unit": "TONNE",
+      "location": "Local Mandi Hub",
+      "status": "OUT_OF_STOCK",
+      "farmerName": "Ishaan Sharma",
+      "farmName": "Farm 1",
+      "state": null,
+      "district": null,
+      "marketMandi": null,
+      "varietyType": null,
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": null,
+      "illustrativeFarmerListingReferenceInr": null,
+      "officialPriceDate": "2026-09-11",
+      "notes": "No record found in requested state set; price intentionally blank.",
+      "availableQuantity": 50,
+      "category": {
+        "id": "1bdd5f17-a079-4306-b6bf-27aa67f2479d",
+        "name": "Cash & Fibre Crops",
+        "slug": "cash-fibre-crops",
+        "description": "High-value commercial fibre and industrial crops including raw cotton, jute, and sugarcane."
+      },
+      "primaryImage": "/images/products/sugarcane-1.jpg",
+      "images": [
+        {
+          "id": "17e9fcd2-31a5-4160-9db3-7e178f31cfef",
+          "url": "/images/products/sugarcane-1.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.550Z",
+      "updatedAt": "2026-09-23T20:53:13.550Z"
+    },
+    {
+      "id": "61c7ac8d-d423-47fc-adb2-da6cc6d7923d",
+      "name": "Cotton",
+      "description": "Variety: Without Ginned Cotton. Harvested and supplied by Ishaan Reddy (Farm 3). Benchmarked against Khargone APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #57]",
+      "price": 7260,
+      "unit": "QUINTAL",
+      "location": "Khargone, Madhya Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Ishaan Reddy",
+      "farmName": "Farm 3",
+      "state": "Madhya Pradesh",
+      "district": "Khargone",
+      "marketMandi": "Khargone APMC",
+      "varietyType": "Without Ginned Cotton",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 7700,
+      "illustrativeFarmerListingReferenceInr": 7260,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 30,
+      "category": {
+        "id": "1bdd5f17-a079-4306-b6bf-27aa67f2479d",
+        "name": "Cash & Fibre Crops",
+        "slug": "cash-fibre-crops",
+        "description": "High-value commercial fibre and industrial crops including raw cotton, jute, and sugarcane."
+      },
+      "primaryImage": "/images/products/cotton-3.jpg",
+      "images": [
+        {
+          "id": "f019466d-0aae-4f47-9bab-bae55ae5522c",
+          "url": "/images/products/cotton-3.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.536Z",
+      "updatedAt": "2026-09-23T20:53:13.536Z"
+    },
+    {
+      "id": "cc7d8492-161d-44f7-bfbe-086f3f7b06bf",
+      "name": "Cotton",
+      "description": "Variety: Without Ginned Cotton. Harvested and supplied by Ishaan Singh (Farm 2). Benchmarked against Khargone APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #56]",
+      "price": 7080,
+      "unit": "QUINTAL",
+      "location": "Khargone, Madhya Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Ishaan Singh",
+      "farmName": "Farm 2",
+      "state": "Madhya Pradesh",
+      "district": "Khargone",
+      "marketMandi": "Khargone APMC",
+      "varietyType": "Without Ginned Cotton",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 7700,
+      "illustrativeFarmerListingReferenceInr": 7080,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 55,
+      "category": {
+        "id": "1bdd5f17-a079-4306-b6bf-27aa67f2479d",
+        "name": "Cash & Fibre Crops",
+        "slug": "cash-fibre-crops",
+        "description": "High-value commercial fibre and industrial crops including raw cotton, jute, and sugarcane."
+      },
+      "primaryImage": "/images/products/cotton-2.jpg",
+      "images": [
+        {
+          "id": "0b897fa3-260a-4023-81bb-ad0aabb4ddae",
+          "url": "/images/products/cotton-2.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.522Z",
+      "updatedAt": "2026-09-23T20:53:13.522Z"
+    },
+    {
+      "id": "429dcc67-11af-4269-82ae-e7d34b94b188",
+      "name": "Cotton",
+      "description": "Variety: Without Ginned Cotton. Harvested and supplied by Ishaan Patel (Farm 1). Benchmarked against Khargone APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #55]",
+      "price": 6900,
+      "unit": "QUINTAL",
+      "location": "Khargone, Madhya Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Ishaan Patel",
+      "farmName": "Farm 1",
+      "state": "Madhya Pradesh",
+      "district": "Khargone",
+      "marketMandi": "Khargone APMC",
+      "varietyType": "Without Ginned Cotton",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 7700,
+      "illustrativeFarmerListingReferenceInr": 6900,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 35,
+      "category": {
+        "id": "1bdd5f17-a079-4306-b6bf-27aa67f2479d",
+        "name": "Cash & Fibre Crops",
+        "slug": "cash-fibre-crops",
+        "description": "High-value commercial fibre and industrial crops including raw cotton, jute, and sugarcane."
+      },
+      "primaryImage": "/images/products/cotton-1.jpg",
+      "images": [
+        {
+          "id": "fcf89106-7883-437c-93aa-11fb95c6c9ac",
+          "url": "/images/products/cotton-1.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.509Z",
+      "updatedAt": "2026-09-23T20:53:13.509Z"
+    },
+    {
+      "id": "925a7d0b-5e78-44b7-883c-26d7ff22f894",
+      "name": "Cumin",
+      "description": "Variety: Cummin Seed(Jeera). Harvested and supplied by Diya Verma (Farm 3). Benchmarked against Unjha APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #54]",
+      "price": 18980,
+      "unit": "KG",
+      "location": "Mehsana, Gujarat",
+      "status": "ACTIVE",
+      "farmerName": "Diya Verma",
+      "farmName": "Farm 3",
+      "state": "Gujarat",
+      "district": "Mehsana",
+      "marketMandi": "Unjha APMC",
+      "varietyType": "Cummin Seed(Jeera)",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 20125,
+      "illustrativeFarmerListingReferenceInr": 18980,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 250,
+      "category": {
+        "id": "952be96c-5e3c-491a-b3a0-28751d43fe48",
+        "name": "Spices & Condiments",
+        "slug": "spices-condiments",
+        "description": "Aromatic culinary spices including turmeric, red chili, cumin (jeera), coriander, and black pepper."
+      },
+      "primaryImage": "/images/products/cumin-3.jpg",
+      "images": [
+        {
+          "id": "70db8df4-f608-4ef0-9614-0c3b0565a584",
+          "url": "/images/products/cumin-3.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.495Z",
+      "updatedAt": "2026-09-23T20:53:13.495Z"
+    },
+    {
+      "id": "b942ecab-7e02-4ef1-a7a9-74ecc38ab064",
+      "name": "Cumin",
+      "description": "Variety: Cummin Seed(Jeera). Harvested and supplied by Diya Nair (Farm 2). Benchmarked against Unjha APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #53]",
+      "price": 18520,
+      "unit": "KG",
+      "location": "Mehsana, Gujarat",
+      "status": "ACTIVE",
+      "farmerName": "Diya Nair",
+      "farmName": "Farm 2",
+      "state": "Gujarat",
+      "district": "Mehsana",
+      "marketMandi": "Unjha APMC",
+      "varietyType": "Cummin Seed(Jeera)",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 20125,
+      "illustrativeFarmerListingReferenceInr": 18520,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 500,
+      "category": {
+        "id": "952be96c-5e3c-491a-b3a0-28751d43fe48",
+        "name": "Spices & Condiments",
+        "slug": "spices-condiments",
+        "description": "Aromatic culinary spices including turmeric, red chili, cumin (jeera), coriander, and black pepper."
+      },
+      "primaryImage": "/images/products/cumin-2.jpg",
+      "images": [
+        {
+          "id": "dfacf127-08d5-4cbd-8a34-141c2ef5c1ab",
+          "url": "/images/products/cumin-2.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.481Z",
+      "updatedAt": "2026-09-23T20:53:13.481Z"
+    },
+    {
+      "id": "626555c3-670d-4107-b9fd-7621bbedde33",
+      "name": "Cumin",
+      "description": "Variety: Cummin Seed(Jeera). Harvested and supplied by Diya Das (Farm 1). Benchmarked against Unjha APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #52]",
+      "price": 18060,
+      "unit": "KG",
+      "location": "Mehsana, Gujarat",
+      "status": "ACTIVE",
+      "farmerName": "Diya Das",
+      "farmName": "Farm 1",
+      "state": "Gujarat",
+      "district": "Mehsana",
+      "marketMandi": "Unjha APMC",
+      "varietyType": "Cummin Seed(Jeera)",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 20125,
+      "illustrativeFarmerListingReferenceInr": 18060,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 300,
+      "category": {
+        "id": "952be96c-5e3c-491a-b3a0-28751d43fe48",
+        "name": "Spices & Condiments",
+        "slug": "spices-condiments",
+        "description": "Aromatic culinary spices including turmeric, red chili, cumin (jeera), coriander, and black pepper."
+      },
+      "primaryImage": "/images/products/cumin-1.jpg",
+      "images": [
+        {
+          "id": "140ece35-9339-48e7-9914-fbe2e1dcee79",
+          "url": "/images/products/cumin-1.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.468Z",
+      "updatedAt": "2026-09-23T20:53:13.468Z"
+    },
+    {
+      "id": "206f1eb0-9aac-4ace-a8ba-654779e3977b",
+      "name": "Dry Red Chilli",
+      "description": "Variety: Red New. Harvested and supplied by Diya Kaur (Farm 3). Benchmarked against Guntur APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #51]",
+      "price": 24040,
+      "unit": "KG",
+      "location": "Guntur, Andhra Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Diya Kaur",
+      "farmName": "Farm 3",
+      "state": "Andhra Pradesh",
+      "district": "Guntur",
+      "marketMandi": "Guntur APMC",
+      "varietyType": "Red New",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 25500,
+      "illustrativeFarmerListingReferenceInr": 24040,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 450,
+      "category": {
+        "id": "952be96c-5e3c-491a-b3a0-28751d43fe48",
+        "name": "Spices & Condiments",
+        "slug": "spices-condiments",
+        "description": "Aromatic culinary spices including turmeric, red chili, cumin (jeera), coriander, and black pepper."
+      },
+      "primaryImage": "/images/products/dry-red-chilli-3.jpg",
+      "images": [
+        {
+          "id": "3fb59a65-cb4f-4e94-bf33-a0b35a15528e",
+          "url": "/images/products/dry-red-chilli-3.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.453Z",
+      "updatedAt": "2026-09-23T20:53:13.453Z"
+    },
+    {
+      "id": "f42522df-5bd7-4c99-b425-8db25557b485",
+      "name": "Dry Red Chilli",
+      "description": "Variety: Red New. Harvested and supplied by Diya Yadav (Farm 2). Benchmarked against Guntur APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #50]",
+      "price": 23460,
+      "unit": "KG",
+      "location": "Guntur, Andhra Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Diya Yadav",
+      "farmName": "Farm 2",
+      "state": "Andhra Pradesh",
+      "district": "Guntur",
+      "marketMandi": "Guntur APMC",
+      "varietyType": "Red New",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 25500,
+      "illustrativeFarmerListingReferenceInr": 23460,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 600,
+      "category": {
+        "id": "952be96c-5e3c-491a-b3a0-28751d43fe48",
+        "name": "Spices & Condiments",
+        "slug": "spices-condiments",
+        "description": "Aromatic culinary spices including turmeric, red chili, cumin (jeera), coriander, and black pepper."
+      },
+      "primaryImage": "/images/products/dry-red-chilli-2.jpg",
+      "images": [
+        {
+          "id": "244d0cca-b01d-466e-8de5-20c8bc1aceac",
+          "url": "/images/products/dry-red-chilli-2.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.438Z",
+      "updatedAt": "2026-09-23T20:53:13.438Z"
+    },
+    {
+      "id": "d5cd2b55-69a9-4362-9d78-103568f0ad74",
+      "name": "Dry Red Chilli",
+      "description": "Variety: Red New. Harvested and supplied by Diya Sharma (Farm 1). Benchmarked against Guntur APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #49]",
+      "price": 22880,
+      "unit": "KG",
+      "location": "Guntur, Andhra Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Diya Sharma",
+      "farmName": "Farm 1",
+      "state": "Andhra Pradesh",
+      "district": "Guntur",
+      "marketMandi": "Guntur APMC",
+      "varietyType": "Red New",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 25500,
+      "illustrativeFarmerListingReferenceInr": 22880,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 350,
+      "category": {
+        "id": "952be96c-5e3c-491a-b3a0-28751d43fe48",
+        "name": "Spices & Condiments",
+        "slug": "spices-condiments",
+        "description": "Aromatic culinary spices including turmeric, red chili, cumin (jeera), coriander, and black pepper."
+      },
+      "primaryImage": "/images/products/dry-red-chilli-1.jpg",
+      "images": [
+        {
+          "id": "22497e05-6907-49a6-bfff-e54f04c4cc5c",
+          "url": "/images/products/dry-red-chilli-1.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.424Z",
+      "updatedAt": "2026-09-23T20:53:13.424Z"
+    },
+    {
+      "id": "2b2d9be2-3e06-4b6e-a035-5d693929fc83",
+      "name": "Turmeric",
+      "description": "Variety: Bulb. Harvested and supplied by Diya Reddy (Farm 3). Benchmarked against Duggirala APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #48]",
+      "price": 14120,
+      "unit": "KG",
+      "location": "Guntur, Andhra Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Diya Reddy",
+      "farmName": "Farm 3",
+      "state": "Andhra Pradesh",
+      "district": "Guntur",
+      "marketMandi": "Duggirala APMC",
+      "varietyType": "Bulb",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 14975,
+      "illustrativeFarmerListingReferenceInr": 14120,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 400,
+      "category": {
+        "id": "952be96c-5e3c-491a-b3a0-28751d43fe48",
+        "name": "Spices & Condiments",
+        "slug": "spices-condiments",
+        "description": "Aromatic culinary spices including turmeric, red chili, cumin (jeera), coriander, and black pepper."
+      },
+      "primaryImage": "/images/products/turmeric-3.jpg",
+      "images": [
+        {
+          "id": "2e4282eb-d20f-4f4d-bd13-4f35f41e8a19",
+          "url": "/images/products/turmeric-3.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.410Z",
+      "updatedAt": "2026-09-23T20:53:13.410Z"
+    },
+    {
+      "id": "816a4c4f-f727-4d5a-9dd8-f6e6e948f4d5",
+      "name": "Turmeric",
+      "description": "Variety: Bulb. Harvested and supplied by Diya Singh (Farm 2). Benchmarked against Duggirala APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #47]",
+      "price": 13780,
+      "unit": "KG",
+      "location": "Guntur, Andhra Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Diya Singh",
+      "farmName": "Farm 2",
+      "state": "Andhra Pradesh",
+      "district": "Guntur",
+      "marketMandi": "Duggirala APMC",
+      "varietyType": "Bulb",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 14975,
+      "illustrativeFarmerListingReferenceInr": 13780,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 750,
+      "category": {
+        "id": "952be96c-5e3c-491a-b3a0-28751d43fe48",
+        "name": "Spices & Condiments",
+        "slug": "spices-condiments",
+        "description": "Aromatic culinary spices including turmeric, red chili, cumin (jeera), coriander, and black pepper."
+      },
+      "primaryImage": "/images/products/turmeric-2.jpg",
+      "images": [
+        {
+          "id": "4916ea86-da26-459b-a1e1-fefbb6466ad4",
+          "url": "/images/products/turmeric-2.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.395Z",
+      "updatedAt": "2026-09-23T20:53:13.395Z"
+    },
+    {
+      "id": "35c8b233-b565-43bd-913d-3c2996b0171d",
+      "name": "Turmeric",
+      "description": "Variety: Bulb. Harvested and supplied by Diya Patel (Farm 1). Benchmarked against Duggirala APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #46]",
+      "price": 13440,
+      "unit": "KG",
+      "location": "Guntur, Andhra Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Diya Patel",
+      "farmName": "Farm 1",
+      "state": "Andhra Pradesh",
+      "district": "Guntur",
+      "marketMandi": "Duggirala APMC",
+      "varietyType": "Bulb",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 14975,
+      "illustrativeFarmerListingReferenceInr": 13440,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 500,
+      "category": {
+        "id": "952be96c-5e3c-491a-b3a0-28751d43fe48",
+        "name": "Spices & Condiments",
+        "slug": "spices-condiments",
+        "description": "Aromatic culinary spices including turmeric, red chili, cumin (jeera), coriander, and black pepper."
+      },
+      "primaryImage": "/images/products/turmeric-1.jpg",
+      "images": [
+        {
+          "id": "a5396fa6-b45f-45f0-8ab2-dad4b630dc38",
+          "url": "/images/products/turmeric-1.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.379Z",
+      "updatedAt": "2026-09-23T20:53:13.379Z"
+    },
+    {
+      "id": "55affe59-3039-4d45-a804-0618ae6fe6a5",
+      "name": "Mustard",
+      "description": "Variety: Other. Harvested and supplied by Dev Verma (Farm 3). Benchmarked against Baran APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #45]",
+      "price": 7160,
+      "unit": "QUINTAL",
+      "location": "Baran, Rajasthan",
+      "status": "ACTIVE",
+      "farmerName": "Dev Verma",
+      "farmName": "Farm 3",
+      "state": "Rajasthan",
+      "district": "Baran",
+      "marketMandi": "Baran APMC",
+      "varietyType": "Other",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 7600,
+      "illustrativeFarmerListingReferenceInr": 7160,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 20,
+      "category": {
+        "id": "01fcd22a-e47d-485b-a2d3-0dced5cd6234",
+        "name": "Oilseeds",
+        "slug": "oilseeds",
+        "description": "Quality edible and commercial oilseeds including mustard, soybean, groundnut, sunflower, and sesame."
+      },
+      "primaryImage": "/images/products/mustard-3.jpg",
+      "images": [
+        {
+          "id": "6d69b79d-f729-4e71-b9e7-db669c293c38",
+          "url": "/images/products/mustard-3.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.364Z",
+      "updatedAt": "2026-09-23T20:53:13.364Z"
+    },
+    {
+      "id": "ee8c9cbe-22c9-4671-bb45-5a493b303be6",
+      "name": "Mustard",
+      "description": "Variety: Other. Harvested and supplied by Dev Nair (Farm 2). Benchmarked against Baran APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #44]",
+      "price": 7000,
+      "unit": "QUINTAL",
+      "location": "Baran, Rajasthan",
+      "status": "ACTIVE",
+      "farmerName": "Dev Nair",
+      "farmName": "Farm 2",
+      "state": "Rajasthan",
+      "district": "Baran",
+      "marketMandi": "Baran APMC",
+      "varietyType": "Other",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 7600,
+      "illustrativeFarmerListingReferenceInr": 7000,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 40,
+      "category": {
+        "id": "01fcd22a-e47d-485b-a2d3-0dced5cd6234",
+        "name": "Oilseeds",
+        "slug": "oilseeds",
+        "description": "Quality edible and commercial oilseeds including mustard, soybean, groundnut, sunflower, and sesame."
+      },
+      "primaryImage": "/images/products/mustard-2.jpg",
+      "images": [
+        {
+          "id": "e5e3d9b8-525c-4954-b807-2b3171d44bcd",
+          "url": "/images/products/mustard-2.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.350Z",
+      "updatedAt": "2026-09-23T20:53:13.350Z"
+    },
+    {
+      "id": "d1eefa40-b239-40f8-9373-64f68691fda8",
+      "name": "Mustard",
+      "description": "Variety: Other. Harvested and supplied by Dev Das (Farm 1). Benchmarked against Baran APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #43]",
+      "price": 6820,
+      "unit": "QUINTAL",
+      "location": "Baran, Rajasthan",
+      "status": "ACTIVE",
+      "farmerName": "Dev Das",
+      "farmName": "Farm 1",
+      "state": "Rajasthan",
+      "district": "Baran",
+      "marketMandi": "Baran APMC",
+      "varietyType": "Other",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 7600,
+      "illustrativeFarmerListingReferenceInr": 6820,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 25,
+      "category": {
+        "id": "01fcd22a-e47d-485b-a2d3-0dced5cd6234",
+        "name": "Oilseeds",
+        "slug": "oilseeds",
+        "description": "Quality edible and commercial oilseeds including mustard, soybean, groundnut, sunflower, and sesame."
+      },
+      "primaryImage": "/images/products/mustard-1.jpg",
+      "images": [
+        {
+          "id": "2fa8456f-f1b1-41a1-a986-4c28c5288921",
+          "url": "/images/products/mustard-1.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.337Z",
+      "updatedAt": "2026-09-23T20:53:13.337Z"
+    },
+    {
+      "id": "a3840c20-5bc0-4737-b44f-1ebf4e66a4af",
+      "name": "Groundnut",
+      "description": "Variety: Other. Harvested and supplied by Dev Kaur (Farm 3). Benchmarked against APMC HALVAD. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #42]",
+      "price": 7540,
+      "unit": "QUINTAL",
+      "location": "Morbi, Gujarat",
+      "status": "ACTIVE",
+      "farmerName": "Dev Kaur",
+      "farmName": "Farm 3",
+      "state": "Gujarat",
+      "district": "Morbi",
+      "marketMandi": "APMC HALVAD",
+      "varietyType": "Other",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 8000,
+      "illustrativeFarmerListingReferenceInr": 7540,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 22,
+      "category": {
+        "id": "01fcd22a-e47d-485b-a2d3-0dced5cd6234",
+        "name": "Oilseeds",
+        "slug": "oilseeds",
+        "description": "Quality edible and commercial oilseeds including mustard, soybean, groundnut, sunflower, and sesame."
+      },
+      "primaryImage": "/images/products/groundnut-3.jpg",
+      "images": [
+        {
+          "id": "2f6fd199-feff-43f0-9c21-a22efb07785b",
+          "url": "/images/products/groundnut-3.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.326Z",
+      "updatedAt": "2026-09-23T20:53:13.326Z"
+    },
+    {
+      "id": "a461f472-88df-4ab5-8174-086f794542ef",
+      "name": "Groundnut",
+      "description": "Variety: Other. Harvested and supplied by Dev Yadav (Farm 2). Benchmarked against APMC HALVAD. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #41]",
+      "price": 7360,
+      "unit": "QUINTAL",
+      "location": "Morbi, Gujarat",
+      "status": "ACTIVE",
+      "farmerName": "Dev Yadav",
+      "farmName": "Farm 2",
+      "state": "Gujarat",
+      "district": "Morbi",
+      "marketMandi": "APMC HALVAD",
+      "varietyType": "Other",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 8000,
+      "illustrativeFarmerListingReferenceInr": 7360,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 45,
+      "category": {
+        "id": "01fcd22a-e47d-485b-a2d3-0dced5cd6234",
+        "name": "Oilseeds",
+        "slug": "oilseeds",
+        "description": "Quality edible and commercial oilseeds including mustard, soybean, groundnut, sunflower, and sesame."
+      },
+      "primaryImage": "/images/products/groundnut-2.jpg",
+      "images": [
+        {
+          "id": "f77c02f4-c61c-4027-852e-4b7b8f78c737",
+          "url": "/images/products/groundnut-2.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.315Z",
+      "updatedAt": "2026-09-23T20:53:13.315Z"
+    },
+    {
+      "id": "b72e046f-68a1-4e38-b26d-041d6827f9d4",
+      "name": "Groundnut",
+      "description": "Variety: Other. Harvested and supplied by Dev Sharma (Farm 1). Benchmarked against APMC HALVAD. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #40]",
+      "price": 7180,
+      "unit": "QUINTAL",
+      "location": "Morbi, Gujarat",
+      "status": "ACTIVE",
+      "farmerName": "Dev Sharma",
+      "farmName": "Farm 1",
+      "state": "Gujarat",
+      "district": "Morbi",
+      "marketMandi": "APMC HALVAD",
+      "varietyType": "Other",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 8000,
+      "illustrativeFarmerListingReferenceInr": 7180,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 30,
+      "category": {
+        "id": "01fcd22a-e47d-485b-a2d3-0dced5cd6234",
+        "name": "Oilseeds",
+        "slug": "oilseeds",
+        "description": "Quality edible and commercial oilseeds including mustard, soybean, groundnut, sunflower, and sesame."
+      },
+      "primaryImage": "/images/products/groundnut-1.jpg",
+      "images": [
+        {
+          "id": "79d80a10-b0d7-4533-8399-bba60f19a968",
+          "url": "/images/products/groundnut-1.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.302Z",
+      "updatedAt": "2026-09-23T20:53:13.302Z"
+    },
+    {
+      "id": "0397c8b8-bb1e-46f8-b160-e4f57123d4b3",
+      "name": "Soybean",
+      "description": "Variety: Soyabeen. Harvested and supplied by Dev Reddy (Farm 3). Benchmarked against Mandsaur APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #39]",
+      "price": 5440,
+      "unit": "QUINTAL",
+      "location": "Mandsaur, Madhya Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Dev Reddy",
+      "farmName": "Farm 3",
+      "state": "Madhya Pradesh",
+      "district": "Mandsaur",
+      "marketMandi": "Mandsaur APMC",
+      "varietyType": "Soyabeen",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 5770,
+      "illustrativeFarmerListingReferenceInr": 5440,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 28,
+      "category": {
+        "id": "01fcd22a-e47d-485b-a2d3-0dced5cd6234",
+        "name": "Oilseeds",
+        "slug": "oilseeds",
+        "description": "Quality edible and commercial oilseeds including mustard, soybean, groundnut, sunflower, and sesame."
+      },
+      "primaryImage": "/images/products/soybean-3.jpg",
+      "images": [
+        {
+          "id": "727fa75d-a352-4db2-a1a0-24bf93bee06a",
+          "url": "/images/products/soybean-3.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.289Z",
+      "updatedAt": "2026-09-23T20:53:13.289Z"
+    },
+    {
+      "id": "5fa2e849-fd21-4437-82d1-b4d8ecd84f06",
+      "name": "Soybean",
+      "description": "Variety: Soyabeen. Harvested and supplied by Dev Singh (Farm 2). Benchmarked against Mandsaur APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #38]",
+      "price": 5300,
+      "unit": "QUINTAL",
+      "location": "Mandsaur, Madhya Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Dev Singh",
+      "farmName": "Farm 2",
+      "state": "Madhya Pradesh",
+      "district": "Mandsaur",
+      "marketMandi": "Mandsaur APMC",
+      "varietyType": "Soyabeen",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 5770,
+      "illustrativeFarmerListingReferenceInr": 5300,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 50,
+      "category": {
+        "id": "01fcd22a-e47d-485b-a2d3-0dced5cd6234",
+        "name": "Oilseeds",
+        "slug": "oilseeds",
+        "description": "Quality edible and commercial oilseeds including mustard, soybean, groundnut, sunflower, and sesame."
+      },
+      "primaryImage": "/images/products/soybean-2.jpg",
+      "images": [
+        {
+          "id": "4381a06c-4a4d-4ae6-bfd3-0236d647ec2d",
+          "url": "/images/products/soybean-2.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.277Z",
+      "updatedAt": "2026-09-23T20:53:13.277Z"
+    },
+    {
+      "id": "744cad93-e35a-41f9-9860-e29f386d3d7a",
+      "name": "Soybean",
+      "description": "Variety: Soyabeen. Harvested and supplied by Dev Patel (Farm 1). Benchmarked against Mandsaur APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #37]",
+      "price": 5180,
+      "unit": "QUINTAL",
+      "location": "Mandsaur, Madhya Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Dev Patel",
+      "farmName": "Farm 1",
+      "state": "Madhya Pradesh",
+      "district": "Mandsaur",
+      "marketMandi": "Mandsaur APMC",
+      "varietyType": "Soyabeen",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 5770,
+      "illustrativeFarmerListingReferenceInr": 5180,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 35,
+      "category": {
+        "id": "01fcd22a-e47d-485b-a2d3-0dced5cd6234",
+        "name": "Oilseeds",
+        "slug": "oilseeds",
+        "description": "Quality edible and commercial oilseeds including mustard, soybean, groundnut, sunflower, and sesame."
+      },
+      "primaryImage": "/images/products/soybean-1.jpg",
+      "images": [
+        {
+          "id": "975f4b36-5c34-4e92-a9e5-304b389793b2",
+          "url": "/images/products/soybean-1.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.264Z",
+      "updatedAt": "2026-09-23T20:53:13.264Z"
+    },
+    {
+      "id": "5eb4b5e9-dd86-4992-9f58-7df15638857f",
+      "name": "Apple",
+      "description": "Variety: Royal Delicious. Harvested and supplied by Ananya Verma (Farm 3). Benchmarked against SMY Mehndli. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #36]",
+      "price": 33000,
+      "unit": "QUINTAL",
+      "location": "Shimla, Himachal Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Ananya Verma",
+      "farmName": "Farm 3",
+      "state": "Himachal Pradesh",
+      "district": "Shimla",
+      "marketMandi": "SMY Mehndli",
+      "varietyType": "Royal Delicious",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 35000,
+      "illustrativeFarmerListingReferenceInr": 33000,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 25,
+      "category": {
+        "id": "7a811698-8298-4cbd-a452-c7d6a2dfe911",
+        "name": "Fruits",
+        "slug": "fruits",
+        "description": "Fresh orchard and horticultural fruits including mangoes, bananas, apples, oranges, and seasonal berries."
+      },
+      "primaryImage": "/images/products/apple-3.jpg",
+      "images": [
+        {
+          "id": "3165be5e-ad69-4eea-8be5-55a8b6426604",
+          "url": "/images/products/apple-3.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.251Z",
+      "updatedAt": "2026-09-23T20:53:13.251Z"
+    },
+    {
+      "id": "1fb65376-f6ff-40c3-baf7-1a0e408c578b",
+      "name": "Apple",
+      "description": "Variety: Royal Delicious. Harvested and supplied by Ananya Nair (Farm 2). Benchmarked against SMY Mehndli. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #35]",
+      "price": 32200,
+      "unit": "QUINTAL",
+      "location": "Shimla, Himachal Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Ananya Nair",
+      "farmName": "Farm 2",
+      "state": "Himachal Pradesh",
+      "district": "Shimla",
+      "marketMandi": "SMY Mehndli",
+      "varietyType": "Royal Delicious",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 35000,
+      "illustrativeFarmerListingReferenceInr": 32200,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 45,
+      "category": {
+        "id": "7a811698-8298-4cbd-a452-c7d6a2dfe911",
+        "name": "Fruits",
+        "slug": "fruits",
+        "description": "Fresh orchard and horticultural fruits including mangoes, bananas, apples, oranges, and seasonal berries."
+      },
+      "primaryImage": "/images/products/apple-2.jpg",
+      "images": [
+        {
+          "id": "f3924df9-7f61-4502-bb99-b455da80fa7a",
+          "url": "/images/products/apple-2.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.237Z",
+      "updatedAt": "2026-09-23T20:53:13.237Z"
+    },
+    {
+      "id": "0a92cd8a-c064-493f-bc0d-ebbf6aef5c16",
+      "name": "Apple",
+      "description": "Variety: Royal Delicious. Harvested and supplied by Ananya Das (Farm 1). Benchmarked against SMY Mehndli. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #34]",
+      "price": 31400,
+      "unit": "QUINTAL",
+      "location": "Shimla, Himachal Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Ananya Das",
+      "farmName": "Farm 1",
+      "state": "Himachal Pradesh",
+      "district": "Shimla",
+      "marketMandi": "SMY Mehndli",
+      "varietyType": "Royal Delicious",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 35000,
+      "illustrativeFarmerListingReferenceInr": 31400,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 30,
+      "category": {
+        "id": "7a811698-8298-4cbd-a452-c7d6a2dfe911",
+        "name": "Fruits",
+        "slug": "fruits",
+        "description": "Fresh orchard and horticultural fruits including mangoes, bananas, apples, oranges, and seasonal berries."
+      },
+      "primaryImage": "/images/products/apple-1.jpg",
+      "images": [
+        {
+          "id": "150bbc88-7a67-4023-b7a3-9edfc1046ee3",
+          "url": "/images/products/apple-1.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.222Z",
+      "updatedAt": "2026-09-23T20:53:13.222Z"
+    },
+    {
+      "id": "7144ff0c-9b40-41a6-87c2-bcd28cab9a5a",
+      "name": "Banana",
+      "description": "Variety: Karpura. Harvested and supplied by Ananya Kaur (Farm 3). Benchmarked against Ravulapalem (Kothapeta APMC). Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #33]",
+      "price": 3490,
+      "unit": "PIECE",
+      "location": "Dr.B.R.A.Konaseema, Andhra Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Ananya Kaur",
+      "farmName": "Farm 3",
+      "state": "Andhra Pradesh",
+      "district": "Dr.B.R.A.Konaseema",
+      "marketMandi": "Ravulapalem (Kothapeta APMC)",
+      "varietyType": "Karpura",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 3700,
+      "illustrativeFarmerListingReferenceInr": 3490,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 200,
+      "category": {
+        "id": "7a811698-8298-4cbd-a452-c7d6a2dfe911",
+        "name": "Fruits",
+        "slug": "fruits",
+        "description": "Fresh orchard and horticultural fruits including mangoes, bananas, apples, oranges, and seasonal berries."
+      },
+      "primaryImage": "/images/products/banana-3.jpg",
+      "images": [
+        {
+          "id": "91451279-d2e2-43c3-b038-2a542af6db1c",
+          "url": "/images/products/banana-3.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.207Z",
+      "updatedAt": "2026-09-23T20:53:13.207Z"
+    },
+    {
+      "id": "63f628ea-f222-4bfa-aa9c-e78e8e8207e2",
+      "name": "Banana",
+      "description": "Variety: Karpura. Harvested and supplied by Ananya Yadav (Farm 2). Benchmarked against Ravulapalem (Kothapeta APMC). Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #32]",
+      "price": 3400,
+      "unit": "PIECE",
+      "location": "Dr.B.R.A.Konaseema, Andhra Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Ananya Yadav",
+      "farmName": "Farm 2",
+      "state": "Andhra Pradesh",
+      "district": "Dr.B.R.A.Konaseema",
+      "marketMandi": "Ravulapalem (Kothapeta APMC)",
+      "varietyType": "Karpura",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 3700,
+      "illustrativeFarmerListingReferenceInr": 3400,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 280,
+      "category": {
+        "id": "7a811698-8298-4cbd-a452-c7d6a2dfe911",
+        "name": "Fruits",
+        "slug": "fruits",
+        "description": "Fresh orchard and horticultural fruits including mangoes, bananas, apples, oranges, and seasonal berries."
+      },
+      "primaryImage": "/images/products/banana-2.jpg",
+      "images": [
+        {
+          "id": "6df722b9-1191-4ab5-b669-eb9fa9ce204c",
+          "url": "/images/products/banana-2.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.193Z",
+      "updatedAt": "2026-09-23T20:53:13.193Z"
+    },
+    {
+      "id": "bf8a7805-daf8-42c8-9b5d-9d4280568b4e",
+      "name": "Banana",
+      "description": "Variety: Karpura. Harvested and supplied by Ananya Sharma (Farm 1). Benchmarked against Ravulapalem (Kothapeta APMC). Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #31]",
+      "price": 3320,
+      "unit": "PIECE",
+      "location": "Dr.B.R.A.Konaseema, Andhra Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Ananya Sharma",
+      "farmName": "Farm 1",
+      "state": "Andhra Pradesh",
+      "district": "Dr.B.R.A.Konaseema",
+      "marketMandi": "Ravulapalem (Kothapeta APMC)",
+      "varietyType": "Karpura",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 3700,
+      "illustrativeFarmerListingReferenceInr": 3320,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 150,
+      "category": {
+        "id": "7a811698-8298-4cbd-a452-c7d6a2dfe911",
+        "name": "Fruits",
+        "slug": "fruits",
+        "description": "Fresh orchard and horticultural fruits including mangoes, bananas, apples, oranges, and seasonal berries."
+      },
+      "primaryImage": "/images/products/banana-1.jpg",
+      "images": [
+        {
+          "id": "e6d94e25-a1f6-42da-b2b5-926aa43b7558",
+          "url": "/images/products/banana-1.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.177Z",
+      "updatedAt": "2026-09-23T20:53:13.177Z"
+    },
+    {
+      "id": "99675c52-54dc-41d4-b951-e7ee3a548ccd",
+      "name": "Mango",
+      "description": "Variety: Other. Harvested and supplied by Ananya Reddy (Farm 3). Benchmarked against Bangarupalyam APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #30]",
+      "price": 1040,
+      "unit": "QUINTAL",
+      "location": "Chittor, Andhra Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Ananya Reddy",
+      "farmName": "Farm 3",
+      "state": "Andhra Pradesh",
+      "district": "Chittor",
+      "marketMandi": "Bangarupalyam APMC",
+      "varietyType": "Other",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 1100,
+      "illustrativeFarmerListingReferenceInr": 1040,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 30,
+      "category": {
+        "id": "7a811698-8298-4cbd-a452-c7d6a2dfe911",
+        "name": "Fruits",
+        "slug": "fruits",
+        "description": "Fresh orchard and horticultural fruits including mangoes, bananas, apples, oranges, and seasonal berries."
+      },
+      "primaryImage": "/images/products/mango-3.jpg",
+      "images": [
+        {
+          "id": "72023dec-acae-4a40-a9f9-da5f5db5ece7",
+          "url": "/images/products/mango-3.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.163Z",
+      "updatedAt": "2026-09-23T20:53:13.163Z"
+    },
+    {
+      "id": "beb1fe59-00ea-4919-a2e5-95de97e0f13b",
+      "name": "Mango",
+      "description": "Variety: Other. Harvested and supplied by Ananya Singh (Farm 2). Benchmarked against Bangarupalyam APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #29]",
+      "price": 1010,
+      "unit": "QUINTAL",
+      "location": "Chittor, Andhra Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Ananya Singh",
+      "farmName": "Farm 2",
+      "state": "Andhra Pradesh",
+      "district": "Chittor",
+      "marketMandi": "Bangarupalyam APMC",
+      "varietyType": "Other",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 1100,
+      "illustrativeFarmerListingReferenceInr": 1010,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 40,
+      "category": {
+        "id": "7a811698-8298-4cbd-a452-c7d6a2dfe911",
+        "name": "Fruits",
+        "slug": "fruits",
+        "description": "Fresh orchard and horticultural fruits including mangoes, bananas, apples, oranges, and seasonal berries."
+      },
+      "primaryImage": "/images/products/mango-2.jpg",
+      "images": [
+        {
+          "id": "50e89c78-3552-4377-a922-b101656e0a9d",
+          "url": "/images/products/mango-2.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.149Z",
+      "updatedAt": "2026-09-23T20:53:13.149Z"
+    },
+    {
+      "id": "304a9745-8904-40d1-8f40-07f6ec3987d7",
+      "name": "Mango",
+      "description": "Variety: Other. Harvested and supplied by Ananya Patel (Farm 1). Benchmarked against Bangarupalyam APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #28]",
+      "price": 985,
+      "unit": "QUINTAL",
+      "location": "Chittor, Andhra Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Ananya Patel",
+      "farmName": "Farm 1",
+      "state": "Andhra Pradesh",
+      "district": "Chittor",
+      "marketMandi": "Bangarupalyam APMC",
+      "varietyType": "Other",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 1100,
+      "illustrativeFarmerListingReferenceInr": 985,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 24,
+      "category": {
+        "id": "7a811698-8298-4cbd-a452-c7d6a2dfe911",
+        "name": "Fruits",
+        "slug": "fruits",
+        "description": "Fresh orchard and horticultural fruits including mangoes, bananas, apples, oranges, and seasonal berries."
+      },
+      "primaryImage": "/images/products/mango-1.jpg",
+      "images": [
+        {
+          "id": "e2195400-2852-42c7-ac10-692aef745027",
+          "url": "/images/products/mango-1.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.136Z",
+      "updatedAt": "2026-09-23T20:53:13.136Z"
+    },
+    {
+      "id": "2e6e5e4e-e425-4f07-a2bf-d4f0fbcf1772",
+      "name": "Tomato",
+      "description": "Variety: Local. Harvested and supplied by Arjun Verma (Farm 3). Benchmarked against Mulakalacheruvu APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #27]",
+      "price": 1410,
+      "unit": "QUINTAL",
+      "location": "Annamayya, Andhra Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Arjun Verma",
+      "farmName": "Farm 3",
+      "state": "Andhra Pradesh",
+      "district": "Annamayya",
+      "marketMandi": "Mulakalacheruvu APMC",
+      "varietyType": "Local",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 1500,
+      "illustrativeFarmerListingReferenceInr": 1410,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 25,
+      "category": {
+        "id": "ccf711cf-9bb0-4a56-962c-0c50f3d6e4c6",
+        "name": "Vegetables",
+        "slug": "vegetables",
+        "description": "Farm-fresh harvest vegetables including tomatoes, onions, potatoes, green vegetables, and root crops."
+      },
+      "primaryImage": "/images/products/tomato-3.jpg",
+      "images": [
+        {
+          "id": "6e8de0f8-5853-48cc-bc7f-b8ac2baeb60b",
+          "url": "/images/products/tomato-3.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.125Z",
+      "updatedAt": "2026-09-23T20:53:13.125Z"
+    },
+    {
+      "id": "45ef5c26-0c78-41eb-b50c-8c81e2a89289",
+      "name": "Tomato",
+      "description": "Variety: Local. Harvested and supplied by Arjun Nair (Farm 2). Benchmarked against Mulakalacheruvu APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #26]",
+      "price": 1380,
+      "unit": "QUINTAL",
+      "location": "Annamayya, Andhra Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Arjun Nair",
+      "farmName": "Farm 2",
+      "state": "Andhra Pradesh",
+      "district": "Annamayya",
+      "marketMandi": "Mulakalacheruvu APMC",
+      "varietyType": "Local",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 1500,
+      "illustrativeFarmerListingReferenceInr": 1380,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 50,
+      "category": {
+        "id": "ccf711cf-9bb0-4a56-962c-0c50f3d6e4c6",
+        "name": "Vegetables",
+        "slug": "vegetables",
+        "description": "Farm-fresh harvest vegetables including tomatoes, onions, potatoes, green vegetables, and root crops."
+      },
+      "primaryImage": "/images/products/tomato-2.jpg",
+      "images": [
+        {
+          "id": "33512cf0-f11b-439e-9de4-b0053b6a398d",
+          "url": "/images/products/tomato-2.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.115Z",
+      "updatedAt": "2026-09-23T20:53:13.115Z"
+    },
+    {
+      "id": "6315ed2c-4d32-46a5-8e4c-defa1cbb89e3",
+      "name": "Tomato",
+      "description": "Variety: Local. Harvested and supplied by Arjun Das (Farm 1). Benchmarked against Mulakalacheruvu APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #25]",
+      "price": 1350,
+      "unit": "QUINTAL",
+      "location": "Annamayya, Andhra Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Arjun Das",
+      "farmName": "Farm 1",
+      "state": "Andhra Pradesh",
+      "district": "Annamayya",
+      "marketMandi": "Mulakalacheruvu APMC",
+      "varietyType": "Local",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 1500,
+      "illustrativeFarmerListingReferenceInr": 1350,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 35,
+      "category": {
+        "id": "ccf711cf-9bb0-4a56-962c-0c50f3d6e4c6",
+        "name": "Vegetables",
+        "slug": "vegetables",
+        "description": "Farm-fresh harvest vegetables including tomatoes, onions, potatoes, green vegetables, and root crops."
+      },
+      "primaryImage": "/images/products/tomato-1.jpg",
+      "images": [
+        {
+          "id": "8426e653-0d86-42fa-8283-bdca6a92b053",
+          "url": "/images/products/tomato-1.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.103Z",
+      "updatedAt": "2026-09-23T20:53:13.103Z"
+    },
+    {
+      "id": "f043e179-70f3-4434-901c-f68fc6868d8a",
+      "name": "Onion",
+      "description": "Variety: Onion. Harvested and supplied by Arjun Kaur (Farm 3). Benchmarked against Indore APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #24]",
+      "price": 3010,
+      "unit": "QUINTAL",
+      "location": "Indore, Madhya Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Arjun Kaur",
+      "farmName": "Farm 3",
+      "state": "Madhya Pradesh",
+      "district": "Indore",
+      "marketMandi": "Indore APMC",
+      "varietyType": "Onion",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 3190,
+      "illustrativeFarmerListingReferenceInr": 3010,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 45,
+      "category": {
+        "id": "ccf711cf-9bb0-4a56-962c-0c50f3d6e4c6",
+        "name": "Vegetables",
+        "slug": "vegetables",
+        "description": "Farm-fresh harvest vegetables including tomatoes, onions, potatoes, green vegetables, and root crops."
+      },
+      "primaryImage": "/images/products/onion-3.jpg",
+      "images": [
+        {
+          "id": "dcecdf88-53e0-4dcc-be58-cc6549de4415",
+          "url": "/images/products/onion-3.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.091Z",
+      "updatedAt": "2026-09-23T20:53:13.091Z"
+    },
+    {
+      "id": "eb8111ed-64d9-4589-b85f-e427cf1083a6",
+      "name": "Onion",
+      "description": "Variety: Onion. Harvested and supplied by Arjun Yadav (Farm 2). Benchmarked against Indore APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #23]",
+      "price": 2930,
+      "unit": "QUINTAL",
+      "location": "Indore, Madhya Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Arjun Yadav",
+      "farmName": "Farm 2",
+      "state": "Madhya Pradesh",
+      "district": "Indore",
+      "marketMandi": "Indore APMC",
+      "varietyType": "Onion",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 3190,
+      "illustrativeFarmerListingReferenceInr": 2930,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 85,
+      "category": {
+        "id": "ccf711cf-9bb0-4a56-962c-0c50f3d6e4c6",
+        "name": "Vegetables",
+        "slug": "vegetables",
+        "description": "Farm-fresh harvest vegetables including tomatoes, onions, potatoes, green vegetables, and root crops."
+      },
+      "primaryImage": "/images/products/onion-2.jpg",
+      "images": [
+        {
+          "id": "c4b8372b-6a9b-406f-8748-99f757496d28",
+          "url": "/images/products/onion-2.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.079Z",
+      "updatedAt": "2026-09-23T20:53:13.079Z"
+    },
+    {
+      "id": "beecfb51-64b6-45e6-94f0-2eb76436a46f",
+      "name": "Onion",
+      "description": "Variety: Onion. Harvested and supplied by Arjun Sharma (Farm 1). Benchmarked against Indore APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #22]",
+      "price": 2860,
+      "unit": "QUINTAL",
+      "location": "Indore, Madhya Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Arjun Sharma",
+      "farmName": "Farm 1",
+      "state": "Madhya Pradesh",
+      "district": "Indore",
+      "marketMandi": "Indore APMC",
+      "varietyType": "Onion",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 3190,
+      "illustrativeFarmerListingReferenceInr": 2860,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 55,
+      "category": {
+        "id": "ccf711cf-9bb0-4a56-962c-0c50f3d6e4c6",
+        "name": "Vegetables",
+        "slug": "vegetables",
+        "description": "Farm-fresh harvest vegetables including tomatoes, onions, potatoes, green vegetables, and root crops."
+      },
+      "primaryImage": "/images/products/onion-1.jpg",
+      "images": [
+        {
+          "id": "4f1ee6b0-b460-4817-bd42-5d20b55c7267",
+          "url": "/images/products/onion-1.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.067Z",
+      "updatedAt": "2026-09-23T20:53:13.067Z"
+    },
+    {
+      "id": "513f3872-4a78-4cdc-9a2e-21c1395aa88e",
+      "name": "Potato",
+      "description": "Variety: Other. Harvested and supplied by Arjun Reddy (Farm 3). Benchmarked against Fatehabad APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #21]",
+      "price": 390,
+      "unit": "QUINTAL",
+      "location": "Agra, Uttar Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Arjun Reddy",
+      "farmName": "Farm 3",
+      "state": "Uttar Pradesh",
+      "district": "Agra",
+      "marketMandi": "Fatehabad APMC",
+      "varietyType": "Other",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 413,
+      "illustrativeFarmerListingReferenceInr": 390,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 65,
+      "category": {
+        "id": "ccf711cf-9bb0-4a56-962c-0c50f3d6e4c6",
+        "name": "Vegetables",
+        "slug": "vegetables",
+        "description": "Farm-fresh harvest vegetables including tomatoes, onions, potatoes, green vegetables, and root crops."
+      },
+      "primaryImage": "/images/products/potato-3.jpg",
+      "images": [
+        {
+          "id": "64496fff-d07f-4d09-b694-2817a90f6b41",
+          "url": "/images/products/potato-3.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.055Z",
+      "updatedAt": "2026-09-23T20:53:13.055Z"
+    },
+    {
+      "id": "a8ae310b-6875-43e5-8e33-1121731c2887",
+      "name": "Potato",
+      "description": "Variety: Other. Harvested and supplied by Arjun Singh (Farm 2). Benchmarked against Fatehabad APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #20]",
+      "price": 380,
+      "unit": "QUINTAL",
+      "location": "Agra, Uttar Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Arjun Singh",
+      "farmName": "Farm 2",
+      "state": "Uttar Pradesh",
+      "district": "Agra",
+      "marketMandi": "Fatehabad APMC",
+      "varietyType": "Other",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 413,
+      "illustrativeFarmerListingReferenceInr": 380,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 120,
+      "category": {
+        "id": "ccf711cf-9bb0-4a56-962c-0c50f3d6e4c6",
+        "name": "Vegetables",
+        "slug": "vegetables",
+        "description": "Farm-fresh harvest vegetables including tomatoes, onions, potatoes, green vegetables, and root crops."
+      },
+      "primaryImage": "/images/products/potato-2.jpg",
+      "images": [
+        {
+          "id": "ca701cdb-750a-412f-a1a2-7f0b8735403e",
+          "url": "/images/products/potato-2.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.043Z",
+      "updatedAt": "2026-09-23T20:53:13.043Z"
+    },
+    {
+      "id": "c9ee7c14-d9a5-44d1-8627-d53c7a2efa6d",
+      "name": "Potato",
+      "description": "Variety: Other. Harvested and supplied by Arjun Patel (Farm 1). Benchmarked against Fatehabad APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #19]",
+      "price": 370,
+      "unit": "QUINTAL",
+      "location": "Agra, Uttar Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Arjun Patel",
+      "farmName": "Farm 1",
+      "state": "Uttar Pradesh",
+      "district": "Agra",
+      "marketMandi": "Fatehabad APMC",
+      "varietyType": "Other",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 413,
+      "illustrativeFarmerListingReferenceInr": 370,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 80,
+      "category": {
+        "id": "ccf711cf-9bb0-4a56-962c-0c50f3d6e4c6",
+        "name": "Vegetables",
+        "slug": "vegetables",
+        "description": "Farm-fresh harvest vegetables including tomatoes, onions, potatoes, green vegetables, and root crops."
+      },
+      "primaryImage": "/images/products/potato-1.jpg",
+      "images": [
+        {
+          "id": "a01c0112-fb23-4b21-ac1f-207b370e21c3",
+          "url": "/images/products/potato-1.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.028Z",
+      "updatedAt": "2026-09-23T20:53:13.028Z"
+    },
+    {
+      "id": "0ea54edb-d762-49b1-971a-d8595e8f7c16",
+      "name": "Black Gram",
+      "description": "Variety: Urda/Urd. Harvested and supplied by Aditi Verma (Farm 3). Benchmarked against Indore APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #18]",
+      "price": 7560,
+      "unit": "QUINTAL",
+      "location": "Indore, Madhya Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Aditi Verma",
+      "farmName": "Farm 3",
+      "state": "Madhya Pradesh",
+      "district": "Indore",
+      "marketMandi": "Indore APMC",
+      "varietyType": "Urda/Urd",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 8011,
+      "illustrativeFarmerListingReferenceInr": 7560,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 22,
+      "category": {
+        "id": "5912189f-704f-46dc-89aa-254967d9679c",
+        "name": "Pulses & Legumes",
+        "slug": "pulses-legumes",
+        "description": "High-protein pulses including chickpeas (chana), pigeon peas (arhar/tur), green gram (moong), and lentils."
+      },
+      "primaryImage": "/images/products/black-gram-3.jpg",
+      "images": [
+        {
+          "id": "fed49c3a-a9d8-4a32-9226-63307fca5cdf",
+          "url": "/images/products/black-gram-3.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.015Z",
+      "updatedAt": "2026-09-23T20:53:13.015Z"
+    },
+    {
+      "id": "1696e2f8-60df-42cc-acbe-6c5d1cd964dd",
+      "name": "Black Gram",
+      "description": "Variety: Urda/Urd. Harvested and supplied by Aditi Nair (Farm 2). Benchmarked against Indore APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #17]",
+      "price": 7380,
+      "unit": "QUINTAL",
+      "location": "Indore, Madhya Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Aditi Nair",
+      "farmName": "Farm 2",
+      "state": "Madhya Pradesh",
+      "district": "Indore",
+      "marketMandi": "Indore APMC",
+      "varietyType": "Urda/Urd",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 8011,
+      "illustrativeFarmerListingReferenceInr": 7380,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 28,
+      "category": {
+        "id": "5912189f-704f-46dc-89aa-254967d9679c",
+        "name": "Pulses & Legumes",
+        "slug": "pulses-legumes",
+        "description": "High-protein pulses including chickpeas (chana), pigeon peas (arhar/tur), green gram (moong), and lentils."
+      },
+      "primaryImage": "/images/products/black-gram-2.jpg",
+      "images": [
+        {
+          "id": "3c93024d-94c9-4365-b687-70bce2b01dc9",
+          "url": "/images/products/black-gram-2.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:13.001Z",
+      "updatedAt": "2026-09-23T20:53:13.001Z"
+    },
+    {
+      "id": "dba9d77a-837e-4c70-9239-f3c4932c13ae",
+      "name": "Black Gram",
+      "description": "Variety: Urda/Urd. Harvested and supplied by Aditi Das (Farm 1). Benchmarked against Indore APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #16]",
+      "price": 7180,
+      "unit": "QUINTAL",
+      "location": "Indore, Madhya Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Aditi Das",
+      "farmName": "Farm 1",
+      "state": "Madhya Pradesh",
+      "district": "Indore",
+      "marketMandi": "Indore APMC",
+      "varietyType": "Urda/Urd",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 8011,
+      "illustrativeFarmerListingReferenceInr": 7180,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 18,
+      "category": {
+        "id": "5912189f-704f-46dc-89aa-254967d9679c",
+        "name": "Pulses & Legumes",
+        "slug": "pulses-legumes",
+        "description": "High-protein pulses including chickpeas (chana), pigeon peas (arhar/tur), green gram (moong), and lentils."
+      },
+      "primaryImage": "/images/products/black-gram-1.jpg",
+      "images": [
+        {
+          "id": "3a0268a4-17e8-4f46-a1fd-01b7a0aff0c1",
+          "url": "/images/products/black-gram-1.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:12.987Z",
+      "updatedAt": "2026-09-23T20:53:12.987Z"
+    },
+    {
+      "id": "fa142ce8-27bc-46ef-b688-9815f5f6f98d",
+      "name": "Green Gram",
+      "description": "Variety: Other. Harvested and supplied by Aditi Kaur (Farm 3). Benchmarked against Rawla APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #15]",
+      "price": 7260,
+      "unit": "QUINTAL",
+      "location": "Ganganagar, Rajasthan",
+      "status": "ACTIVE",
+      "farmerName": "Aditi Kaur",
+      "farmName": "Farm 3",
+      "state": "Rajasthan",
+      "district": "Ganganagar",
+      "marketMandi": "Rawla APMC",
+      "varietyType": "Other",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 7700,
+      "illustrativeFarmerListingReferenceInr": 7260,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 15,
+      "category": {
+        "id": "5912189f-704f-46dc-89aa-254967d9679c",
+        "name": "Pulses & Legumes",
+        "slug": "pulses-legumes",
+        "description": "High-protein pulses including chickpeas (chana), pigeon peas (arhar/tur), green gram (moong), and lentils."
+      },
+      "primaryImage": "/images/products/green-gram-3.jpg",
+      "images": [
+        {
+          "id": "009cba31-c6f9-4e38-b026-781fe31c4415",
+          "url": "/images/products/green-gram-3.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:12.973Z",
+      "updatedAt": "2026-09-23T20:53:12.973Z"
+    },
+    {
+      "id": "a55be5c9-2b9a-4822-9698-4b4aac7513d7",
+      "name": "Green Gram",
+      "description": "Variety: Other. Harvested and supplied by Aditi Yadav (Farm 2). Benchmarked against Rawla APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #14]",
+      "price": 7080,
+      "unit": "QUINTAL",
+      "location": "Ganganagar, Rajasthan",
+      "status": "ACTIVE",
+      "farmerName": "Aditi Yadav",
+      "farmName": "Farm 2",
+      "state": "Rajasthan",
+      "district": "Ganganagar",
+      "marketMandi": "Rawla APMC",
+      "varietyType": "Other",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 7700,
+      "illustrativeFarmerListingReferenceInr": 7080,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 30,
+      "category": {
+        "id": "5912189f-704f-46dc-89aa-254967d9679c",
+        "name": "Pulses & Legumes",
+        "slug": "pulses-legumes",
+        "description": "High-protein pulses including chickpeas (chana), pigeon peas (arhar/tur), green gram (moong), and lentils."
+      },
+      "primaryImage": "/images/products/green-gram-2.jpg",
+      "images": [
+        {
+          "id": "50dcc3b7-93d2-4bbe-adcd-44b8182e46bd",
+          "url": "/images/products/green-gram-2.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:12.959Z",
+      "updatedAt": "2026-09-23T20:53:12.959Z"
+    },
+    {
+      "id": "dd797394-5fb8-4cf8-9d3e-50cc80349d94",
+      "name": "Green Gram",
+      "description": "Variety: Other. Harvested and supplied by Aditi Sharma (Farm 1). Benchmarked against Rawla APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #13]",
+      "price": 6900,
+      "unit": "QUINTAL",
+      "location": "Ganganagar, Rajasthan",
+      "status": "ACTIVE",
+      "farmerName": "Aditi Sharma",
+      "farmName": "Farm 1",
+      "state": "Rajasthan",
+      "district": "Ganganagar",
+      "marketMandi": "Rawla APMC",
+      "varietyType": "Other",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 7700,
+      "illustrativeFarmerListingReferenceInr": 6900,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 20,
+      "category": {
+        "id": "5912189f-704f-46dc-89aa-254967d9679c",
+        "name": "Pulses & Legumes",
+        "slug": "pulses-legumes",
+        "description": "High-protein pulses including chickpeas (chana), pigeon peas (arhar/tur), green gram (moong), and lentils."
+      },
+      "primaryImage": "/images/products/green-gram-1.jpg",
+      "images": [
+        {
+          "id": "4933f487-dfc0-4b7e-8a81-293f72dba75f",
+          "url": "/images/products/green-gram-1.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:12.945Z",
+      "updatedAt": "2026-09-23T20:53:12.945Z"
+    },
+    {
+      "id": "9de4b037-8292-4d51-803b-67553b0e9b7e",
+      "name": "Chickpea",
+      "description": "Harvested and supplied by Aditi Reddy (Farm 3). Notes: No record found in requested state set; price intentionally blank. [SIH26033-DATASET-LISTING #12]",
+      "price": 0,
+      "unit": "QUINTAL",
+      "location": "Local Mandi Hub",
+      "status": "OUT_OF_STOCK",
+      "farmerName": "Aditi Reddy",
+      "farmName": "Farm 3",
+      "state": null,
+      "district": null,
+      "marketMandi": null,
+      "varietyType": null,
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": null,
+      "illustrativeFarmerListingReferenceInr": null,
+      "officialPriceDate": "2026-09-11",
+      "notes": "No record found in requested state set; price intentionally blank.",
+      "availableQuantity": 20,
+      "category": {
+        "id": "5912189f-704f-46dc-89aa-254967d9679c",
+        "name": "Pulses & Legumes",
+        "slug": "pulses-legumes",
+        "description": "High-protein pulses including chickpeas (chana), pigeon peas (arhar/tur), green gram (moong), and lentils."
+      },
+      "primaryImage": "/images/products/chickpea-3.jpg",
+      "images": [
+        {
+          "id": "217bb91f-76fd-4a0c-849b-f5690238d45f",
+          "url": "/images/products/chickpea-3.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:12.933Z",
+      "updatedAt": "2026-09-23T20:53:12.933Z"
+    },
+    {
+      "id": "ccfc10df-0344-4321-bc8d-d4ae28560fdc",
+      "name": "Chickpea",
+      "description": "Harvested and supplied by Aditi Singh (Farm 2). Notes: No record found in requested state set; price intentionally blank. [SIH26033-DATASET-LISTING #11]",
+      "price": 0,
+      "unit": "QUINTAL",
+      "location": "Local Mandi Hub",
+      "status": "OUT_OF_STOCK",
+      "farmerName": "Aditi Singh",
+      "farmName": "Farm 2",
+      "state": null,
+      "district": null,
+      "marketMandi": null,
+      "varietyType": null,
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": null,
+      "illustrativeFarmerListingReferenceInr": null,
+      "officialPriceDate": "2026-09-11",
+      "notes": "No record found in requested state set; price intentionally blank.",
+      "availableQuantity": 35,
+      "category": {
+        "id": "5912189f-704f-46dc-89aa-254967d9679c",
+        "name": "Pulses & Legumes",
+        "slug": "pulses-legumes",
+        "description": "High-protein pulses including chickpeas (chana), pigeon peas (arhar/tur), green gram (moong), and lentils."
+      },
+      "primaryImage": "/images/products/chickpea-2.jpg",
+      "images": [
+        {
+          "id": "5e8434a0-b906-4dc4-b03f-19ac1ae8e0aa",
+          "url": "/images/products/chickpea-2.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:12.921Z",
+      "updatedAt": "2026-09-23T20:53:12.921Z"
+    },
+    {
+      "id": "9291fd5b-17a3-4e4d-ba6b-ef5cfcee6592",
+      "name": "Chickpea",
+      "description": "Harvested and supplied by Aditi Patel (Farm 1). Notes: No record found in requested state set; price intentionally blank. [SIH26033-DATASET-LISTING #10]",
+      "price": 0,
+      "unit": "QUINTAL",
+      "location": "Local Mandi Hub",
+      "status": "OUT_OF_STOCK",
+      "farmerName": "Aditi Patel",
+      "farmName": "Farm 1",
+      "state": null,
+      "district": null,
+      "marketMandi": null,
+      "varietyType": null,
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": null,
+      "illustrativeFarmerListingReferenceInr": null,
+      "officialPriceDate": "2026-09-11",
+      "notes": "No record found in requested state set; price intentionally blank.",
+      "availableQuantity": 25,
+      "category": {
+        "id": "5912189f-704f-46dc-89aa-254967d9679c",
+        "name": "Pulses & Legumes",
+        "slug": "pulses-legumes",
+        "description": "High-protein pulses including chickpeas (chana), pigeon peas (arhar/tur), green gram (moong), and lentils."
+      },
+      "primaryImage": "/images/products/chickpea-1.jpg",
+      "images": [
+        {
+          "id": "f6f92ee2-8cc5-414a-9cd3-cb0224d7d955",
+          "url": "/images/products/chickpea-1.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:12.908Z",
+      "updatedAt": "2026-09-23T20:53:12.908Z"
+    },
+    {
+      "id": "df94a2ca-578a-498e-9273-168d6a352bb2",
+      "name": "Maize",
+      "description": "Variety: Local. Harvested and supplied by Aarav Verma (Farm 3). Benchmarked against Varaseoni APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #9]",
+      "price": 2520,
+      "unit": "QUINTAL",
+      "location": "Balaghat, Madhya Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Aarav Verma",
+      "farmName": "Farm 3",
+      "state": "Madhya Pradesh",
+      "district": "Balaghat",
+      "marketMandi": "Varaseoni APMC",
+      "varietyType": "Local",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 2670,
+      "illustrativeFarmerListingReferenceInr": 2520,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 30,
+      "category": {
+        "id": "cb135f1e-8fef-497c-a021-aaf91ebda0eb",
+        "name": "Cereals & Grains",
+        "slug": "cereals-grains",
+        "description": "Staple grains including wheat, paddy rice, maize, barley, and nutritious millets."
+      },
+      "primaryImage": "/images/products/maize-3.jpg",
+      "images": [
+        {
+          "id": "5bd3d7cd-68b2-4f09-9b6a-8e8f01c61db8",
+          "url": "/images/products/maize-3.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:12.897Z",
+      "updatedAt": "2026-09-23T20:53:12.897Z"
+    },
+    {
+      "id": "e76cfff6-436f-41d5-9947-dc14d6056d95",
+      "name": "Maize",
+      "description": "Variety: Local. Harvested and supplied by Aarav Nair (Farm 2). Benchmarked against Varaseoni APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #8]",
+      "price": 2460,
+      "unit": "QUINTAL",
+      "location": "Balaghat, Madhya Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Aarav Nair",
+      "farmName": "Farm 2",
+      "state": "Madhya Pradesh",
+      "district": "Balaghat",
+      "marketMandi": "Varaseoni APMC",
+      "varietyType": "Local",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 2670,
+      "illustrativeFarmerListingReferenceInr": 2460,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 65,
+      "category": {
+        "id": "cb135f1e-8fef-497c-a021-aaf91ebda0eb",
+        "name": "Cereals & Grains",
+        "slug": "cereals-grains",
+        "description": "Staple grains including wheat, paddy rice, maize, barley, and nutritious millets."
+      },
+      "primaryImage": "/images/products/maize-2.jpg",
+      "images": [
+        {
+          "id": "dcf88a95-41db-4c6b-bb9f-a1b75b27dc8d",
+          "url": "/images/products/maize-2.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:12.886Z",
+      "updatedAt": "2026-09-23T20:53:12.886Z"
+    },
+    {
+      "id": "6b42016f-8cee-4ec6-95e2-ce2b4ab3cbfc",
+      "name": "Maize",
+      "description": "Variety: Local. Harvested and supplied by Aarav Das (Farm 1). Benchmarked against Varaseoni APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #7]",
+      "price": 2390,
+      "unit": "QUINTAL",
+      "location": "Balaghat, Madhya Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Aarav Das",
+      "farmName": "Farm 1",
+      "state": "Madhya Pradesh",
+      "district": "Balaghat",
+      "marketMandi": "Varaseoni APMC",
+      "varietyType": "Local",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 2670,
+      "illustrativeFarmerListingReferenceInr": 2390,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 40,
+      "category": {
+        "id": "cb135f1e-8fef-497c-a021-aaf91ebda0eb",
+        "name": "Cereals & Grains",
+        "slug": "cereals-grains",
+        "description": "Staple grains including wheat, paddy rice, maize, barley, and nutritious millets."
+      },
+      "primaryImage": "/images/products/maize-1.jpg",
+      "images": [
+        {
+          "id": "e4a9db75-15c6-41b8-abbd-d4cbba63d15a",
+          "url": "/images/products/maize-1.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:12.874Z",
+      "updatedAt": "2026-09-23T20:53:12.874Z"
+    },
+    {
+      "id": "aec9194e-b8ed-4f70-9660-19ebe9291084",
+      "name": "Wheat",
+      "description": "Variety: Mill Quality. Harvested and supplied by Aarav Kaur (Farm 3). Benchmarked against Badamalhera APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #6]",
+      "price": 2490,
+      "unit": "QUINTAL",
+      "location": "Chhatarpur, Madhya Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Aarav Kaur",
+      "farmName": "Farm 3",
+      "state": "Madhya Pradesh",
+      "district": "Chhatarpur",
+      "marketMandi": "Badamalhera APMC",
+      "varietyType": "Mill Quality",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 2640,
+      "illustrativeFarmerListingReferenceInr": 2490,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 40,
+      "category": {
+        "id": "cb135f1e-8fef-497c-a021-aaf91ebda0eb",
+        "name": "Cereals & Grains",
+        "slug": "cereals-grains",
+        "description": "Staple grains including wheat, paddy rice, maize, barley, and nutritious millets."
+      },
+      "primaryImage": "/images/products/wheat-3.jpg",
+      "images": [
+        {
+          "id": "ec79a30c-4e73-4139-9321-1dec6ae031d9",
+          "url": "/images/products/wheat-3.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:12.860Z",
+      "updatedAt": "2026-09-23T20:53:12.860Z"
+    },
+    {
+      "id": "331aa7fb-d5cf-43dd-b0d4-affbabb8595c",
+      "name": "Wheat",
+      "description": "Variety: Mill Quality. Harvested and supplied by Aarav Yadav (Farm 2). Benchmarked against Badamalhera APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #5]",
+      "price": 2430,
+      "unit": "QUINTAL",
+      "location": "Chhatarpur, Madhya Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Aarav Yadav",
+      "farmName": "Farm 2",
+      "state": "Madhya Pradesh",
+      "district": "Chhatarpur",
+      "marketMandi": "Badamalhera APMC",
+      "varietyType": "Mill Quality",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 2640,
+      "illustrativeFarmerListingReferenceInr": 2430,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 75,
+      "category": {
+        "id": "cb135f1e-8fef-497c-a021-aaf91ebda0eb",
+        "name": "Cereals & Grains",
+        "slug": "cereals-grains",
+        "description": "Staple grains including wheat, paddy rice, maize, barley, and nutritious millets."
+      },
+      "primaryImage": "/images/products/wheat-2.jpg",
+      "images": [
+        {
+          "id": "29e1965e-d14a-411e-b356-7a52a6f666f6",
+          "url": "/images/products/wheat-2.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:12.848Z",
+      "updatedAt": "2026-09-23T20:53:12.848Z"
+    },
+    {
+      "id": "50e38570-9a6e-4337-a22d-95e57052bac8",
+      "name": "Wheat",
+      "description": "Variety: Mill Quality. Harvested and supplied by Aarav Sharma (Farm 1). Benchmarked against Badamalhera APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #4]",
+      "price": 2370,
+      "unit": "QUINTAL",
+      "location": "Chhatarpur, Madhya Pradesh",
+      "status": "ACTIVE",
+      "farmerName": "Aarav Sharma",
+      "farmName": "Farm 1",
+      "state": "Madhya Pradesh",
+      "district": "Chhatarpur",
+      "marketMandi": "Badamalhera APMC",
+      "varietyType": "Mill Quality",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 2640,
+      "illustrativeFarmerListingReferenceInr": 2370,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 50,
+      "category": {
+        "id": "cb135f1e-8fef-497c-a021-aaf91ebda0eb",
+        "name": "Cereals & Grains",
+        "slug": "cereals-grains",
+        "description": "Staple grains including wheat, paddy rice, maize, barley, and nutritious millets."
+      },
+      "primaryImage": "/images/products/wheat-1.jpg",
+      "images": [
+        {
+          "id": "efc2df2b-f252-44ce-8fb9-630a418af0ea",
+          "url": "/images/products/wheat-1.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:12.836Z",
+      "updatedAt": "2026-09-23T20:53:12.836Z"
+    },
+    {
+      "id": "88d1f0bd-2102-4ad4-b245-cf14bdf08aec",
+      "name": "Rice",
+      "description": "Variety: Fine(Basmati). Harvested and supplied by Aarav Reddy (Farm 3). Benchmarked against Siliguri APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #3]",
+      "price": 4900,
+      "unit": "QUINTAL",
+      "location": "Darjeeling, West Bengal",
+      "status": "ACTIVE",
+      "farmerName": "Aarav Reddy",
+      "farmName": "Farm 3",
+      "state": "West Bengal",
+      "district": "Darjeeling",
+      "marketMandi": "Siliguri APMC",
+      "varietyType": "Fine(Basmati)",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 5200,
+      "illustrativeFarmerListingReferenceInr": 4900,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 35,
+      "category": {
+        "id": "cb135f1e-8fef-497c-a021-aaf91ebda0eb",
+        "name": "Cereals & Grains",
+        "slug": "cereals-grains",
+        "description": "Staple grains including wheat, paddy rice, maize, barley, and nutritious millets."
+      },
+      "primaryImage": "/images/products/rice-3.jpg",
+      "images": [
+        {
+          "id": "46c41dbb-9778-49b7-b5d6-6806c73ff811",
+          "url": "/images/products/rice-3.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:12.823Z",
+      "updatedAt": "2026-09-23T20:53:12.823Z"
+    },
+    {
+      "id": "754f19ea-b910-4e9b-b7a9-7dda9fbe42b7",
+      "name": "Rice",
+      "description": "Variety: Fine(Basmati). Harvested and supplied by Aarav Singh (Farm 2). Benchmarked against Siliguri APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #2]",
+      "price": 4780,
+      "unit": "QUINTAL",
+      "location": "Darjeeling, West Bengal",
+      "status": "ACTIVE",
+      "farmerName": "Aarav Singh",
+      "farmName": "Farm 2",
+      "state": "West Bengal",
+      "district": "Darjeeling",
+      "marketMandi": "Siliguri APMC",
+      "varietyType": "Fine(Basmati)",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 5200,
+      "illustrativeFarmerListingReferenceInr": 4780,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 60,
+      "category": {
+        "id": "cb135f1e-8fef-497c-a021-aaf91ebda0eb",
+        "name": "Cereals & Grains",
+        "slug": "cereals-grains",
+        "description": "Staple grains including wheat, paddy rice, maize, barley, and nutritious millets."
+      },
+      "primaryImage": "/images/products/rice-2.jpg",
+      "images": [
+        {
+          "id": "083c987a-c3fc-4d1e-951e-019d194310a2",
+          "url": "/images/products/rice-2.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:12.811Z",
+      "updatedAt": "2026-09-23T20:53:12.811Z"
+    },
+    {
+      "id": "d10c3ed4-9315-4bcf-a778-860d2222624e",
+      "name": "Rice",
+      "description": "Variety: Fine(Basmati). Harvested and supplied by Aarav Patel (Farm 1). Benchmarked against Siliguri APMC. Notes: District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states. [SIH26033-DATASET-LISTING #1]",
+      "price": 4660,
+      "unit": "QUINTAL",
+      "location": "Darjeeling, West Bengal",
+      "status": "ACTIVE",
+      "farmerName": "Aarav Patel",
+      "farmName": "Farm 1",
+      "state": "West Bengal",
+      "district": "Darjeeling",
+      "marketMandi": "Siliguri APMC",
+      "varietyType": "Fine(Basmati)",
+      "sellingUnit": "Rs./Quintal",
+      "officialMandiModalPriceInr": 5200,
+      "illustrativeFarmerListingReferenceInr": 4660,
+      "officialPriceDate": "2026-09-11",
+      "notes": "District resolved from active mandi directory; selected on highest reported arrival among chosen producing-belt states.",
+      "availableQuantity": 45,
+      "category": {
+        "id": "cb135f1e-8fef-497c-a021-aaf91ebda0eb",
+        "name": "Cereals & Grains",
+        "slug": "cereals-grains",
+        "description": "Staple grains including wheat, paddy rice, maize, barley, and nutritious millets."
+      },
+      "primaryImage": "/images/products/rice-1.jpg",
+      "images": [
+        {
+          "id": "bd21f011-d829-4925-808d-eb6674d37d37",
+          "url": "/images/products/rice-1.jpg",
+          "isPrimary": true
+        }
+      ],
+      "seller": {
+        "id": "be3fb634-677f-4773-ac32-de2d189874b4",
+        "sellerType": "FARMER",
+        "businessName": "Sahyadri Farmers Producer Collective",
+        "farmLocation": "Lasalgaon, Nashik",
+        "verificationStatus": "VERIFIED"
+      },
+      "createdAt": "2026-09-23T20:53:12.781Z",
+      "updatedAt": "2026-09-23T20:53:12.781Z"
+    }
+  ]
+}
