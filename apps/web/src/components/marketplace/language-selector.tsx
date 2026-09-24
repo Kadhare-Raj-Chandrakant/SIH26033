@@ -112,7 +112,7 @@ export function LanguageSelector({ variant = 'navbar', className = '' }: Languag
 
       {/* Language Selection Modal / Popover Dropdown */}
       {isOpen && (
-        <div className="absolute right-0 top-full mt-2 w-[340px] sm:w-[420px] max-w-[90vw] bg-[#FCFAF6] border border-[#D5CCBC] rounded-xl shadow-xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-150">
+        <div className="absolute right-0 top-full mt-2 w-85 sm:w-105 max-w-[90vw] bg-[#FCFAF6] border border-[#D5CCBC] rounded-xl shadow-xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-150">
           {/* Header */}
           <div className="p-3.5 bg-[#F2EDE2] border-b border-[#E0D7C6]">
             <div className="flex items-center justify-between">
@@ -178,7 +178,7 @@ export function LanguageSelector({ variant = 'navbar', className = '' }: Languag
           </div>
 
           {/* Language Cards Grid */}
-          <div className="p-2.5 max-h-[320px] overflow-y-auto space-y-1.5">
+          <div className="p-2.5 max-h-80 overflow-y-auto space-y-1.5">
             {filteredLanguages.map((lang) => {
               const isSelected = currentLanguage === lang.code;
               return (

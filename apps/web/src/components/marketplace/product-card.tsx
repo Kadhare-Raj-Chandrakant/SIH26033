@@ -60,7 +60,7 @@ export function ProductCard({ product, onQuickView, landedCost }: ProductCardPro
     }`}>
       <div>
         {/* Crop Photo Frame */}
-        <div className="relative aspect-[16/10] w-full bg-[#EAE4D6] border-b border-[#DFD8CB] overflow-hidden">
+        <div className="relative aspect-16/10 w-full bg-[#EAE4D6] border-b border-[#DFD8CB] overflow-hidden">
           <Link href={`/marketplace/products/${product.id}`} className="block h-full w-full">
             {primaryImage ? (
               // eslint-disable-next-line @next/next/no-img-element
@@ -68,7 +68,7 @@ export function ProductCard({ product, onQuickView, landedCost }: ProductCardPro
                 src={primaryImage}
                 alt={product.name}
                 className={`h-full w-full object-cover object-center transition-all ${
-                  isOutOfStock ? 'grayscale-[35%] opacity-85' : ''
+                  isOutOfStock ? 'grayscale-35 opacity-85' : ''
                 }`}
                 loading="lazy"
               />
