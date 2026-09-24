@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Globe, Check, ChevronDown, Sparkles, X, Search } from 'lucide-react';
-import { useLanguage, SUPPORTED_LANGUAGES, LanguageOption } from '@/components/providers/language-provider';
+import { useLanguage, SUPPORTED_LANGUAGES } from '@/components/providers/language-provider';
 
 interface LanguageSelectorProps {
   variant?: 'navbar' | 'mobile' | 'floating';
