@@ -76,92 +76,49 @@ export function MarketplaceNavbar() {
       </div>
 
       {/* TIER 1: PRIMARY PLATFORM HEADER */}
-      <div className="max-w-7xl mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
-        {/* Brand Logo & Universal Navigation */}
-        <div className="flex items-center gap-6 2xl:gap-8 min-w-0">
-          <Link href="/" className="flex items-center gap-2.5 shrink-0">
-            <div className="w-9 h-9 rounded-md bg-[#233D22] flex items-center justify-center text-[#F7F5EE] shadow-xs">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 2a10 10 0 0 1 10 10c0 5.523-4.477 10-10 10S2 17.523 2 12A10 10 0 0 1 12 2z" fill="#2E4221" opacity="0.3"/>
-                <path d="M12 22V12" />
-                <path d="M12 12c0-4 3-7 7-7" />
-                <path d="M12 15c-3 0-5-2-5-5 0-3 3-5 5-5" />
-              </svg>
-            </div>
-            <div>
-              <span className="text-xl font-serif font-bold tracking-tight text-[#1E221B] leading-none">Aroha</span>
-              <span className="block text-[9px] tracking-wider uppercase text-[#6B7060] font-sans font-semibold">Agricultural Exchange</span>
-            </div>
-          </Link>
+      <div className="max-w-7xl mx-auto flex h-16 items-center justify-between gap-3 sm:gap-6 px-4 sm:px-6 lg:px-8">
+        {/* Brand Logo */}
+        <Link href="/" className="flex items-center gap-2.5 shrink-0">
+          <div className="w-9 h-9 rounded-md bg-[#233D22] flex items-center justify-center text-[#F7F5EE] shadow-xs">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 2a10 10 0 0 1 10 10c0 5.523-4.477 10-10 10S2 17.523 2 12A10 10 0 0 1 12 2z" fill="#2E4221" opacity="0.3"/>
+              <path d="M12 22V12" />
+              <path d="M12 12c0-4 3-7 7-7" />
+              <path d="M12 15c-3 0-5-2-5-5 0-3 3-5 5-5" />
+            </svg>
+          </div>
+          <div>
+            <span className="text-xl font-serif font-bold tracking-tight text-[#1E221B] leading-none">Aroha</span>
+            <span className="block text-[9px] tracking-wider uppercase text-[#6B7060] font-sans font-semibold">Agricultural Exchange</span>
+          </div>
+        </Link>
 
-          {/* Universal Main Navigation Links - Visible on XL+ screens to prevent collision with Search */}
-          <nav className="hidden xl:flex items-center gap-4 2xl:gap-6 text-xs font-semibold uppercase tracking-wider text-[#4E5246] shrink-0">
-            <Link
-              href="/marketplace"
-              className={`transition-colors py-1 whitespace-nowrap ${
-                pathname === '/marketplace' || pathname?.startsWith('/marketplace/products')
-                  ? 'text-[#233D22] font-bold border-b-2 border-[#233D22]'
-                  : 'hover:text-[#1E221B]'
-              }`}
-            >
-              Marketplace
-            </Link>
-            <Link
-              href="/seller/intelligence"
-              className={`transition-colors py-1 whitespace-nowrap ${
-                pathname === '/seller/intelligence'
-                  ? 'text-[#233D22] font-bold border-b-2 border-[#233D22]'
-                  : 'hover:text-[#1E221B]'
-              }`}
-            >
-              Mandi Intelligence
-            </Link>
-            <Link
-              href="/fpo"
-              className={`transition-colors py-1 whitespace-nowrap ${
-                pathname === '/fpo' || (pathname?.startsWith('/fpo/') && !pathname?.startsWith('/fpo/dashboard'))
-                  ? 'text-[#233D22] font-bold border-b-2 border-[#233D22]'
-                  : 'hover:text-[#1E221B]'
-              }`}
-            >
-              FPO Network
-            </Link>
-            <Link
-              href="/orders"
-              className={`transition-colors py-1 whitespace-nowrap ${
-                pathname === '/orders' || pathname?.startsWith('/orders/')
-                  ? 'text-[#233D22] font-bold border-b-2 border-[#233D22]'
-                  : 'hover:text-[#1E221B]'
-              }`}
-            >
-              Logistics Tracking
-            </Link>
-          </nav>
-        </div>
-
-        {/* Right Side Header Controls */}
-        <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
-          {/* Functional Top Crop Search Form */}
-          <form onSubmit={handleTopSearchSubmit} className="hidden sm:flex items-center relative">
-            <Search className="w-3.5 h-3.5 text-[#6B7060] absolute left-2.5 pointer-events-none" />
+        {/* Central Search Form - Dedicated flexible center container, zero overlap */}
+        <div className="flex-1 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg min-w-0">
+          <form onSubmit={handleTopSearchSubmit} className="relative w-full flex items-center">
+            <Search className="w-3.5 h-3.5 text-[#6B7060] absolute left-3 pointer-events-none" />
             <input
               type="text"
               value={topSearch}
               onChange={(e) => setTopSearch(e.target.value)}
               placeholder="Search crops (e.g. Basmati, Wheat)..."
-              className="h-8 pl-8 pr-7 w-32 md:w-40 xl:w-48 2xl:w-56 focus-within:w-44 xl:focus-within:w-56 2xl:focus-within:w-64 text-xs bg-[#FFFFFF] border border-[#DFD8CB] rounded-md text-[#1E221B] placeholder-[#8A8F7E] focus:outline-hidden focus:border-[#233D22] focus:ring-1 focus:ring-[#233D22] transition-all duration-200"
+              className="h-8.5 pl-8.5 pr-8 w-full text-xs bg-[#FFFFFF] border border-[#DFD8CB] rounded-md text-[#1E221B] placeholder-[#8A8F7E] focus:outline-hidden focus:border-[#233D22] focus:ring-1 focus:ring-[#233D22] transition-all shadow-2xs"
             />
             {topSearch && (
               <button
                 type="button"
                 onClick={() => setTopSearch('')}
-                className="absolute right-2 text-[#8A8F7E] hover:text-[#1E221B]"
+                className="absolute right-2.5 text-[#8A8F7E] hover:text-[#1E221B] p-0.5"
                 title="Clear search"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
             )}
           </form>
+        </div>
+
+        {/* Right Side Header Controls */}
+        <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
 
           {/* Regional Farmer Language Selector */}
           <LanguageSelector variant="navbar" />
@@ -277,7 +234,7 @@ export function MarketplaceNavbar() {
           {/* Mobile menu toggle */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="xl:hidden p-1.5 text-[#2A3521] border border-[#DFD8CB] rounded-md hover:bg-[#EAE4D6] transition-colors"
+            className="lg:hidden p-1.5 text-[#2A3521] border border-[#DFD8CB] rounded-md hover:bg-[#EAE4D6] transition-colors"
             aria-label="Toggle menu"
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -615,7 +572,7 @@ export function MarketplaceNavbar() {
 
       {/* MOBILE DRAWER */}
       {mobileMenuOpen && (
-        <div className="xl:hidden border-t border-[#DFD8CB] bg-[#F7F5EE] px-4 py-4 space-y-3 text-sm">
+        <div className="lg:hidden border-t border-[#DFD8CB] bg-[#F7F5EE] px-4 py-4 space-y-3 text-sm">
           {/* Regional Farmer Language Selector for Mobile */}
           <LanguageSelector variant="mobile" />
 
