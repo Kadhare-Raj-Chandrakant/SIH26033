@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { ShipmentInfo, ShipmentStatus } from '@/lib/api';
-import { CheckCircle2, Circle, Clock, MapPin, Copy, Check, RefreshCw } from 'lucide-react';
+import { ShipmentInfo } from '@/lib/api';
+import { CheckCircle2, Circle, MapPin, Copy, Check, RefreshCw } from 'lucide-react';
 
 interface TrackingTimelineProps {
   shipment: ShipmentInfo | null;
@@ -191,7 +191,7 @@ export function TrackingTimeline({
                   </div>
                 );
               })
-            : defaultEvents.map((event, idx) => (
+            : defaultEvents.map((event) => (
                 <div key={event.id} className="relative">
                   <span
                     className={`absolute -left-6 top-0.5 flex items-center justify-center w-4 h-4 rounded-full border-2 ${

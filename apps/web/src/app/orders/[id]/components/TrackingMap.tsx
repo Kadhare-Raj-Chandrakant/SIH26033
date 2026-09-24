@@ -192,7 +192,7 @@ export function TrackingMap({
       </div>
 
       {/* Map Canvas Viewport */}
-      <div className="relative w-full h-[420px] bg-[#EAE4D6]">
+      <div className="relative w-full h-105 bg-[#EAE4D6]">
         {isLoading && (
           <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-[#FAF8F2]/80 backdrop-blur-xs space-y-2">
             <div className="w-6 h-6 border-2 border-[#233D22] border-t-transparent rounded-full animate-spin"></div>

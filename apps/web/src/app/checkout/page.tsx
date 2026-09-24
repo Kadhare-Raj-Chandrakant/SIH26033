@@ -14,6 +14,7 @@ import {
 import { MarketplaceNavbar } from '@/components/marketplace/marketplace-navbar';
 import { useAuth } from '@/components/providers/auth-provider';
 import { RoleGuard } from '@/components/auth/role-guard';
+import { ShoppingBag, AlertCircle, MapPin } from 'lucide-react';
 
 export default function CheckoutPage() {
   return (
@@ -56,7 +57,15 @@ function CheckoutPageContent() {
   });
 
   const createAddressMutation = useMutation({
-    mutationFn: () => createAddress(addressForm, token || undefined),
+    mutationFn: () =>
+      createAddress(
+        {
+          ...addressForm,
+          type: 'WAREHOUSE',
+          country: 'India',
+        },
+        token || undefined,
+      ),
     onSuccess: (data) => {
       refetchAddresses();
       setSelectedAddressId(data.data.id);
@@ -99,7 +108,14 @@ function CheckoutPageContent() {
 
   const handleAddressSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!addressForm.name || !addressForm.phone || !addressForm.addressLine || !addressForm.city || !addressForm.pincode) {
+    if (
+      !addressForm.name ||
+      !addressForm.phone ||
+      !addressForm.addressLine ||
+      !addressForm.city ||
+      !addressForm.state ||
+      !addressForm.pincode
+    ) {
       return;
     }
     createAddressMutation.mutate();
@@ -146,7 +162,26 @@ function CheckoutPageContent() {
         )}
 
         {/* Content */}
-        {!cartLoading && !addressesLoading && (
+        {!cartLoading && !addressesLoading && items.length === 0 && (
+          <div className="rounded-xl border border-[#DFD8CB] bg-[#FCFAF6] p-10 text-center space-y-4 max-w-md mx-auto my-8">
+            <div className="w-12 h-12 rounded-full bg-[#E8F0E2] text-[#233D22] mx-auto flex items-center justify-center">
+              <ShoppingBag className="w-6 h-6" />
+            </div>
+            <h2 className="font-serif font-bold text-lg text-[#1E221B]">Your Trade Cart is Empty</h2>
+            <p className="text-xs text-[#6B7260]">
+              You have no active commodity batches reserved for settlement. Browse verified producer lots to initialize contract settlement.
+            </p>
+            <div className="pt-2">
+              <Link href="/marketplace">
+                <button className="px-6 py-2.5 bg-[#233D22] text-[#FAF8F2] text-xs font-bold uppercase tracking-wider rounded-lg hover:bg-[#1B2F1A] transition-colors shadow-xs">
+                  Browse Marketplace Batches ➔
+                </button>
+              </Link>
+            </div>
+          </div>
+        )}
+
+        {!cartLoading && !addressesLoading && items.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
             {/* Left Column: Address & Lot Review */}
             <div className="md:col-span-7 space-y-6">
@@ -167,6 +202,23 @@ function CheckoutPageContent() {
                     </button>
                   )}
                 </div>
+
+                {/* Empty address state when none exist */}
+                {!showNewAddressForm && addresses.length === 0 && (
+                  <div className="p-6 border border-dashed border-[#DFD8CB] rounded-lg bg-[#FAF8F2] text-center space-y-3">
+                    <MapPin className="w-8 h-8 text-[#6B7260] mx-auto opacity-60" />
+                    <p className="text-xs text-[#5D6352] max-w-sm mx-auto">
+                      No delivery destination on file. Add your receiving warehouse or APMC terminal gate to authorize trade settlement.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => setShowNewAddressForm(true)}
+                      className="px-4 py-2 text-xs font-bold uppercase tracking-wider bg-[#233D22] text-[#FAF8F2] rounded-md hover:bg-[#1B2F1A] transition-colors"
+                    >
+                      + Add Delivery Destination
+                    </button>
+                  </div>
+                )}
 
                 {/* Existing addresses */}
                 {!showNewAddressForm && addresses.length > 0 && (
@@ -297,13 +349,19 @@ function CheckoutPageContent() {
                       </div>
                     </div>
 
+                    {createAddressMutation.isError && (
+                      <div className="p-2.5 rounded bg-[#FDF2F2] border border-[#F8B4B4] text-xs text-[#9B1C1C]">
+                        {(createAddressMutation.error as Error)?.message || 'Failed to save delivery destination'}
+                      </div>
+                    )}
+
                     <div className="flex gap-2 pt-2">
                       <button
                         type="submit"
                         disabled={createAddressMutation.isPending}
-                        className="px-4 py-2 text-xs font-bold uppercase tracking-wider bg-[#233D22] text-[#FAF8F2] rounded"
+                        className="px-4 py-2 text-xs font-bold uppercase tracking-wider bg-[#233D22] text-[#FAF8F2] rounded hover:bg-[#1B2F1A] transition-colors disabled:opacity-50"
                       >
-                        {createAddressMutation.isPending ? 'Saving...' : 'Save Destination'}
+                        {createAddressMutation.isPending ? 'Saving Destination...' : 'Save Destination'}
                       </button>
                       <button
                         type="button"
@@ -378,6 +436,13 @@ function CheckoutPageContent() {
                     ₹{subtotal.toLocaleString('en-IN')}
                   </span>
                 </div>
+
+                {!selectedAddressId && items.length > 0 && (
+                  <div className="p-3 bg-[#FEF3C7] border border-[#FCD34D] rounded text-xs text-[#92400E] flex items-center gap-2">
+                    <AlertCircle className="w-4 h-4 shrink-0 text-[#B45309]" />
+                    <span>Select or add a delivery warehouse destination to authorize escrow settlement.</span>
+                  </div>
+                )}
 
                 {placeOrderMutation.isError && (
                   <div className="p-3 bg-[#FDF2F2] border border-[#F8B4B4] rounded text-xs text-[#9B1C1C]">

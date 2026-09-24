@@ -2,7 +2,6 @@
 
 import { use, useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   fetchBuyerOrderById,
@@ -15,7 +14,7 @@ import { MarketplaceNavbar } from '@/components/marketplace/marketplace-navbar';
 import { useAuth } from '@/components/providers/auth-provider';
 import { useIsMounted } from '@/lib/use-is-mounted';
 import { RoleGuard } from '@/components/auth/role-guard';
-import { FileText, Truck, MapPin } from 'lucide-react';
+import { FileText, Truck } from 'lucide-react';
 import { TrackingMap } from './components/TrackingMap';
 import { TrackingTimeline } from './components/TrackingTimeline';
 
@@ -52,7 +51,6 @@ function OrderDetailContent({ params }: PageProps) {
 
   const {
     data: trackingResponse,
-    isLoading: isTrackingLoading,
   } = useQuery({
     queryKey: ['order-tracking', id],
     queryFn: () => fetchOrderTracking(id, token || undefined),

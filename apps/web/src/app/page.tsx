@@ -3,7 +3,17 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useAuth } from '@/components/providers/auth-provider';
+import { useRouter } from 'next/navigation';
+import { MarketplaceNavbar } from '@/components/marketplace/marketplace-navbar';
+import {
+  Search,
+  ShieldCheck,
+  TrendingUp,
+  Truck,
+  Sprout,
+  Wheat,
+  ArrowUpRight,
+} from 'lucide-react';
 
 interface MandiData {
   state: string;
@@ -142,13 +152,10 @@ const FEATURED_CROPS = [
 ];
 
 export default function Home() {
-  const { user, isAuthenticated, logout } = useAuth();
-  const isFarmerOrFpo = user?.role === 'FARMER' || user?.role === 'FPO';
-
+  const router = useRouter();
   const [selectedCrop, setSelectedCrop] = useState<string>('wheat');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
   const currentMandi = MANDI_DATA[selectedCrop];
 
@@ -170,195 +177,257 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#F7F5EE] text-[#1E221B]">
-      {/* Top Banner Notice */}
-      <div className="border-b border-[#E0D9CB] bg-[#EDE7DA] px-4 py-1.5 text-xs text-[#4E5246] text-center font-medium">
-        <span>Aroha National Agricultural Marketplace: Integrating 50,000+ Verified Farmers, FPOs, and Institutional Buyers across India</span>
-      </div>
-
-      {/* Main Navigation */}
-      <header className="border-b border-[#DFD8CB] bg-[#F7F5EE] sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-md bg-[#3B532B] flex items-center justify-center text-[#F7F5EE]">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 2a10 10 0 0 1 10 10c0 5.523-4.477 10-10 10S2 17.523 2 12A10 10 0 0 1 12 2z" fill="#2E4221" opacity="0.3"/>
-                <path d="M12 22V12" />
-                <path d="M12 12c0-4 3-7 7-7" />
-                <path d="M12 15c-3 0-5-2-5-5 0-3 3-5 5-5" />
-              </svg>
-            </div>
-            <div>
-              <span className="text-2xl font-serif font-bold tracking-tight text-[#1E221B]">Aroha</span>
-              <span className="block text-[10px] tracking-wider uppercase text-[#6B7060] font-sans font-semibold">Agricultural Exchange</span>
-            </div>
-          </Link>
-
-          {/* Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-7 text-sm font-medium text-[#3E4336]">
-            <Link href="/marketplace" className="hover:text-[#1E221B] pb-1 border-b-2 border-[#3B532B]">
-              Marketplace
-            </Link>
-            <Link href="/categories" className="hover:text-[#1E221B]">
-              Categories
-            </Link>
-            <Link href="/fpo" className="hover:text-[#1E221B]">
-              FPO Directory
-            </Link>
-            {isAuthenticated && isFarmerOrFpo && (
-              <Link href="/seller/intelligence" className="hover:text-[#1E221B]">
-                Mandi Intelligence
-              </Link>
-            )}
-            {isAuthenticated && (
-              <Link href="/orders" className="hover:text-[#1E221B]">
-                My Orders
-              </Link>
-            )}
-          </nav>
-
-          {/* User Controls */}
-          <div className="hidden sm:flex items-center gap-3">
-            {!isAuthenticated ? (
-              <>
-                <Link href="/login">
-                  <button suppressHydrationWarning className="h-10 px-5 text-xs font-semibold uppercase tracking-wider text-[#2A3521] border border-[#C8C0AF] rounded-md hover:bg-[#EAE4D6]">
-                    Sign In
-                  </button>
-                </Link>
-                <Link href="/register">
-                  <button suppressHydrationWarning className="h-10 px-5 text-xs font-semibold uppercase tracking-wider bg-[#3B532B] text-[#F7F5EE] rounded-md hover:bg-[#2F4322]">
-                    Register
-                  </button>
-                </Link>
-              </>
-            ) : (
-              <div className="flex items-center gap-3">
-                <div className="text-right">
-                  <span className="block text-xs font-bold text-[#1E221B]">
-                    {user?.role === 'BUYER' ? 'Buyer' : user?.role === 'FARMER' ? 'Farmer' : user?.role === 'FPO' ? 'FPO' : 'Admin'}
-                  </span>
-                  <span className="block text-[11px] text-[#6B7060]">{user?.email}</span>
-                </div>
-                <button
-                  suppressHydrationWarning
-                  onClick={logout}
-                  className="h-9 px-3 text-xs font-semibold uppercase tracking-wider border border-[#C8C0AF] text-[#4E5246] rounded-md hover:bg-[#EAE4D6]"
-                >
-                  Sign Out
-                </button>
-              </div>
-            )}
-          </div>
-
-          {/* Mobile menu toggle */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 text-[#2A3521] border border-[#DFD8CB] rounded-md"
-            aria-label="Toggle menu"
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <line x1="3" y1="12" x2="21" y2="12" />
-              <line x1="3" y1="6" x2="21" y2="6" />
-              <line x1="3" y1="18" x2="21" y2="18" />
-            </svg>
-          </button>
-        </div>
-
-        {/* Mobile dropdown */}
-        {mobileMenuOpen && (
-          <div className="lg:hidden border-t border-[#DFD8CB] bg-[#F7F5EE] px-4 py-4 space-y-3">
-            <Link href="/marketplace" className="block text-sm font-medium py-1">Marketplace</Link>
-            <Link href="/categories" className="block text-sm font-medium py-1">Categories</Link>
-            <Link href="/fpo" className="block text-sm font-medium py-1">FPO Directory</Link>
-            {isAuthenticated && isFarmerOrFpo && (
-              <Link href="/seller/intelligence" className="block text-sm font-medium py-1">Mandi Intelligence</Link>
-            )}
-            {isAuthenticated && (
-              <Link href="/orders" className="block text-sm font-medium py-1">My Orders</Link>
-            )}
-            <div className="pt-2 flex gap-2">
-              {!isAuthenticated ? (
-                <>
-                  <Link href="/login" className="flex-1">
-                    <button suppressHydrationWarning className="w-full py-2 text-xs font-semibold uppercase border border-[#C8C0AF] rounded-md">Sign In</button>
-                  </Link>
-                  <Link href="/register" className="flex-1">
-                    <button suppressHydrationWarning className="w-full py-2 text-xs font-semibold uppercase bg-[#3B532B] text-[#F7F5EE] rounded-md">Register</button>
-                  </Link>
-                </>
-              ) : (
-                <button
-                  onClick={logout}
-                  className="w-full py-2 text-xs font-semibold uppercase border border-[#C8C0AF] text-[#4E5246] rounded-md"
-                >
-                  Sign Out ({user?.role})
-                </button>
-              )}
-            </div>
-          </div>
-        )}
-      </header>
+      {/* Universal Dual-Tier Role-Based Navigation */}
+      <MarketplaceNavbar />
 
       {/* Main Content */}
       <main className="flex-1">
-        {/* HERO SECTION */}
-        <section className="px-4 sm:px-6 lg:px-8 pt-8 pb-14">
-          <div className="max-w-7xl mx-auto rounded-lg overflow-hidden border border-[#D5CEBF] bg-[#23331C] text-[#F7F5EE]">
-            <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch">
-              {/* Hero Left Content */}
-              <div className="lg:col-span-7 p-8 sm:p-12 lg:p-16 flex flex-col justify-between">
-                <div>
-                  <div className="inline-block border border-[#526D40] bg-[#2E4225] px-3.5 py-1 text-[11px] font-sans font-semibold uppercase tracking-wider text-[#D5E2CC] rounded-sm mb-6">
-                    Verified Direct Agricultural Trade
+        {/* HERO SECTION: ARCHITECTURAL PANORAMIC VIEW */}
+        <section className="relative w-full overflow-hidden border-b border-[#D5CEBF] bg-[#162113]">
+          {/* Panoramic Scenic Background */}
+          <div className="absolute inset-0">
+            <Image
+              src="/images/hero-landscape.jpg"
+              alt="Indian agricultural landscape with modern grain silos and freight transport"
+              fill
+              priority
+              className="object-cover object-center"
+            />
+            {/* Scrim for high contrast text readability on the left while keeping landscape visible */}
+            <div className="absolute inset-0 bg-linear-to-r from-black/85 via-black/55 to-black/15" />
+            <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
+          </div>
+
+          <div className="relative z-10 max-w-[1600px] mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-12 min-h-125 sm:min-h-140 lg:min-h-155">
+              
+              {/* Left Column: Metric Module with Architectural Divider */}
+              <div className="lg:col-span-3 border-b lg:border-b-0 lg:border-r border-white/20 p-8 sm:p-10 lg:p-12 flex flex-col justify-center">
+                <span className="text-xs uppercase tracking-widest font-medium text-[#E0EAD8]/80 font-sans">
+                  Cultivating over
+                </span>
+                <div className="text-5xl sm:text-6xl lg:text-7xl font-sans font-bold text-[#FAF8F2] tracking-tight my-1">
+                  29K
+                </div>
+                <span className="text-sm font-medium text-[#E0EAD8]/85 font-sans">
+                  Hectares.
+                </span>
+
+                {/* Circular botanical badges matching reference */}
+                <div className="flex items-center gap-3 mt-8">
+                  <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-xs border border-white/25 flex items-center justify-center text-emerald-300 shadow-sm" title="Sustainable Farming">
+                    <Sprout className="w-5 h-5" />
                   </div>
-                  <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold tracking-tight text-[#FAF8F2] leading-[1.15]">
-                    INDIA'S DEFINITIVE AGRICULTURAL TRADE & LOGISTICS PLATFORM.
-                  </h1>
-                  <p className="mt-6 text-sm sm:text-base text-[#D4DEC9] font-sans leading-relaxed max-w-xl">
-                    Direct connection, trust, and intelligence with verified farm supply for Indian agriculture. Connecting verified farmers and FPOs with millers, processors, and bulk institutional buyers.
+                  <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-xs border border-white/25 flex items-center justify-center text-amber-300 shadow-sm" title="Grain Assurance">
+                    <Wheat className="w-5 h-5" />
+                  </div>
+                  <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-xs border border-white/25 flex items-center justify-center text-white/90 shadow-sm" title="Verified Trade">
+                    <ShieldCheck className="w-5 h-5" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Main Column: Headline, Subtitle, and Clean CTA */}
+              <div className="lg:col-span-9 p-8 sm:p-12 lg:p-16 flex flex-col justify-center max-w-3xl">
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-[#FAF8F2] tracking-tight leading-[1.12]">
+                  Powering Modern<br className="hidden sm:inline" /> Indian Agriculture.
+                </h1>
+                <p className="mt-5 text-sm sm:text-base text-[#DCE7D6] font-sans leading-relaxed max-w-2xl">
+                  Advanced agritech for yield optimization, quality assurance, and traceable logistics. Building a resilient, transparent, and forward-looking farmgate exchange across 18,000+ PIN codes.
+                </p>
+
+                {/* Action Row */}
+                <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+                  <Link href="/marketplace">
+                    <button className="px-8 py-3.5 rounded-lg bg-[#183B1E] hover:bg-[#122E17] text-[#FAF8F2] text-xs font-bold uppercase tracking-wider transition-colors shadow-lg border border-emerald-700/60 shrink-0">
+                      Explore Solutions
+                    </button>
+                  </Link>
+
+                  {/* Quick Commodity Search Bar */}
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      if (searchQuery.trim()) {
+                        router.push(`/marketplace?search=${encodeURIComponent(searchQuery.trim())}`);
+                      }
+                    }}
+                    className="relative flex items-center bg-white/95 backdrop-blur-sm rounded-lg p-1.5 border border-white/30 shadow-lg max-w-md w-full"
+                  >
+                    <Search className="w-4 h-4 text-[#5D6354] ml-2.5 shrink-0" />
+                    <input
+                      id="hero-search-input"
+                      type="text"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      placeholder="Search crops, APMC mandis (e.g. Wheat, Onion)..."
+                      className="w-full bg-transparent px-3 py-1.5 text-xs text-[#1E221B] placeholder-[#767C6D] focus:outline-hidden"
+                    />
+                    <button
+                      type="submit"
+                      className="px-4 py-2 rounded bg-[#233D22] text-[#FAF8F2] text-xs font-semibold hover:bg-[#1A2E19] transition-colors shrink-0"
+                    >
+                      Search
+                    </button>
+                  </form>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        {/* PLATFORM INTELLIGENCE & TELEMETRICS (3 CARDS) */}
+        <section className="px-4 sm:px-6 lg:px-8 py-10 sm:py-14 bg-[#FBF9F5]">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+              {/* Card 1: Direct Producer Realization */}
+              <div className="rounded-lg border border-[#DFD8CB] bg-[#FCFAF6] p-7 flex flex-col justify-between shadow-xs hover:border-[#C8BFB0] transition-colors">
+                <div>
+                  <div className="w-12 h-12 rounded-full bg-[#3B532B] flex items-center justify-center text-[#FAF8F2] mb-5">
+                    <TrendingUp className="w-5 h-5 text-[#FAF8F2]" />
+                  </div>
+                  <div className="flex items-baseline justify-between">
+                    <h3 className="text-sm font-sans font-bold tracking-wider uppercase text-[#1E221B]">
+                      Yield Realization
+                    </h3>
+                    <span className="text-xs font-bold text-[#3B532B] bg-[#E8F0E2] px-2 py-0.5 rounded border border-[#C5D8BB]">
+                      +30.4% Uplift
+                    </span>
+                  </div>
+                  <p className="mt-3 text-xs leading-relaxed text-[#5A6051]">
+                    Direct producer price realization and digital aggregation eliminating intermediary brokerage tolls with automated escrow disbursement.
                   </p>
                 </div>
 
-                <div className="mt-10 flex flex-wrap items-center gap-4">
-                  <Link href="/seller/register">
-                    <button className="h-12 px-7 text-xs font-bold uppercase tracking-wider bg-[#BD8728] text-[#1D1B15] rounded-md hover:bg-[#AA761E]">
-                      Get Started Selling
-                    </button>
-                  </Link>
-                  <Link href="/marketplace">
-                    <button className="h-12 px-7 text-xs font-bold uppercase tracking-wider border border-[#8C9C7B] text-[#FAF8F2] rounded-md hover:bg-[#324527]">
-                      Explore Products
-                    </button>
-                  </Link>
-                </div>
+                {/* Realization comparison schematic */}
+                <div className="mt-7 pt-5 border-t border-[#ECE6D9]">
+                  <div className="w-full bg-[#F4F0E6] rounded border border-[#E3DDD1] p-3.5 flex flex-col justify-between gap-2.5 text-[11px] text-[#6E7363]">
+                    <div>
+                      <div className="flex justify-between text-[10px] mb-1">
+                        <span>Traditional Mandi Net</span>
+                        <span className="font-bold text-[#8B4513]">₹2,120 / Qtl</span>
+                      </div>
+                      <div className="w-full bg-[#E5DFD2] h-2 rounded-sm overflow-hidden">
+                        <div className="bg-[#A07040] h-full w-[74%]" />
+                      </div>
+                    </div>
 
-                <div className="mt-12 pt-6 border-t border-[#3A4E2C] grid grid-cols-3 gap-4 text-left">
-                  <div>
-                    <span className="block text-2xl font-serif font-bold text-[#EFEBE1]">50,000+</span>
-                    <span className="text-[11px] text-[#A6B698] uppercase tracking-wider">Farmers & FPOs</span>
-                  </div>
-                  <div>
-                    <span className="block text-2xl font-serif font-bold text-[#EFEBE1]">18,000+</span>
-                    <span className="text-[11px] text-[#A6B698] uppercase tracking-wider">PIN Codes Serviced</span>
-                  </div>
-                  <div>
-                    <span className="block text-2xl font-serif font-bold text-[#EFEBE1]">0%</span>
-                    <span className="text-[11px] text-[#A6B698] uppercase tracking-wider">Middlemen Markups</span>
+                    <div>
+                      <div className="flex justify-between text-[10px] mb-1">
+                        <span className="text-[#2B3F21] font-semibold">Aroha Escrow Realization</span>
+                        <span className="font-bold text-[#2B3F21]">₹2,580 / Qtl</span>
+                      </div>
+                      <div className="w-full bg-[#E5DFD2] h-2 rounded-sm overflow-hidden">
+                        <div className="bg-[#3B532B] h-full w-[94%]" />
+                      </div>
+                    </div>
+
+                    <div className="flex justify-between items-center text-[10px] text-[#79806F] pt-1.5 border-t border-[#E3DDD1]">
+                      <span>0% Brokerage Toll</span>
+                      <span className="font-semibold text-[#2B3F21]">T+0 Escrow Settlement</span>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              {/* Hero Right Image */}
-              <div className="lg:col-span-5 relative min-h-[360px] lg:min-h-full border-t lg:border-t-0 lg:border-l border-[#3E5232]">
-                <Image
-                  src="/images/hero-farmer.jpg"
-                  alt="Indian farmer holding golden wheat grains in field"
-                  fill
-                  priority
-                  className="object-cover"
-                />
+              {/* Card 2: AI Lot Assay & Quality Assurance */}
+              <div className="rounded-lg border border-[#DFD8CB] bg-[#FCFAF6] p-7 flex flex-col justify-between shadow-xs hover:border-[#C8BFB0] transition-colors">
+                <div>
+                  <div className="w-12 h-12 rounded-full bg-[#3B532B] flex items-center justify-center text-[#FAF8F2] mb-5">
+                    <ShieldCheck className="w-5 h-5 text-[#FAF8F2]" />
+                  </div>
+                  <div className="flex items-baseline justify-between">
+                    <h3 className="text-sm font-sans font-bold tracking-wider uppercase text-[#1E221B]">
+                      Quality Grading
+                    </h3>
+                    <span className="text-xs font-bold text-[#3B532B] bg-[#E8F0E2] px-2 py-0.5 rounded border border-[#C5D8BB]">
+                      99.4% Purity
+                    </span>
+                  </div>
+                  <p className="mt-3 text-xs leading-relaxed text-[#5A6051]">
+                    Multi-spectral moisture profiling and standardized grading preventing arbitrary dockage deductions at the mandi gate.
+                  </p>
+                </div>
+
+                {/* Quality telemetry schematic */}
+                <div className="mt-7 pt-5 border-t border-[#ECE6D9]">
+                  <div className="w-full bg-[#F4F0E6] rounded border border-[#E3DDD1] p-3.5 flex flex-col justify-between gap-2.5 text-[11px] text-[#6E7363]">
+                    <div className="grid grid-cols-2 gap-2">
+                      <div className="bg-[#EAE4D7] rounded p-2 border border-[#DFD8CB]">
+                        <div className="text-[10px] uppercase tracking-wider text-[#79806F]">Moisture Index</div>
+                        <div className="text-sm font-mono font-bold text-[#1E221B] mt-0.5">11.2%</div>
+                        <div className="text-[9px] text-[#2B3F21] font-medium">Optimal Standard</div>
+                      </div>
+                      <div className="bg-[#EAE4D7] rounded p-2 border border-[#DFD8CB]">
+                        <div className="text-[10px] uppercase tracking-wider text-[#79806F]">Foreign Matter</div>
+                        <div className="text-sm font-mono font-bold text-[#1E221B] mt-0.5">&lt;0.3%</div>
+                        <div className="text-[9px] text-[#2B3F21] font-medium">Zero Deduction</div>
+                      </div>
+                    </div>
+
+                    <div className="flex justify-between items-center text-[10px] text-[#79806F] pt-1.5 border-t border-[#E3DDD1]">
+                      <span className="flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full bg-[#3B532B]"></span>
+                        NABL Grade A+ Certified
+                      </span>
+                      <Link href="/marketplace" className="text-[#3B532B] font-semibold hover:underline flex items-center gap-0.5">
+                        <span>Explore Lots</span>
+                        <ArrowUpRight className="w-3 h-3" />
+                      </Link>
+                    </div>
+                  </div>
+                </div>
               </div>
+
+              {/* Card 3: Connected Logistics Telematics */}
+              <div className="rounded-lg border border-[#DFD8CB] bg-[#FCFAF6] p-7 flex flex-col justify-between shadow-xs hover:border-[#C8BFB0] transition-colors">
+                <div>
+                  <div className="w-12 h-12 rounded-full bg-[#3B532B] flex items-center justify-center text-[#FAF8F2] mb-5">
+                    <Truck className="w-5 h-5 text-[#FAF8F2]" />
+                  </div>
+                  <div className="flex items-baseline justify-between">
+                    <h3 className="text-sm font-sans font-bold tracking-wider uppercase text-[#1E221B]">
+                      Transit Telematics
+                    </h3>
+                    <span className="text-xs font-bold text-[#3B532B] bg-[#E8F0E2] px-2 py-0.5 rounded border border-[#C5D8BB]">
+                      18.2°C Reefer
+                    </span>
+                  </div>
+                  <p className="mt-3 text-xs leading-relaxed text-[#5A6051]">
+                    Aggregated farmgate freight dispatch, digital weighbridge integration, and temperature-controlled transit across 18,000+ PIN codes.
+                  </p>
+                </div>
+
+                {/* Multimodal corridor transit schematic */}
+                <div className="mt-7 pt-5 border-t border-[#ECE6D9]">
+                  <div className="w-full bg-[#F4F0E6] rounded border border-[#E3DDD1] p-3.5 flex flex-col justify-between gap-2.5 text-[11px] text-[#6E7363]">
+                    <div className="flex items-center justify-between text-[10px] text-[#555C4A]">
+                      <span className="font-semibold text-[#1E221B]">Sehore Hub</span>
+                      <span className="text-[#868A7C]">NH-48 Corridor</span>
+                      <span className="font-semibold text-[#1E221B]">JNPT Terminal</span>
+                    </div>
+
+                    <div className="flex items-center justify-between px-1">
+                      <div className="w-2.5 h-2.5 rounded-full bg-[#3B532B]"></div>
+                      <div className="flex-1 h-1 bg-[#D5CEBF] mx-1.5 relative overflow-hidden rounded-full">
+                        <div className="h-full bg-[#3B532B] w-[68%] rounded-full"></div>
+                      </div>
+                      <div className="w-2.5 h-2.5 rounded-full bg-[#BD8728]"></div>
+                    </div>
+
+                    <div className="flex justify-between items-center text-[10px] text-[#79806F] pt-1.5 border-t border-[#E3DDD1]">
+                      <span>Speed: 64 km/h &bull; e-Lock Intact</span>
+                      <Link href="/orders" className="text-[#3B532B] font-semibold hover:underline flex items-center gap-0.5">
+                        <span>Track Fleet</span>
+                        <ArrowUpRight className="w-3 h-3" />
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
         </section>
@@ -995,7 +1064,7 @@ export default function Home() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
               <div className="p-6 rounded-lg border border-[#DFD8CB] bg-[#FCFAF6] flex flex-col justify-between">
                 <p className="text-xs text-[#3E4536] italic leading-relaxed">
-                  "Direct selling through Aroha eliminated 8% middleman commission on our 450-tonne wheat harvest and cleared payment in our FPO bank account within 24 hours of weighbridge confirmation."
+                  &ldquo;Direct selling through Aroha eliminated 8% middleman commission on our 450-tonne wheat harvest and cleared payment in our FPO bank account within 24 hours of weighbridge confirmation.&rdquo;
                 </p>
                 <div className="mt-6 pt-4 border-t border-[#ECE5D8]">
                   <span className="block font-bold text-xs text-[#1E221B]">Gurpreet Singh</span>
@@ -1005,7 +1074,7 @@ export default function Home() {
 
               <div className="p-6 rounded-lg border border-[#DFD8CB] bg-[#FCFAF6] flex flex-col justify-between">
                 <p className="text-xs text-[#3E4536] italic leading-relaxed">
-                  "We procure 600 tonnes of Grade A wheat and mustard monthly through Aroha. Zero moisture disputes, authentic provenance, and reliable batch deliveries straight to our mill."
+                  &ldquo;We procure 600 tonnes of Grade A wheat and mustard monthly through Aroha. Zero moisture disputes, authentic provenance, and reliable batch deliveries straight to our mill.&rdquo;
                 </p>
                 <div className="mt-6 pt-4 border-t border-[#ECE5D8]">
                   <span className="block font-bold text-xs text-[#1E221B]">Rajesh Singhal</span>
@@ -1015,7 +1084,7 @@ export default function Home() {
 
               <div className="p-6 rounded-lg border border-[#DFD8CB] bg-[#FCFAF6] flex flex-col justify-between">
                 <p className="text-xs text-[#3E4536] italic leading-relaxed">
-                  "Consolidated farm loads give our fleet guaranteed return trips from agricultural belts to industrial centers. Transparent digital trip sheets and prompt toll settlements."
+                  &ldquo;Consolidated farm loads give our fleet guaranteed return trips from agricultural belts to industrial centers. Transparent digital trip sheets and prompt toll settlements.&rdquo;
                 </p>
                 <div className="mt-6 pt-4 border-t border-[#ECE5D8]">
                   <span className="block font-bold text-xs text-[#1E221B]">Devendra Joshi</span>
@@ -1072,7 +1141,7 @@ export default function Home() {
               Transform Your Agricultural Trade Today.
             </h2>
             <p className="mt-4 text-xs sm:text-sm text-[#D4DEC9] max-w-xl mx-auto leading-relaxed">
-              Connect with verified farmer producer organisations, access live mandi intelligence, and manage end-to-end freight dispatch on India's definitive agricultural network.
+              Connect with verified farmer producer organisations, access live mandi intelligence, and manage end-to-end freight dispatch on India&apos;s definitive agricultural network.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-4">
               <Link href="/register">
@@ -1107,7 +1176,7 @@ export default function Home() {
                 <span className="text-xl font-serif font-bold text-[#F7F5EE]">Aroha</span>
               </div>
               <p className="text-xs text-[#9B9E93] leading-relaxed max-w-sm">
-                India's definitive agricultural trade and logistics exchange. Built to connect verified farmers and FPOs directly with food processors, millers, and institutional buyers.
+                India&apos;s definitive agricultural trade and logistics exchange. Built to connect verified farmers and FPOs directly with food processors, millers, and institutional buyers.
               </p>
               <div className="mt-5 text-[11px] text-[#7A7E72]">
                 Compliant with National Agricultural Market standards and electronic negotiable warehouse receipt systems.
