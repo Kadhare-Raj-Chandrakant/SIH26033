@@ -175,6 +175,29 @@ export type ShipmentStatus =
   | 'FAILED'
   | 'CANCELLED';
 
+export const SHIPMENT_PROGRESS: Record<ShipmentStatus, number> = {
+  CREATED: 0.05,
+  PICKUP_PENDING: 0.15,
+  PICKED_UP: 0.3,
+  IN_TRANSIT: 0.6,
+  OUT_FOR_DELIVERY: 0.85,
+  DELIVERED: 1.0,
+  FAILED: 0.6,
+  CANCELLED: 0.0,
+};
+
+export interface RouteGeometry {
+  type: 'LineString';
+  coordinates: [number, number][]; // [lon, lat]
+}
+
+export interface RouteData {
+  geometry: RouteGeometry;
+  distanceKm: number;
+  durationHours: number;
+  source: 'osrm' | 'cached' | 'fallback';
+}
+
 export interface ShipmentTrackingEvent {
   id: string;
   status: ShipmentStatus;
@@ -624,6 +647,36 @@ export async function fetchOrderTracking(
   }
   return res.json();
 }
+
+export async function fetchRoute(params: {
+  originLat?: number;
+  originLon?: number;
+  destLat?: number;
+  destLon?: number;
+  originDistrict?: string;
+  destDistrict?: string;
+}): Promise<RouteData> {
+  const url = new URL(`${API_BASE_URL}/logistics/route`);
+  if (params.originLat != null) url.searchParams.set('originLat', String(params.originLat));
+  if (params.originLon != null) url.searchParams.set('originLon', String(params.originLon));
+  if (params.destLat != null) url.searchParams.set('destLat', String(params.destLat));
+  if (params.destLon != null) url.searchParams.set('destLon', String(params.destLon));
+  if (params.originDistrict) url.searchParams.set('originDistrict', params.originDistrict);
+  if (params.destDistrict) url.searchParams.set('destDistrict', params.destDistrict);
+
+  const res = await fetch(url.toString(), {
+    headers: { Accept: 'application/json' },
+  });
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData?.message || 'Failed to fetch transit route');
+  }
+  const json = await res.json();
+  return json.data || json;
+}
+
+
+
 
 export async function fetchSellerOrders(
   params: { page?: number; limit?: number } = {},

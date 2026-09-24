@@ -128,5 +128,34 @@ describe('LogisticsService & MockLogisticsProvider', () => {
     expect(estimate.costBreakdown.handling).toBe(375); // 25 quintals * 15
     expect(estimate.limitations?.length).toBeGreaterThan(0);
   });
+
+  it('should resolve district coordinates and generate route with GeoJSON LineString', async () => {
+    const route = await logisticsService.getRoute({
+      originDistrict: 'Lasalgaon',
+      destDistrict: 'Vashi',
+    });
+
+    expect(route).toBeDefined();
+    expect(route.geometry.type).toBe('LineString');
+    expect(route.geometry.coordinates.length).toBeGreaterThanOrEqual(7);
+    expect(route.distanceKm).toBeGreaterThan(0);
+    expect(route.durationHours).toBeGreaterThan(0);
+    expect(['osrm', 'cached', 'fallback']).toContain(route.source);
+  });
+
+  it('should fall back gracefully to synthetic 7-point arc on arbitrary coordinates', async () => {
+    const route = await logisticsService.getRoute({
+      originLat: 20.0,
+      originLon: 74.0,
+      destLat: 19.0,
+      destLon: 73.0,
+    });
+
+    expect(route).toBeDefined();
+    expect(route.geometry.type).toBe('LineString');
+    expect(route.geometry.coordinates.length).toBeGreaterThanOrEqual(7);
+    expect(route.distanceKm).toBeGreaterThan(0);
+  });
 });
+
 

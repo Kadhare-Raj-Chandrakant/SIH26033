@@ -96,4 +96,8 @@ services/ai/data/feedback_logs.jsonl
 .tmp/
 *.tmp
 *.token
+powershell.cmd
+graphify-out/
+.agents/
+.opencode/
 
