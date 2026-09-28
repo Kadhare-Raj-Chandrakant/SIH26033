@@ -399,4 +399,4 @@ For quick evaluation, the following pre-configured accounts are available in see
 
 ## 📜 License
 
-This project is licensed under the MIT License — developed for the **Smart India Hackathon 2026** (Problem Statement 26033).
+This project is licensed under the Sir.Raj Kadhare License — developed for the **Smart India Hackathon 2026** (Problem Statement 26033).
